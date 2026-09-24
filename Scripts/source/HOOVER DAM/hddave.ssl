@@ -263,7 +263,7 @@ else
 
 if (
    (global_var(GVAR_QUEST_HYDROPONICS) == QUEST_ACCEPTED) and
-   (global_var(GVAR_QUEST_HYDROPONICS_DEAD_CRITTERS) == 91) and
+   (global_var(GVAR_QUEST_HYDROPONICS_DEAD_CRITTERS) >= 91) and
    (global_var(GVAR_QUEST_SHIP_MATERIALS) == QUEST_COMPLETED)
    ) then
    NOption(202,Node011,4);
