@@ -102,6 +102,7 @@ procedure Node1100;                                      // rejoin party
 //#define LVAR_Personal_Enemy             (11)
 
 #define PARTY_NODE_X                      Node1000
+#define arr_ai(ai_id)					 (AI_ARROYO_WARRIOR == ai_id or AI_ARROYO_ELDER == ai_id or AI_ARROYO_SHAMAN == ai_id)
 
 /*******************************************************************
    Imported variables from the Map scripts. These should only be
@@ -169,19 +170,19 @@ procedure critter_p_proc begin
    else if (Hanged_Man_In_Party) then begin
       if (global_var(GVAR_PLAYER_REPUTATION) < Hanged_Man_Bad_Karma) then begin
          call Abandon_Party;
-         debug_msg("Hanged_Man Bad Player Rep");
+         //debug_msg("Hanged_Man Bad Player Rep");
       end
       else if (has_rep_childkiller) then begin
          call Abandon_Party;
-         debug_msg("Hanged_Man: Child Killer");
+         //debug_msg("Hanged_Man: Child Killer");
       end
       else if (has_rep_berserker) then begin
          call Abandon_Party;
-         debug_msg("Hanged_Man: Berserker");
+         //debug_msg("Hanged_Man: Berserker");
       end
       else if (has_rep_slaver) then begin
          call Abandon_Party;
-         debug_msg("Hanged_Man: Slaver Rep");
+         //debug_msg("Hanged_Man: Slaver Rep");
       end*/
 
 end
@@ -193,7 +194,7 @@ procedure damage_p_proc begin
       his personal enemy. In Critter_Proc or through dialog, actions will be taken against
       the player for his evil acts. */
 
-   if (obj_in_party(source_obj)) then begin
+if (obj_in_party(source_obj)) then begin
 //       set_local_var(LVAR_Personal_Enemy, 1);
       set_personal_enemy;
    end
@@ -297,10 +298,17 @@ end
 procedure timed_event_p_proc begin
    if (fixed_param == 1) then begin 
 		variable extra_health;
+		//debug("dude level "+get_sfall_global_int("dude_lvl"))
+		//dude_level_sfall
+		//debug("dude level macro "+dude_level)
+		//debug("dude level sfall "+get_sfall_global_int("dude_lvl"))
 		if (dude_level > 1)  then begin
 			extra_health := ((floor(self_endurance/2) + 2) * (dude_level-1));
 			set_critter_extra_stat(self_obj, STAT_max_hp, extra_health);
 		end
+	   //variable extra_health;
+	   //extra_health := ((floor(self_endurance/2) + 2) * (dude_level-1));		
+		
    end
    if (fixed_param == 0) then begin
       variable critters, critter, ai, team;
@@ -314,13 +322,15 @@ procedure timed_event_p_proc begin
                team := has_trait(TRAIT_OBJECT, critter, OBJECT_TEAM_NUM);
                ai := has_trait(TRAIT_OBJECT, critter, OBJECT_AI_PACKET);
 
-               if(TEAM_CAESARS_LEGION == team) then begin
+               if(TEAM_CAESARS_LEGION == team) and (not arr_ai(ai)) then begin
                   floater_bad(150);
                   self_attack_critter(critter);
                   break;
-               end else if (AI_ARROYO_WARRIOR == ai or AI_ARROYO_ELDER == ai or AI_ARROYO_SHAMAN == ai) then begin
+               end else if (arr_ai(ai) and (TEAM_CAESARS_LEGION == team)) then begin
                   floater_bad(151);
                   self_attack_critter(critter);
+				  debug_msg("Tribal AI "+arr_ai(ai));
+				  debug_msg("Caesar Legion "+(TEAM_CAESARS_LEGION == team));
                   break;
                end
             end
