@@ -554,9 +554,30 @@ end
                                                     Blocking_Cycle(3,1,elev)                                                                       \
                                                     Blocking_Cycle(2,1,elev)                                                                       \
                                                     Blocking_Cycle(0,1,elev)                                                                       \
+                                                    if (tile_contains_pid_obj(tile, elev, PID_DRIVABLE_BUGGY) != 0) then begin \
+                                                        set_global_var(GVAR_SHOW_DUNE_BUGGY_TRUNK, 1);                         \
+                                                        Create_Dune_Buggy_Trunk(tile, elev)                                       \
+                                                     end                                                                       \
                                                 end
+												
+#define Create_Dune_Buggy_Trunk(tile, elev)         if (not (tile_contains_pid_obj(tile_num_in_direction(tile_num_in_direction(tile, 0, 1), 5, 3), elev, PID_DUNE_BUGGY_TRUNK) != 0)) then begin \
+                                                   /*debug("placing dune buggy trunk:")*/                                                        \
+                                                   Scenery_Creation_Ptr := 0;                                                          \
+                                                   if (DuneBuggyTrunk_Ptr   != 0) then begin                                                      \
+                                                      Scenery_Creation_Ptr := DuneBuggyTrunk_Ptr  ;                                               \
+                                                   end else begin                                      \
+                                                      Scenery_Creation_Ptr := create_object_sid(PID_DUNE_BUGGY_TRUNK,0,0,SCRIPT_ZICRTRNK); \
+                                                   end                                                                                 \
+                                                   if (Scenery_Creation_Ptr != 0) then begin                                           \
+                                                        check_set_obj_visibility(Scenery_Creation_Ptr, false);                         \
+                                                        Scenery_Creation_Hex := tile_num_in_direction(tile_num_in_direction(tile, 0, 1), 5, 3); \
+                                                        move_to(Scenery_Creation_Ptr, Scenery_Creation_Hex, elev);                  \
+                                                   end else begin                                                                      \
+                                                      /*debug("WE HAD AN ERROR WITH THE DUNE BUGGY TRUNK PTR, OHHH FUCK")*/                      \
+                                                   end                                                                                 \
+                                                end												
 
-#define Destroy_Dune_Buggy(tile, elev)          debug("Destroy_Dune_Buggy(" + tile + "," + elev + ")")                                \
+#define Destroy_Dune_Buggy(tile, elev)          /*debug("Destroy_Dune_Buggy(" + tile + "," + elev + ")")*/                                \
                                                 Scenery_Creation_Ptr:=tile_contains_pid_obj(tile, elev, PID_DRIVABLE_BUGGY);         \
                                                 if (Scenery_Creation_Ptr != 0) then begin                                                \
                                                     Scenery_Creation_Hex:=tile;                                                           \
