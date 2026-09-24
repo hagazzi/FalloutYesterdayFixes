@@ -294,6 +294,7 @@ procedure Node999_sex;
 
 /* Local variables which do not need to be saved between map changes. */
 variable Only_Once:=0;
+variable silentkill:=0;
 
 procedure start begin
 end
@@ -443,8 +444,11 @@ procedure timed_event_p_proc begin
        else
           floater_rand(350, 355);
    end
+	if ((not (get_game_mode bwand DIALOG)) and (silentkill == 1) and (fixed_param == 1)) then begin 
 
-
+		critter_heal(self_obj, -200); 
+		give_xp(150); 
+	end
 end
 
 /* This procedure gets called only on the death of this NPC. Special things like
@@ -497,6 +501,9 @@ if (local_var(LVAR_Herebefore)==0) then
 begin
 set_local_var(LVAR_Herebefore,1);
 set_global_var(GVAR_KNOW_MAGIK, 1);
+end
+if silentkill == 1 then begin
+	add_timer_event(self_obj, game_ticks(3), 1);
 end
 end
 
@@ -1740,24 +1747,28 @@ end
 procedure Node_SleepingKillFin
 begin
 Reply(4310);
+silentkill := 1;
 NOption(1221,Node999,4);
 end
 
 procedure Node_SleepingKillStr
 begin
 Reply(4340);
+silentkill := 1;
 NOption(1221,Node999,4);
 end
 
 procedure Node_SleepingKillElse
 begin
 Reply(4370);
+silentkill := 1;
 NOption(1221,Node999,4);
 end
 
 procedure Node_SleepingKillHtH
 begin
 Reply(4400);
+silentkill := 1;
 NOption(1221,Node999,4);
 end
 
