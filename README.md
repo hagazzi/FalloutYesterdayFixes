@@ -17,27 +17,27 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * in Fallout2/patch001.dat/Scripts/Source/ use buildall.bat it comes with the 0.65.1 install and will compile all script to .int 
 
 ## Fixes
-* Make both hoover dam safes from caravan merchant unlockable, error in condition prevented that to happen if LCK < 9\
-* Adding Extra way to complete Miracle Wheat quest from Mesa Verde, include changes to Denom (MV) and Pierre (HD) nodes\ 
-* Changes to Dr Davide (Tibbets) so that Radscorpion quest can still be completed after having already talked to him once\
-* BoS implant time calculation was off, it looked like it squared ONE_GAME_DAY ending up a result in years instead of weeks\ 
-* Wasn't really warranting a fix but there were dialogs to kill magik in his sleep that did nothing i tried a bit to do it, and ended up succeeding so added that to the list\
-* Bea fixed so no longer unresponsive in other maps than Hoover Map Downtown\
-* Dave quest shouldnt be one you can complete since there are no way to complete the material part of it (?) i added the GVAR for it my issue being with map respawning several time i had much more than 81 kills in that map so moved to >= instead of ==\
-* Fixed Bea barfight so you can move to her while the barfight event starting too many hex to move to even with 10 action point due to vanilla companion hp being very low\
-* Unseen fix to gl_PartySkillBooksMod.ssl some change to it so that it stop spamming the debug.log with opcode error\
-* Adding some config to the FalloutYesterday.ini, i'd prefer for these thing to not happen but i understand that some would like it, it's more of a in case of replay playthrough i'd guess, since my maps kept respawning i saw its effect and don't like it.\
-* Change to Dodge in Hoover Dam so that several quests can be done, some quests if not completed at the same time with other would block progress later on, also a mistype where Dodge was expecting int <=3 character in the middle of an int 4+ string of messages\
-* Very Basic changes to Hangdman so that he stops trying to attack any tribals\
-* Possibly Unneeded fix for Mark in Bloomfield, was bugging for me\
-* Changes on CITY.TXT so that all tp arent stack on each other for Blackfoot, Dogtown, Ouroboros and Moletown Elevation typo\
+* Make both hoover dam safes from caravan merchant unlockable, error in condition prevented that to happen if LCK < 9<br/>
+* Adding Extra way to complete Miracle Wheat quest from Mesa Verde, include changes to Denom (MV) and Pierre (HD) nodes<br/> 
+* Changes to Dr Davide (Tibbets) so that Radscorpion quest can still be completed after having already talked to him once<br/>
+* BoS implant time calculation was off, it looked like it squared ONE_GAME_DAY ending up a result in years instead of weeks<br/> 
+* Wasn't really warranting a fix but there were dialogs to kill magik in his sleep that did nothing i tried a bit to do it, and ended up succeeding so added that to the list<br/>
+* Bea fixed so no longer unresponsive in other maps than Hoover Map Downtown<br/>
+* Dave quest shouldnt be one you can complete since there are no way to complete the material part of it (?) i added the GVAR for it my issue being with map respawning several time i had much more than 81 kills in that map so moved to >= instead of ==<br/>
+* Fixed Bea barfight so you can move to her while the barfight event starting too many hex to move to even with 10 action point due to vanilla companion hp being very low<br/>
+* Unseen fix to gl_PartySkillBooksMod.ssl some change to it so that it stop spamming the debug.log with opcode error<br/>
+* Adding some config to the FalloutYesterday.ini, i'd prefer for these thing to not happen but i understand that some would like it, it's more of a in case of replay playthrough i'd guess, since my maps kept respawning i saw its effect and don't like it.<br/>
+* Change to Dodge in Hoover Dam so that several quests can be done, some quests if not completed at the same time with other would block progress later on, also a mistype where Dodge was expecting int <=3 character in the middle of an int 4+ string of messages<br/>
+* Very Basic changes to Hangdman so that he stops trying to attack any tribals<br/>
+* Possibly Unneeded fix for Mark in Bloomfield, was bugging for me<br/>
+* Changes on CITY.TXT so that all tp arent stack on each other for Blackfoot, Dogtown, Ouroboros and Moletown Elevation typo<br/>
 
 
 ## Added
-* TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)\
-* Frieda Restock\
-* Milko Restock\
-* Add Caps to Skill Book Vendor\
+* TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
+* Frieda Restock<br/>
+* Milko Restock<br/>
+* Add Caps to Skill Book Vendor<br/>
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -80,15 +80,15 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Bloomfield Hook talk about with float text someone fixing thing in the basement, theres noone there
 
 ### i don't think these quest can be completed (there might be some other but i checked the script for these) :
-Tibbets - prologue :\
-* Locate the rare .50 Magnum Revolver\
-Tibbets :\
-* Find a new "home" for the Vault Boy hologram\
-Mesa Verde :\
-* Ask the Ciphers to process ZAX's raw data\
-* Forge an alliance between the Brotherhood and the Ciphers\
-* Rescue Cyphers\
-Hoover Dam :\
-* Any Bounty Quests?\
-* Theres also a ranger quest to join them that requires a legion flag but noone loot it right now (according to design document a vexillarius (flag bearer) should be in dogtown)\
+Tibbets - prologue :<br/>
+* Locate the rare .50 Magnum Revolver<br/>
+Tibbets :<br/>
+* Find a new "home" for the Vault Boy hologram<br/>
+Mesa Verde :<br/>
+* Ask the Ciphers to process ZAX's raw data<br/>
+* Forge an alliance between the Brotherhood and the Ciphers<br/>
+* Rescue Cyphers<br/>
+Hoover Dam :<br/>
+* Any Bounty Quests?<br/>
+* Theres also a ranger quest to join them that requires a legion flag but noone loot it right now (according to design document a vexillarius (flag bearer) should be in dogtown)<br/>
 
