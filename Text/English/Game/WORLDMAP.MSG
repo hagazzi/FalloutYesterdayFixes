@@ -25,13 +25,17 @@
 {211}{}{East Side}
 {212}{}{Den Residential}
 #
-# Klamath
-{220}{}{Downtown}
-{221}{}{Trapper Town}
-{222}{}{Rat Caves}
-{223}{}{Trapping Grounds}
-{224}{}{Grazing Area}
-{225}{}{Canyon}
+# Klamath # Dogtown
+{220}{}{Brewery}
+{221}{}{The Box}
+{222}{}{The Box Ground Level}
+{223}{}{The Box Sewers}
+{224}{}{Bombay Jack Canyon}
+{225}{}{Old Camp}
+{226}{}{Union Station}
+{227}{}{Skyscraper}
+{228}{}{Caesar Legion}
+{229}{}{No Idea 5}
 #
 # Modoc
 {230}{}{Main Street}
