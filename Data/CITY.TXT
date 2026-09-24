@@ -1,0 +1,828 @@
+;
+; City datafile for worldmap, etc.
+; Fallout 2
+;
+
+
+;
+;   This information is the default, starting information, but
+; in actual game play, it will be saved out locally to the
+; individual savegame.  This allows us to have some locations
+; that have random-by-game positions.
+;   Note that this could cause code headaches if the bounding
+; circles overlap!
+;
+
+;   Code determines how many "Areas" there are based on how many
+; are in this file.  So there are *2* digits in city segment #
+; in order to preserve the ordering of the segments!
+
+;   Note: All areas are assumed to have at *least* one (ON) entrance!
+; If none is found, the system will generate one for you.  If there
+; aren't any that are *ON*, then it will force the first one on anyway.
+
+; Note: City names are kept in the Worldmap.msg message file
+
+; Starting state, xpos, ypos, map index, elevation, tile_num, orientation
+
+
+[Area 00]                ; Tibbets
+area_name=Tibbets
+world_pos=1573,2022
+start_state=On
+size=Large
+townmap_art_idx=156
+townmap_label_art_idx=370
+entrance_0=On,400,375,Tibbets Cell Block 13,0,9654,2
+entrance_1=On,300,175,Tibbets Security Hub,0,26077,2
+entrance_2=On,200,175,Tibbets Service Level East,0,20451,5
+entrance_3=On,150,150,Tibbets Breach,0,22126,0
+entrance_4=Off,100,100,Tibbets Medical Treatment Area Level 1,0,22126,0
+entrance_5=Off,50,50,Tibbets Asylum Hospital,0,22126,0
+
+[Area 01]                ; Boulder Dome
+area_name=Boulder Dome
+world_pos=2873,772
+start_state=On
+size=Large
+townmap_art_idx=585
+townmap_label_art_idx=562
+entrance_0=On,124,293,Boulder Dome Train Station,0,16026,3
+
+[Area 02]                ; Dogtown
+area_name=Dogtown
+world_pos=3023,1022
+start_state=On
+size=Large
+townmap_art_idx=579
+townmap_label_art_idx=565
+entrance_0=On,309,203,Dogtown Brewery,-1,-1,0
+entrance_1=Off,309,203,Dogtown The Box,-1,-1,0
+entrance_2=Off,309,203,Dogtown The Box Ground Level,-1,-1,0
+entrance_3=Off,309,203,Dogtown The Box Sewers,-1,-1,0
+entrance_4=Off,309,203,Dogtown Bombay Jack Canyon,-1,-1,0
+
+[Area 03]                ; Circle Junction
+area_name=Circle Junction
+world_pos=1784,1883
+start_state=On
+size=Medium
+townmap_art_idx=578
+townmap_label_art_idx=577
+entrance_0=On,130,150,Circle Junction Roundabout,0,19259,4
+
+[Area 04]                ; Fort Abandon
+area_name=Fort Abandon
+world_pos=1684,1933
+start_state=On
+size=Medium
+townmap_art_idx=560
+townmap_label_art_idx=554
+entrance_0=On,235,390,Fort Abandon Courtyard,0,27532,5
+entrance_1=Off,400,270,Fort Abandon Oil Refinery,0,21338,1
+entrance_2=Off,280,250,Fort Abandon Parking,0,17656,3
+entrance_3=Off,160,140,Fort Abandon Farm,0,14248,3
+
+[Area 05]                ; Blackfoot
+area_name=Blackfoot
+world_pos=1423,1622
+start_state=On
+size=Large
+townmap_art_idx=588
+townmap_label_art_idx=576
+entrance_0=On,51,169,Blackfoot Village,0,29695,5
+entrance_1=Off,51,169,Hangdogs New Village,0,29777,0
+entrance_2=Off,51,169,Hangdogs New Village East,0,21739,1
+entrance_3=Off,51,169,Hangdogs New Village West,0,25958,0
+entrance_4=Off,51,169,Hangdogs New Village West,1,33702,5
+entrance_5=Off,51,169,Hangdogs New Village West,2,35295,5
+entrance_6=Off,51,169,Hangdogs New Village North,0,28711,5
+entrance_7=Off,51,169,Hangdogs New Village South,0,8107,2
+entrance_8=Off,51,169,Blackfoot Mine Big Entrance,0,18258,3
+entrance_9=Off,51,169,Blackfoot Mine Small Entrance,0,26084,3
+entrance_10=Off,51,169,Blackfoot Mine Big,0,18258,3
+entrance_11=Off,51,169,Blackfoot Mine Small,0,26084,3
+
+[Area 06]                ; Mesa Verde
+area_name=Mesa Verde
+world_pos=2273,1872
+start_state=On
+size=Large
+townmap_art_idx=589
+townmap_label_art_idx=570
+entrance_0=On,135,385,Mesa Verde Canyon Entrance,0,22097,5
+entrance_1=Off,350,245,Mesa Verde Village East,0,28549,0
+entrance_2=Off,215,75,Mesa Verde Top,0,24526,0
+
+[Area 07]                ; Twin Mothers
+area_name=Twin Mothers
+world_pos=2634,1833
+start_state=Off
+size=Medium
+townmap_art_idx=584
+townmap_label_art_idx=575
+entrance_0=On,230,300,Twin Mothers Fields,0,25105,5
+
+[Area 08]                ; Brotherhood of Steel
+area_name=Brotherhood of Steel
+world_pos=1384,2333
+start_state=Off
+size=Medium
+townmap_art_idx=551
+townmap_label_art_idx=552
+entrance_0=On,130,150,BOS Cliff,-1,-1,0
+entrance_1=Off,180,180,BOS Entrance,0,26150,1
+entrance_2=Off,280,210,BOS Bunker,0,26086,5
+entrance_3=Off,180,240,BOS Bunker,1,15100,2
+entrance_4=Off,280,290,BOS Bunker,2,24112,2
+entrance_5=Off,180,180,BOS Dead,0,26150,1
+
+[Area 09]                ; Hoover Dam
+area_name=Hoover Dam
+world_pos=173,2072
+start_state=On
+size=Large
+townmap_art_idx=586
+townmap_label_art_idx=567
+entrance_0=On,100,375,Hoover Dam South Gate,0,30118,5
+entrance_1=Off,100,100,Hoover Dam North Gate,0,7487,1
+entrance_2=Off,245,165,Hoover Dam Rim,0,29352,5
+entrance_3=Off,245,280,Hoover Dam Downtown North East,0,9518,2
+entrance_4=Off,245,320,Hoover Dam Baseline,0,31124,5
+entrance_5=Off,360,330,Hoover Dam Scum Pits,0,24485,3
+entrance_6=Off,360,400,Hoover Dam S1C,0,8279,2
+
+[Area 10]                ; Ouroboros
+area_name=Ouroboros
+world_pos=1823,1172
+start_state=Off
+size=Large
+townmap_art_idx=583
+townmap_label_art_idx=574
+entrance_0=On,240,125,Ouroboros Gate,-1,-1,0
+entrance_1=Off,240,125,Ouroboros Junkyard,-1,-1,0
+
+[Area 11]                ; The Reservation
+area_name=Reservation
+world_pos=2673,2272
+start_state=On
+size=Large
+townmap_art_idx=556
+townmap_label_art_idx=555
+entrance_0=On,205,327,Reservation Gate,0,24713,5
+entrance_1=Off,190,190,Reservation Trading Post,0,27687,5
+entrance_2=Off,-1,-1,Reservation Town South,-1,-1,0
+entrance_3=Off,-1,-1,Reservation Town North,-1,-1,0
+entrance_4=Off,-1,-1,Reservation Sub-Levels,-1,-1,0
+entrance_5=Off,-1,-1,Reservation Hangar A,-1,-1,0
+entrance_6=Off,-1,-1,Reservation Hangar B,-1,-1,0
+
+[Area 12]                ; Burham Springs
+area_name=Burham Springs
+world_pos=1534,1033
+start_state=Off
+size=Medium
+townmap_art_idx=587
+townmap_label_art_idx=564
+entrance_0=On,125,58,Burham Springs Town West,0,25785,0
+
+[Area 13]                ; The Nursery
+area_name=Nursery
+world_pos=2123,922
+start_state=On
+size=Large
+townmap_art_idx=582
+townmap_label_art_idx=573
+entrance_0=On,160,321,Nursery Entrance,-1,-1,0
+
+[Area 14]                ; Bloomfield Space Center
+area_name=Bloomfield Space Center
+world_pos=473,2772
+start_state=On
+size=Large
+townmap_art_idx=165
+townmap_label_art_idx=563
+entrance_0=On,100,165,Bloomfield Control Center North,0,36921,5
+entrance_1=Off,200,115,Bloomfield Control Center East,0,22336,1
+entrance_2=Off,340,360,Bloomfield Fuel Tanks,0,6328,2
+entrance_3=Off,360,210,Bloomfield Launch Pad,0,25183,0
+entrance_4=Off,120,50,Bloomfield Control Center,0,30135,5
+entrance_5=Off,90,380,Bloomfield Sub-Reactor,0,31289,5
+
+[Area 15]                ; The Grand Canyon
+area_name=Grand Canyon
+world_pos=973,2022
+start_state=On
+size=Large
+townmap_art_idx=580
+townmap_label_art_idx=566
+entrance_0=On,160,321,Grand Canyon South,0,35274,5
+entrance_1=Off,360,121,Grand Canyon Ghost Town,0,35274,5
+
+[Area 16]                ; Jericho
+area_name=Jericho
+world_pos=1223,322
+start_state=On
+size=Large
+townmap_art_idx=591
+townmap_label_art_idx=569
+entrance_0=On,160,321,Jericho Train Station,-1,-1,0
+entrance_1=Off,160,321,Jericho Town East,-1,-1,0
+entrance_2=Off,160,321,Jericho Mormons,-1,-1,0
+entrance_3=Off,160,321,Jericho Town West,-1,-1,0
+
+[Area 17]                ; New Canaan
+area_name=New Canaan
+world_pos=1184,283
+start_state=Off
+size=Medium
+townmap_art_idx=590
+townmap_label_art_idx=572
+entrance_0=On,130,150,New Canaan Outskirts,-1,-1,0
+
+[Area 18]                ; Hangdogs
+area_name=Hangdogs
+world_pos=3300,888
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=568
+entrance_0=On,130,150,Hangdogs Home,0,26441,3
+
+[Area 19]                ; Bloomfield Nuked
+area_name=Bloomfield Nuked
+world_pos=473,2772
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=563
+entrance_0=On,400,375,Bloomfield Nuked,0,25099,5
+
+[Area 20]                ; Motorcycle out of gas
+area_name=Motorcycle Outta Gas
+world_pos=100,100
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,130,150,Motorcycle: Desert,-1,-1,0
+
+; NOTE: This index # CANNOT CHANGE without a code change in Worldmap.c!
+[Area 21]                ; Vehicle out of gas Sub-area
+area_name=Vehicle Outta Gas
+world_pos=100,100
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,130,150,Vehicle: Desert,-1,-1,0
+
+[Area 22]                ; The Crater
+area_name=Crater
+world_pos=3023,1372
+start_state=On
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=557
+entrance_0=On,160,321,The Crater Entrance,0,22934,0
+entrance_1=Off,160,321,The Crater Tunnel,-1,-1,0
+
+[Area 23]                ; Dune Buggy Outta Gas
+area_name=Dune Buggy Outta Gas
+world_pos=100,100
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Dune Buggy: Desert,-1,-1,3
+
+[Area 24]                ; Slave Run
+area_name=Slave Run
+world_pos=570,310
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Slave Run,-1,-1,3
+
+[Area 25]                ; Moletown
+area_name=Moletown
+world_pos=2234,2533
+start_state=On
+size=Medium
+townmap_art_idx=581
+townmap_label_art_idx=571
+entrance_0=Off,350,150,Moletown Entrance, 1, 20709, 3
+
+[Area 26]                ; Random Encounter Desert
+area_name=Random
+world_pos=670,310
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Desert Encounter 1,-1,-1,3
+entrance_1=On,-1,-1,Desert Encounter 2,-1,-1,3
+entrance_2=On,-1,-1,Desert Encounter 3,-1,-1,3
+entrance_3=On,-1,-1,Desert Encounter 4,-1,-1,3
+entrance_4=On,-1,-1,Desert Encounter 5,-1,-1,3
+entrance_5=On,-1,-1,Desert Encounter 6,-1,-1,3
+entrance_6=On,-1,-1,Desert Encounter 7,-1,-1,3
+entrance_7=On,-1,-1,Desert Encounter 8,-1,-1,3
+entrance_8=On,-1,-1,Desert Encounter 9,-1,-1,3
+entrance_9=On,-1,-1,Desert Encounter 10,-1,-1,3
+entrance_10=On,-1,-1,Desert Encounter 11,-1,-1,3
+entrance_11=On,-1,-1,Desert Encounter 12,-1,-1,3
+entrance_12=On,-1,-1,Desert Encounter 13,-1,-1,3
+entrance_13=On,-1,-1,Desert Encounter 14,-1,-1,3
+
+[Area 27]                ; Random Encounter Mountain
+area_name=Random
+world_pos=670,310
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Mountain Encounter 1,-1,-1,0
+entrance_1=On,345,230,Cavern Encounter 0,-1,-1,0
+entrance_2=On,345,230,Mountain Encounter 2,-1,-1,0
+entrance_3=On,345,230,Cavern Encounter 1,-1,-1,0
+entrance_4=On,345,230,Cavern Encounter 2,-1,-1,0
+entrance_5=On,345,230,Cavern Encounter 3,-1,-1,0
+entrance_6=On,345,230,Cavern Encounter 4,-1,-1,0
+entrance_7=On,345,230,Cavern Encounter 5,-1,-1,0
+entrance_8=On,345,230,Mountain Encounter 3,-1,-1,0
+entrance_9=On,345,230,Mountain Encounter 4,-1,-1,0
+entrance_10=On,345,230,Mountain Encounter 5,-1,-1,0
+entrance_11=On,345,230,Mountain Encounter 6,-1,-1,0
+
+[Area 28]                ; Random Encounter City
+area_name=Random
+world_pos=670,310
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,City Encounter 1,-1,-1,0
+entrance_1=Off,-1,-1,City Encounter 2,-1,-1,0
+entrance_2=Off,-1,-1,City Encounter 3,-1,-1,0
+entrance_3=Off,-1,-1,City Encounter 4,-1,-1,0
+entrance_4=Off,-1,-1,City Encounter 5,-1,-1,0
+entrance_5=Off,-1,-1,City Encounter 6,-1,-1,0
+entrance_6=Off,-1,-1,City Encounter 7,-1,-1,0
+entrance_7=Off,-1,-1,City Encounter 8,-1,-1,0
+entrance_8=Off,-1,-1,City Encounter 9,-1,-1,0
+entrance_9=Off,-1,-1,City Encounter 10,-1,-1,0
+
+[Area 29]                ; Random Encounter Coast
+area_name=Random
+world_pos=670,310
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Coast Encounter 1,-1,-1,0
+entrance_1=On,345,230,Coast Encounter 2,-1,-1,0
+entrance_2=On,345,230,Coast Encounter 3,-1,-1,0
+entrance_3=On,345,230,Coast Encounter 4,-1,-1,0
+entrance_4=On,345,230,Coast Encounter 5,-1,-1,0
+entrance_5=On,345,230,Coast Encounter 6,-1,-1,0
+entrance_6=On,345,230,Coast Encounter 7,-1,-1,0
+entrance_7=On,345,230,Coast Encounter 8,-1,-1,0
+entrance_8=On,345,230,Coast Encounter 9,-1,-1,0
+entrance_9=On,345,230,Coast Encounter 10,-1,-1,0
+entrance_10=On,345,230,Coast Encounter 11,-1,-1,0
+entrance_11=On,345,230,Coast Encounter 12,-1,-1,0
+
+[Area 30]               ; BOMB-001
+area_name=BOMB-001
+world_pos=935,992
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,160,321,BOMB-001,-1,-1,0
+entrance_1=Off,-1,-1,New York West,-1,-1,0
+
+[Area 31]		; Cop Car Outta Gas
+area_name=Cop Car Outta Gas
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,160,321,Cop Car: Desert,-1,-1,0
+
+[Area 32]		; Bicycle Outta Gas
+area_name=Bicycle Outta Gas
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Bicycle: Desert,-1,-1,0
+
+[Area 33]		; Special Encounter Ruined Library
+area_name=Special Ruined Library
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,160,321,Special Ruined Library,0,25303,5
+
+[Area 34]		; Special Encounter Pulowskis
+area_name=Special Pulowskis
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Pulowskis,-1,-1,0
+
+[Area 35]		; Special Encounter Tentacles
+area_name=Special Tentacles
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Tentacles,0,19482,3
+entrance_1=Off,345,230,Special Tentacles Temple,0,28906,5
+
+[Area 36]		; Blackfoot Nuked
+area_name=Blackfoot Nuked
+world_pos=1423,1622
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=576
+entrance_0=On,400,375,Blackfoot Nuked,0,25099,5
+
+[Area 37]		; Special Encounter Lamp
+area_name=Special Lamp
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Lamp,-1,-1,0
+
+[Area 38]		; Special Encounter Car Mart
+area_name=Special Car Mart
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Car Mart,-1,-1,0
+
+[Area 39]		; Fort Desolation
+area_name=Fort Desolation
+world_pos=152,1992
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Fort Desolation,-1,-1,0
+
+[Area 40]		; Special Encounter Guardian
+area_name=Special Guardian Encounter
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Guardian Encounter,-1,-1,0
+
+[Area 41]		; Special Encounter Casino
+area_name=Special Casino
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,160,321,Special Casino,-1,-1,0
+
+[Area 42]		; Hoover Dam Nuked
+area_name=Hoover Dam Nuked
+world_pos=173,2072
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=567
+entrance_0=On,400,375,Hoover Dam Nuked,0,25099,5
+
+[Area 43]		; Landing Site
+area_name=Landing Site
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,160,321,Landing Site,0,24155,0
+
+[Area 44]		; Semi-Truck Outta Gas
+area_name=Semi-Truck Outta Gas
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,160,321,Semi-Truck: Desert,-1,-1,0
+
+[Area 45]		; Special Encounter Cranium Rats
+area_name=Special Cranium Rats
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Cranium Rats,-1,-1,0
+
+[Area 46]		; Special Encounter Carib
+area_name=Special Carib
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Carib,0,23100,5
+
+[Area 47]		; areas that have no where else to go
+area_name=Shadow Worlds
+world_pos=672,972
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,In Game Movie Map 0,-1,-1,0
+entrance_1=On,-1,-1,In Game Movie Map 1,-1,-1,0
+
+[Area 48]
+area_name=VACCS
+world_pos=84,83
+start_state=Off
+size=Medium
+townmap_art_idx=549
+townmap_label_art_idx=550
+entrance_0=On,210,380,VACCS 8 Entrance,-1,-1,0
+entrance_1=On,200,375,VACCS 8,-1,-1,0
+
+[Area 49]
+area_name=Highwayman Outta Gas
+world_pos=75,75
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,130,410,Highwayman: Desert,-1,-1,0
+
+[Area 50]
+area_name=Special Postman
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Postman,-1,-1,0
+
+[Area 51]
+area_name=Special Pet Cemetery
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Pet Cemetery,-1,-1,0
+
+[Area 52]
+area_name=Circle of Steel
+world_pos=1840,2588
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Circle of Steel,-1,-1,0
+
+[Area 53]
+area_name=Scaven Picker Camp
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Scaven Picker Camp,-1,-1,0
+
+[Area 54]
+area_name=Nether Realm
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Nether Realm,-1,-1,0
+
+[Area 55]
+area_name=Special Eddie
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Eddie,-1,-1,0
+
+[Area 56]                ; Tibbets Crater
+area_name=Tibbets Crater
+world_pos=1573,2022
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=370
+entrance_0=On,400,375,Tibbets Crater,0,25099,5
+
+[Area 57]		; Hoover Dam areas that can't fit on the town map
+area_name=Shadow Worlds Hoover Dam
+world_pos=173,2072
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=Off,-1,-1,Hoover Dam Downtown South West Fields,-1,-1,0
+entrance_1=Off,-1,-1,Hoover Dam Downtown Catwalk,-1,-1,0
+entrance_2=Off,-1,-1,Hoover Dam NCR Army HQ Gym,-1,-1,0
+entrance_3=Off,-1,-1,Hoover Dam Downtown South East,-1,-1,0
+entrance_4=Off,-1,-1,Hoover Dam Downtown North West,-1,-1,0
+entrance_5=Off,-1,-1,Hoover Dam Downtown South West Farm,-1,-1,0
+entrance_6=Off,-1,-1,Hoover Dam NCR Army HQ,-1,-1,0
+entrance_7=Off,-1,-1,Hoover Dam Morgue,-1,-1,0
+
+[Area 58]                ; Dogtown Nuked
+area_name=Dogtown Nuked
+world_pos=3023,1022
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=565
+entrance_0=On,400,375,Dogtown Nuked,0,25099,5
+
+[Area 59]                ; Circle Junction Nuked
+area_name=Circle Junction Nuked
+world_pos=1784,1883
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=577
+entrance_0=On,400,375,Circle Junction Nuked,0,25099,5
+
+[Area 60]                ; Fort Abandon Nuked
+area_name=Fort Abandon Nuked
+world_pos=1684,1933
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=554
+entrance_0=On,400,375,Fort Abandon Nuked,0,25099,5
+
+[Area 61]                ; Mesa Verde Nuked
+area_name=Mesa Verde Nuked
+world_pos=2273,1872
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=570
+entrance_0=On,400,375,Mesa Verde Nuked,0,25099,5
+
+[Area 62]                ; Twin Mothers Nuked
+area_name=Twin Mothers Nuked
+world_pos=2634,1833
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=575
+entrance_0=On,400,375,Twin Mothers Nuked,0,25099,5
+
+[Area 63]                ; Brotherhood of Steel Nuked
+area_name=Maxson Bunker Nuked
+world_pos=1384,2333
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=552
+entrance_0=On,400,375,Maxson Bunker Nuked,0,25099,5
+
+[Area 64]                ; Ouroboros Nuked
+area_name=Ouroboros Nuked
+world_pos=1823,1172
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=574
+entrance_0=On,400,375,Ouroboros Nuked,0,25099,5
+
+[Area 65]                ; The Reservation Nuked
+area_name=Reservation Nuked
+world_pos=2673,2272
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=555
+entrance_0=On,400,375,Reservation Nuked,0,25099,5
+
+[Area 66]                ; Burham Springs Nuked
+area_name=Burham Springs Nuked
+world_pos=1534,1033
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=564
+entrance_0=On,400,375,Burham Springs Nuked,0,25099,5
+
+[Area 67]                ; The Nursery Nuked
+area_name=Nursery Nuked
+world_pos=2123,922
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=573
+entrance_0=On,400,375,Nursery Nuked,0,25099,5
+
+[Area 68]                ; Jericho Nuked
+area_name=Jericho Nuked
+world_pos=1223,322
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=569
+entrance_0=On,400,375,Jericho Nuked,0,25099,5
+
+[Area 69]                ; New Canaan Nuked
+area_name=New Canaan Nuked
+world_pos=1184,283
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=572
+entrance_0=On,400,375,New Canaan Nuked,0,25099,5
+
+[Area 70]                ; Boulder Dome Nuked
+area_name=Boulder Dome Nuked
+world_pos=2873,772
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=562
+entrance_0=On,400,375,Boulder Dome Nuked,0,25099,5
+
+[Area 71]		; Special Encounter Vault 69
+area_name=Special Vault69
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Vault69,23099,0,5
+
+[Area 72]		; Special Encounter Camp Site
+area_name=Special Camp Site
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Camp Site,23099,0,5
+
+[Area 73]		; Special Thunderbird Encounter
+area_name=Special Thunderbird Encounter
+world_pos=120,350
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Thunderbird Encounter,23099,0,5
+
+[Area 74]		; Mesa Verde areas that can't fit on the town map
+area_name=Shadow Worlds Mesa Verde
+world_pos=2273,1872
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=Off,-1,-1,Mesa Verde Canyon West,-1,-1,0
+entrance_1=Off,-1,-1,Mesa Verde Canyon Center,-1,-1,0
+entrance_2=Off,-1,-1,Mesa Verde Canyon Hounds,-1,-1,0
+entrance_3=Off,-1,-1,Mesa Verde Bridge,-1,-1,0
+entrance_4=Off,-1,-1,Mesa Verde Village West,-1,-1,0
+entrance_5=Off,-1,-1,Mesa Verde Village North,-1,-1,0
+entrance_6=Off,-1,-1,Mesa Verde Bridge North,-1,-1,0
+entrance_7=Off,-1,-1,Mesa Verde Canyon South,-1,-1,0
+entrance_8=Off,-1,-1,Mesa Verde Canyon South Cave,-1,-1,0
+entrance_9=Off,-1,-1,Mesa Verde Caves,-1,-1,0

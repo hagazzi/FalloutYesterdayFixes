@@ -1,0 +1,3063 @@
+; Map datafile for worldmap.c, etc.
+; Fallout Yesterday
+; 10:09 PM 19/05/20
+;
+
+
+; Note: This is a numerically ordered list.  There can be *NO GAPS*
+;   in the sequence.
+
+; Note: Random encounter maps *do* map back to a 'city'.
+
+; Note: Elevation names (for automap/saves) are in a separate
+;   message file, and are indexed based on (map #) * (MAX_ELEV)
+
+
+
+[Map 000]
+lookup_name=Desert Encounter 1
+map_name=desert1
+music=07desert
+ambient_sfx=gustwind:20, gustwin1:20, rattle:15, rattle1:15, vulture:15, vulture1:15
+saved=No  ; Random encounter maps aren't saved normally (only in savegames)
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19086
+random_start_point_1=elev:0, tile_num:17302
+random_start_point_2=elev:0, tile_num:21315
+random_start_point_3=elev:0, tile_num:22699
+random_start_point_4=elev:0, tile_num:20526
+;random_start_point_0=elev:0, tile_num:24777
+   ; These are for random encounters
+; WIP!
+
+
+[Map 001]
+lookup_name=Desert Encounter 2
+map_name=desert2
+music=07desert
+ambient_sfx=gustwind:20, gustwin1:20, rattle:15, rattle1:15, vulture:15, vulture1:15
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19086
+random_start_point_1=elev:0, tile_num:17302
+random_start_point_2=elev:0, tile_num:21315
+random_start_point_3=elev:0, tile_num:22699
+random_start_point_4=elev:0, tile_num:20526
+
+
+[Map 002]
+lookup_name=Desert Encounter 3
+map_name=desert3
+music=07desert
+ambient_sfx=gustwind:20, gustwin1:20, rattle:15, rattle1:15, vulture:15, vulture1:15
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19086
+random_start_point_1=elev:0, tile_num:17302
+random_start_point_2=elev:0, tile_num:21315
+random_start_point_3=elev:0, tile_num:22699
+random_start_point_4=elev:0, tile_num:20526
+
+
+[Map 003]
+lookup_name=Tibbets Cell Block 13
+map_name=tbcb13
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+
+[Map 004]
+lookup_name=City Encounter 9
+map_name=city9
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:12293
+random_start_point_1=elev:0, tile_num:13700
+random_start_point_2=elev:0, tile_num:17093
+random_start_point_3=elev:0, tile_num:14479
+
+
+[Map 005]
+lookup_name=City Encounter 10
+map_name=city10
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:12293
+random_start_point_1=elev:0, tile_num:13700
+random_start_point_2=elev:0, tile_num:17093
+random_start_point_3=elev:0, tile_num:14479
+
+
+[Map 006]
+lookup_name=Tibbets Cell Block 14
+map_name=tbcb14
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 007]
+lookup_name=Tibbets Cell Block 15
+map_name=tbcb15
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 008]
+lookup_name=Tibbets Cell Block 16
+map_name=tbcb16
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 009]
+lookup_name=Tibbets Cell Block 17
+map_name=tbcb17
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 010]
+lookup_name=Tibbets Cell Block 18
+map_name=tbcb18
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 011]
+lookup_name=Tibbets Security Hub
+map_name=TBSECHUB
+music=25tbbts
+ambient_sfx=electri1:30, elevato1:15, elevator:15, mechpum1:10, mechpump:10, blank:20
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 012]
+lookup_name=Tibbets Service Level West
+map_name=TBSRVC02
+music=53TBBAR
+ambient_sfx=drunkla1:20, drunklaf:20, laughter:15, laughte1:15, electri1:15, electric:10
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 013]
+lookup_name=Tibbets Service Level East
+map_name=TBSRVC03
+music=25tbbts
+ambient_sfx=electri1:10, elevato1:15, electric:15, mechpum1:20, mechpump:30, blank:10
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 014]
+lookup_name=Tibbets Courtroom
+map_name=TBSRVC01
+music=26court
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 015]
+lookup_name=Tibbets Breach Valkyrie
+map_name=tbbrch1
+music=29vrtbrd
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 016]
+lookup_name=Tibbets Breach
+map_name=tbbrch2
+music=30bttln
+ambient_sfx=gntlwin1:20, gntlwind:20, rattle:15, rattle1:15, vulture:15, vulture1:15
+can_rest_here=No,No,No  ; All 3 elevations
+saved=Yes
+
+
+[Map 017]
+lookup_name=Tibbets Cell Block 19
+map_name=tbcb19
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 018]
+lookup_name=Tibbets Cell Block 20
+map_name=tbcb20
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+
+[Map 019]
+lookup_name=Tibbets Cell Block 21
+map_name=tbcb21
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 020]
+lookup_name=Tibbets Cell Block 22
+map_name=tbcb22
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 021]
+lookup_name=Tibbets Cell Block 23
+map_name=tbcb23
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 022]
+lookup_name=Tibbets Cell Block 24
+map_name=tbcb24
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 023]
+lookup_name=Tibbets Cell Block 25
+map_name=tbcb25
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 024]
+lookup_name=Tibbets Cell Block 26
+map_name=tbcb26
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 025]
+lookup_name=Tibbets Cell Block 27
+map_name=tbcb27
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 026]
+lookup_name=Tibbets Cell Block 28
+map_name=tbcb28
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 027]
+lookup_name=Tibbets Cell Block 29
+map_name=tbcb29
+music=25tbbts
+ambient_sfx=electri1:20, belltol1:15, belltoll:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 028]
+lookup_name=Tibbets Cell Block 30
+map_name=tbcb30
+music=25tbbts
+ambient_sfx=electri1:20, elevato1:15, elevator:15, electric:20, blank:30
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 029]
+lookup_name=Special Car Mart
+map_name=usedcar
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, animal1:20, animal:20, gustwind:5, gustwin1:5
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 030]
+lookup_name=Special Carib
+map_name=secarib
+music=13carvrn
+ambient_sfx=animal1:20, animal:20, bats1:10, pebble1:20, bats:10, blank:20
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 031]
+lookup_name=Bombed-Out City
+map_name=v8ext
+music=32v8ext
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, coyote:20, vulture:20
+saved=Yes
+pipboy_active=No
+
+[Map 032]
+lookup_name=Vault 8
+map_name=vault8
+music=33vault8
+ambient_sfx=vcomp1:15, vcomp2:15, vcomp3:20, vcomp4:15, vcomp5:20, vcomp6:15
+saved=Yes
+
+[Map 033]
+lookup_name=Tibbets Medical Treatment Area Level 1
+map_name=tbmed1
+music=25tbbts
+ambient_sfx=vcomp7:15, vcomp8:15, vcomp3:20, vcomp4:15, vcomp5:20, vcomp6:15
+saved=Yes
+
+[Map 034]
+lookup_name=Tibbets Asylum Hospital
+map_name=asylum
+music=34asylum
+ambient_sfx=gntlwind:30, gntlwin1:30, gustwind:10, gustwin1:10, vulture:10, vulture1:10
+saved=Yes
+
+[Map 035]
+lookup_name=Tibbets Asylum Underground Garage
+map_name=asylumun
+music=13carvrn
+ambient_sfx=water:40, water1:25, animal:15 animal:10, pebble:5, pebble1:5
+saved=Yes
+
+[Map 036]
+lookup_name=VACCS 8 Entrance
+map_name=vaccs8en
+music=07desert
+ambient_sfx=gntlwind:30, gntlwin1:30, gustwind:10, gustwin1:10, vulture:10, vulture1:10
+can_rest_here=Yes,Yes,Yes
+saved=Yes
+
+[Map 037]
+lookup_name=VACCS 8
+map_name=vaccs8
+music=09glow
+ambient_sfx=electri1:15, electric:15, steam:20, steam1:20, blank:10
+can_rest_here=No,Yes,Yes
+saved=Yes
+
+[Map 038]
+lookup_name=Tibbets Medical Treatment Area Level 2
+map_name=tbmed2
+music=25tbbts
+ambient_sfx=vcomp7:15, vcomp8:15, vcomp3:20, vcomp4:15, vcomp5:20, vcomp6:15
+saved=Yes
+
+[Map 039]
+lookup_name=Tibbets Medical Treatment Area Level 3
+map_name=tbmed3
+music=25tbbts
+ambient_sfx=vcomp7:15, vcomp8:15, vcomp3:20, vcomp4:15, vcomp5:20, vcomp6:15
+saved=Yes
+
+[Map 040]
+lookup_name=Asylum Mountain Entrance Tram Station
+map_name=asylummt
+music=34asylum
+ambient_sfx=gustwind:20, gustwin1:20, rattle:15, rattle1:15, vulture:15, vulture1:15
+saved=Yes
+
+[Map 041]
+lookup_name=Tibbets Medical Treatment Area Tram Station
+map_name=tbmedtr1
+music=13carvrn
+ambient_sfx=animal1:20, animal:20, bats1:10, pebble1:20, electri1:10, squeak:20
+saved=Yes
+
+[Map 042]
+lookup_name=Asylum Tram Station
+map_name=tbmedtr2
+music=13carvrn
+ambient_sfx=gntlwin1:25, gntlwind:25, bats1:10, bats:10, blank:30
+;ambient_sfx=hmxxxxbg:100
+saved=Yes
+
+[Map 043]
+lookup_name=Special Casino
+map_name=segizmo
+music=01hub
+ambient_sfx=drunkla1:20, drunklaf:20, laughter:15, laughte1:15, shots1:15, shots:10
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 044]
+lookup_name=Hoover Dam Morgue
+map_name=hdmorgue
+music=60plague
+ambient_sfx=water:20, water1:20, blank:60
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 045]
+lookup_name=Special Thunderbird Encounter
+map_name=sethundr
+music=14necro
+ambient_sfx=gustwind:20, gustwin1:20, vulture:30, vulture1:30
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 046]
+lookup_name=Special Lamp
+map_name=selamp
+music=07desert
+ambient_sfx=gustwind:20, gustwin1:20, rattle:15, rattle1:15, vulture:15, vulture1:15
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 047]
+lookup_name=Bicycle: Desert
+map_name=bicyabnd
+music=07desert
+ambient_sfx=gustwind:20, gustwin1:20, rattle:15, rattle1:15, vulture:15, vulture1:15
+saved=No
+dead_bodies_age=No
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 048]
+lookup_name=Special Pet Cemetery
+map_name=sepetcem
+music=18modoc
+ambient_sfx=gntlwin1:30, gntlwind:30, gustwin1:10, gustwind:10, vulture:10, vulture1:10
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 049]
+lookup_name=Special Tentacles
+map_name=setntcls
+music=37tntcls
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 050]
+lookup_name=Bloomfield Nuked
+map_name=SCNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 051]
+lookup_name=Special Tentacles Temple
+map_name=setntclt
+music=37tntcls
+ambient_sfx=water:40, water1:25, gntlwin1:15 gntlwind:10, pebble:5, pebble1:5
+saved=Yes
+
+[Map 052]
+lookup_name=Slave Run
+map_name=dnslvrun
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+
+[Map 053]
+lookup_name=Vehicle: Desert
+map_name=cardesrt
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 054]
+lookup_name=Special Postman
+map_name=postman
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 055]
+lookup_name=Special Cranium Rats
+map_name=secrarat
+music=38craniu
+ambient_sfx=gntlwin1:30, gntlwind:30, gustwind:40
+saved=Yes
+
+[Map 056]
+lookup_name=BOS Cliff
+map_name=maxbent
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 057]
+lookup_name=BOS Entrance
+map_name=maxbdoor
+music=13carvrn
+ambient_sfx=animal1:20, animal:20, bats1:10, pebble1:20, electri1:10, bats:20
+saved=Yes
+
+[Map 058]
+lookup_name=BOS Bunker
+map_name=maxbunkr
+music=04brthrh
+ambient_sfx=electri1:15, electric:15, elevator:20, elevato1:15, vcomp7:20, vcomp8:15
+saved=Yes
+
+[Map 059]
+lookup_name=Placeholder
+map_name=maxbpwr
+music=04brthrh
+ambient_sfx=electri1:15, electric:15, elevator:20, elevato1:15, steam:20, steam1:15
+saved=Yes
+
+[Map 060]
+lookup_name=Circle of Steel
+map_name=maxbcosh
+music=39cos
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 061]
+lookup_name=BOS Dead
+map_name=maxbdead
+music=40broded
+ambient_sfx=animal1:20, animal:20, bats1:10, pebble1:20, electri1:10, squeak:20
+saved=Yes
+
+[Map 062]
+lookup_name=Fort Abandon Courtyard
+map_name=faent
+music=41fort
+can_rest_here=No,No,No  ; All 3 elevations
+ambient_sfx=gntlwin1:25, gntlwind:25, rattle:10, pebble1:20, pebble:20
+saved=Yes
+
+[Map 063]
+lookup_name=Fort Abandon Isle
+map_name=faisle
+music=41fort
+ambient_sfx=seawind1:30, seawind:30, gustwind:20, ore:10, ore1:10
+saved=Yes
+
+[Map 064]
+lookup_name=Fort Abandon Farm
+map_name=fafarm
+music=59caesar
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 065]
+lookup_name=Fort Abandon Parking
+map_name=fapark
+music=41fort
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 066]
+lookup_name=Fort Abandon Oil Refinery
+map_name=fa
+music=41fort
+ambient_sfx=electri1:15, electric:15, elevator:20, elevato1:15, steam:20, steam1:15
+saved=Yes
+
+[Map 067]
+lookup_name=Reservation Gate
+map_name=regate
+music=14necro
+ambient_sfx=gntlwind:20, gntlwin1:20, bangpipe:20, bangpip1:20, gustwind:20, blank:20
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 068]
+lookup_name=City Encounter 1
+map_name=city1
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:12293
+random_start_point_1=elev:0, tile_num:13700
+random_start_point_2=elev:0, tile_num:17093
+random_start_point_3=elev:0, tile_num:14479
+
+[Map 069]
+lookup_name=Cavern Encounter 0
+map_name=cave0
+music=13carvrn
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, animal1:15, animal:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:20480
+random_start_point_1=elev:0, tile_num:18075
+random_start_point_2=elev:0, tile_num:18702
+
+[Map 070]
+lookup_name=Cavern Encounter 1
+map_name=cave1
+music=13carvrn
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, animal1:15, animal:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:24291
+random_start_point_1=elev:0, tile_num:26697
+random_start_point_2=elev:0, tile_num:24916
+random_start_point_3=elev:0, tile_num:26308
+
+[Map 071]
+lookup_name=Cavern Encounter 2
+map_name=cave2
+music=13carvrn
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, animal1:15, animal:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:21893
+random_start_point_1=elev:0, tile_num:24304
+random_start_point_2=elev:0, tile_num:23115
+
+[Map 072]
+lookup_name=Cavern Encounter 3
+map_name=cave3
+music=13carvrn
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, animal1:15, animal:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:22698
+random_start_point_1=elev:0, tile_num:25111
+random_start_point_2=elev:0, tile_num:24325
+
+[Map 073]
+lookup_name=Cavern Encounter 4
+map_name=cave4
+music=13carvrn
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, animal1:15, animal:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:24696
+random_start_point_1=elev:0, tile_num:26909
+random_start_point_2=elev:0, tile_num:26122
+random_start_point_3=elev:0, tile_num:26335
+
+[Map 074]
+lookup_name=Mountain Encounter 1
+map_name=mountn1
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19881
+random_start_point_1=elev:0, tile_num:17475
+random_start_point_2=elev:0, tile_num:18498
+
+[Map 075]
+lookup_name=Mountain Encounter 2
+map_name=mountn2
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19881
+random_start_point_1=elev:0, tile_num:17475
+random_start_point_2=elev:0, tile_num:18498
+
+[Map 076]
+lookup_name=Coast Encounter 1
+map_name=coast1
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:18310
+random_start_point_1=elev:0, tile_num:17094
+random_start_point_2=elev:0, tile_num:19685
+random_start_point_3=elev:0, tile_num:23099
+random_start_point_4=elev:0, tile_num:22112
+
+[Map 077]
+lookup_name=Coast Encounter 2
+map_name=coast2
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:17500
+random_start_point_1=elev:0, tile_num:17488
+random_start_point_2=elev:0, tile_num:20486
+random_start_point_3=elev:0, tile_num:22695
+random_start_point_4=elev:0, tile_num:22707
+
+[Map 078]
+lookup_name=Reservation Trading Post
+map_name=retradep
+music=14necro
+ambient_sfx=pebble1:20, pebble:20, bangpipe:20, bangpip1:20, gustwind:20, blank:20
+saved=Yes
+
+[Map 079]
+lookup_name=Scaven Picker Camp
+map_name=rescaven
+music=42scaven
+ambient_sfx=gntlwind:20, gntlwin1:20, gustwind:10, blank:50
+saved=Yes
+
+[Map 080]
+lookup_name=Cavern Encounter 5
+map_name=cave5
+music=13carvrn
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, animal1:15, animal:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:24492
+random_start_point_1=elev:0, tile_num:26508
+random_start_point_2=elev:0, tile_num:25115
+
+
+[Map 081]
+lookup_name=Desert Encounter 4
+map_name=desert4
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19707
+random_start_point_1=elev:0, tile_num:21509
+random_start_point_2=elev:0, tile_num:18105
+random_start_point_3=elev:0, tile_num:17517
+random_start_point_4=elev:0, tile_num:20526
+
+[Map 082]
+lookup_name=Desert Encounter 5
+map_name=desert5
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19091
+random_start_point_1=elev:0, tile_num:23291
+random_start_point_2=elev:0, tile_num:25104
+random_start_point_3=elev:0, tile_num:22910
+random_start_point_4=elev:0, tile_num:19113
+
+[Map 083]
+lookup_name=Desert Encounter 6
+map_name=desert6
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19894
+random_start_point_1=elev:0, tile_num:16897
+random_start_point_2=elev:0, tile_num:18509
+random_start_point_3=elev:0, tile_num:21116
+
+[Map 084]
+lookup_name=Desert Encounter 7
+map_name=desert7
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+;random_start_point_0=elev:0, tile_num:24777
+
+[Map 085]
+lookup_name=Coast Encounter 3
+map_name=coast3
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:18474
+random_start_point_1=elev:1, tile_num:22091
+random_start_point_2=elev:2, tile_num:21701
+random_start_point_3=elev:3, tile_num:19906
+
+[Map 086]
+lookup_name=Coast Encounter 4
+map_name=coast4
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:18476
+random_start_point_1=elev:0, tile_num:21889
+random_start_point_2=elev:0, tile_num:21702
+random_start_point_3=elev:0, tile_num:19102
+
+[Map 087]
+lookup_name=Coast Encounter 5
+map_name=coast5
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:22695
+random_start_point_1=elev:0, tile_num:24507
+random_start_point_2=elev:0, tile_num:22916
+
+[Map 088]
+lookup_name=Coast Encounter 6
+map_name=coast6
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:17687
+random_start_point_1=elev:0, tile_num:20887
+random_start_point_2=elev:0, tile_num:23103
+random_start_point_3=elev:0, tile_num:21913
+random_start_point_4=elev:0, tile_num:18708
+
+[Map 089]
+lookup_name=Coast Encounter 7
+map_name=coast7
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:15501
+random_start_point_1=elev:0, tile_num:16314
+random_start_point_2=elev:0, tile_num:20518
+
+[Map 090]
+lookup_name=Coast Encounter 8
+map_name=coast8
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+;random_start_point_0=elev:0, tile_num:24777
+
+[Map 091]
+lookup_name=Coast Encounter 9
+map_name=coast9
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:18906
+random_start_point_1=elev:0, tile_num:22705
+random_start_point_2=elev:0, tile_num:21292
+
+[Map 092]
+lookup_name=Desert Encounter 14
+map_name=desert14
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19894
+random_start_point_1=elev:0, tile_num:16897
+random_start_point_2=elev:0, tile_num:18509
+random_start_point_3=elev:0, tile_num:21116
+
+[Map 093]
+lookup_name=Hoover Dam South Gate
+map_name=hdgatest
+ambient_sfx=gntlwin1:20, gntlwind:20, waves:30, waves1:30
+music=46hovdam
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 094]
+lookup_name=Boulder Dome Train Station
+map_name=bdtrain
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+;random_start_point_0=elev:0, tile_num:24777
+
+[Map 095]
+lookup_name=Dogtown Old Camp
+map_name=DTOLCAMP
+music=24redd
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+;ambient_sfx=hmxxxxbg:100
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+;random_start_point_0=elev:0, tile_num:24777
+
+[Map 096]
+lookup_name=Circle Junction Roundabout
+map_name=cjroundb
+music=55circlej
+ambient_sfx=gntlwin1:25, gntlwind:25, vulture:20, vulture1:20, bangpipe:5, bangpip1:5
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 097]
+lookup_name=Blackfoot Village
+map_name=bhbfvill
+music=43hangd
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 098]
+lookup_name=Mesa Verde Canyon West
+map_name=mvcanyon
+music=13carvrn
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+saved=Yes
+
+[Map 099]
+lookup_name=Twin Mothers Fields
+map_name=TMFIELDS
+music=07desert
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 100]
+lookup_name=Ouroboros North
+map_name=ouvillnr
+music=52OUROB
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+;random_start_point_0=elev:0, tile_num:24777
+
+[Map 101]
+lookup_name=Burham Springs Town West
+map_name=bstownw
+music=07desert
+;ambient_sfx=hmxxxxbg:100
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 102]
+lookup_name=Nursery Spillway
+map_name=nrspillw
+music=13carvrn
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 103]
+lookup_name=Bloomfield Collapsed Parking
+map_name=SCPARKIN
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 104]
+lookup_name=Jericho Town East
+map_name=jrtowne
+music=50JRCHO
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+
+[Map 105]
+lookup_name=Special Guardian Encounter
+map_name=seguardf
+music=36fsauce
+ambient_sfx=vcomp1:15, vcomp2:15, vcomp3:20, vcomp4:15, vcomp5:20, vcomp6:15
+saved=Yes
+can_rest_here=No,No,No
+
+[Map 106]
+lookup_name=Special Ruined Library
+map_name=selibry
+music=18modoc
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 107]
+lookup_name=New Canaan Outskirts
+map_name=ncoutskr
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 108]
+lookup_name=Hangdogs Home
+map_name=dthdhome
+music=43hangd
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+can_rest_here=Yes,Yes,Yes
+
+[Map 109]
+lookup_name=Placeholder2
+map_name=rndshutl
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 110]
+lookup_name=Coast Encounter 10
+map_name=coast10
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:15313
+random_start_point_1=elev:0, tile_num:22914
+random_start_point_2=elev:0, tile_num:19709
+
+[Map 111]
+lookup_name=Coast Encounter 11
+map_name=coast11
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:20510
+random_start_point_1=elev:0, tile_num:23112
+random_start_point_2=elev:0, tile_num:24301
+random_start_point_3=elev:0, tile_num:21288
+
+[Map 112]
+lookup_name=Coast Encounter 12
+map_name=07desert
+music=28coast
+ambient_sfx=waves:20, waves1:20, seawind1:15, seawind:15, seagull:15, seagull1:15
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:25912
+random_start_point_1=elev:0, tile_num:20895
+random_start_point_2=elev:0, tile_num:18713
+
+[Map 113]
+lookup_name=Desert Encounter 8
+map_name=desert8
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:22096
+random_start_point_1=elev:0, tile_num:18083
+random_start_point_2=elev:0, tile_num:15688
+random_start_point_3=elev:0, tile_num:18107
+
+[Map 114]
+lookup_name=Desert Encounter 9
+map_name=desert9
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:23086
+random_start_point_1=elev:0, tile_num:24506
+random_start_point_2=elev:0, tile_num:21503
+
+[Map 115]
+lookup_name=Desert Encounter 10
+map_name=desert10
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:22885
+random_start_point_1=elev:0, tile_num:24308
+random_start_point_2=elev:0, tile_num:23896
+random_start_point_3=elev:0, tile_num:20704
+
+[Map 116]
+lookup_name=Desert Encounter 11
+map_name=desert11
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:21094
+random_start_point_1=elev:0, tile_num:16670
+random_start_point_2=elev:0, tile_num:18104
+
+[Map 117]
+lookup_name=Desert Encounter 12
+map_name=desert12
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19917
+random_start_point_1=elev:0, tile_num:22915
+random_start_point_2=elev:0, tile_num:24103
+random_start_point_3=elev:0, tile_num:21889
+random_start_point_4=elev:0, tile_num:20489
+
+[Map 118]
+lookup_name=Desert Encounter 13
+map_name=desert13
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+;random_start_point_0=elev:0, tile_num:24777
+
+[Map 119]
+lookup_name=Blackfoot Nuked
+map_name=BHNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 120]
+lookup_name=The Crater Entrance
+map_name=abyssext
+music=09glow
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:25, gustwin1:25
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 121]
+lookup_name=Mountain Encounter 3
+map_name=mountn3
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:18277
+random_start_point_1=elev:0, tile_num:18300
+random_start_point_2=elev:0, tile_num:19288
+
+[Map 122]
+lookup_name=Mountain Encounter 4
+map_name=mountn4
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:18298
+random_start_point_1=elev:0, tile_num:19884
+random_start_point_2=elev:0, tile_num:18287
+
+[Map 123]
+lookup_name=Mountain Encounter 5
+map_name=Mountn5
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19477
+random_start_point_1=elev:0, tile_num:21283
+random_start_point_2=elev:0, tile_num:18686
+random_start_point_3=elev:0, tile_num:19094
+random_start_point_4=elev:0, tile_num:19505
+
+[Map 124]
+lookup_name=Mountain Encounter 6
+map_name=mountn6
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19274
+random_start_point_1=elev:0, tile_num:21282
+random_start_point_2=elev:0, tile_num:20890
+
+[Map 125]
+lookup_name=City Encounter 2
+map_name=city2
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:11290
+random_start_point_1=elev:0, tile_num:9903
+random_start_point_2=elev:0, tile_num:11914
+random_start_point_3=elev:0, tile_num:14702
+
+[Map 126]
+lookup_name=Cop Car: Desert
+map_name=copcabnd
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 127]
+lookup_name=Moletown Entrance
+map_name=moletown
+music=49mole
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+;ambient_sfx=hmxxxxbg:100
+saved=Yes
+
+[Map 128]
+lookup_name=BOMB-001
+map_name=BOMB001
+music=16follow
+ambient_sfx=clang1:10, clang:10, zapper1:25, zapper:25, electri1:15, electric:15
+saved=Yes
+
+[Map 129]
+lookup_name=Highwayman: Desert
+map_name=carhabnd
+music=17arroyo
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 130]
+lookup_name=Special Pulowskis
+map_name=pulowski
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 131]
+lookup_name=Nether Realm
+map_name=netherlm
+music=16follow
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 132]
+lookup_name=Special Encounter Cops
+map_name=encpres
+music=16follow
+ambient_sfx=electri1:15, electric:15, chemical:5, chemica1:5, blank:60
+saved=Yes
+
+[Map 133]
+lookup_name=Landing Site
+map_name=landing
+music=07desert
+ambient_sfx=gustwind:25, gustwin1:25, gntlwin1:25, gntlwind:25
+saved=Yes
+
+[Map 134]
+lookup_name=Boulder Dome Ruins South
+map_name=BDRUIN
+music=07desert
+ambient_sfx=gustwind:25, gustwin1:25, gntlwin1:25, gntlwind:25
+saved=Yes
+
+[Map 135]
+lookup_name=Hoover Dam Nuked
+map_name=HDNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 136]
+lookup_name=The Crater Tunnel
+map_name=abyssin1
+music=09glow
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, animal1:15, animal:10
+saved=Yes
+
+[Map 137]
+lookup_name=Grand Canyon South
+map_name=gcsouth
+music=08vats
+ambient_sfx=pebble:15, pebble1:15, gustwind:15, gustwin1:15, vulture: 15, vulture1: 15
+saved=Yes
+
+[Map 138]
+lookup_name=Fort Abandon West
+map_name=fawest
+music=41fort
+ambient_sfx=seawind1:30, seawind:30, gustwind:20, ore:10, ore1:10
+saved=Yes
+
+[Map 139]
+lookup_name=Reservation Town South
+map_name=retownst
+music=14necro
+ambient_sfx=gntlwind:20, gntlwin1:20, winddoor:20, winddoo1:20, bangpipe:10, bangpip1:10
+saved=Yes
+
+[Map 140]
+lookup_name=Reservation Town North
+map_name=retownnr
+music=14necro
+ambient_sfx=gntlwind:20, gntlwin1:20, pebble1:20, pebble:20, steam:20
+saved=Yes
+
+[Map 141]
+lookup_name=City Encounter 3
+map_name=city3
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:19936
+random_start_point_1=elev:0, tile_num:21946
+random_start_point_2=elev:0, tile_num:24337
+random_start_point_3=elev:0, tile_num:22125
+
+[Map 142]
+lookup_name=City Encounter 4
+map_name=city4
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:22890
+random_start_point_1=elev:0, tile_num:26501
+random_start_point_2=elev:0, tile_num:28494
+random_start_point_3=elev:0, tile_num:22879
+
+[Map 143]
+lookup_name=City Encounter 5
+map_name=city5
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:15684
+random_start_point_1=elev:0, tile_num:19260
+random_start_point_2=elev:0, tile_num:21072
+random_start_point_3=elev:0, tile_num:18877
+
+[Map 144]
+lookup_name=City Encounter 6
+map_name=city6
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:28899
+random_start_point_1=elev:0, tile_num:27311
+random_start_point_2=elev:0, tile_num:25686
+random_start_point_3=elev:0, tile_num:23300
+
+[Map 145]
+lookup_name=City Encounter 7
+map_name=city7
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:17729
+random_start_point_1=elev:0, tile_num:20133
+random_start_point_2=elev:0, tile_num:20714
+random_start_point_3=elev:0, tile_num:16106
+
+[Map 146]
+lookup_name=City Encounter 8
+map_name=city8
+music=10labone
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+random_start_point_0=elev:0, tile_num:17692
+random_start_point_1=elev:0, tile_num:22105
+random_start_point_2=elev:0, tile_num:20510
+random_start_point_3=elev:0, tile_num:20890
+random_start_point_4=elev:0, tile_num:23503
+
+[Map 147]
+lookup_name=Reservation Sub-Levels
+map_name=resubl13
+music=14necro
+saved=Yes
+ambient_sfx=blank:65, steam:20, steam1:15
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 148]
+lookup_name=Hoover Dam Rim
+map_name=hdrim
+ambient_sfx=gntlwin1:20, gntlwind:20, waves:30, waves1:30
+music=46hovdam
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 149]
+lookup_name=In Game Movie Map 1
+map_name=gammovie
+ambient_sfx=gntlwin1:25, gntlwind:25, vulture:15, vulture1:15, pebble:10, rattle:10
+music=14necro
+saved=No
+
+[Map 150]
+lookup_name=Dogtown Union Station
+map_name=dttrain
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 151]
+lookup_name=Dogtown The Box
+map_name=dtbox
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 152]
+lookup_name=Karltown
+map_name=karltown
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=21sf
+saved=Yes
+
+[Map 153]
+lookup_name=Mesa Verde Canyon Entrance
+map_name=mvent
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+music=13carvrn
+saved=Yes
+
+[Map 154]
+lookup_name=Dogtown The Box Ground Level
+map_name=dtbox1
+ambient_sfx=elevato1:25, elevator:25, electri1:15, electric:15, clank:10, clank1:10
+music=44box
+saved=Yes
+
+[Map 155]
+lookup_name=Dogtown The Box Levels 234
+map_name=dtbox234
+ambient_sfx=elevato1:25, elevator:25, electri1:15, electric:15, clank:10, clank1:10
+music=44box
+saved=Yes
+
+[Map 156]
+lookup_name=Placeholder4
+map_name=test
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 157]
+lookup_name=Dogtown Skyscraper
+map_name=dtskyscr
+;ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=wind1
+saved=Yes
+
+[Map 158]
+lookup_name=Dogtown New Camp East Skyscraper Exterior
+map_name=dtnewcnr
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 159]
+lookup_name=Dogtown New Camp West Skyscraper Exterior
+map_name=dtnewcwe
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 160]
+lookup_name=Dogtown New Camp East Skyscraper Interior
+map_name=dtnewcse
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 161]
+lookup_name=Dogtown New Camp West Skyscraper Interior
+map_name=dtnewcsw
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 162]
+lookup_name=Hangdogs New Village
+map_name=bhhdogs
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=43hangd
+saved=Yes
+
+[Map 163]
+lookup_name=Mesa Verde Canyon Hounds
+map_name=mvhounds
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+music=66hounds
+saved=Yes
+
+[Map 164]
+lookup_name=Mesa Verde Canyon Center
+map_name=mvcanyo2
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, pebble1:15, pebble:10
+music=13carvrn
+saved=Yes
+
+[Map 165]
+lookup_name=Mesa Verde Village East
+map_name=mvville
+ambient_sfx=pebble:10, coyote:10, potspans:10, potspan1:20, brdchirp:20, footste1:30
+music=45mesa
+saved=Yes
+
+[Map 166]
+lookup_name=Mesa Verde Bridge
+map_name=mvbridge
+ambient_sfx=pebble:15, pebble1:15, gustwind:30, gustwin1:20, coyote:10, rattle:10
+music=45mesa
+saved=Yes
+
+[Map 167]
+lookup_name=Mesa Verde Village West
+map_name=mvvillw
+ambient_sfx=coyote:10, pebble1:10,  potspans:10, potspan1:20 brdchir1:20, footstep:30
+music=45mesa
+saved=Yes
+
+[Map 168]
+lookup_name=Mesa Verde Village North
+map_name=mvvilln
+ambient_sfx=pebble:10, pebble1:10, animal:25, animal1:25, bats: 15, bats1: 15
+music=13carvrn
+saved=Yes
+
+[Map 169]
+lookup_name=Mesa Verde Bridge North
+map_name=mvbridgn
+ambient_sfx=pebble:15, pebble1:15, gustwind:30, gustwin1:20, rattle1:10, rattle:10
+music=13carvrn
+saved=Yes
+
+[Map 170]
+lookup_name=Mesa Verde Top
+map_name=mvtop
+ambient_sfx=pebble:10, pebble1:10, gntlwind:10, gntlwin1:20, gustwin1:30, gustwind:20
+music=45mesa
+saved=Yes
+
+[Map 171]
+lookup_name=Hoover Dam NCR Army HQ
+map_name=hdarmyhq
+ambient_sfx=blank:30, zapper1:10, zapper:10, electri1:25, electric:25
+music=47ncrarm
+saved=Yes
+
+[Map 172]
+lookup_name=Dogtown Bombay Jack Canyon
+map_name=dtbombay
+ambient_sfx=gustwin1:20, gustwind:20, dogbark:5, dogbark1:5, animal:20, animal1:20
+music=48bombay
+saved=Yes
+
+[Map 173]
+lookup_name=Mesa Verde Canyon South
+map_name=MVCANYO4
+ambient_sfx=pebble:10, pebble1:10, gntlwind:10, gntlwin1:20, gustwin1:30, gustwind:20
+music=13carvrn
+saved=Yes
+
+[Map 174]
+lookup_name=Mesa Verde Canyon South Cave
+map_name=MVCANYO3
+ambient_sfx=pebble:10, pebble1:10, gntlwind:10, gntlwin1:20, gustwin1:30, gustwind:20
+music=13carvrn
+saved=Yes
+
+[Map 175]
+lookup_name=Special Robot Warden
+map_name=sewarden
+music=07desert
+ambient_sfx=gustwind:20, gustwin1:20, rattle:15, rattle1:15, vulture:15, vulture1:15
+saved=Yes
+
+[Map 176]
+lookup_name=Dogtown Nuked
+map_name=DTNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 177]
+lookup_name=Placeholder3
+map_name=BHHDOGS
+music=43hangd
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 178]
+lookup_name=Hangdogs New Village East
+map_name=BHHDOGEA
+music=43hangd
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 179]
+lookup_name=Hangdogs New Village West
+map_name=BHHDOGWE
+music=43hangd
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 180]
+lookup_name=Hangdogs New Village North
+map_name=BHHDOGNT
+music=43hangd
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 181]
+lookup_name=Hangdogs New Village South
+map_name=BHHDOGST
+music=43hangd
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 182]
+lookup_name=Blackfoot Mine Small Entrance
+map_name=bhmine1e
+music=43hangd
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 183]
+lookup_name=Blackfoot Mine Small
+map_name=bhmine1
+music=13carvrn
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 184]
+lookup_name=Blackfoot Mine Big Entrance
+map_name=bhmine2e
+music=43hangd
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 185]
+lookup_name=Blackfoot Mine Big
+map_name=bhmine2
+music=13carvrn
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 186]
+lookup_name=Blackfoot Spelunking Cave
+map_name=BHSPLNK1
+music=13carvrn
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 187]
+lookup_name=Blackfoot Spelunking Tunnels
+map_name=BHSPLNK2
+music=13carvrn
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 188]
+lookup_name=Dogtown The Box Sewers
+map_name=dtboxswr
+ambient_sfx=animal1:20, animal:20, water:10, pebble1:20, pebble:10, water1:20
+music=24redd
+saved=Yes
+
+[Map 189]
+lookup_name=Dogtown Caesars Legion
+map_name=dtcl1
+ambient_sfx=animal1:20, animal:20, water:10, clang:20, clang1:10, water1:20
+music=59caesar
+saved=Yes
+
+[Map 190]
+lookup_name=Dogtown Caesars Legion Basement
+map_name=dtcl2
+ambient_sfx=animal1:20, animal:20, water:10, clang:20, clang1:10, water1:20
+music=59caesar
+saved=Yes
+
+[Map 191]
+lookup_name=Dogtown Rival Camp
+map_name=dtrival
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+music=24redd
+saved=Yes
+
+[Map 192]
+lookup_name=Dogtown Brewery
+map_name=dtbrew
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 193]
+lookup_name=Dogtown New Camp South
+map_name=dtnewcst
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 194]
+lookup_name=Dogtown Police HQ
+map_name=dtpolice
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=65police
+saved=Yes
+
+[Map 195]
+lookup_name=Dogtown Quarantine Area
+map_name=dtqrnt1
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 196]
+lookup_name=Dogtown Quarantine Center
+map_name=dtqrnt2
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 197]
+lookup_name=Dogtown Hospital
+map_name=dthosptl
+ambient_sfx=gntlwin1:25, gntlwind:25, dogbark:20, dogbark1:20, gustwind:5, gustwin1:5
+music=24redd
+saved=Yes
+
+[Map 198]
+lookup_name=Reservation Hangar A
+map_name=rehangra
+music=14necro
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 199]
+lookup_name=Reservation Hangar B
+map_name=rehangrb
+music=14necro
+ambient_sfx=gntlwind:20, gntlwin1:20, rattle:20, rattle1:20, bangpipe:10, bangpip1:10
+saved=Yes
+
+[Map 200]
+lookup_name=Grand Canyon North Lodge
+map_name=gcnorth
+music=08vats
+ambient_sfx=pebble:15, pebble1:15, gustwind:15, gustwin1:15, vulture: 15, vulture1: 15
+saved=Yes
+
+[Map 201]
+lookup_name=Grand Canyon Machinery
+map_name=gcmach
+music=08vats
+ambient_sfx=pebble:15, pebble1:15, gustwind:15, gustwin1:15, rattle: 15, rattle1: 15
+saved=Yes
+
+[Map 202]
+lookup_name=Grand Canyon Deathclaw Up
+map_name=gcdc1
+music=13carvrn
+ambient_sfx=water:15, water1:15, animal:15, animal1:15, bats: 15, bats1: 15
+saved=Yes
+
+[Map 203]
+lookup_name=Grand Canyon Deathclaw West
+map_name=gcdc2
+music=13carvrn
+ambient_sfx=water:15, water1:15, animal:15, animal1:15, bats: 15, bats1: 15
+saved=Yes
+
+[Map 204]
+lookup_name=Grand Canyon Deathclaw East
+map_name=gcdc3
+music=13carvrn
+ambient_sfx=water:15, water1:15, animal:15, animal1:15, bats: 15, bats1: 15
+saved=Yes
+
+[Map 205]
+lookup_name=Grand Canyon Deathclaw Exit
+map_name=gcdcext
+music=08vats
+ambient_sfx=pebble:15, pebble1:15, gustwind:15, gustwin1:15, rattle: 15, rattle1: 15
+saved=Yes
+
+[Map 206]
+lookup_name=Grand Canyon Ghost Town
+map_name=gcminert
+music=08vats
+ambient_sfx=pebble:15, pebble1:15, gustwind:15, gustwin1:15, rattle: 15, rattle1: 15
+saved=Yes
+
+[Map 207]
+lookup_name=Jericho Mormons
+map_name=jrmormon
+music=11CHILRN
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 208]
+lookup_name=Jericho Town West
+map_name=jrtownw
+music=50JRCHO
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 209]
+lookup_name=Jericho Train Station
+map_name=jrtrain
+music=50JRCHO
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 210]
+lookup_name=Blackfoot Cellar
+map_name=bhcellar
+music=43hangd
+ambient_sfx=water:25, water1:25, footstep:10, animal:15, animal1:15, footste1:10
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 211]
+lookup_name=Dogtown Private Shelter Exterior
+map_name=dtprshl1
+music=07desert
+ambient_sfx=ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 212]
+lookup_name=Dogtown Private Shelter Interior
+map_name=dtprshl2
+music=13carvrn
+ambient_sfx=water:25, water1:25, pebble:10, animal:15, animal1:15, pebble1:10
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 213]
+lookup_name=Moletown West Tunnels
+map_name=moletwnw
+music=49mole
+ambient_sfx=water:25, water1:25, pebble:10, animal:15, animal1:15, pebble1:10
+saved=Yes
+
+[Map 214]
+lookup_name=Moletown East Tunnels
+map_name=moletwne
+music=49mole
+ambient_sfx=water:25, water1:25, pebble:10, animal:15, animal1:15, pebble1:10
+saved=Yes
+
+[Map 215]
+lookup_name=Boulder Dome Level 1
+map_name=bdlvl1
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 216]
+lookup_name=Boulder Dome Level 2
+map_name=bdlvl2
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 217]
+lookup_name=Boulder Dome Tunnels
+map_name=BDTUNNEL
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 218]
+lookup_name=Boulder Dome ZAX
+map_name=BDZAX
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 219]
+lookup_name=Boulder Dome Secret Tunnel
+map_name=BDSECRET
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 220]
+lookup_name=Jackals Camp
+map_name=BDJACKAL
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 221]
+lookup_name=Boulder Dome Water Pump
+map_name=BDWTRPMP
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 222]
+lookup_name=Baggers Camp
+map_name=BDCAMP
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 223]
+lookup_name=Tibbets Waste Disposal
+map_name=tbwaste
+music=25tbbts
+ambient_sfx=STEAM:20, STEAM1:20, CHEMICAL:30, CHEMICA1:30
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 224]
+lookup_name=Boulder Dome Secret Tunnels Entrance
+map_name=BDPIPES
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 224]
+lookup_name=Dead Ghoul Graveyard
+map_name=BDGRAVE
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 225]
+lookup_name=Karltown Market
+map_name=KTMARKET
+music=14necro
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 226]
+lookup_name=Karltown Gate
+map_name=KTGATE
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 227]
+lookup_name=Tibbets Chemical Treatment
+map_name=tbchem
+music=25tbbts
+ambient_sfx=STEAM:20, STEAM1:20, CHEMICAL:30, CHEMICA1:30
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 228]
+lookup_name=Tibbets Mechanics and Robot Maintenance Bay and Arsenal
+map_name=TBMRA
+music=25tbbts
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 229]
+lookup_name=Tibbets Service and Vehicle Depot Areas Level 1
+map_name=TBSVD1
+music=27argos
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 230]
+lookup_name=Tibbets Service and Vehicle Depot Areas Level 2
+map_name=TBSVD2
+music=27argos
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 231]
+lookup_name=Tibbets Service and Vehicle Depot Areas Level 3
+map_name=TBSVD3
+music=27argos
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 232]
+lookup_name=Tibbets Service and Vehicle Depot Areas Cafe
+map_name=TBSVDCFE
+music=53TBBAR
+ambient_sfx=drunkla1:20, drunklaf:20, laughter:15, laughte1:15, electri1:15, electric:10
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 233]
+lookup_name=New York East
+map_name=nyeast
+music=57ny
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 234]
+lookup_name=Tibbets Defense Tunnels
+map_name=TBDEFTNL
+music=25tbbts
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 235]
+lookup_name=Tibbets Cryogenic Cell Block 0 ODYSSEUS Computer Core
+map_name=TBODYSS
+music=54ODYSS
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 236]
+lookup_name=Tibbets Train Station
+map_name=TBTRAIN
+music=13carvrn
+ambient_sfx=animal1:20, animal:20, bats1:10, pebble1:20, electri1:10, squeak:20
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 237]
+lookup_name=Twin Mothers Village
+map_name=tmvill
+music=blanks
+ambient_sfx=pebble:10, pebble1:10,  potspans:10, potspan1:20 brdchir1:20, footstep:30
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 238]
+lookup_name=Twin Mothers Satellite Dish
+map_name=tmdish
+music=blanks
+ambient_sfx=pebble:10, pebble1:10,  potspans:10, potspan1:20 brdchir1:20, footstep:30
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 239]
+lookup_name=Twin Mothers Mystery Caves
+map_name=TMCAVES
+music=blanks
+ambient_sfx=pebble:10, pebble1:10,  potspans:10, potspan1:20 brdchir1:20, footstep:30
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 240]
+lookup_name=Twin Mothers Forbidden Lands
+map_name=TMFORBID
+music=blanks
+ambient_sfx=pebble:10, pebble1:10,  potspans:10, potspan1:20 brdchir1:20, footstep:30
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 241]
+lookup_name=Vault 29
+map_name=VAULT29
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 242]
+lookup_name=The Crater Levels 1-3
+map_name=ABYSS13
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 243]
+lookup_name=The Crater Levels 4-6
+map_name=ABYSS46
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 244]
+lookup_name=The Crater Levels 7-9
+map_name=ABYSS79
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 245]
+lookup_name=Blackfoot Furnace Cave Entrance
+map_name=BHFURNCE
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 246]
+lookup_name=Blackfoot Furnace Cave
+map_name=BHFURNAC
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 247]
+lookup_name=Burham Springs Town East
+map_name=BSTOWNE
+music=07desert
+;ambient_sfx=hmxxxxbg:100
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+;random_start_point_0=elev:0, tile_num:24777
+
+[Map 248]
+lookup_name=Burham Springs Mine
+map_name=BSTOWNE
+music=07desert
+;ambient_sfx=hmxxxxbg:100
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+;random_start_point_0=elev:0, tile_num:24777
+
+[Map 249]
+lookup_name=Fort Abandon Farm Underground
+map_name=fafarmu
+music=41fort
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 250]
+lookup_name=Ouroboros Gate
+map_name=OUGATE
+music=52OUROB
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 251]
+lookup_name=Fort Abandon Isle Underground
+map_name=faisleu
+music=41fort
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 252]
+lookup_name=Ouroboros Junkyard
+map_name=OUJUNK
+music=52OUROB
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 253]
+lookup_name=Ouroboros Pyramid
+map_name=oupyra
+music=52OUROB
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 254]
+lookup_name=Ouroboros Village East
+map_name=OUEAST
+music=52OUROB
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 255]
+lookup_name=Ouroboros Village South
+map_name=OUVILLST
+music=52OUROB
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 256]
+lookup_name=Ouroboros Village West
+map_name=OUWEST
+music=52OUROB
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 257]
+lookup_name=Ouroboros Village
+map_name=ouvill
+music=52OUROB
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 258]
+lookup_name=Ouroboros Secret Tunnel
+map_name=OUSECRET
+music=52OUROB
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=Yes
+
+[Map 259]
+lookup_name=New Canaan Train Station
+map_name=nctrain
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+;ambient_sfx=hmxxxxbg:100
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+;random_start_point_0=elev:0, tile_num:24777
+
+[Map 260]
+lookup_name=Tibbets Crater
+map_name=TBNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 261]
+lookup_name=Hoover Dam Baseline
+map_name=HDBASELN
+ambient_sfx=STEAM:30, STEAM1:30,bangpipe:20, bangpip1:20
+music=10labone
+saved=Yes
+
+[Map 262]
+lookup_name=Hoover Dam Scum Pits
+map_name=HDSCMPIT
+ambient_sfx=STEAM:20, STEAM1:20, CHEMICAL:30, CHEMICA1:30
+music=02mstrlr
+saved=Yes
+
+[Map 263]
+lookup_name=Hoover Dam Downtown North East
+map_name=HDDTNE
+ambient_sfx=gntlwin1:20, gntlwind:20, waves:30, waves1:30
+music=01hub
+saved=Yes
+
+[Map 264]
+lookup_name=Hoover Dam Downtown South East
+map_name=HDDTSE
+ambient_sfx=gntlwin1:20, gntlwind:20, waves:30, waves1:30
+music=01hub
+saved=Yes
+
+[Map 265]
+lookup_name=Hoover Dam Downtown North West
+map_name=HDDTNW
+ambient_sfx=gntlwin1:20, gntlwind:20, waves:30, waves1:30
+music=01hub
+saved=Yes
+
+[Map 266]
+lookup_name=Hoover Dam Downtown South West Fields
+map_name=HDDTSW1
+ambient_sfx=gntlwin1:20, gntlwind:20, waves:30, waves1:30
+music=01hub
+saved=Yes
+
+[Map 267]
+lookup_name=Hoover Dam Downtown South West Farm
+map_name=HDDTSW2
+ambient_sfx=gntlwin1:20, gntlwind:20, waves:30, waves1:30
+music=01hub
+saved=Yes
+
+[Map 268]
+lookup_name=Bloomfield Space Museum Entrance
+map_name=SCMSMEXT
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 269]
+lookup_name=Bloomfield Space Museum
+map_name=SCMUSEUM
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 270]
+lookup_name=Bloomfield Control Center South
+map_name=SCCCSTH
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 271]
+lookup_name=Bloomfield Control Center North
+map_name=SCCCNRTH
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 272]
+lookup_name=Bloomfield Control Center East
+map_name=SCCCEAST
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 273]
+lookup_name=Bloomfield East
+map_name=SCEAST
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 274]
+lookup_name=Bloomfield Fuel Tanks
+map_name=SCFUEL
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 275]
+lookup_name=Bloomfield Launch Pad
+map_name=SCLAUNCH
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 276]
+lookup_name=Bloomfield BOMB-003
+map_name=SCBOMB3
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 277]
+lookup_name=Bloomfield Sub-Reactor
+map_name=SCREACTR
+music=51BLOOMF
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 278]
+lookup_name=Jericho Sewers
+map_name=JRSEWERS
+music=13carvrn
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 279]
+lookup_name=Jericho Fallout Shelter
+map_name=JRSHELTR
+music=11CHILRN
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 280]
+lookup_name=Grand Canyon Mine 1
+map_name=GCMINE1
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 281]
+lookup_name=Grand Canyon Mine 2
+map_name=GCMINE2
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 282]
+lookup_name=Grand Canyon Mine 3
+map_name=GCMINE3
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 283]
+lookup_name=Grand Canyon Uranium Mine 1
+map_name=GCURAN1
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 284]
+lookup_name=Grand Canyon Uranium Mine 2
+map_name=GCURAN2
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 285]
+lookup_name=Grand Canyon Office 1
+map_name=GCOFFIC1
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 286]
+lookup_name=Grand Canyon Office 2
+map_name=GCOFFIC2
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 287]
+lookup_name=Grand Canyon Office 3
+map_name=GCOFFIC3
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 288]
+lookup_name=Grand Canyon Office 4
+map_name=GCOFFIC4
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 289]
+lookup_name=Grand Canyon Docks
+map_name=GCDOCK
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 290]
+lookup_name=Grand Canyon Glowing Sea
+map_name=GCGLOW
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 291]
+lookup_name=Grand Canyon BOMB-002 Exterior
+map_name=GCBMB2EX
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 292]
+lookup_name=Grand Canyon BOMB-002 Interior
+map_name=GCBMB2IN
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 293]
+lookup_name=Grand Canyon Molder Fortesc
+map_name=GCMLDRFO
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 294]
+lookup_name=Grand Canyon Molder Barlows
+map_name=GCMLDRBA
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 295]
+lookup_name=Grand Canyon Molder Logans
+map_name=GCMLDRLO
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 296]
+lookup_name=Grand Canyon Molder
+map_name=GCMLDRTW
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 297]
+lookup_name=Nursery Entrance
+map_name=NRENT
+music=07desert
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 298]
+lookup_name=Nursery Valley Lake
+map_name=NRVALLLK
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 299]
+lookup_name=Nursery Valley Gardens
+map_name=NRVALLGR
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 300]
+lookup_name=Nursery Filtration Plant
+map_name=NRPWRPLT
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 301]
+lookup_name=Nursery Factory Exterior
+map_name=NRFCTRY1
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 302]
+lookup_name=Nursery Factory Interior
+map_name=NRFCTRY2
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+
+[Map 303]
+lookup_name=Nursery Control Facility Repository
+map_name=NRCFREPO
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 304]
+lookup_name=Nursery Control Facility Maze
+map_name=NRCFMAZE
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 305]
+lookup_name=Nursery Control Facility Control Tower
+map_name=NRCFCTWR
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 306]
+lookup_name=Nursery Control Facility Helipad
+map_name=NRCFHELI
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 307]
+lookup_name=Circle Junction Warehouses South East
+map_name=CJWARESE
+music=55circlej
+ambient_sfx=gntlwin1:25, gntlwind:25, vulture:20, vulture1:20, bangpipe:5, bangpip1:5
+saved=No
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 308]
+lookup_name=Circle Junction Warehouses South West
+map_name=CJWARESW
+music=55circlej
+ambient_sfx=gntlwin1:25, gntlwind:25, vulture:20, vulture1:20, bangpipe:5, bangpip1:5
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 309]
+lookup_name=Circle Junction Big House
+map_name=CJBIG
+music=55circlej
+ambient_sfx=gntlwin1:25, gntlwind:25, vulture:20, vulture1:20, bangpipe:5, bangpip1:5
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 310]
+lookup_name=Special Vault69
+map_name=vault69
+music=07desert
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 311]
+lookup_name=New Canaan Nuked
+map_name=NCNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 312]
+lookup_name=Boulder Dome Nuked
+map_name=BDNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 313]
+lookup_name=Special Camp Site
+map_name=secamp
+music=59caesar
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 314]
+lookup_name=Mesa Verde Caves
+map_name=mvcaves
+music=13carvrn
+ambient_sfx=rattle:25, rattle1:25, water:20, water1:20, pebble:5, pebble1:5
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 315]
+lookup_name=Karltown Mine
+map_name=ktmine
+music=21sf
+ambient_sfx=seawind1:25, clang:10, waves1:15, clang1:15, waves:15, seawind:20
+saved=Yes
+
+[Map 316]
+lookup_name=Bloomfield Control Center
+map_name=scccint
+music=51BLOOMF
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 317]
+lookup_name=Circle Junction Nuked
+map_name=CJNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 318]
+lookup_name=Fort Abandon Nuked
+map_name=FANUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 319]
+lookup_name=Mesa Verde Nuked
+map_name=MVNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 320]
+lookup_name=New York West
+map_name=nywest
+ambient_sfx=seawind1:25, seawind:25, waves1:10, seagull:15, seagull1:15, waves:10
+music=57ny
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 321]
+lookup_name=Scrapheap
+map_name=SCRPHEAP
+music=12junktn
+ambient_sfx=gntlwind:20, gntlwin1:20, winddoor:20, winddoo1:20, bangpipe:10, bangpip1:10
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 322]
+lookup_name=Crater Archives Level 1
+map_name=CRARCH1
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 323]
+lookup_name=Crater Archives Level 2
+map_name=CRARCH2
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 324]
+lookup_name=Fort Desolation
+map_name=fortdeso
+music=47ncrarm
+ambient_sfx=gntlwind:20, gntlwin1:20, vulture:20, vulture1:20, coyote:20
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 325]
+lookup_name=Twin Mothers Nuked
+map_name=TMNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 326]
+lookup_name=Maxson Bunker Nuked
+map_name=MBNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 327]
+lookup_name=Ouroboros Nuked
+map_name=OUNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 328]
+lookup_name=Reservation Nuked
+map_name=RENUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 329]
+lookup_name=Burham Springs Nuked
+map_name=BSNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 330]
+lookup_name=Nursery Nuked
+map_name=NRNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 331]
+lookup_name=Hoover Dam Downtown Catwalk
+map_name=HDCATWLK
+ambient_sfx=gustwin1:20, gustwind:20, waves:30, waves1:30
+music=10labone
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 332]
+lookup_name=Hoover Dam S1C
+map_name=hds1c
+ambient_sfx=water:50,water1:50
+music=02mstrlr
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 333]
+lookup_name=Hoover Dam NCR Army HQ Gym
+map_name=hdncrgym
+music=58club
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 334]
+lookup_name=Jericho Nuked
+map_name=JRNUKE
+ambient_sfx=blank:100
+music=14necro
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 335]
+lookup_name=Motorcycle: Desert
+map_name=motoabnd
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 336]
+lookup_name=Dune Buggy: Desert
+map_name=duneabnd
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 337]
+lookup_name=Semi-Truck: Desert
+map_name=trukabnd
+music=07desert
+ambient_sfx=gntlwin1:25, gntlwind:25, gustwind:10, rattle:15, rattle1:15, vulture:10
+saved=No
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 338]
+lookup_name=Jackals Camp 2
+map_name=BDJACKL2
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 339]
+lookup_name=Jackals Camp 3
+map_name=BDJACKL3
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 340]
+lookup_name=Battalion Base Level 1-2
+map_name=BTBASE1
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 341]
+lookup_name=Battalion Base Level 3-4
+map_name=BTBASE2
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 342]
+lookup_name=Fort Abandon Town
+map_name=FATOWN
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 343]
+lookup_name=Battalion Base Entrance
+map_name=btbasext
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 344]
+lookup_name=New York Farm
+map_name=nyfarm
+music=57ny
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 345]
+lookup_name=New York Library Exterior
+map_name=NYLIBEXT
+music=57ny
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 346]
+lookup_name=New York Library Interior
+map_name=NYLIBRY
+music=57ny
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 347]
+lookup_name=New York Powerplant
+map_name=NYPLANT
+music=57ny
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 348]
+lookup_name=Grand Canyon Miner Town Old
+map_name=GCMINER2
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 349]
+lookup_name=Jericho South
+map_name=jrtowns
+music=50JRCHO
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 350]
+lookup_name=Boulder Dome Ruins North
+map_name=BDRUIN2
+music=blanks
+ambient_sfx=electri1:20, vcomp7:15, vcomp8:15, electric:20, vcomp1:15, vcomp2:15
+saved=Yes
+can_rest_here=Yes,Yes,Yes  ; All 3 elevations
+
+[Map 351]
+lookup_name=Hoover Dam North Gate
+map_name=hdgatenr
+ambient_sfx=gntlwin1:20, gntlwind:20, waves:30, waves1:30
+music=46hovdam
+saved=Yes
+
+[Map 352]
+lookup_name=Special Eddie
+map_name=seeddie
+music=20car
+ambient_sfx=gntlwin1:25, gntlwind:25, vulture:20, vulture1:20, gustwind:5, gustwin1:5
+saved=Yes
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 353]
+lookup_name=Karltown Jail
+map_name=KTJAIL
+music=14necro
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 354]
+lookup_name=Karltown Farm
+map_name=KTFARM
+music=14necro
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 355]
+lookup_name=Karltown Farm 2
+map_name=KTFARM2
+music=17arroyo
+ambient_sfx=gntlwin1:25, gntlwind:25, animal1:20, animal:20, gustwind:5, gustwin1:5
+
+[Map 356]
+lookup_name=Karltown Geckos
+map_name=PDGECKOS
+music=14necro
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 357]
+lookup_name=Karltown Toxic Pond
+map_name=PDTOXIC
+music=14necro
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 358]
+lookup_name=Karltown Hanging Bridge
+map_name=PDCAMPS
+music=14necro
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 359]
+lookup_name=Karltown Cave
+map_name=PDCAMPN
+music=14necro
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 360]
+lookup_name=Salt Lake City Sewers
+map_name=V70SEWER
+music=14necro
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 361]
+lookup_name=Vault 70
+map_name=VAULT70
+music=14necro
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
+
+[Map 362]
+lookup_name=In Game Movie Map 0
+map_name=INTROMOV
+music=30bttln
+saved=No
+dead_bodies_age=No
+can_rest_here=No,No,No  ; All 3 elevations
