@@ -81,6 +81,7 @@ procedure damage_p_proc;
 procedure map_enter_p_proc;
 procedure timed_event_p_proc;
 
+procedure restock_merchant_box;
 
 
 /* Local Variables which are saved. All Local Variables need to be
@@ -91,11 +92,24 @@ procedure timed_event_p_proc;
 #define LVAR_Traded_Weapons             (7)
 #define LVAR_Pistol                     (8)
 #define LVAR_Stealing_Stuff             (9)
+#define LVAR_Restock_Stuff              (10)
 
-#define XL70E3                           (1)
+#define XL70E3                         (1)
 #define MAGNUM                         (2)
 
+#define restock_fuel(obj)		stock_pid_qty(obj, PID_MICRO_FUSION_CELL, random(2,3))	\
+								stock_pid_qty(obj, PID_SMALL_ENERGY_CELL, random(4,7))			
+								
+#define restock_caps(obj)		stock_pid_qty(obj, PID_BOTTLE_CAPS, random(7000,8000))
 
+
+#define restock_ammo(obj)		stock_pid_qty(obj, PID_2MM_EC_AMMO, random(1,2)) \
+								stock_pid_qty(obj, PID_4_7MM_CASELESS, random(1,2)) \
+								stock_pid_qty(obj, PID_40MM_GRENADE, random(1,2)) \
+								stock_pid_qty(obj, PID_SHOTGUN_SHELLS, random(1,2)) \
+								stock_pid_qty(obj, PID_9MM_AMMO, random(1,2)) \
+								stock_pid_qty(obj, PID_7_62MM_AMMO, random(1,2)) 
+									
 
 /* Imported variables from the Map scripts. These should only be
    pointers and variables that need not be saved. If a variable
@@ -106,6 +120,16 @@ variable Only_Once:=0;
 
 procedure start begin
 end
+procedure restock_merchant_box begin
+    variable box_obj;
+	box_obj := tile_contains_pid_obj(33151, self_elevation, PID_FOOTLOCKER_RUSTY_LEFT);
+	if (game_time >= local_var(LVAR_Restock_Stuff)) then begin
+		restock_fuel(box_obj)
+		restock_caps(box_obj)		
+		restock_ammo(box_obj)
+		set_local_var(LVAR_Restock_Stuff , (game_time + ONE_GAME_DAY) );
+	end	
+end
 
 /* This procedure will get called each time that the map is first entered. It will
    set up the Team number and AI packet for this critter. This will override the
@@ -113,7 +137,7 @@ end
 procedure map_enter_p_proc begin
    Only_Once:=0;
    critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM, TEAM_HOOVER_DAM);
-//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET, AI_STORE_OWENER);
+   call restock_merchant_box;
 
    if( not( is_loading_game ) ) then begin
 
