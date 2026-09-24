@@ -1,0 +1,12 @@
+
+{100}{}{The grave marker reads:}
+{101}{}{Charlie. Until we play again.}
+{102}{}{Splash. Into the sunshine.}
+{103}{}{Milky. Loved by all, forever free.}
+{104}{}{Ratata and Hugo. Always in my heart.}
+{105}{}{Tyupa. Until we meet again.}
+{106}{}{Valentin. We miss you.}
+{107}{}{Rumle and Musli. Deep peace of the quiet earth to you.}
+{108}{}{Rea. Sleep peacefully, dear.}
+{109}{}{Dogmeat. Thanks for bravely walking beside me, old friend.}
+{110}{}{The Fish. Swim against the current, my little friends.}

@@ -1,0 +1,65 @@
+/*
+	Broken elevator
+*/
+
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_BRELEV
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure broken_elev;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+    call broken_elev;
+    add_timer_event(self_obj, 1, 1);
+end
+
+procedure map_update_p_proc begin
+   if (
+      (combat_is_initialized == false) and
+      (elevation(self_obj) == elevation(dude_obj))
+   ) then
+   begin
+         call broken_elev;
+   end
+end
+
+procedure timed_event_p_proc
+begin
+  if (fixed_param == 1) then begin
+      if (
+         (anim_busy(self_obj) == false) and
+         (combat_is_initialized == false) and
+         (elevation(self_obj) == elevation(dude_obj))
+         ) then begin
+         call broken_elev;
+      end
+      add_timer_event(self_obj, 1, 1);
+  end
+
+end
+
+procedure broken_elev begin
+    reg_anim_begin();
+    reg_anim_animate_forever(self_obj, ANIM_stand);
+    reg_anim_end();
+
+    if(random(0, 45) == 0) then begin
+        if(random(0, 1) == 0) then begin
+            //play_sfx("ELV1_" + random(1, 3));
+            play_sfx("elevator");
+        end
+        else begin
+            //play_sfx("ELV2_3");
+            play_sfx("elevato1");
+
+        end
+    end
+end

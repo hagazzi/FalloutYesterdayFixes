@@ -1,0 +1,685 @@
+/*
+
+        Name:           Sonia Needles
+        Location:
+        Description:
+
+           Created: 27/09/2020 18:23:23
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBSONIA
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+#include "..\HEADERS\tbcb29.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+procedure TellCheck;
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Switcher;
+procedure First;
+procedure Again;
+procedure Member;
+procedure NoResponse;
+procedure NoResponse2;
+procedure Kicked;
+procedure Heretic;
+procedure Greetings;
+procedure RuderGreeting;
+procedure Deaf;
+procedure Questions;
+procedure DreamJuice;
+procedure WhatDo;
+procedure LifeStory;
+procedure LifeStory2;
+procedure DreamJuiceDo;
+procedure HowMade;
+procedure WantDJ;
+procedure HowDistributed;
+procedure MoreThan;
+procedure Extras;
+procedure Respect;
+procedure Theft;
+procedure Jotham;
+procedure WontTell;
+procedure GiveDJ;
+procedure Ingredients;
+procedure Vulgar;
+procedure Stu_Sanctified;
+procedure Stu_Drink;
+procedure Stu_Sing;
+procedure Stu_Sing2;
+procedure Stu_Sing3;
+procedure Stu_Thirsty;
+procedure Stu_Prophet;
+procedure Stu_DreamJuice;
+procedure Stu_SoniaStupid;
+procedure Stu_Antichrist;
+procedure Stu_Like;
+procedure Stu_NoDrink;
+procedure Node999_pissed;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Pissed  (8)
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+   add_timer_event(self_obj, game_ticks(random(3, 5)), 0);
+   call new_plague_check(self_obj, LVAR_Herebefore);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+
+      if (local_var(LVAR_Herebefore)==0) then begin
+         if(dude_is_stupid or dude_is_idiot_savant) then begin
+            call Stu_Sanctified;
+         end else begin
+            call First;
+         end
+      end else if (local_var(LVAR_Herebefore)==1) then begin
+         if(dude_is_stupid or dude_is_idiot_savant) then begin
+            if(general_rep_good) then begin
+               call Stu_Prophet;
+            end else if(general_rep_bad) then begin
+               call Stu_Antichrist;
+            end else begin
+               call Stu_Sanctified;
+            end
+         end else begin
+            if(local_var(LVAR_Pissed) == 1) then begin
+               call NoResponse;
+            end
+            else if(global_var(GVAR_WARDEN) == 1) then begin
+               if(general_rep_good) then
+                  call Member;
+               else
+                  call Kicked;
+            end else begin
+               call Again;
+            end
+         end
+      end
+       gSay_End;
+       end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+
+   add_timer_event(self_obj, game_ticks(random(3, 5)), 0);
+
+    if (random(1, 30) == 1) then begin
+       floater_high_rand(200,204);
+   end
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+
+ inc_neutral_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+set_global_var(GVAR_TIBBETS_KNOW_JUNKIES, 1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure TellCheck begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, 10);
+if is_success(roll_temp) then
+begin
+call Jotham;
+end
+else begin
+call WontTell;
+ end
+end
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure First
+begin
+Reply(260);
+NOption(261,Greetings,4);
+NOption(262,RuderGreeting,4);
+NOption(263,Stu_Sanctified,-3);
+NOption(264,Node999,1);
+end
+
+procedure Again
+begin
+Reply(290);
+NOption(291,Questions,4);
+NOption(263,Stu_Sanctified,-3);
+NOption(292,Node999,1);
+end
+
+// Node Member
+//
+// Notes:
+//
+// Option 2 available if player is in Temple but not almost-priest\
+
+procedure Member
+begin
+if (dude_is_male) then Reply(320); else
+if (dude_is_female) then Reply(321);
+NOption(322,Questions,4);
+NOption(323,WantDJ,4);
+NOption(324,GiveDJ,4);
+NOption(325,Node999,4);
+end
+
+procedure NoResponse
+begin
+Reply(350);
+NOption(351,NoResponse2,4);
+NOption(352,NoResponse2,4);
+NOption(353,NoResponse2,4);
+NOption(354,NoResponse2,4);
+NOption(264,Node999,4);
+end
+
+procedure NoResponse2
+begin
+Reply(380);
+NOption(381,NoResponse,4);
+NOption(352,NoResponse,4);
+NOption(353,NoResponse,4);
+NOption(354,NoResponse,4);
+NOption(264,Node999,4);
+end
+
+// Node Kicked
+//
+// Notes:
+//
+// option 2 sets Sonia to dislike the PC
+
+procedure Kicked
+begin
+Reply(410);
+NOption(411,Heretic,4);
+BOption(412,Node999_pissed,4);
+NOption(413,Node999,4);
+end
+
+procedure Node999_pissed begin
+   set_local_var(LVAR_Pissed, 1);
+   call Node999;
+end
+
+procedure Heretic
+begin
+Reply(440);
+NOption(441,Node999,4);
+NOption(442,Node999,4);
+end
+
+procedure Greetings
+begin
+Reply(470);
+NOption(471,Questions,4);
+NOption(472,Node999,4);
+end
+
+procedure RuderGreeting
+begin
+Reply(500);
+NOption(501,Deaf,4);
+NOption(502,Questions,4);
+NOption(503,Node999,4);
+end
+
+// Node Deaf
+//
+// Notes:
+//
+// Option 2 sets Sonia to dislike the player
+
+procedure Deaf
+begin
+Reply(530);
+NOption(531,Questions,4);
+NOption(532,Node999,4);
+end
+
+procedure Questions
+begin
+Reply(560);
+NOption(561,WhatDo,4);
+NOption(562,LifeStory,4);
+NOption(563,DreamJuice,4);
+NOption(564,Node999,4);
+end
+
+// Node DreamJuice
+//
+// Notes:
+//
+// Option 4) if player is not 'almost-priest', 5) if player is 'almost-priest'\
+
+procedure DreamJuice
+begin
+Reply(590);
+NOption(591,DreamJuiceDo,4);
+NOption(592,HowMade,4);
+NOption(593,HowDistributed,4);
+if(global_var(GVAR_WARDEN) == 0) then
+   NOption(594,WantDJ,4);
+if(global_var(GVAR_WARDEN) == 1) then
+   NOption(594,GiveDJ,4);
+NOption(595,MoreThan,4);
+NOption(596,Questions,4);
+end
+
+procedure WhatDo
+begin
+Reply(620);
+NOption(621,DreamJuice,4);
+NOption(622,Questions,4);
+end
+
+procedure LifeStory
+begin
+Reply(650);
+NOption(651,LifeStory2,4);
+NOption(652,Questions,4);
+end
+
+procedure LifeStory2
+begin
+Reply(680);
+NOption(681,Questions,4);
+NOption(682,Node999,4);
+end
+
+procedure DreamJuiceDo
+begin
+Reply(710);
+NOption(711,DreamJuice,4);
+NOption(596,Questions,4);
+end
+
+procedure HowMade
+begin
+Reply(740);
+NOption(741,Extras,4);
+NOption(742,Respect,4);
+NOption(743,DreamJuice,4);
+NOption(744,Questions,4);
+end
+
+procedure WantDJ
+begin
+if (dude_is_male) then Reply(770); else
+if (dude_is_female) then Reply(771);
+NOption(772,DreamJuice,4);
+NOption(773,Questions,4);
+end
+
+procedure HowDistributed
+begin
+Reply(800);
+NOption(801,DreamJuice,4);
+NOption(802,Questions,4);
+end
+
+procedure MoreThan
+begin
+Reply(830);
+if(map_var(MVAR_MAURICE_GONE) == 0) then
+NOption(831,Theft,4);
+NOption(832,DreamJuice,4);
+NOption(833,Questions,4);
+end
+
+procedure Extras
+begin
+Reply(860);
+NOption(861,Ingredients,4);
+NOption(862,DreamJuice,4);
+NOption(596,Questions,4);
+end
+
+procedure Respect
+begin
+Reply(890);
+NOption(891,DreamJuice,4);
+NOption(892,Questions,4);
+end
+
+procedure Theft
+begin
+Reply(920);
+NOption(921,TellCheck,4);
+NOption(922,Questions,4);
+end
+
+procedure Jotham
+begin
+Reply(950);
+NOption(951,Node999,4);
+NOption(952,Questions,4);
+end
+
+procedure WontTell
+begin
+Reply(980);
+NOption(981,Node999,4);
+NOption(982,Questions,4);
+end
+
+procedure GiveDJ
+begin
+if (dude_is_male) then Reply(1010); else
+if (dude_is_female) then Reply(1011);
+NOption(1012,Node999,4);
+end
+
+procedure Ingredients
+begin
+Reply(1040);
+NOption(1041,Vulgar,4);
+NOption(1042,DreamJuice,4);
+NOption(596,Questions,4);
+end
+
+procedure Vulgar
+begin
+Reply(1070);
+NOption(1071,Node999,4);
+NOption(1072,DreamJuice,4);
+NOption(1073,Questions,4);
+end
+
+procedure Stu_Sanctified
+begin
+Reply(1100);
+NOption(1101,Stu_Sing,-3);
+NOption(1102,Stu_Drink,-3);
+NOption(1103,Node999,-3);
+end
+
+procedure Stu_Drink
+begin
+if (dude_is_male) then Reply(1130); else
+if (dude_is_female) then Reply(1131);
+NOption(1132,Stu_Thirsty,-3);
+NOption(1133,Stu_Sing,-3);
+NOption(1134,Node999,-3);
+end
+
+procedure Stu_Sing
+begin
+Reply(1160);
+NOption(1161,Stu_Sing2,-3);
+NOption(1162,Stu_Drink,-3);
+NOption(1163,Node999,-3);
+end
+
+procedure Stu_Sing2
+begin
+Reply(1190);
+NOption(1191,Stu_Sing3,-3);
+NOption(1192,Node999,-3);
+end
+
+procedure Stu_Sing3
+begin
+Reply(1220);
+NOption(1221,Node999,-3);
+NOption(1222,Node999,-3);
+end
+
+procedure Stu_Thirsty
+begin
+Reply(1250);
+NOption(1251,Node999,-3);
+NOption(1252,Node999,-3);
+end
+
+procedure Stu_Prophet
+begin
+Reply(1280);
+NOption(1281,Stu_DreamJuice,-3);
+NOption(1282,Stu_SoniaStupid,-3);
+end
+
+procedure Stu_DreamJuice
+begin
+
+
+  if (obj_is_carrying_obj_pid(self_obj,PID_HOLY_WATER) == 0) then begin
+Reply(1309);
+  end else begin
+
+      transfer_pid_between_objs(self_obj, dude_obj, PID_HOLY_WATER, 1)
+
+
+if (dude_is_male) then Reply(1310); else
+if (dude_is_female) then Reply(1311);
+  end
+
+NOption(1312,Node999,-3);
+
+end
+
+procedure Stu_SoniaStupid
+begin
+Reply(1340);
+NOption(1341,Stu_DreamJuice,-3);
+NOption(1342,Node999,-3);
+end
+
+procedure Stu_Antichrist
+begin
+Reply(1370);
+NOption(1371,Stu_Like,-3);
+NOption(1372,Node999,-3);
+end
+
+procedure Stu_Like
+begin
+Reply(1400);
+NOption(1401,Stu_NoDrink,-3);
+NOption(1402,Node999,-3);
+end
+
+procedure Stu_NoDrink
+begin
+Reply(1430);
+NOption(1431,Node999,-3);
+NOption(1432,Node999,-3);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

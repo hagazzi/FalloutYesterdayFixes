@@ -1,0 +1,339 @@
+/*
+
+        Name:
+        Location:
+        Description:
+
+           Created: 12/09/2020 18:50:15
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBSAT
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+#include "..\HEADERS\TBSRVC03.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure talk_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+procedure use_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+procedure Node012;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+
+end
+
+
+procedure use_p_proc begin
+if (source_obj == dude_obj) then begin
+   if(map_var(MVAR_SAT) != 1) then begin
+      display_mstr(100);
+      end else begin
+      dialogue_system_enter;
+   end
+end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       call Node001;
+       gSay_End;
+       end_dialogue;
+
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure P13Login begin
+   set_map_var(MVAR_SAT_PRISONER13, 1);
+   call Node002;
+end
+
+procedure OKAnswer begin
+   set_map_var(MVAR_SAT_SCORE, map_var(MVAR_SAT_SCORE) + 10);
+end
+
+
+procedure Q1OK begin
+   call OKAnswer;
+   call Node003;
+end
+
+procedure Q2OK begin
+   call OKAnswer;
+   call Node004;
+end
+
+procedure Q3OK begin
+   call OKAnswer;
+   call Node005;
+end
+
+procedure Q4OK begin
+   call OKAnswer;
+   call Node006;
+end
+
+procedure Q5OK begin
+   call OKAnswer;
+   call Node007;
+end
+
+procedure Q6OK begin
+   call OKAnswer;
+   call Node008;
+end
+
+procedure Q7OK begin
+   call OKAnswer;
+   call Node009;
+end
+
+procedure Q8OK begin
+   call OKAnswer;
+   call Node010;
+end
+
+procedure Q9OK begin
+   call OKAnswer;
+   call Node011;
+end
+
+procedure Q10OK begin
+   call OKAnswer;
+   call Node012;
+end
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Node001
+begin
+Reply(200);
+NOption(201,Node002,4);
+NOption(202,P13Login,4);
+NOption(203,Node002,4);
+NOption(204,Node002,-3);
+end
+
+procedure Node002
+begin
+Reply(230);
+NOption(231,Node003,1);
+NOption(232,Node003,1);
+NOption(233,Node003,1);
+NOption(234,Q1OK,1);
+NOption(235,Node003,1);
+end
+
+procedure Node003
+begin
+Reply(260);
+NOption(261,Node004,1);
+NOption(262,Node004,1);
+NOption(263,Node004,1);
+NOption(264,Node004,1);
+NOption(265,Q2OK,1);
+end
+
+procedure Node004
+begin
+Reply(290);
+NOption(291,Node005,1);
+NOption(292,Node005,1);
+NOption(293,Node005,1);
+NOption(294,Node005,1);
+NOption(295,Q3OK,1);
+end
+
+procedure Node005
+begin
+Reply(320);
+NOption(321,Node006,1);
+NOption(322,Node006,1);
+NOption(323,Q4OK,1);
+NOption(324,Node006,1);
+NOption(325,Node006,1);
+end
+
+procedure Node006
+begin
+Reply(350);
+NOption(351,Node007,1);
+NOption(352,Node007,1);
+NOption(353,Node007,1);
+NOption(354,Node007,1);
+NOption(355,Q5OK,1);
+end
+
+procedure Node007
+begin
+Reply(380);
+NOption(381,Node008,1);
+NOption(382,Node008,1);
+NOption(383,Q6OK,1);
+NOption(384,Node008,1);
+NOption(385,Node008,1);
+end
+
+procedure Node008
+begin
+Reply(410);
+NOption(411,Node009,1);
+NOption(412,Node009,1);
+NOption(413,Node009,1);
+NOption(414,Node009,1);
+NOption(415,Q7OK,1);
+end
+
+procedure Node009
+begin
+Reply(440);
+NOption(441,Node010,1);
+NOption(442,Node010,1);
+NOption(443,Node010,1);
+NOption(444,Q8OK,1);
+end
+
+procedure Node010
+begin
+Reply(470);
+NOption(471,Q9OK,1);
+NOption(472,Node011,1);
+NOption(473,Node011,1);
+NOption(474,Node011,1);
+end
+
+procedure Node011
+begin
+Reply(500);
+NOption(501,Q10OK,1);
+NOption(502,Node012,1);
+NOption(503,Node012,1);
+NOption(504,Node012,1);
+NOption(505,Node012,1);
+end
+
+procedure Node012 begin
+   call inc_code(10);
+   set_map_var(MVAR_SAT, 2);
+Reply(530);
+NOption(531,Node999,4);
+NOption(532,Node999,-3);
+NOption(533,Node999,4);
+NOption(534,Node999,-3);
+NOption(535,Node999,1);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

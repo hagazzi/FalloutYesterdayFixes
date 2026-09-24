@@ -1,0 +1,50 @@
+/*
+
+        Name:           Prisoner
+        Location:       Tibbets
+        Description:
+
+           Created: 20/06/2020 22:53:34
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+
+#define NAME                    SCRIPT_TBDESTR
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+
+/* Standard Script Procedures */
+procedure map_enter_p_proc;
+
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+
+   if(global_var(GVAR_TIBBETS_BATTALION_ATTACK) > 0) then begin
+      set_obj_visibility(self_obj, 1);
+   end else begin
+      set_obj_visibility(self_obj, 0);
+   end
+
+end
+

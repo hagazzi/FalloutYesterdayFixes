@@ -1,0 +1,89 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_MVKIVASC
+
+/* Standard Script Procedures */
+procedure start;
+procedure look_at_p_proc;
+procedure description_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+   display_mstr(105);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure description_p_proc begin
+   script_overrides;
+
+   fadeout(1);
+   game_time_advance(ONE_GAME_HOUR * random(1,4));
+   fadein(1);
+
+   if (global_var(GVAR_CRAFT_DOCKING_CLAMP_CHIP) == 0) then begin
+      set_global_var(GVAR_CRAFT_DOCKING_CLAMP_CHIP, 1);
+      display_mstr(106);
+   end
+
+   if(skill_success(source_obj, SKILL_SCIENCE, -50)) then begin
+      variable tile = self_tile;
+      if (tile == 27305) then begin
+         display_mstr(101);
+         set_global_var(GVAR_CRAFT_LASER_PISTOL, 1);
+      end
+      else if (tile == 27701) then begin
+         display_mstr(102);
+         set_global_var(GVAR_CRAFT_GEIGER_COUNTER, 1);
+      end
+      else if (tile == 28099) then begin
+         display_mstr(103);
+         set_global_var(GVAR_CRAFT_MOTION_SENSOR, 1);
+      end
+      else if (tile == 28898) then begin
+         display_mstr(104);
+         set_global_var(GVAR_CRAFT_CATTLE_PROD, 1);
+      end
+   end else begin
+      display_mstr(100);
+   end
+end

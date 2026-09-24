@@ -1,0 +1,4 @@
+# Grammar pass done
+
+{100}{}{You secure the rope to a sturdy log, creating a reliable anchor to help you climb down safely.}
+{101}{}{You need to secure a rope to climb down safely, but you believe you might survive the fall.}

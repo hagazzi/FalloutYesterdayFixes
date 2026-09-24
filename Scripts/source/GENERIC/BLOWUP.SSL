@@ -1,0 +1,22 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/* Include Files */
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_BLOWUP
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure damage_p_proc;
+
+procedure start begin
+end
+
+procedure damage_p_proc begin
+  if (weapon_dmg_type(target_obj) == DMG_explosion) then begin
+    destroy_object(self_obj);
+  end
+end

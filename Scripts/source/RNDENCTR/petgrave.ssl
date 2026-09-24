@@ -1,0 +1,79 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure description_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_PETGRAVE
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+
+procedure start begin
+end
+
+procedure description_p_proc begin
+    variable str, tile;
+
+    script_overrides;
+    tile = self_tile;
+
+    if(tile == 18468) then begin
+        str := mstr(101);
+    end else if(tile == 16312) then begin
+        str := mstr(102);
+    end else if(tile == 21327) then begin
+        str := mstr(103);
+    end else if(tile == 22344) then begin
+        str := mstr(104);
+    end else if(tile == 19296) then begin
+        str := mstr(105);
+    end else if(tile == 25893) then begin
+        str := mstr(106);
+    end else if(tile == 13705) then begin
+        str := mstr(107);
+    end else if(tile == 25104) then begin
+        str := mstr(108);
+    end else if(tile == 21078) then begin
+        str := mstr(109);
+    end else if(tile == 13323) then begin
+        str := mstr(110);
+    end
+
+    display_msg(mstr(100) + " " + str);
+end

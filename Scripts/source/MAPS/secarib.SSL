@@ -1,0 +1,78 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+   Map for Vault13 Fake entrance
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_SECARIB
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+#include "..\headers\vehicles.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+variable radspider_cave_desc, track;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   call Check_Create_Vehicle;
+
+   fadein(1);
+   Lighting;
+
+   if (map_first_run) then begin
+      display_msg(message_str(SCRIPT_CAVE01, 100));
+      set_global_var(GVAR_SPECIAL_ENCOUNTER_CARIB, 1);
+   end
+
+   if (not(is_loading_game)) then begin
+      override_map_start_hex(23100, 0, 5);
+   end
+
+end
+
+procedure map_update_p_proc begin
+
+   if(dude_elevation == 0) then begin
+
+      if (track != AMBIENT_MOUNTAIN_WIND) then begin
+         stop_sfall_sound(ambient_sfx);
+         track = AMBIENT_MOUNTAIN_WIND;
+         ambient_sfx := play_sfall_sound(AmbientTrack(track), 1);
+      end
+
+      Lighting;
+   end
+   else begin
+
+      if (track != AMBIENT_MOUNTAIN_CAVE_WIND) then begin
+         stop_sfall_sound(ambient_sfx);
+         track = AMBIENT_MOUNTAIN_CAVE_WIND;
+         ambient_sfx := play_sfall_sound(AmbientTrack(track), 1);
+      end
+
+      if (radspider_cave_desc == 0) then begin
+         radspider_cave_desc = 1;
+         display_mstr(100);
+      end
+
+      Cavern_Lighting;
+   end
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

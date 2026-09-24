@@ -1,0 +1,173 @@
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\mvtop.h"
+
+#define NAME                    SCRIPT_MVWIND
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure animfrvr;
+
+variable Science_Check;
+variable Repair_Check;
+variable sfx;
+
+procedure start begin
+   if ((script_action == look_at_proc) or (script_action == description_proc)) then begin
+      script_overrides;
+      if (global_var(GVAR_QUEST_SABOTAGE_WIND_TURBINE) == QUEST_COMPLETED) then begin
+         display_mstr(100);
+      end
+      else begin
+         display_mstr(101);
+      end
+   end
+   else begin
+      if (script_action == use_obj_on_proc) then begin
+         script_overrides;
+         if ((obj_pid(obj_being_used_with) == PID_WIRE_CUTTERS) and (global_var(GVAR_QUEST_SABOTAGE_WIND_TURBINE) != QUEST_COMPLETED)) then begin
+            set_global_var(GVAR_QUEST_SABOTAGE_WIND_TURBINE, QUEST_COMPLETED);
+            give_xp(EXP_SABOTAGE_WIND_TURBINE);
+            display_mstr(102);
+            reg_anim_clear(self_obj);
+         end
+         else begin
+            if (obj_pid(obj_being_used_with) == PID_WIRE_CUTTERS) then begin
+               display_mstr(103);
+            end
+            else begin
+               display_mstr(104);
+            end
+         end
+      end
+      else begin
+         if (script_action == use_skill_on_proc) then begin
+            script_overrides;
+            if ((action_being_used == SKILL_SCIENCE) and (global_var(GVAR_QUEST_SABOTAGE_WIND_TURBINE) != QUEST_COMPLETED)) then begin
+               if (Science_Check) then begin
+                  display_mstr(105);
+               end
+               else begin
+                  if (is_success(roll_vs_skill(dude_obj, SKILL_SCIENCE, 30))) then begin
+                     display_mstr(106);
+                  end
+                  else begin
+                     display_mstr(107);
+                  end
+               end
+               Science_Check := 1;
+               inc_map_var(MVAR_Used_Wind_Turbine);
+            end
+            else begin
+               if (action_being_used == SKILL_SCIENCE) then begin
+                  if (Science_Check) then begin
+                     display_mstr(108);
+                  end
+                  else begin
+                     if (is_success(roll_vs_skill(dude_obj, SKILL_SCIENCE, 0))) then begin
+                        display_mstr(109);
+                     end
+                     else begin
+                        display_mstr(110);
+                     end
+                  end
+                  Science_Check := 1;
+                  inc_map_var(MVAR_Used_Wind_Turbine);
+               end
+            end
+            if ((action_being_used == SKILL_REPAIR) and (global_var(GVAR_QUEST_SABOTAGE_WIND_TURBINE) != QUEST_COMPLETED)) then begin
+               if (Repair_Check) then begin
+                  display_mstr(111);
+               end
+               if (is_success(roll_vs_skill(dude_obj, SKILL_REPAIR, 0))) then begin
+                  display_mstr(112);
+               end
+               else begin
+                  display_mstr(113);
+               end
+               Science_Check := 1;
+               inc_map_var(MVAR_Used_Wind_Turbine);
+            end
+            else begin
+               if (action_being_used == SKILL_REPAIR) then begin
+                  if (Repair_Check) then begin
+                     display_mstr(114);
+                  end
+                  else begin
+                     if (is_success(roll_vs_skill(dude_obj, SKILL_REPAIR, 0))) then begin
+                        display_mstr(115);
+                     end
+                     else begin
+                        display_mstr(116);
+                     end
+                  end
+                  add_timer_event(self_obj, game_ticks(5), 1);
+                  Science_Check := 1;
+                  inc_map_var(MVAR_Used_Wind_Turbine);
+               end
+               else begin
+                  display_mstr(117);
+                  inc_map_var(MVAR_Used_Wind_Turbine);
+               end
+            end
+         end
+         else begin
+            if (script_action == timed_event_proc) then begin
+               if (fixed_param == 1) then begin
+                  if (
+                     (not(anim_busy(self_obj))) and
+                     (self_elevation == dude_elevation)
+                     ) then begin
+                        if (global_var(GVAR_QUEST_SABOTAGE_WIND_TURBINE) != QUEST_COMPLETED) then begin
+                           call animfrvr;
+
+                           if(
+                              obj_can_hear_obj(dude_obj, self_obj) and
+                              (self_elevation == dude_elevation)
+                              ) then begin
+                              if((sfx == 0) and (random(1,5) == 1)) then begin
+                                  sfx := play_sfall_sound("data\\sound\\SFX\\sfx_windmill_0" + random(1, 4) + ".wav", 0);
+                              end
+                           end else begin
+                              stop_sfall_sound(sfx);
+                              sfx := 0;
+                           end
+                        end
+                  end
+                  add_timer_event(self_obj, game_ticks(1), 1);
+               end
+            end
+         end
+      end
+   end
+end
+
+procedure map_enter_p_proc begin
+   call animfrvr;
+   add_timer_event(self_obj, game_ticks(1), 1);
+end
+
+procedure animfrvr begin
+   reg_anim_begin();
+   reg_anim_animate_forever(self_obj, ANIM_stand);
+   reg_anim_end();
+end
+
+procedure map_update_p_proc begin
+   if (
+      (self_elevation == dude_elevation)
+   ) then
+   begin
+      if (global_var(GVAR_QUEST_SABOTAGE_WIND_TURBINE) != QUEST_COMPLETED) then
+         call animfrvr;
+   end
+end
+
+procedure map_exit_p_proc begin
+   if(sfx) then begin
+       stop_sfall_sound(sfx);
+   end
+end

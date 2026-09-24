@@ -1,0 +1,63 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#include "..\headers\updatmap.h"
+
+/* Standard Script Procedures */
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_V8EXT
+
+export variable vault_door_ptr;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+    variable id;
+
+    if (not(is_loading_game) and map_first_run) then begin
+        set_pipboy_available(0);
+        give_pid_qty(dude_obj, PID_CATTLE_PROD, 1)
+        give_pid_qty(dude_obj, PID_VAULT_DWELLERS_SURVIVAL_GUIDE, 1)
+        set_global_var(GVAR_QUEST_REACH_VAULT_ENTRANCE, 1);
+        float_msg(dude_obj, g_mstr(923), FLOAT_MSG_WARNING);
+        display_msg(mstr(100) + dude_name + mstr(101));
+        play_sfx("simtek0");
+        display_mstr(102);
+    end
+
+   fadein(1);
+   Lighting;
+
+    id := load_shader("SimTek.fx");
+    set_global_var(GVAR_SHADER_ID, id);
+    activate_shader(id);
+
+    ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_WASTELAND), 1);
+
+end
+
+procedure map_update_p_proc begin
+    Lighting;
+end
+
+procedure map_exit_p_proc begin
+    stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

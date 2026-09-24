@@ -1,0 +1,944 @@
+/*
+
+        Name:
+        Location:
+        Description:
+
+           Created: 10.12.2023. 19:49:00
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBODYSS
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure use_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+procedure Node012;
+procedure Node013;
+procedure Node014;
+procedure Node015;
+procedure Node016;
+procedure Node017;
+procedure Node018;
+procedure Node019;
+procedure Node020;
+procedure Node021;
+procedure Node022;
+procedure Node023;
+procedure Node024;
+procedure Node025;
+procedure Node026;
+procedure Node027;
+procedure Node028;
+procedure Node029;
+procedure Node030;
+procedure Node031;
+procedure Node032;
+procedure Node033;
+procedure Node034;
+procedure Node035;
+procedure Node036;
+procedure Node037;
+procedure Node038;
+procedure Node039;
+procedure Node040;
+procedure Node041;
+procedure Node042;
+procedure Node043;
+procedure Node044;
+procedure Node045;
+procedure Node046;
+procedure Node047;
+procedure Node048;
+procedure Node049;
+procedure Node050;
+procedure Node051;
+procedure Node052;
+procedure Node053;
+procedure Node054;
+procedure Node055;
+procedure Node056;
+procedure Node057;
+procedure Node058;
+procedure Node059;
+procedure Node060;
+procedure Node061;
+procedure Node062;
+procedure Node063;
+procedure Node064;
+procedure Node065;
+procedure Node066;
+procedure Node067;
+procedure Node068;
+procedure Node069;
+procedure Node070;
+procedure Node071;
+procedure Node072;
+procedure Node073;
+procedure Node074;
+procedure Node075;
+procedure Node076;
+procedure Node077;
+
+procedure start_meltdown;
+procedure disable_forcefield;
+procedure disable_ff;
+procedure random_hack;
+procedure stop_countdown;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_DisableFF                  (8)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+
+procedure use_p_proc begin
+   if (source_obj == dude_obj) then begin
+      dialogue_system_enter;
+   end
+end
+
+procedure start begin
+   if (script_action == use_skill_on_proc) then begin
+      call use_skill_on_p_proc();
+   end
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,HEAD_ODYSSEUS,-1);
+       gSay_Start;
+       if (global_var(GVAR_TIBBETS_COUNTDOWN) == 0) then
+          call Node001;
+      else
+         call Node075;
+       gSay_End;
+       end_dialogue;
+
+       call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+/*   inc_good_critter */
+/* inc_evil_critter */
+ inc_neutral_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Node001
+begin
+Reply(mstr(199)+string_toupper(dude_name)+mstr(200));
+NOption(201,Node002,4);
+NOption(202,Node002,-3);
+end
+
+procedure Node002
+begin
+Reply(230);
+NOption(231,Node003,4);
+NOption(232,Node006,4);
+NOption(233,Node003,-3);
+NOption(234,Node006,-3);
+end
+
+procedure Node003
+begin
+Reply(260);
+NOption(261,Node004,4);
+NOption(262,Node004,-3);
+end
+
+procedure Node004
+begin
+Reply(290);
+NOption(291,Node005,4);
+NOption(292,Node005,-3);
+end
+
+procedure Node005
+begin
+Reply(320);
+NOption(321,Node039,4);
+NOption(322,Node039,-3);
+end
+
+procedure Node006
+begin
+Reply(350);
+NOption(351,Node007,4);
+NOption(352,Node007,-3);
+end
+
+procedure Node007
+begin
+Reply(380);
+NOption(381,Node035,4);
+NOption(382,Node035,-3);
+end
+
+procedure Node008
+begin
+Reply(410);
+NOption(411,Node009,4);
+NOption(412,Node009,-3);
+end
+
+procedure Node009
+begin
+Reply(440);
+NOption(441,Node010,4);
+NOption(442,Node040,4);
+NOption(443,Node010,-3);
+NOption(444,Node040,-3);
+end
+
+procedure Node010
+begin
+Reply(470);
+NOption(471,Node011,4);
+NOption(472,Node065,4);
+NOption(473,Node011,-3);
+NOption(474,Node065,-3);
+end
+
+procedure Node011
+begin
+Reply(500);
+NOption(501,Node012,4);
+NOption(502,Node040,4);
+NOption(503,Node012,-3);
+NOption(504,Node040,-3);
+end
+
+procedure Node012
+begin
+Reply(530);
+NOption(531,Node013,4);
+NOption(532,Node014,4);
+NOption(533,Node013,-3);
+NOption(534,Node014,-3);
+end
+
+procedure Node013
+begin
+Reply(560);
+NOption(561,Node040,4);
+NOption(562,Node040,-3);
+end
+
+procedure Node014
+begin
+Reply(590);
+NOption(591,Node015,4);
+NOption(592,Node015,-3);
+end
+
+procedure Node015
+begin
+Reply(620);
+NOption(621,Node016,4);
+NOption(622,Node016,-3);
+end
+
+procedure Node016
+begin
+Reply(650);
+NOption(651,Node017,4);
+NOption(652,Node017,-3);
+end
+
+procedure Node017
+begin
+Reply(680);
+NOption(681,Node018,4);
+NOption(682,Node018,-3);
+end
+
+procedure Node018
+begin
+Reply(710);
+NOption(711,Node019,4);
+NOption(712,Node019,-3);
+end
+
+procedure Node019
+begin
+Reply(740);
+NOption(741,Node042,4);
+NOption(742,Node040,4);
+NOption(743,Node042,-3);
+NOption(744,Node040,-3);
+end
+
+procedure Node020
+begin
+Reply(770);
+NOption(771,Node021,4);
+NOption(772,Node021,-3);
+end
+
+procedure Node021
+begin
+Reply(800);
+NOption(801,Node022,4);
+NOption(802,Node022,-3);
+end
+
+procedure Node022
+begin
+Reply(830);
+NOption(831,Node023,4);
+NOption(832,Node023,-3);
+end
+
+procedure Node023
+begin
+Reply(860);
+NOption(861,Node024,4);
+NOption(292,Node024,-3);
+end
+
+procedure Node024
+begin
+Reply(890);
+NOption(442,Node040,4);
+NOption(444,Node040,-3);
+end
+
+procedure Node025
+begin
+Reply(920);
+NOption(921,Node026,4);
+NOption(922,Node026,-3);
+end
+
+procedure Node026
+begin
+Reply(950);
+NOption(951,Node027,4);
+NOption(502,Node040,4);
+NOption(952,Node027,-3);
+NOption(953,Node040,-3);
+end
+
+procedure Node027
+begin
+Reply(980);
+NOption(981,Node028,4);
+NOption(982,Node028,-3);
+end
+
+procedure Node028
+begin
+Reply(1010);
+NOption(1011,Node029,4);
+NOption(1012,Node029,-3);
+end
+
+procedure Node029
+begin
+Reply(1040);
+NOption(1041,Node040,4);
+NOption(412,Node040,-3);
+end
+
+procedure Node030
+begin
+Reply(1070);
+NOption(1071,Node031,4);
+NOption(1072,Node031,-3);
+end
+
+procedure Node031
+begin
+Reply(1100);
+NOption(1101,Node032,4);
+NOption(1102,Node032,-3);
+end
+
+procedure Node032
+begin
+Reply(1130);
+NOption(1131,Node033,4);
+NOption(1132,Node034,4);
+NOption(1133,Node033,-3);
+NOption(1134,Node034,-3);
+end
+
+procedure Node033
+begin
+Reply(1160);
+NOption(1132,Node034,4);
+NOption(1134,Node034,-3);
+end
+
+procedure Node034
+begin
+Reply(1190);
+NOption(1191,Node040,4);
+NOption(1192,Node040,-3);
+end
+
+procedure Node035
+begin
+Reply(1220);
+NOption(1221,Node036,4);
+NOption(1222,Node036,-3);
+end
+
+procedure Node036
+begin
+Reply(1250);
+NOption(1251,Node037,4);
+NOption(1252,Node055,4);
+NOption(1253,Node037,-3);
+NOption(1254,Node055,-3);
+end
+
+procedure Node037
+begin
+Reply(1280);
+NOption(1281,Node038,4);
+NOption(1282,Node038,-3);
+end
+
+procedure Node038
+begin
+Reply(1310);
+NOption(1311,Node040,4);
+NOption(1312,Node040,-3);
+end
+
+procedure Node039
+begin
+Reply(1340);
+NOption(1341,Node040,4);
+NOption(562,Node040,-3);
+end
+
+procedure Node040
+begin
+Reply(1370);
+NOption(1371,Node020,4);
+NOption(1372,Node030,4);
+NOption(1373,Node008,4);
+NOption(1374,Node025,4);
+NOption(1375,Node006,4);
+NOption(1376,Node041,4);
+NOption(1377,Node044,4);
+NOption(1378,Node020,-3);
+NOption(1379,Node030,-3);
+NOption(1380,Node008,-3);
+NOption(1381,Node025,-3);
+NOption(1382,Node006,-3);
+NOption(1383,Node041,-3);
+NOption(1384,Node044,-3);
+end
+
+procedure Node041
+begin
+Reply(1400);
+NOption(1401,Node073,4);
+NOption(1402,Node048,4);
+NOption(442,Node040,4);
+NOption(1403,Node073,-3);
+NOption(1404,Node048,-3);
+NOption(1405,Node040,-3);
+end
+
+procedure Node042
+begin
+Reply(1430);
+NOption(1431,Node043,4);
+NOption(1432,Node043,-3);
+end
+
+procedure Node043
+begin
+Reply(1460);
+NOption(1461,Node045,4);
+NOption(1462,Node045,-3);
+end
+
+procedure Node044
+begin
+Reply(1490);
+NOption(1491,Node076,4);
+NOption(1492,Node076,-3);
+end
+
+procedure Node045
+begin
+Reply(1520);
+NOption(1521,Node046,4);
+NOption(1522,Node046,-3);
+end
+
+procedure Node046
+begin
+Reply(1550);
+NOption(1551,Node047,4);
+NOption(1552,Node047,-3);
+end
+
+procedure Node047
+begin
+Reply(1580);
+NOption(1581,Node040,4);
+NOption(1582,Node040,-3);
+end
+
+procedure Node048
+begin
+Reply(1610);
+NOption(1611,Node049,4);
+NOption(1612,Node052,4);
+NOption(1404,Node049,-3);
+NOption(1613,Node052,-3);
+end
+
+procedure Node049
+begin
+Reply(1640);
+NOption(1641,Node050,4);
+NOption(1642,Node050,-3);
+end
+
+procedure Node050
+begin
+Reply(1670);
+NOption(1671,Node051,4);
+NOption(1672,Node051,-3);
+end
+
+procedure Node051
+begin
+Reply(1700);
+NOption(351,Node007,4);
+NOption(1701,Node007,-3);
+end
+
+procedure Node052
+begin
+Reply(1730);
+NOption(1731,Node053,4);
+NOption(1732,Node054,4);
+NOption(1733,Node053,-3);
+NOption(1734,Node054,-3);
+end
+
+procedure Node053
+begin
+Reply(1760);
+NOption(1732,Node054,4);
+NOption(1761,Node062,4);
+NOption(1734,Node054,-3);
+NOption(1762,Node062,-3);
+end
+
+procedure Node054
+begin
+Reply(1790);
+NOption(1731,Node053,4);
+NOption(1791,Node040,4);
+NOption(1733,Node053,-3);
+NOption(1792,Node040,-3);
+end
+
+procedure Node055
+begin
+Reply(1820);
+NOption(1821,Node056,4);
+NOption(1822,Node058,4);
+NOption(1823,Node056,-3);
+NOption(1522,Node058,-3);
+end
+
+procedure Node056
+begin
+Reply(1850);
+NOption(1851,Node057,4);
+NOption(1852,Node057,-3);
+end
+
+procedure Node057
+begin
+Reply(1880);
+NOption(1822,Node058,4);
+NOption(1791,Node040,4);
+NOption(1522,Node058,-3);
+NOption(1792,Node040,-3);
+end
+
+procedure Node058
+begin
+Reply(1910);
+NOption(1911,Node059,4);
+NOption(1912,Node059,-3);
+end
+
+procedure Node059
+begin
+Reply(1940);
+NOption(1941,Node060,4);
+NOption(1942,Node060,-3);
+end
+
+procedure Node060
+begin
+Reply(1970);
+NOption(1971,Node061,4);
+NOption(1972,Node061,-3);
+end
+
+procedure Node061
+begin
+Reply(2000);
+NOption(2001,Node056,4);
+NOption(1791,Node040,4);
+NOption(1823,Node056,-3);
+NOption(1792,Node040,-3);
+end
+
+procedure Node062
+begin
+Reply(2030);
+NOption(2031,Node063,4);
+NOption(2032,Node063,-3);
+end
+
+procedure Node063
+begin
+Reply(2060);
+NOption(2061,Node064,4);
+NOption(2062,Node064,-3);
+end
+
+procedure Node064
+begin
+Reply(2090);
+NOption(2091,Node040,4);
+NOption(744,Node040,-3);
+end
+
+procedure Node065
+begin
+Reply(2120);
+NOption(2121,Node066,4);
+NOption(2122,Node066,-3);
+end
+
+procedure Node066
+begin
+Reply(2150);
+NOption(2151,Node067,4);
+NOption(2152,Node072,4);
+NOption(2153,Node068,4);
+NOption(2154,Node067,-3);
+NOption(2155,Node072,-3);
+NOption(2156,Node068,-3);
+end
+
+procedure Node067
+begin
+Reply(2180);
+NOption(442,Node040,4);
+NOption(444,Node040,-3);
+end
+
+procedure Node068
+begin
+Reply(2210);
+NOption(2211,Node069,4);
+NOption(2212,Node069,-3);
+end
+
+procedure Node069
+begin
+Reply(2240);
+NOption(2241,Node070,4);
+NOption(2242,Node070,-3);
+end
+
+procedure Node070
+begin
+Reply(2270);
+NOption(2271,Node071,4);
+NOption(2271,Node071,-3);
+end
+
+procedure Node071
+begin
+Reply(2300);
+NOption(2301,Node040,4);
+NOption(2302,Node040,-3);
+end
+
+procedure Node072
+begin
+Reply(2330);
+NOption(2331,Node040,4);
+NOption(2332,Node040,-3);
+end
+
+procedure Node073
+begin
+Reply(2360);
+NOption(2361,Node074,1);
+end
+
+procedure Node074
+begin
+Reply(2390);
+NOption(2391,Node033,4);
+NOption(2392,Node033,-3);
+NOption(2393,Node077,4);
+NOption(2394,Node077,-3);
+end
+
+procedure Node075
+begin
+Reply(2420);
+NOption(2421,stop_countdown,1);
+NOption(2422,disable_forcefield,1);
+NOption(2423,random_hack,1);
+NOption(2424,Node999,1);
+end
+
+procedure Node076
+begin
+Reply(2450);
+NOption(2451,start_meltdown,1);
+end
+
+procedure Node077
+begin
+Reply(2480);
+NOption(2391,Node033,4);
+NOption(2392,Node033,-3);
+end
+
+procedure start_meltdown begin
+
+   set_global_var(GVAR_ACT, 2);
+   set_global_var(GVAR_ESCAPED_CONVICT, 0);
+
+   if (global_var(GVAR_TIBBETS_COUNTDOWN) == 0) then
+      set_global_var(GVAR_TIBBETS_COUNTDOWN,game_time);
+
+      remove_from_map(AREA_TIBBETS)
+      mark_on_map(AREA_TIBBETS_CRATER)
+
+   call Node999;
+
+end
+
+procedure disable_forcefield begin
+
+   script_overrides;
+
+   if (local_var(LVAR_DisableFF) == 1) then begin
+      display_mstr(107);
+   end
+   else begin
+
+      if (
+         is_success(roll_vs_skill(dude_obj, SKILL_TRAPS, -50)) or
+         is_success(roll_vs_skill(dude_obj, SKILL_SCIENCE, -50)) or
+         is_success(roll_vs_skill(dude_obj, SKILL_REPAIR, -50))
+      ) then begin
+         call disable_ff;
+      end else begin
+         display_mstr(107);
+      end
+   end
+
+   call Node999;
+
+end
+
+procedure stop_countdown begin
+
+   script_overrides;
+   display_mstr(105);
+
+   call Node999;
+
+end
+
+procedure random_hack begin
+
+   script_overrides;
+
+   if (local_var(LVAR_DisableFF) == 1) then begin
+      display_mstr(105);
+   end
+   else begin
+      if (is_success(do_check(dude_obj, STAT_lu, -8))) then begin
+         call disable_ff;
+      end else begin
+         display_mstr(105);
+      end
+   end
+
+   call Node999;
+
+end
+
+procedure disable_ff begin
+
+   display_mstr(106);
+   give_xp(500);
+   destroy_object(obj_blocking_tile(18289, dude_elevation, BLOCKING_TYPE_BLOCK));
+   destroy_object(obj_blocking_tile(18288, dude_elevation, BLOCKING_TYPE_BLOCK));
+   destroy_object(obj_blocking_tile(18287, dude_elevation, BLOCKING_TYPE_BLOCK));
+   destroy_object(obj_blocking_tile(18286, dude_elevation, BLOCKING_TYPE_BLOCK));
+   destroy_object(obj_blocking_tile(18285, dude_elevation, BLOCKING_TYPE_BLOCK));
+   set_local_var(LVAR_DisableFF, 1);
+
+end
+
+//xxxxxxxxxxxxxxxxxxxx

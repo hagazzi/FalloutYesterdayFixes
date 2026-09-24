@@ -1,0 +1,6 @@
+#define LOCKED_STATUS                STATE_ACTIVE
+#define DOOR_KEY_PID                 PID_ARMORY_CODES_KEYCARD
+#define Lock_Bonus                   (-120)
+#define CLOSE_STATUS                 STATE_DOOR_CLOSE
+
+#include "..\generic\zimtldor.ssl"

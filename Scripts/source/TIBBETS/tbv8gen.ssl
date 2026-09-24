@@ -1,0 +1,124 @@
+#include "..\headers\define.h"
+#include "..\headers\vault8.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\command.h"
+
+procedure start;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure look_at_p_proc;
+procedure timed_event_p_proc;
+procedure map_enter_p_proc;
+procedure fix_the_generator;
+
+/* Defines */
+#define NAME                  SCRIPT_TBV8GEN
+
+procedure start begin
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   display_mstr(100);
+end
+
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(101);
+end
+
+procedure use_skill_on_p_proc begin
+
+ if (action_being_used == SKILL_REPAIR) then begin
+      if(map_var(MVAR_POWER) == 0) then begin
+         script_overrides;
+         variable roll := roll_vs_skill(source_obj, SKILL_REPAIR, -33);
+         if(is_success(roll)) then begin
+            if(is_critical(roll)) then begin
+            fadeout(600);
+            game_time_advance(ONE_GAME_HOUR);
+            fadein(600);
+            give_xp(300);
+            display_mstr(102);
+         end else begin
+            give_xp(250);
+            display_mstr(103);
+         end
+         call fix_the_generator;
+
+       end else begin
+         if(is_critical(roll)) then begin
+            critter_dmg(source_obj, random(15, 30), DMG_electrical);
+            display_mstr(104);
+         end
+         else begin
+            display_mstr(105);
+         end
+      end
+   end
+ end
+end
+
+procedure use_obj_on_p_proc begin //Added missing Tool Kit usage
+
+   variable Tool:=obj_pid(obj_being_used_with);
+
+   if (Tool == PID_SUPER_TOOL_KIT) or (Tool == PID_MULTI_TOOL) then begin
+      script_overrides;
+      if(map_var(MVAR_POWER) == 0) then begin
+         //if dude is lucky, technical or has tech/repair trait it is critical success
+         if (
+            (dude_luck >= 7) or
+            (dude_skill(SKILL_REPAIR) >= 50) or
+            has_fake_trait(TRAIT_tech_wizard)
+         ) then begin
+            fadeout(600);
+            game_time_advance(ONE_GAME_HOUR);
+            fadein(600);
+            give_xp(300);
+            display_mstr(102);
+         end else begin
+            give_xp(250);
+            display_mstr(103);
+         end
+         call fix_the_generator;
+      end
+   end
+end
+
+procedure timed_event_p_proc begin
+   if (fixed_param == 1) then begin
+      if (
+         obj_on_screen(self_obj) and
+         (not(anim_busy(self_obj))) and
+         (not(combat_is_initialized)) and
+         (self_elevation == dude_elevation)
+      ) then begin
+
+         if(map_var(MVAR_POWER) == 1) then begin
+            reg_anim_begin();
+            reg_anim_animate_forever(self_obj, ANIM_stand);
+            reg_anim_end();
+         end
+      end
+      else if (combat_is_initialized) then begin
+         reg_anim_clear(self_obj);
+      end
+      add_timer_event(self_obj, 1, 1);
+   end
+end
+
+procedure map_enter_p_proc begin
+   add_timer_event(self_obj, 1, 1);
+end
+
+procedure fix_the_generator begin
+   set_map_var(MVAR_POWER, 1);
+   set_global_var(GVAR_QUEST_FIX_GENERATOR, 2);
+   play_sfx("genstart");
+   Full_Light;
+   display_msg(message_str(SCRIPT_VAULT8, 111));
+   play_sfx("SIMTEK12");
+end

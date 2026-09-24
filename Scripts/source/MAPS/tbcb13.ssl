@@ -1,0 +1,120 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\tbcb13.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_TBCB13
+
+variable ffsfx;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if (map_first_run) then begin
+      override_map_start_hex(9114, 0, 2);
+      game_ui_disable;
+      set_map_var(MVAR_CellIntro, 1);
+   end
+   else if ((map_var(MVAR_CellIntro) == 2) and (not(is_loading_game))) then begin
+      deactivate_shader(global_var(GVAR_SHADER_ID));
+      destroy_obj_inven(dude_obj);
+      give_pid_qty(dude_obj, PID_BALL_AND_CHAIN, 1)
+      give_pid_qty(dude_obj, PID_LIL_PIP_3000, 1)
+      give_pid_qty(dude_obj, PID_LIGHTER, 1)
+      give_pid_qty(dude_obj, PID_EMPTY_WATER_FLASK, 1)
+      override_map_start_hex(9114, 0, 2);
+      set_pipboy_available(1);
+      call inc_code(13);
+      display_mstr(100);
+
+      if(dude_is_vegetable) then begin
+         dude_floater_good(101);
+      end else if(dude_is_stupid) then begin
+         dude_floater_good(102);
+      end else if(dude_is_smart) then begin
+         dude_floater_good(103);
+      end else if(dude_is_genius) then begin
+         dude_floater_good(104);
+      end else begin
+         dude_floater_good(105);
+      end
+   end
+   else if(
+      not(is_loading_game) and
+      (global_var(GVAR_ARGOS_PRISON) == 1)
+      ) then begin
+      display_mstr(106);
+      override_map_start_hex(9114, 0, 2);
+      set_global_var(GVAR_ARGOS_PRISON, 0);
+      set_global_var(GVAR_ARGOS_LEAVE, 0);
+      set_global_var(GVAR_ARGOS_TALKER, 0);
+      set_global_var(GVAR_ROBOHUNTER_TALKER, 0);
+      set_global_var(GVAR_ARGOS_WARNING, 0);
+   end
+
+   fadein(1);
+   Tibbets_Lighting;
+   set_global_var(GVAR_LOAD_MAP_INDEX, 0);
+
+   ffsfx := play_sfall_sound("data\\sound\\SFX\\ffield.wav", 1);
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_TIBBETS), 1);
+end
+
+procedure map_update_p_proc begin
+
+   if (map_var(MVAR_CellIntro) == 1) then begin
+      set_map_var(MVAR_CellIntro, 2);
+      add_timer_event(self_obj, game_ticks(1), 1);
+      add_timer_event(self_obj, game_ticks(4), 2);
+      add_timer_event(self_obj, game_ticks(6), 3);
+   end
+
+   Tibbets_Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ffsfx);
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end
+
+procedure timed_event_p_proc begin
+   if (fixed_param == 1) then begin
+      if(dude_is_stupid) then begin
+         dude_floater_sick(108);
+      end else begin
+         dude_floater_sick(107);
+      end
+   end
+   else if (fixed_param == 2) then begin
+      reg_anim_clear(dude_obj);
+      reg_anim_begin();
+      reg_anim_animate(dude_obj, ANIM_magic_hands_middle, -1);
+      reg_anim_end();
+   end
+   else if (fixed_param == 3) then begin
+      game_ui_enable;
+      load_map("v8ext", 0);
+   end
+end

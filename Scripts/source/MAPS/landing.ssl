@@ -1,0 +1,651 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\vehicles.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+procedure setup_endgame_slideshow;
+
+/* Defines */
+#define NAME                  SCRIPT_LANDING
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if not(is_loading_game) then begin
+      if map_first_run then begin
+         game_time_advance_hour(1200);
+         Lighting;
+         override_map_start_hex(21118, 0, 3);
+         display_mstr(100);
+         mark_on_map(AREA_LANDING_SITE)
+         gfade_out(1);
+         call setup_endgame_slideshow;
+         endgame_slideshow;
+//         endgame_movie;
+      end else begin
+         call Check_Create_Vehicle;
+
+         fadein(1);
+         Lighting;
+      end
+   end
+
+end
+
+procedure map_update_p_proc begin
+   Lighting;
+end
+
+procedure map_exit_p_proc begin
+   fadeout(1);
+end
+
+procedure setup_endgame_slideshow begin
+
+   // Some rep stuff
+   set_global_var(GVAR_LIVING_LEGEND, 1);
+   set_global_var(GVAR_ASTRONAUT, 1);
+
+   // just in case, we don't want to trigger special Tibbets CODE ending
+   if (global_var(GVAR_CODE_STATUS) == 100) then begin
+      set_global_var(GVAR_CODE_STATUS, 99);
+   end
+
+/*
+      #####
+      # Dog Town
+      #####
+      462, 1, 609, NAR_DT2
+      463, 1, 610, NAR_DT3
+      464, 1, 611, NAR_DT4
+      465, 1, 612, NAR_DT5
+      466, 1, 613, NAR_DT6
+      467, 1, 614, NAR_DT7
+      468, 1, 615, NAR_DT8
+      */
+
+      if (global_var(GVAR_BOMB001_M6_TARGET) == AREA_DOGTOWN) then begin
+         set_global_var(GVAR_ENDGAME_MOVIE_DT1, 1);
+         remove_from_map(AREA_DOGTOWN)
+         mark_on_map(AREA_DOGTOWN_NUKED)
+      end
+
+      /*
+      #####
+      # Boulder Dome
+      #####
+      414, 1, 441, NAR_BD2
+      415, 1, 442, NAR_BD3
+      416, 1, 443, NAR_BD4
+      417, 1, 444, NAR_BD5
+      418, 1, 445, NAR_BD6
+      419, 1, 446, NAR_BD7
+      420, 1, 447, NAR_BD8
+      421, 1, 448, NAR_BD9
+      422, 1, 449, NAR_BD10
+*/
+
+      if (global_var(GVAR_BOMB001_M6_TARGET) == AREA_BOULDER_DOME) then begin
+         set_global_var(GVAR_ENDGAME_MOVIE_BD1, 1);
+         remove_from_map(AREA_BOULDER_DOME)
+         mark_on_map(AREA_BOULDER_DOME_NUKED)
+      end
+
+/*
+      #####
+      # Blackfoot
+      #####
+      423, 1, 454, NAR_BF1
+      424, 1, 455, NAR_BF2
+      425, 1, 456, NAR_BF3
+      426, 1, 457, NAR_BF4
+*/
+      if (global_var(GVAR_BOMB001_M1_TARGET) == AREA_BLACKFOOT) then begin
+         set_global_var(GVAR_ENDGAME_MOVIE_BF5, 1);
+         remove_from_map(AREA_BLACKFOOT)
+         mark_on_map(AREA_BLACKFOOT_NUKED)
+      end
+/*
+
+      #####
+      # Hangdogs
+      #####
+      477, 1, 624, NAR_HNGD1
+      478, 1, 625, NAR_HNGD2
+
+      #####
+      # Twin Mothers
+      #####
+      513, 1, 656, NAR_TM1
+      514, 1, 657, NAR_TM2
+      516, 1, 659, NAR_TM4
+*/
+   if (global_var(GVAR_BOMB001_M7_TARGET) == AREA_TWIN_MOTHERS) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_TM3, 1);
+      remove_from_map(AREA_TWIN_MOTHERS)
+      mark_on_map(AREA_TWIN_MOTHERS_NUKED)
+   end
+/*
+
+      #####
+      # Ouroboros
+      #####
+      502, 1, 647, NAR_OU1
+      503, 1, 648, NAR_OU2
+      504, 1, 649, NAR_OU3
+*/
+
+    if (global_var(GVAR_BOMB001_M4_TARGET) == AREA_OUROBOROS) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_OU4, 1);
+      remove_from_map(AREA_OUROBOROS)
+      mark_on_map(AREA_OUROBOROS_NUKED)
+    end
+
+/*
+      #####
+      # Mesa Verde
+      #####
+      487, 1, 634, NAR_MV2
+      488, 1, 635, NAR_MV3
+
+*/
+    if (global_var(GVAR_BOMB001_M7_TARGET) == AREA_MESA_VERDE) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_MV5, 1);
+      remove_from_map(AREA_MESA_VERDE)
+      mark_on_map(AREA_MESA_VERDE_NUKED)
+    end
+    else if (global_var(GVAR_CIPHERS_DEAD) == 1) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_MV4, 1);
+    end
+    else if (global_var(GVAR_QUEST_DEAL_WITH_HOUNDS) <= DEAL_WITH_HOUNDS_SIEGE) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_MV1, 1);
+    end
+    else if (global_var(GVAR_QUEST_DEAL_WITH_HOUNDS) > DEAL_WITH_HOUNDS_SIEGE) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_MV6, 1);
+    end
+/*
+      #####
+      # The Nursery
+      #####
+      495, 1, 640, NAR_TN1
+      496, 1, 641, NAR_TN2
+      497, 1, 642, NAR_TN3
+      499, 1, 644, NAR_TN4
+      500, 1, 645, NAR_TN6
+*/
+
+    if (global_var(GVAR_BOMB001_M5_TARGET) == AREA_THE_NURSERY) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_TN5, 1);
+      remove_from_map(AREA_THE_NURSERY)
+      mark_on_map(AREA_THE_NURSERY_NUKED)
+    end
+/*
+      #####
+      # Maxson Bunker
+      #####
+      438, 1, 593, NAR_BOS1
+      441, 1, 595, NAR_BOS3
+      444, 1, 598, NAR_BOS6
+
+*/
+   if (global_var(GVAR_BOMB001_M8_TARGET) == AREA_BROTHERHOOD_OF_STEEL) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_BOS2, 1);
+      remove_from_map(AREA_BROTHERHOOD_OF_STEEL)
+      mark_on_map(AREA_BROTHERHOOD_OF_STEEL_NUKED)
+   end
+   else if(global_var(GVAR_BROTHERHOOD_DEAD) == 1) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_BOS5, 1);
+   end
+   else if (global_var(GVAR_COS_KILLED) < 20) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_BOS4, 1);
+   end
+
+
+/*
+      #####
+      # New Canaan
+      #####
+*/
+   if (global_var(GVAR_BOMB001_M2_TARGET) == AREA_NEW_CANAAN) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_NC1, 1);
+      remove_from_map(AREA_NEW_CANAAN)
+      mark_on_map(AREA_NEW_CANAAN_NUKED)
+   end
+/*
+      #####
+      # Jericho
+      #####
+      479, 1, 626, NAR_JR1
+      480, 1, 627, NAR_JR2
+      482, 1, 629, NAR_JR4
+      483, 1, 630, NAR_JR5
+      484, 1, 631, NAR_JR6
+*/
+    if (global_var(GVAR_BOMB001_M2_TARGET) == AREA_JERICHO) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_JR3, 1);
+      remove_from_map(AREA_JERICHO)
+      mark_on_map(AREA_JERICHO_NUKED)
+    end
+
+/*
+      #####
+      # Burham Springs
+      #####
+      448, 1, 599, NAR_BS1
+      450, 1, 600, NAR_BS2
+      451, 1, 601, NAR_BS3
+      452, 1, 602, NAR_BS4
+      454, 1, 603, NAR_BS5
+
+*/
+    if (global_var(GVAR_BOMB001_M2_TARGET) == AREA_BURHAM_SPRINGS) then begin
+       set_global_var(GVAR_ENDGAME_MOVIE_BS6, 1);
+       remove_from_map(AREA_BURHAM_SPRINGS)
+       mark_on_map(AREA_BURHAM_SPRINGS_NUKED)
+    end
+/*
+
+      #####
+      # Hoover Dam
+      #####
+      471, 1, 618, NAR_HD1
+
+*/
+      if (global_var(GVAR_BOMB001_M1_TARGET) == AREA_HOOVER_DAM) then begin
+         set_global_var(GVAR_ENDGAME_MOVIE_HD2, 1);
+         remove_from_map(AREA_HOOVER_DAM)
+         mark_on_map(AREA_HOOVER_DAM_NUKED)
+      end
+      else if (ncr_bos_war_ended and (global_var(GVAR_DODGE_ASSASSINATED) == 0) and (global_var(GVAR_BROTHERHOOD_DEAD) == 0)) then begin
+         set_global_var(GVAR_ENDGAME_MOVIE_HD3, 1);
+      end
+      else if (not(ncr_bos_war_ended) and (global_var(GVAR_DODGE_ASSASSINATED) == 0) and (global_var(GVAR_BROTHERHOOD_DEAD) == 0)) then begin
+         set_global_var(GVAR_ENDGAME_MOVIE_HD4, 1);
+      end
+      else if ((global_var(GVAR_HD_SMOOCH_STATUS) == SMOOCH_HIGH) or (global_var(GVAR_HD_SMOOCH_STATUS) == SMOOCH_ALL)) then begin
+         set_global_var(GVAR_ENDGAME_MOVIE_HD6, 1);
+      end
+      else begin
+         set_global_var(GVAR_ENDGAME_MOVIE_HD5, 1);
+      end
+
+/*
+
+
+      #####
+      # Fort Abandon
+      #####
+      432, 1, 463, NAR_FA1
+      433, 1, 464, NAR_FA2
+      434, 1, 465, NAR_FA3
+      435, 1, 466, NAR_FA4
+*/
+
+    if (global_var(GVAR_BOMB001_M8_TARGET) == AREA_FORT_ABANDON) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_FA5, 1);
+      remove_from_map(AREA_FORT_ABANDON)
+      mark_on_map(AREA_FORT_ABANDON_NUKED)
+    end
+    else if (global_var(GVAR_FA_EMPTY) == 1) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_FA2, 1);
+    end
+    else if (
+      (global_var(GVAR_BOMB001_M8_TARGET) != AREA_BROTHERHOOD_OF_STEEL) and
+      (global_var(GVAR_BROTHERHOOD_DEAD) == 0) and
+      (global_var(GVAR_COS_KILLED) >= 20) and
+      (global_var(GVAR_QUEST_GET_RID_OF_CAESARS_LEGION) != 2)
+      ) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_FA3, 1);
+   end
+   else if (global_var(GVAR_QUEST_GET_RID_OF_CAESARS_LEGION) != 2) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_FA4, 1);
+   end
+   else if (global_var(GVAR_QUEST_GET_RID_OF_CAESARS_LEGION) == 2) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_FA1, 1);
+   end
+
+
+/*
+
+      #####
+      # The Reservation
+      #####
+      506, 1, 651, NAR_TR1
+      508, 1, 653, NAR_TR3
+      511, 1, 654, NAR_TR4
+      512, 1, 655, NAR_TR5
+*/
+
+    if (global_var(GVAR_BOMB001_M3_TARGET) == AREA_THE_RESERVATION) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_TR2, 1);
+      remove_from_map(AREA_THE_RESERVATION)
+      mark_on_map(AREA_THE_RESERVATION_NUKED)
+    end
+/*
+      #####
+      # Bloomfield
+      #####
+      428, 1, 459, NAR_BL1
+      430, 1, 461, NAR_BL3
+      431, 1, 462, NAR_BL4
+*/
+    if (global_var(GVAR_BOMB001_M1_TARGET) == AREA_BLOOMFIELD) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_BL2, 1);
+      remove_from_map(AREA_BLOOMFIELD)
+      mark_on_map(AREA_BLOOMFIELD_NUKED)
+    end
+
+/*
+      #####
+      # Grand Canyon
+      #####
+      469, 1, 616, NAR_GC1
+      470, 1, 617, NAR_GC2
+      541, 1, 684, NAR_PC2
+
+      #####
+      # Circle Junction
+      #####
+
+      458, 1, 605, NAR_CJ1
+      459, 1, 606, NAR_CJ2
+*/
+    if (global_var(GVAR_BOMB001_M8_TARGET) == AREA_CIRCLE_JUNCTION) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_CJ3, 1);
+      remove_from_map(AREA_CIRCLE_JUNCTION)
+      mark_on_map(AREA_CIRCLE_JUNCTION_NUKED)
+    end
+/*
+
+
+      #####
+      # Subnode: ODYSSEUS
+      #####
+*/
+
+// Always set
+   set_global_var(GVAR_ENDGAME_MOVIE_ODY, 1);
+
+/*
+      #####
+      # Subnode: ARGOS
+      #####
+
+*/
+
+// Always set
+// TODO Maybe make it optional if player destroys 100 units
+set_global_var(GVAR_ENDGAME_MOVIE_ARGOS, 1);
+
+/*
+
+      #####
+      # Subnode: Badger
+      #####
+      517, 1, 660, NAR_ABDGR
+
+      #####
+      # Subnode: Bear (Animal)
+      #####
+      518, 1, 661, NAR_ABEAR
+
+      #####
+      # Subnode: Alexandra
+      #####
+
+*/
+         if (
+            (global_var(GVAR_KNOW_ALEXANDRA) == 1) and
+            (global_var(GVAR_ALEXANDRA_DEAD) != 1)
+         ) then begin
+            set_global_var(GVAR_ENDGAME_MOVIE_ALEX, 1);
+         end
+
+/*
+      #####
+      # Subnode: Alkaya
+      #####
+      520, 1, 663, NAR_ALKYA
+
+      #####
+      # Subnode: Lynx
+      #####
+      521, 1, 664, NAR_ALYNX
+
+      #####
+      # Subnode: Ashley
+      #####
+      522, 1, 665, NAR_ASHLY
+
+      #####
+      # Subnode: Wolf
+      #####
+      523, 1, 666, NAR_AWOLF
+
+      #####
+      # Subnode: BAJAR
+      #####
+      524, 1, 667, NAR_BAJAR
+
+      #####
+      # Subnode: Bear
+      #####
+      525, 1, 668, NAR_BEAR
+
+      #####
+      # Subnode: Beatrice
+      #####
+*/
+   if (
+      (global_var(GVAR_KNOW_BEATRICE) == 1) and
+      (global_var(GVAR_BEATRICE_DEAD) != 1)
+   ) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_BEATR, 1);
+   end
+
+/*
+      #####
+      # Subnode: Battery
+      #####
+      528, 1, 671, NAR_BTTRY
+
+      #####
+      # Subnode: Christine
+      #####
+      529, 1, 672, NAR_CHRIS
+
+      #####
+      # Subnode: CRB-S
+      #####
+      530, 1, 673, NAR_CRBS
+
+      #####
+      # Subnode: Devil Dog
+      #####
+      531, 1, 674, NAR_DDOG
+
+      #####
+      # Subnode: Hanged Man
+      #####
+*/
+
+   if (
+      Hanged_Man_In_Party and
+      (global_var(GVAR_HANGED_MAN_LIVES) > 0)
+   ) then begin
+      set_global_var(GVAR_ENDGAME_MOVIE_HMAN, 1);
+   end
+
+/*
+      #####
+      # Subnode: Jackhammer
+      #####
+      533, 1, 676, NAR_JACKH
+
+      #####
+      # Subnode: Job
+      #####
+      534, 1, 677, NAR_JOB
+
+      #####
+      # Subnode: Kurisu
+      #####
+      535, 1, 678, NAR_KURIS
+
+      #####
+      # Subnode: Mark
+      #####
+*/
+
+      if (
+         (global_var(GVAR_MET_MARK_GANNON) == 1) and
+         (global_var(GVAR_MARK_DEAD) != 1)
+      ) then begin
+         set_global_var(GVAR_ENDGAME_MOVIE_MARK, 1);
+      end
+
+/*
+
+      #####
+      # Subnode: Measles
+      #####
+      536, 1, 679, NAR_MEASL
+
+      #####
+      # Subnode: Otto
+      #####
+      537, 1, 680, NAR_OTTO
+
+      #####
+      # Subnode: S.O.R.-1000 Alpha
+      #####
+      538, 1, 681, NAR_SORA
+
+      #####
+      # Subnode: Xian
+      #####
+      539, 1, 682, NAR_XIAN
+
+      #####
+      # Prisoner
+      #####
+      540, 1, 683, NAR_PC1
+
+*/
+
+// Always set
+set_global_var(GVAR_ENDGAME_MOVIE_PC7, 1);
+set_global_var(GVAR_ENDGAME_MOVIE_PC8, 1);
+
+// Did we follow Presper or not?
+if (global_var(GVAR_FOLLOW_PRESPER) == 1) then begin
+   set_global_var(GVAR_ENDGAME_MOVIE_PC4, 1);
+end
+else begin
+   set_global_var(GVAR_ENDGAME_MOVIE_PC3, 1);
+end
+
+// Did we destroy or make it impossible for the Battalion leadership to escape B.O.M.B.-001?
+if (
+   (global_var(GVAR_BOMB001_SIF_COUNTDOWN) != 0) or
+   (global_var(GVAR_BOMB001_OVERLOAD_COUNTDOWN) != 0) or
+   (global_var(GVAR_BOMB001_BLOW_UP_COUNTDOWN) != 0)
+) then begin
+   set_global_var(GVAR_ENDGAME_MOVIE_PC5, 1);
+end
+
+// Pure evil Prisoner
+if (has_rep_demon_spawn and has_rep_berserker and has_rep_childkiller) then begin
+   set_global_var(GVAR_ENDGAME_MOVIE_PC6, 1);
+end
+
+// Bonus Fallout cities
+// Target ID of 0 means we don't track these cities in MAPS.H so we need to check for missile disabled-enabled status too
+
+/*
+#####
+# Subnode: Shady Sands
+#####
+*/
+if ((global_var(GVAR_BOMB001_M3_TARGET) == 0) and (global_var(GVAR_BOMB001_M3_DISABLED) == 0)) then begin
+   set_global_var(GVAR_ENDGAME_MOVIE_NCRN, 1);
+end
+
+/*
+#####
+# Subnode: New Reno
+#####
+*/
+if ((global_var(GVAR_BOMB001_M4_TARGET) == 0) and (global_var(GVAR_BOMB001_M4_DISABLED) == 0)) then begin
+   set_global_var(GVAR_ENDGAME_MOVIE_NRN, 1);
+end
+
+/*
+#####
+# Subnode: Flagstaff
+#####
+*/
+if ((global_var(GVAR_BOMB001_M4_TARGET) == 999) and (global_var(GVAR_BOMB001_M4_DISABLED) == 0)) then begin
+   set_global_var(GVAR_ENDGAME_MOVIE_FLG, 1);
+end
+
+/*
+#####
+# Subnode: Vault City
+#####
+*/
+if ((global_var(GVAR_BOMB001_M5_TARGET) == 0) and (global_var(GVAR_BOMB001_M5_DISABLED) == 0)) then begin
+   set_global_var(GVAR_ENDGAME_MOVIE_VCN, 1);
+end
+
+/*
+#####
+# Subnode: Lost Hills Bunker
+#####
+*/
+if ((global_var(GVAR_BOMB001_M7_TARGET) == 0) and (global_var(GVAR_BOMB001_M7_DISABLED) == 0)) then begin
+   set_global_var(GVAR_ENDGAME_MOVIE_BOSN, 1);
+end
+
+end

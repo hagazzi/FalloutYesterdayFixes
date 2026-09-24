@@ -1,0 +1,126 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\tibbets.h"
+
+#define NAME                    SCRIPT_TBFEEDMC
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+procedure description_p_proc;
+procedure eat;
+
+#define LVAR_hacked              (8)
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+   if (script_action == description_proc) then begin
+      call description_p_proc();
+   end
+   else begin
+      if (script_action == use_proc) then begin
+         call use_p_proc();
+      end
+      else if (script_action == use_skill_on_proc) then begin
+          call use_skill_on_p_proc();
+      end
+   end
+end
+
+procedure description_p_proc begin
+end
+
+procedure eat begin
+   fadeout(1);
+   game_time_advance(ONE_GAME_HOUR);
+   fadein(1);
+   dude_floater_good_rand(106, 110);
+end
+
+procedure use_p_proc begin
+   script_overrides;
+
+   if (local_var(LVAR_hacked) == 1) then begin
+      if (dude_can_eat(huge_meal)) then begin
+       dude_eat_food(huge_meal);
+       call eat;
+      end else begin
+         dude_floater(111);
+         give_pid_qty(dude_obj, PID_NUTRIENT_PASTE, 2)
+      end
+   end
+   else if (global_var(GVAR_HOLODISK_FEEDING_MACHINE) == 1) then begin
+      if (dude_can_eat(large_meal)) then begin
+         dude_eat_food(large_meal);
+         call eat;
+      end else begin
+         dude_floater(111);
+         give_pid_qty(dude_obj, PID_NUTRIENT_PASTE, 1)
+      end
+   end
+   else if(global_var(GVAR_HOLODISK_FEEDING_MACHINE) == 0) then begin
+      dude_floater_afraid(105);
+   end
+end
+
+procedure use_obj_on_p_proc begin
+
+end
+
+procedure use_skill_on_p_proc begin
+
+    if ((local_var(LVAR_hacked) == 0) and
+      (action_being_used == SKILL_REPAIR)) then begin
+
+       if(is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -25))) then begin
+      script_overrides;
+          fadeout(1);
+    game_time_advance(ONE_GAME_HOUR);
+    fadein(1);
+      display_mstr(102);
+      set_local_var(LVAR_hacked, 1);
+       give_xp(5);
+   end else begin
+        fadeout(1);
+        game_time_advance(ONE_GAME_HOUR);
+        fadein(1);
+   end
+end
+end

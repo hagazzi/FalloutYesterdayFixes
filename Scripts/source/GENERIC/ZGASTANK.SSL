@@ -1,0 +1,91 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Gas Tank
+        Location:
+        Description:
+
+        Log:
+
+           Created:
+
+           Updated:
+*/
+
+/* Include Files */
+
+#include "..\headers\define.h"
+//#include "..\headers\<TownName.h>"
+
+#define NAME                    SCRIPT_ZGASTANK
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+//#include "..\headers\ModReact.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure damage_p_proc;
+procedure use_p_proc;
+
+/* Local variables which do not need to be saved between map changes. */
+
+procedure start begin
+end
+
+procedure damage_p_proc begin
+   script_overrides;
+
+   if (
+      (weapon_dmg_type(target_obj) != DMG_normal_dam) and
+      (weapon_dmg_type(target_obj) != DMG_emp)
+   ) then begin
+
+      variable collateral;
+
+      set_obj_visibility(self_obj, 1);
+      play_sfx("whn1xxx" + random(1, 2));
+
+      variable vfx := create_object(83886135, self_tile, self_elevation);
+      obj_set_light_level(vfx, 100, 8);
+      reg_anim_combat_check(0);
+      reg_anim_begin();
+      reg_anim_animate_and_hide(vfx, ANIM_stand, 0);
+      reg_anim_destroy(vfx);
+      reg_anim_end();
+
+      // Critters
+      variable collaterals := objects_in_radius(self_tile, 3, self_elevation, OBJ_TYPE_CRITTER);
+      foreach (collateral in collaterals) begin
+         if (not(is_critter_dead(collateral))) then begin
+            // Someone is pissed because we hurt them
+            if (
+               obj_in_party(source_obj) and
+               not(is_critter_dead(source_obj)) and
+               (has_trait(TRAIT_OBJECT, collateral, OBJECT_TEAM_NUM) != has_trait(TRAIT_OBJECT, source_obj, OBJECT_TEAM_NUM)) and
+               obj_can_see_obj(collateral, source_obj)
+               ) then begin
+               attack_setup(collateral, source_obj);
+            end
+            critter_dmg(collateral, random(15, 30), (DMG_explosion BWOR DMG_NOANIMATE));
+         end
+      end
+
+      // Scenery -- TODO: NOT POSSIBLE AT THE MOMENT
+      /*collaterals := objects_in_radius(self_tile, 3, self_elevation, OBJ_TYPE_SCENERY);
+      foreach (collateral in collaterals) begin
+         critter_dmg(collateral, random(15, 30), (DMG_explosion BWOR DMG_NOANIMATE));
+      end*/
+
+      destroy_object(self_obj);
+   end
+end
+
+procedure use_p_proc begin
+   script_overrides;
+   set_obj_visibility(self_obj, 1);
+   give_pid_qty(source_obj, PID_GAS_TANK, 1)
+   destroy_object(self_obj);
+end

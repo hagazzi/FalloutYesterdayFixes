@@ -1,0 +1,1130 @@
+/*
+
+        Name:           Sonny Black Hogg
+        Location:       CotC
+        Description:    Dialogue for Sonny Black
+
+           Created: 07/10/2020 19:53:41
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TG /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBSONNYB
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+procedure ShareHard;
+procedure BeatDown;
+procedure SabotagePers;
+procedure KillHard;
+procedure KillMed;
+procedure ShareEasy;
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Noquest;
+procedure Preparing;
+procedure WantNews;
+procedure GreetingBad;
+procedure WhoIs;
+procedure LongStory;
+procedure Insist;
+procedure MoreStory;
+procedure MoreStory2;
+procedure MoreStory3;
+procedure Pushed;
+procedure ProveSelf;
+procedure GreatHaul;
+procedure TalkPete;
+procedure SonnyRedSales;
+procedure SonnyRedSabotage;
+procedure SonnyRedSabotage2;
+procedure SonnyRedMurderPlot;
+procedure SonnyRedMurderPlot2;
+procedure Sabotage0;
+procedure Sabotage1;
+procedure Sabotage2;
+procedure NoSabotage;
+procedure Magik;
+procedure Kill1;
+procedure Kill2;
+procedure Kill3;
+procedure Kill4;
+procedure NoKill;
+procedure RiseAbove;
+procedure BeatUp;
+procedure NoBeating;
+procedure SabotagedSonnyRed;
+procedure KilledSonnyRed;
+procedure NotTalking;
+procedure InChargeHonest;
+procedure InChargeKilled;
+procedure JointCharge;
+procedure SonnyRedInCharge;
+procedure NoPersuade;
+procedure NoPersuade2;
+procedure TalkedPeteRound;
+procedure TalkedPeteRound2;
+procedure TalkedPeteRound3;
+procedure TalkedShare;
+procedure RealiseTooFar;
+procedure Waiting;
+procedure RewardGood;
+procedure RewardBad;
+procedure GiveFish;
+procedure NoFish;
+procedure WantsShare;
+procedure WillShare;
+procedure AskShare;
+procedure AskSharePrep;
+procedure Noshare;
+procedure ShareKill;
+procedure ShareProve;
+procedure BackHaul;
+procedure Nohaul;
+procedure NoHaulHappened;
+procedure BothSuccess;
+procedure SonnyRedSucks;
+procedure Ultimatum;
+procedure PeteDeadNice;
+procedure PeteDeadMean;
+procedure Stupid;
+procedure Stupid2;
+procedure Stupid3;
+procedure Stupid4;
+procedure Stupid5;
+procedure Stupid6;
+procedure StupidAgain;
+procedure Node999_sabotage;
+procedure Node999_kill;
+procedure Node999_kill_both;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Pissed                 (8)
+#define LVAR_Know_Murder_Plot                 (9)
+#define LVAR_Reward                 (10)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+call new_plague_check(self_obj, LVAR_Herebefore);
+
+if(global_var(GVAR_SONNY_BLACK_DEAD) == 1) then
+   destroy_object(self_obj);
+
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude) and obj_is_visible_flag(self_obj)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+
+
+// Node Switcher
+//
+// Notes:
+//
+// option 2 occurs once only, the first time conditions are met and Sonny Black is talked to
+
+
+   //Quest not started or quest resolved without killing Sonny Red
+   if(local_var(LVAR_Herebefore) == 0) then
+      call Noquest;
+   else if (local_var(LVAR_Pissed) == 1) then
+      call StupidAgain;
+   //Convinced Joe to give Sonny Black the company, before Sonny Black sets off
+   else if(global_var(GVAR_SONNY_BLACK_SHERIFF) == 1) and (global_var(GVAR_QUEST_GREATEST_HAUL) == 0) then
+      call TalkedPeteRound3;
+   //Quest resolved by killing Sonny Red
+   else if(global_var(GVAR_SONNY_RED_DEAD) == 1) then
+      call GreetingBad;
+  //Sonny Black knows of sabotage plot, but player has not suggested a solution
+   else if(global_var(GVAR_QUEST_SABOTAGE_SONNYB) == 1) then
+      call SonnyRedSabotage2;
+   //Sonny Black knows of murder plot, but player has not suggested a solution
+   else if(global_var(GVAR_QUEST_MURDER_SONNYB) == 1) then
+      call SonnyRedMurderPlot2;
+   //Greatest Haul ever triggered, but Sonny Black doesn't know Sonny Red's plans
+   else if(global_var(GVAR_QUEST_GREATEST_HAUL) == 1) then
+      call Preparing;
+   //Sonny Black is back from the trip - sabotaged
+   else if(global_var(GVAR_QUEST_GREATEST_HAUL) == 2) and (global_var(GVAR_QUEST_SABOTAGE_SONNYB) == 2) then
+      call Nohaul;
+   //Sonny Black is back from the trip - successful
+   else if(global_var(GVAR_QUEST_GREATEST_HAUL) == 2) then
+      call BackHaul;
+   //Anything else - quest in progress
+   else
+      call WantNews;
+
+       gSay_End;
+       end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+ inc_neutral_critter
+set_global_var(GVAR_SONNY_BLACK_DEAD, 1);
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure ShareHard begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -20);
+if is_success(roll_temp) then
+begin
+call WillShare;
+end
+else begin
+call Noshare;
+ end
+end
+
+procedure BeatDown begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -30);
+if is_success(roll_temp) then
+begin
+call BeatUp;
+end
+else begin
+call NoBeating;
+ end
+end
+
+procedure SabotagePers begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -15);
+if is_success(roll_temp) then
+begin
+call Sabotage1;
+end
+else begin
+call NoSabotage;
+ end
+end
+
+procedure KillHard begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -40);
+if is_success(roll_temp) then
+begin
+call Kill4;
+end
+else begin
+call NoKill;
+ end
+end
+
+procedure KillMed begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -20);
+if is_success(roll_temp) then
+begin
+call Kill4;
+end
+else begin
+call NoKill;
+ end
+end
+
+procedure ShareEasy begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -10);
+if is_success(roll_temp) then
+begin
+call WillShare;
+end
+else begin
+call Noshare;
+ end
+end
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+// Node Noquest
+//
+// Notes:
+//
+// 1) available if greatest haul not triggered \
+
+procedure Noquest
+begin
+Reply(230);
+if(global_var(GVAR_QUEST_GREATEST_HAUL) == 0) then
+NOption(231,WhoIs,4);
+if(global_var(GVAR_SONNY_BLACK_SHERIFF) == 1) and (global_var(GVAR_SONNY_RED_SHERIFF) == 0) and (global_var(GVAR_SHERIFF_SHARE_SPOT) == 0) then
+NOption(232,InChargeHonest,4);
+if(global_var(GVAR_SONNY_BLACK_SHERIFF) == 0) and (global_var(GVAR_SONNY_RED_SHERIFF) == 1) and (global_var(GVAR_SHERIFF_SHARE_SPOT) == 0) then
+NOption(232,SonnyRedInCharge,4);
+if(global_var(GVAR_SHERIFF_SHARE_SPOT) == 1) then
+NOption(232,JointCharge,4);
+NOption(233,Node999,4);
+NOption(234,Stupid,-3);
+NOption(235,Stupid4,-3);
+NOption(236,Node999,-3);
+end
+
+// Node Preparing
+//
+// Notes:
+//
+// 1) if salesman of the year is active. 2) if sabotage Sonny Black is active 3) if murder Sonny Black is active 4) if Sonny Red has agreed to share
+
+procedure Preparing
+begin
+Reply(260);
+if(global_var(GVAR_QUEST_SALESMAN) == 1) then
+NOption(261,SonnyRedSales,4);
+if(global_var(GVAR_QUEST_SABOTAGE_SONNYB) == 1) then
+NOption(262,SonnyRedSabotage,4);
+if(global_var(GVAR_QUEST_MURDER_SONNYB) == 1) then
+NOption(263,SonnyRedMurderPlot,4);
+if(global_var(GVAR_SONNYB_SHARE) == 1) then
+NOption(264,WantsShare,4);
+NOption(265,AskSharePrep,4);
+NOption(266,Node999,4);
+end
+
+// Node WantNews
+//
+// Notes:
+//
+// 1) if Joe gives company/no actions by player 2) if Joe gives company - Sonny Black's brought in haul 3) if Joe agrees to sharing 4) if Joe died due to ultimatum 5) if Sonny Red's persuaded to share/no actions by player 6) if Sonny Red agrees as murder plots revealed 7) if Sonny Red agrees as both proved selves 8) if both murder plots triggered 9)if Joe not persuaded/no actions taken 10) if Joe not persuaded/Sonny Black has brought haul 11) if sabotage Sonny Black is active 12) if kill Sonny Black is active 13) if sabotage committed 14) if Sonny Red killed
+
+procedure WantNews
+begin
+Reply(290);
+if(global_var(GVAR_SONNY_BLACK_SHERIFF) == 1) then
+NOption(291,TalkedPeteRound,4);
+if(global_var(GVAR_SONNY_BLACK_SHERIFF) == 1) and (global_var(GVAR_QUEST_GREATEST_HAUL) == 2) then
+NOption(291,TalkedPeteRound2,4);
+if(global_var(GVAR_SHERIFF_SHARE_SPOT) == 1) then
+NOption(292,TalkedShare,4);
+if(global_var(GVAR_CARMICHAEL_DEAD) == 1) then
+NOption(293,Ultimatum,4);
+if(global_var(GVAR_SONNYR_SHARE_SPOT) == 1) then
+NOption(294,WantsShare,4);
+if(global_var(GVAR_SONNYR_SHARE_SPOT) == 1) and (global_var(GVAR_QUEST_MURDER_SONNYB) == 1) and (local_var(LVAR_Know_Murder_Plot) == 1) then
+NOption(295,ShareEasy,4);
+if(global_var(GVAR_SONNYR_SHARE_SPOT) == 1) and (global_var(GVAR_QUEST_GREATEST_HAUL) == 2) and (global_var(GVAR_QUEST_SALESMAN) == 2) then
+NOption(296,ShareEasy,4);
+if(global_var(GVAR_SONNYR_SHARE_SPOT) == 1) and (global_var(GVAR_QUEST_MURDER_SONNYB) == 1) and (global_var(GVAR_QUEST_MURDER_SONNYR) == 1) then
+NOption(297,RealiseTooFar,4);
+if(global_var(GVAR_SHERIFF_SHARE_SPOT) == 0)  and (global_var(GVAR_QUEST_GREATEST_HAUL) == 0) then
+NOption(298,NoPersuade,4);
+if(global_var(GVAR_SHERIFF_SHARE_SPOT) == 0) and (global_var(GVAR_QUEST_GREATEST_HAUL) == 2) then
+NOption(299,NoPersuade2,4);
+if(global_var(GVAR_QUEST_SABOTAGE_SONNYB) == 1) then
+NOption(262,SonnyRedSabotage,4);
+if(global_var(GVAR_QUEST_MURDER_SONNYB) == 1) then
+NOption(263,SonnyRedMurderPlot,4);
+if(global_var(GVAR_QUEST_SABOTAGE_SONNYR) == 2) then
+NOption(300,SabotagedSonnyRed,4);
+if(global_var(GVAR_SONNY_RED_DEAD) == 1) then
+NOption(301,KilledSonnyRed,4);
+NOption(302,Node999,4);
+end
+
+// Node GreetingBad
+//
+// Notes:
+//
+// Option 2 available if player hasn't received reward yet\
+
+procedure GreetingBad
+begin
+Reply(320);
+NOption(232,InChargeKilled,4);
+if(global_var(GVAR_SONNY_BLACK_SHERIFF) == 1) and (local_var(LVAR_Reward) == 0) then
+NOption(321,RewardBad,4);
+NOption(322,GiveFish,4);
+NOption(322,NoFish,4);
+NOption(323,Node999,4);
+end
+
+procedure WhoIs
+begin
+Reply(350);
+NOption(351,LongStory,4);
+NOption(352,Node999,4);
+end
+
+procedure LongStory
+begin
+Reply(380);
+NOption(381,Insist,4);
+NOption(382,Node999,4);
+end
+
+procedure Insist
+begin
+Reply(410);
+NOption(411,MoreStory,4);
+NOption(412,Node999,4);
+end
+
+procedure MoreStory
+begin
+Reply(440);
+NOption(441,MoreStory2,4);
+NOption(442,Node999,4);
+end
+
+procedure MoreStory2
+begin
+Reply(470);
+NOption(471,MoreStory3,4);
+NOption(472,Node999,4);
+end
+
+procedure MoreStory3
+begin
+Reply(500);
+NOption(501,Pushed,4);
+NOption(502,Node999,4);
+end
+
+procedure Pushed
+begin
+Reply(530);
+NOption(531,ProveSelf,4);
+NOption(532,TalkPete,4);
+NOption(533,AskShare,4);
+NOption(534,Node999,4);
+end
+
+procedure ProveSelf
+begin
+Reply(560);
+NOption(561,GreatHaul,4);
+NOption(562,TalkPete,4);
+NOption(563,AskShare,4);
+NOption(564,Node999,4);
+end
+
+// Node GreatHaul
+//
+// Notes:
+//
+// Both options start "The Greatest Haul Ever"
+
+procedure GreatHaul
+begin
+Reply(590);
+set_global_var(GVAR_QUEST_GREATEST_HAUL, 1);
+NOption(591,Node999,4);
+NOption(592,Node999,4);
+end
+
+procedure TalkPete
+begin
+Reply(620);
+NOption(621,Node999,4);
+NOption(622,ProveSelf,4);
+end
+
+procedure SonnyRedSales
+begin
+Reply(650);
+NOption(651,RiseAbove,4);
+NOption(652,Sabotage0,4);
+NOption(653,Kill1,4);
+end
+
+procedure SonnyRedSabotage
+begin
+Reply(680);
+NOption(681,RiseAbove,4);
+NOption(682,Sabotage2,4);
+NOption(683,BeatDown,4);
+NOption(684,Kill2,4);
+end
+
+procedure SonnyRedSabotage2
+begin
+Reply(710);
+NOption(711,RiseAbove,4);
+NOption(682,Sabotage2,4);
+NOption(683,BeatDown,4);
+NOption(684,Kill2,4);
+end
+
+procedure SonnyRedMurderPlot
+begin
+Reply(740);
+NOption(741,Kill3,4);
+NOption(742,BeatUp,4);
+NOption(743,Node999,4);
+end
+
+procedure SonnyRedMurderPlot2
+begin
+Reply(770);
+NOption(741,Kill3,4);
+NOption(742,BeatUp,4);
+NOption(743,Node999,4);
+end
+
+procedure Sabotage0
+begin
+Reply(800);
+NOption(801,SabotagePers,4);
+NOption(802,Node999,4);
+end
+
+procedure Sabotage1
+begin
+Reply(830);
+NOption(831,Magik,4);
+NOption(832,Node999,4);
+end
+
+procedure Sabotage2
+begin
+Reply(860);
+NOption(831,Magik,4);
+NOption(832,Node999,4);
+end
+
+procedure NoSabotage
+begin
+Reply(890);
+NOption(891,Node999,4);
+end
+
+// Node Magik
+//
+// Notes:
+//
+// Option 1 sets "Sabotage SonnyRed" on
+
+procedure Magik
+begin
+Reply(920);
+NOption(921,Node999_sabotage,4);
+NOption(922,Node999,4);
+end
+
+procedure Node999_sabotage begin
+   set_global_var(GVAR_QUEST_SABOTAGE_SONNYR, 1);
+   call Node999;
+end
+
+procedure Kill1
+begin
+Reply(950);
+NOption(951,KillHard,4);
+NOption(952,Node999,4);
+end
+
+procedure Kill2
+begin
+Reply(980);
+NOption(981,KillMed,4);
+NOption(982,Node999,4);
+end
+
+// Node Kill3
+//
+// Notes:
+//
+// Option 1 sets "Kill SonnyRed" on, gives player a puffer fish
+
+procedure Kill3
+begin
+Reply(1010);
+NOption(921,Node999_kill,4);
+NOption(1011,Node999,4);
+end
+
+procedure Node999_kill begin
+   give_pid_qty(dude_obj, PID_FRAG_GRENADE, 1)
+   set_global_var(GVAR_QUEST_MURDER_SONNYR, 1);
+   call Node999;
+end
+
+
+// Node Kill4
+//
+// Notes:
+//
+// Option 1 sets "Kill SonnyRed" on, gives player a puffer fish
+
+procedure Kill4
+begin
+Reply(1040);
+NOption(921,Node999_kill,4);
+NOption(922,Node999,4);
+end
+
+procedure NoKill
+begin
+Reply(1070);
+NOption(1071,Node999,4);
+end
+
+procedure RiseAbove
+begin
+Reply(1100);
+NOption(1101,Node999,4);
+NOption(1102,Node999,4);
+end
+
+// Node BeatUp
+//
+// Notes:
+//
+// Option 1 triggers scripted sequence where Sonny Black and SonnyRed argue, fight and kill each other
+
+procedure BeatUp
+begin
+Reply(1130);
+NOption(1131,Node999_kill_both,4);
+NOption(1132,Node999,4);
+end
+
+procedure Node999_kill_both begin
+   fadeout(1);
+   set_obj_visibility(self_obj, 1);
+   fadein(1);
+   set_global_var(GVAR_SONNY_BLACK_DEAD, 1);
+   set_global_var(GVAR_SONNY_RED_DEAD, 1);
+   call Node999;
+end
+
+procedure NoBeating
+begin
+Reply(1160);
+NOption(1161,Node999,4);
+end
+
+procedure SabotagedSonnyRed
+begin
+Reply(1190);
+NOption(1191,Node999,4);
+end
+
+procedure KilledSonnyRed
+begin
+Reply(1220);
+NOption(1221,Node999,4);
+end
+
+procedure NotTalking
+begin
+Reply(1250);
+NOption(1221,Node999,4);
+end
+
+// Node InChargeHonest
+//
+// Notes:
+//
+// Option 1 available if player hasn't received reward.\
+
+procedure InChargeHonest
+begin
+Reply(1280);
+if(global_var(GVAR_SONNY_BLACK_SHERIFF) == 1) and (local_var(LVAR_Reward) == 0)  then
+NOption(321,RewardGood,4);
+NOption(1281,GiveFish,4);
+NOption(1281,NoFish,4);
+NOption(1282,Node999,4);
+end
+
+procedure InChargeKilled
+begin
+Reply(1310);
+NOption(1311,Node999,4);
+NOption(1312,Node999,4);
+end
+
+// Node JointCharge
+//
+// Notes:
+//
+// 1) if player hasn't received reward\
+
+procedure JointCharge
+begin
+Reply(1340);
+if(global_var(GVAR_SONNY_BLACK_SHERIFF) == 1) and (local_var(LVAR_Reward) == 0)  then
+NOption(1341,RewardGood,4);
+NOption(322,GiveFish,4);
+NOption(322,NoFish,4);
+NOption(1282,Node999,4);
+end
+
+procedure SonnyRedInCharge
+begin
+Reply(1370);
+NOption(1371,Node999,4);
+NOption(1372,Node999,4);
+end
+
+procedure NoPersuade
+begin
+Reply(1400);
+NOption(1401,AskShare,4);
+NOption(1402,ProveSelf,4);
+NOption(1282,Node999,4);
+end
+
+procedure NoPersuade2
+begin
+Reply(1430);
+NOption(1431,Node999,4);
+end
+
+procedure TalkedPeteRound
+begin
+Reply(1460);
+NOption(1461,Node999,4);
+end
+
+procedure TalkedPeteRound2
+begin
+Reply(1490);
+NOption(1491,Node999,4);
+end
+
+procedure TalkedPeteRound3
+begin
+Reply(1520);
+NOption(1461,Node999,4);
+end
+
+procedure TalkedShare
+begin
+Reply(1550);
+NOption(1551,Node999,4);
+end
+
+procedure RealiseTooFar
+begin
+Reply(1580);
+NOption(1581,ShareKill,4);
+NOption(1582,Node999,4);
+end
+
+procedure Waiting
+begin
+Reply(1610);
+NOption(1611,Node999,4);
+end
+
+procedure RewardGood
+begin
+   set_local_var(LVAR_Reward, 1);
+   give_pid_qty(dude_obj, PID_RAD_X, 3)
+Reply(1640);
+NOption(1641,Node999,4);
+end
+
+procedure RewardBad
+begin
+   set_local_var(LVAR_Reward, 1);
+   give_pid_qty(dude_obj, PID_RAD_X, 1)
+Reply(1670);
+NOption(1641,Node999,4);
+end
+
+procedure GiveFish
+begin
+Reply(1700);
+NOption(1641,Node999,4);
+end
+
+procedure NoFish
+begin
+Reply(1730);
+NOption(1731,Node999,4);
+end
+
+procedure WantsShare
+begin
+Reply(1760);
+NOption(1761,ShareEasy,4);
+NOption(1762,Node999,4);
+end
+
+// Node WillShare
+//
+// Notes:
+//
+// Option 1 sets variable that both brothers have agreed to share on
+
+procedure WillShare
+begin
+   set_global_var(GVAR_SONNYB_SHARE, 1);
+Reply(1790);
+NOption(1791,Node999,4);
+end
+
+procedure AskShare
+begin
+Reply(1820);
+NOption(1821,Node999,4);
+NOption(1822,Node999,4);
+end
+
+procedure AskSharePrep
+begin
+Reply(1850);
+NOption(1821,Node999,4);
+NOption(1851,Node999,4);
+end
+
+procedure Noshare
+begin
+Reply(1880);
+NOption(1881,Node999,4);
+NOption(1882,Node999,4);
+end
+
+procedure ShareKill
+begin
+Reply(1910);
+NOption(1911,Node999,4);
+NOption(1912,Node999,4);
+end
+
+// Node ShareProve
+//
+// Notes:
+//
+// 1) if Sonny Red has agreed to share company
+
+procedure ShareProve
+begin
+Reply(1940);
+if(global_var(GVAR_SONNYR_SHARE_SPOT) == 1) then
+NOption(1941,ShareEasy,4);
+NOption(1942,Node999,4);
+NOption(1912,Node999,4);
+end
+
+// Node BackHaul
+//
+// Notes:
+//
+// 1) if Sonny Red is sabotaged 2) if Sonny Red got salesman of the year
+
+procedure BackHaul
+begin
+Reply(1970);
+if(global_var(GVAR_QUEST_SABOTAGE_SONNYR) == 2) then
+NOption(1971,SonnyRedSucks,4);
+if(global_var(GVAR_QUEST_SALESMAN) == 2) then
+NOption(1972,BothSuccess,4);
+NOption(1973,Node999,4);
+NOption(1974,Node999,4);
+end
+
+procedure Nohaul
+begin
+Reply(2000);
+NOption(2001,NoHaulHappened,4);
+NOption(2002,Node999,4);
+end
+
+// Node NoHaulHappened
+//
+// Notes:
+//
+// 1) if Sonny Red got salesman of the year
+
+procedure NoHaulHappened
+begin
+Reply(2030);
+if(global_var(GVAR_QUEST_SALESMAN) == 2) then
+NOption(2031,Node999,4);
+NOption(2032,Node999,4);
+end
+
+procedure BothSuccess
+begin
+Reply(2060);
+NOption(2061,ShareProve,4);
+NOption(2062,Node999,4);
+end
+
+procedure SonnyRedSucks
+begin
+Reply(2090);
+NOption(2091,Node999,4);
+NOption(2092,Node999,4);
+end
+
+procedure Ultimatum
+begin
+Reply(2120);
+NOption(2121,PeteDeadNice,4);
+NOption(2122,PeteDeadMean,4);
+end
+
+procedure PeteDeadNice
+begin
+Reply(2150);
+NOption(2151,Node999,4);
+end
+
+procedure PeteDeadMean
+begin
+Reply(2180);
+NOption(2181,Node999,4);
+NOption(2182,Node999,4);
+end
+
+procedure Stupid
+begin
+if (dude_is_male) then Reply(2210); else
+if (dude_is_female) then Reply(2211);
+NOption(2212,Stupid2,-3);
+NOption(2213,Stupid4,-3);
+NOption(2214,Node999,-3);
+end
+
+// Node Stupid2
+//
+// Notes:
+//
+// option 1 sets Sonny Black annoyed with player
+
+procedure Stupid2
+begin
+Reply(2240);
+NOption(2241,Stupid3,-3);
+NOption(2242,Stupid4,-3);
+NOption(2243,Node999,-3);
+end
+
+procedure Stupid3
+begin
+   set_local_var(LVAR_Pissed, 1);
+Reply(2270);
+NOption(2271,Node999,-3);
+NOption(2272,Node999,-3);
+end
+
+procedure Stupid4
+begin
+Reply(2300);
+NOption(2301,Stupid5,-3);
+NOption(2302,Stupid,-3);
+NOption(2303,Node999,-3);
+end
+
+// Node Stupid5
+//
+// Notes:
+//
+// option 1 sets Sonny Black annoyed with player
+
+procedure Stupid5
+begin
+Reply(2330);
+NOption(2331,Stupid6,-3);
+NOption(2332,Stupid,-3);
+NOption(2333,Node999,-3);
+end
+
+procedure Stupid6
+begin
+   set_local_var(LVAR_Pissed, 1);
+Reply(2360);
+NOption(2361,Node999,-3);
+NOption(2243,Node999,-3);
+end
+
+procedure StupidAgain
+begin
+Reply(2390);
+NOption(2391,Node999,-3);
+NOption(2392,Node999,-3);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

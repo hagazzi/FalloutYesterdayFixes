@@ -1,0 +1,38 @@
+#include "..\headers\define.h"
+#include "..\HEADERS\command.h"
+
+procedure start;
+procedure description_p_proc;
+procedure map_enter_p_proc;
+procedure use_p_proc;
+procedure map_update_p_proc;
+
+#define NAME                    SCRIPT_TBV8DRI
+
+import variable vault_dri_ptr;
+
+procedure start begin
+   vault_dri_ptr = self_obj;
+end
+
+procedure description_p_proc begin
+   display_mstr(100);
+end
+
+procedure map_enter_p_proc begin
+   vault_dri_ptr := self_obj;
+   if (obj_is_open(self_obj)) then begin
+      use_obj(self_obj);
+   end
+end
+
+procedure use_p_proc begin
+   if (source_obj == dude_obj) then begin
+      script_overrides;
+      call description_p_proc;
+   end
+end
+
+procedure map_update_p_proc begin
+   vault_dri_ptr = self_obj;
+end

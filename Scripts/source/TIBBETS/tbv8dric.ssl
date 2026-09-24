@@ -1,0 +1,23 @@
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+procedure start;
+procedure spatial_p_proc;
+
+import variable vault_dri_ptr;
+
+#define LVAR_Close                (0)
+
+/* Defines */
+#define NAME                  SCRIPT_TBV8DRIC
+
+procedure start begin
+end
+
+procedure spatial_p_proc begin
+   if ((local_var(LVAR_Close) == 0) and obj_is_open(vault_dri_ptr)) then begin
+      display_mstr(100);
+      obj_close(vault_dri_ptr);
+      set_local_var(LVAR_Close, 1);
+   end
+end

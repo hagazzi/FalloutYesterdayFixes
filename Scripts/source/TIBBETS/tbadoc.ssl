@@ -1,0 +1,139 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+#include "..\headers\tbmed1.h"
+
+#define NAME                    SCRIPT_TBADOC
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+
+#define LVAR_hacked              (8)
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_obj_on_p_proc begin
+
+end
+
+procedure use_skill_on_p_proc begin
+
+variable lck := dude_luck;
+
+    if (
+      (action_being_used == SKILL_REPAIR)) then begin
+
+if(local_var(LVAR_hacked) == 1) then begin
+        return;
+    end
+
+       if(is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -25))) then begin
+      script_overrides;
+          fadeout(1);
+    game_time_advance(ONE_GAME_HOUR);
+    fadein(1);
+   display_mstr(100);
+      set_local_var(LVAR_hacked, 1);
+       give_xp(25);
+   end else begin
+        fadeout(1);
+        game_time_advance(ONE_GAME_HOUR);
+        fadein(1);
+   end
+end else if (action_being_used == SKILL_SCIENCE) then begin
+
+    script_overrides;
+    fadeout(1);
+   game_time_advance(game_ticks((11 - dude_endurance) * ONE_GAME_HOUR));
+    fadein(1);
+
+    if(map_var(MVAR_AutoDoc) == 1) then begin
+      call HealParty;
+      critter_uninjure(dude_obj, DAM_BLIND);
+      critter_uninjure(dude_obj, DAM_CRIP_LEG_LEFT);
+      critter_uninjure(dude_obj, DAM_CRIP_LEG_RIGHT);
+      critter_uninjure(dude_obj, DAM_CRIP_ARM_LEFT);
+      critter_uninjure(dude_obj, DAM_CRIP_ARM_RIGHT);
+      display_mstr(101);
+    end else begin
+      if(local_var(LVAR_hacked) == 0) then begin
+         critter_dmg(source_obj, 100, DMG_fire);
+      end
+      else begin
+         if(dude_is_stupid or dude_is_idiot_savant) then begin
+            float_msg(source_obj, mstr(102), FLOAT_COLOR_NORMAL);
+         end else begin
+            float_msg(source_obj, mstr(103), FLOAT_COLOR_NORMAL);
+         end
+      end
+    end
+
+if (has_skill(dude_obj,SKILL_DOCTOR)>=100) and (has_skill(dude_obj,SKILL_SCIENCE)>=75) then begin
+
+
+   if(local_var(LVAR_hacked) == 1) then begin
+      lck += 4;
+   end
+
+   if( lck == 1 and not(has_trait(TRAIT_PERK, dude_obj, PERK_alcohol_hp_neg2_perk))) then begin
+      critter_add_trait( dude_obj, TRAIT_PERK, PERK_autodoc_hp_neg2_perk, 1 );
+      display_mstr(104);
+   end
+
+   if (lck >= 2 and lck <= 5  and not(has_trait(TRAIT_PERK, dude_obj, PERK_alcohol_hp_neg1_perk))) then begin
+      critter_add_trait( dude_obj, TRAIT_PERK, PERK_autodoc_hp_neg1_perk, 1 );
+      display_mstr(105);
+   end
+
+   if (lck >= 6 and lck <= 9  and not(has_trait(TRAIT_PERK, dude_obj, PERK_autodoc_hp_bonus1_perk))) then begin
+      critter_add_trait( dude_obj, TRAIT_PERK, PERK_autodoc_hp_bonus1_perk, 1 );
+      display_mstr(106);
+   end
+
+    if( lck == 10  and not(has_trait(TRAIT_PERK, dude_obj, PERK_autodoc_hp_bonus2_perk))) then begin
+      critter_add_trait( dude_obj, TRAIT_PERK, PERK_autodoc_hp_bonus2_perk, 1 );
+      display_mstr(107);
+   end
+
+end
+end
+end

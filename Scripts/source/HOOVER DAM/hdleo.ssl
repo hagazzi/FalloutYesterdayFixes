@@ -1,0 +1,437 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Greeter Gate Guard
+        Location: Hoover Dam
+        Description:
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created:
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+//#include "..\headers\<TownName.h>"
+
+#define NAME                    SCRIPT_HDLEO
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_HOOVER_DAM)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+#include "..\headers\party.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure node2000;
+procedure node999;
+procedure node001;
+procedure node002;
+procedure node003;
+procedure node004;
+procedure node005;
+procedure node006;
+procedure node007;
+procedure node008;
+procedure node009;
+procedure node010;
+procedure node011;
+procedure node012;
+procedure node013;
+procedure node014;
+procedure node015;
+procedure node016;
+procedure node017;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+procedure map_update_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Greet                      (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+import variable Leo_Ptr;
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+   Leo_Ptr = self_obj;
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+
+   Leo_Ptr = self_obj;
+
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM, TEAM_HOOVER_DAM);
+
+   if (local_var(LVAR_Greet) == 0) then
+      add_timer_event(self_obj,game_ticks(1),1);
+
+end
+
+procedure map_update_p_proc begin
+   Leo_Ptr = self_obj;
+end
+
+procedure timed_event_p_proc
+begin
+   if (fixed_param == 1 and (local_var(LVAR_Greet) == 0) and not(is_loading_game)) then begin
+      if (self_can_see_dude and self_can_speak) then begin
+         if (dude_has_ncr_connection) then
+            floater_good(184);
+         else begin
+            if (dude_is_armed) then
+               obj_floater_type(self_obj, mstr(180) + " " + mstr(185), FLOAT_COLOR_BAD);
+            else
+               floater_good(180);
+         end
+         set_local_var(LVAR_Greet, 1);
+      end
+      else begin
+         add_timer_event(self_obj,game_ticks(1),1);
+      end
+   end
+end
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+   if ( ( (local_var(LVAR_Hostile) == 2) or ( global_var( GVAR_ENEMY_HOOVER_DAM ) == 1 ) ) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+   end
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+   if (obj_in_party(source_obj)) then begin
+      set_local_var(LVAR_Personal_Enemy,1);
+      set_global_var( GVAR_ENEMY_HOOVER_DAM, 1 );
+   end
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc
+begin
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+   start_gdialog(NAME, self_obj, 4, -1, -1);
+   gsay_start;
+   if (dude_is_stupid) then
+      call node2000;
+   else
+      call node001;
+
+   gsay_end;
+   end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if local_var( LVAR_Herebefore)==0 then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+
+// START DIALOGUE.
+
+procedure node001
+begin
+if (local_var ( LVAR_Herebefore) == 1) then begin
+   if (dude_has_ncr_connection) then
+      floater_good(184);
+   else
+      floater_good(180);
+end
+else begin
+   if (night) then
+      Reply(mstr(200) + mstr(182));
+   else
+      Reply(mstr(200) + mstr(181));
+end
+NOption(201,node002,4);
+NOption(202,node003,4);
+NOption(203,node004,4);
+if local_var( LVAR_Herebefore) == 0 then
+NOption(205,node005,4);
+NOption(204,node999,4);
+end
+
+procedure node002
+begin
+Reply(220);
+NOption(221,node007,4);
+NOption(222,node008,4);
+NOption(223,node009,4);
+NOption(224,node010,4);
+BOption(225,node011,4);
+NOption(261,node017,4);
+NOption(226,node999,4);
+
+end
+
+
+procedure node007
+begin
+Reply(227);
+NOption(228,node012,4);
+NOption(229,node999,4);
+
+end
+
+
+procedure node012
+begin
+Reply(230);
+BOption(231,node003,4);
+NOption(232,node003,4);
+NOption(233,node002,4);
+
+end
+
+
+procedure node008
+begin
+Reply(234);
+NOption(236,node003,4);
+NOption(237,node002,4);
+NOption(235,node999,4);
+
+end
+
+
+procedure node009
+begin
+Reply(238);
+NOption(239,node013,4);
+NOption(240,node014,4);
+
+end
+
+
+procedure node013
+begin
+Reply(241);
+GOption(242,node015,4);
+NOption(243,node003,4);
+
+end
+
+
+procedure node015
+begin
+Reply(247);
+GOption(248,node003,4);
+NOption(249,node016,4);
+NOption(250,node002,4);
+BOption(251,node999,4);
+
+end
+
+
+procedure node016
+begin
+Reply(252);
+NOption(253,node003,4);
+NOption(255,node002,4);
+BOption(254,node999,4);
+
+end
+
+
+procedure node014
+begin
+Reply(244);
+NOption(246,node015,4);
+NOption(245,node999,4);
+
+end
+
+
+procedure node010
+begin
+Reply(256);
+NOption(257,node003,4);
+NOption(258,node002,4);
+NOption(259,node999,4);
+
+end
+
+
+procedure node011
+begin
+Reply(260);
+BOption(218,node999,4);
+BOption(219,Node998,4);
+
+end
+
+
+procedure node003
+begin
+   if(dude_has_ncr_connection or ncr_bos_war_ended) then
+      Reply(210);
+   else if (night) then begin
+      Reply(183);
+      BOption(214,node998,4);
+   end
+   else
+      Reply(217);
+
+GOption(211,node999,4);
+
+end
+
+
+procedure node004
+begin
+Reply(206);
+NOption(208,node003,4);
+NOption(209,node002,4);
+NOption(207,node999,4);
+
+end
+
+
+procedure node005
+begin
+set_local_var( LVAR_Herebefore,1);
+Reply(212);
+NOption(213,node003,4);
+BOption(214,node006,4);
+NOption(215,node002,4);
+NOption(216,node999,4);
+
+end
+
+
+procedure node006
+begin
+Reply(217);
+BOption(218,node999,4);
+BOption(219,Node998,4);
+
+end
+
+procedure node017
+begin
+Reply(262);
+NOption(255,node002,4);
+NOption(211,Node999,4);
+end
+
+// END DIALOGUE.
+
+procedure node999
+begin
+   set_local_var( LVAR_Herebefore,1);
+end
+
+// START DIALOGUE (DUMB PLAYER).
+
+procedure node2000
+begin
+Reply(150);
+NOption(216,node999,-3);
+
+end
+//xxxxxxxxxxxxxxxxxxxx

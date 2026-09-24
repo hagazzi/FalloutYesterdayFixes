@@ -1,0 +1,3 @@
+# Grammar pass done
+
+{100}{}{As you make your way up to the summit of Mesa Verde, a sweeping view unfolds, revealing rugged canyons and the distant mountain ranges. Suddenly, a nearby cry for help pierces the wind.}

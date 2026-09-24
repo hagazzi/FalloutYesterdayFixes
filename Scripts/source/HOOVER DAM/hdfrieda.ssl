@@ -1,0 +1,599 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name:  Frieda Van Graff
+        Location: NA
+        Description:
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created:
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_HDFRIEDA
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_HOOVER_DAM)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+#include "..\HEADERS\hdam.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure node028a;
+procedure node028;
+procedure node027;
+procedure node026;
+procedure node025;
+procedure node024;
+procedure node023;
+procedure node022;
+procedure node021;
+procedure node999;
+procedure node998;
+procedure node018;
+procedure node005;
+procedure node020;
+procedure node019;
+procedure node017;
+procedure node011;
+procedure node016;
+procedure node015;
+procedure node010;
+procedure node014;
+procedure node009;
+procedure node013;
+procedure node008;
+procedure node012;
+procedure node007;
+procedure node004;
+procedure node003;
+procedure node006;
+procedure node002;
+procedure node001;
+
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Traded_Weapons             (7)
+#define LVAR_Pistol                     (8)
+#define LVAR_Stealing_Stuff             (9)
+
+#define XL70E3                           (1)
+#define MAGNUM                         (2)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM, TEAM_HOOVER_DAM);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET, AI_STORE_OWENER);
+
+   if( not( is_loading_game ) ) then begin
+
+      if (local_var(LVAR_Pistol) == 0) then begin
+         set_local_var(LVAR_Pistol, pick_one(XL70E3, MAGNUM));
+      end
+
+      if(day) then begin
+         if( not( self_visible ) ) then
+         begin
+            set_obj_visibility(self_obj, 0);
+            add_timer_event( self_obj, game_ticks( random( 30, 40 )), 1 );
+         end
+      end
+      else begin
+         if( self_visible ) then
+            set_obj_visibility(self_obj, 1);
+      end
+   end
+end
+
+procedure timed_event_p_proc begin
+   if (self_can_speak) then begin
+      if (fixed_param == 5) then begin
+         dialogue_system_enter;
+      end else if (fixed_param == 6) then begin
+         if (local_var(LVAR_Stealing_Stuff) < 3) then begin
+            floater_bad_rand(254,255);
+            inc_local_var(LVAR_Stealing_Stuff);
+         end else begin
+            call Node998;
+            floater_bad(256);
+         end
+      end
+   end
+end
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ( ( (local_var(LVAR_Hostile) == 2) or ( global_var( GVAR_ENEMY_HOOVER_DAM ) == 1 ) ) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+   end
+
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+      set_local_var(LVAR_Personal_Enemy,1);
+      set_global_var( GVAR_ENEMY_HOOVER_DAM, 1 );
+   end
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc
+begin
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   variable frieda_stuff, temp_stuff;
+
+   frieda_stuff := tile_contains_pid_obj(33151, self_elevation, PID_FOOTLOCKER_RUSTY_LEFT);
+   temp_stuff := tile_contains_pid_obj(33551, self_elevation, PID_FOOTLOCKER_RUSTY_LEFT);
+
+   move_obj_inven_to_obj(self_obj,temp_stuff);
+   move_obj_inven_to_obj(frieda_stuff,self_obj);
+
+   call set_idiot_savant_int;
+
+   start_gdialog(NAME, self_obj, 4, HEAD_FRIEDA_VAN_GRAFF, -1);
+   gSay_Start;
+
+   if (dude_is_stupid) then
+      call node024;
+   else
+      call node001;
+
+   gSay_End;
+   end_dialogue;
+
+   call restore_idiot_savant_int;
+
+   move_obj_inven_to_obj(self_obj,frieda_stuff);
+   move_obj_inven_to_obj(temp_stuff,self_obj);
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+   set_frieda_dead;
+/* Increment the aligned critter counter*/
+   inc_neutral_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+       display_mstr(185);
+   else
+       display_mstr(178);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(184);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile value so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+
+end
+
+//Dialog created by Fallout Script Editor (by jargo)
+//Look at www.fmc.prv.pl
+//~~~~~~~~~~~~~~~~ FSE STARTS HERE
+// Procedure starting a conversation.
+
+procedure node001
+begin
+
+Reply(pick_one(100, 113));
+
+NOption(101,node002,4);
+NOption(102,node003,4);
+NOption(103,node004,4);
+NOption(104,node005,4);
+NOption(105,node999,4);
+
+end
+
+procedure node001b
+begin
+
+Reply(195);
+
+NOption(101,node002,4);
+NOption(102,node003,4);
+NOption(103,node004,4);
+NOption(104,node005,4);
+NOption(105,node999,4);
+
+end
+
+// Answer to: I'm looking to buy weaponry.
+
+procedure node002
+begin
+Reply(random(106,108));
+NOption(109,node006,4);
+
+end
+// Answer to: [barter]
+
+procedure node006
+begin
+   if (global_var(GVAR_QUEST_HOOVER_PEACE) == QUEST_COMPLETED) then
+      gdialog_mod_barter(-30);
+   else
+      gdialog_barter;
+
+Reply(110);
+NOption(111,node001b,4);
+NOption(112,node999,4);
+NOption(177,node999,-3);
+
+end
+// Answer to: I'm looking to sell weaponry.
+
+procedure node003
+begin
+Reply(random(115,117));
+NOption(109,node006,4);
+
+end
+// Answer to: What would you endorse?
+
+procedure node004
+begin
+Reply(118);
+NOption(119,node007,4);
+NOption(120,node008,4);
+NOption(121,node009,4);
+NOption(122,node011,4);
+NOption(123,node010,4);
+NOption(124,node001b,4);
+
+end
+// Answer to: I want to kill enemies at long range.
+
+procedure node007
+begin
+Reply(125);
+NOption(126,node006,4);
+NOption(127,node012,4);
+NOption(128,node004,4);
+NOption(129,node999,4);
+
+end
+// Answer to: Tell me more about laser rifles.
+
+procedure node012
+begin
+Reply(130);
+NOption(131,node006,4);
+NOption(132,node001b,4);
+
+end
+// Answer to: I always felt that a good backup weapon is import
+
+procedure node008
+begin
+Reply(133);
+NOption(126,node006,4);
+NOption(128,node004,4);
+NOption(134,node013,4);
+
+end
+// Answer to: Do you have such a weapon here?
+
+procedure node013
+begin
+Reply(135);
+NOption(131,node006,4);
+NOption(136,node001b,4);
+
+end
+// Answer to: There's nothing to beat a good old machinegun, I
+
+procedure node009
+begin
+Reply(137);
+NOption(126,node006,4);
+NOption(128,node004,4);
+NOption(138,node014,4);
+
+end
+// Answer to: But it's not as cool, it's incapable of burst-fir
+
+procedure node014
+begin
+Reply(139);
+NOption(140,node006,4);
+NOption(141,node001b,4);
+
+end
+// Answer to: Just love the smell of enemies burning. Tell me a
+
+procedure node010
+begin
+Reply(142);
+NOption(143,node006,4);
+NOption(128,node004,4);
+NOption(144,node009,4);
+NOption(145,node015,4);
+NOption(129,node999,4);
+
+end
+// Answer to: Tell me more about the Vindicator.
+
+procedure node015
+begin
+Reply(179);
+NOption(180,node016,4);
+
+end
+// Answer to: [more]
+
+procedure node016
+begin
+Reply(181);
+NOption(182,node006,4);
+NOption(183,node001b,4);
+
+end
+// Answer to:
+
+procedure node011
+begin
+Reply(146);
+NOption(147,node006,4);
+NOption(128,node006,4);
+if (local_var(LVAR_Traded_Weapons) == 0) then
+   NOption(148,node017,4);
+NOption(129,node999,4);
+
+end
+// Answer to: Is there anything beyond that?
+
+procedure node017
+begin
+if (local_var( LVAR_Pistol)==XL70E3) then
+   Reply(156);
+else
+   Reply(161);
+
+NOption(157,node001b,4);
+if ((local_var( LVAR_Pistol)==XL70E3) and (dude_item_count(PID_INDEPENDENT) > 0)) then
+   NOption(158,node019,4);
+else if ((local_var( LVAR_Pistol)==MAGNUM) and (dude_item_count(PID_50_MAGNUM_REVOLVER) > 0)) then
+   NOption(162,node020,4);
+
+end
+// Answer to: You mean the Magnum I have right here? He
+
+procedure node019
+begin
+
+   set_local_var(LVAR_Traded_Weapons, 1);
+   remove_pid_qty(dude_obj, PID_INDEPENDENT, 1)
+   give_pid_qty(dude_obj, PID_50_MAGNUM_REVOLVER, 1)
+
+Reply(159);
+NOption(164,node999,4);
+
+end
+// Answer to: You mean the experimental weapon I have right here? Her
+
+procedure node020
+begin
+
+   set_local_var(LVAR_Traded_Weapons, 1);
+   remove_pid_qty(dude_obj, PID_50_MAGNUM_REVOLVER, 1)
+   give_pid_qty(dude_obj, PID_INDEPENDENT, 1)
+
+Reply(163);
+NOption(164,node999,4);
+
+end
+// Answer to: Can you modify or upgrade weapons?
+
+procedure node005
+begin
+Reply(149);
+NOption(150,node018,4);
+NOption(151,node001b,4);
+NOption(152,node999,4);
+
+end
+// Answer to: Why is that?
+
+procedure node018
+begin
+Reply(153);
+if (global_var(GVAR_KNOW_VAN_GRAFFS) == 1) then
+GOption(187,node026,4);
+
+NOption(154,node001b,4);
+NOption(155,node999,4);
+
+end
+// End Dialogue.
+
+procedure node999
+begin
+   set_local_var(LVAR_Herebefore, 1);
+
+if ((global_var(GVAR_QUEST_FRIEDA_DELIVERY) == QUEST_NONE) and not(dude_is_stupid)) then
+   call node021;
+end
+// Answer to: New Node
+
+procedure node021
+begin
+set_global_var(GVAR_QUEST_FRIEDA_DELIVERY,QUEST_KNOWN);
+if dude_is_male then
+Reply(165);
+else
+Reply(186);
+BOption(166,node999,4);
+BOption(167,node022,4);
+
+end
+// Answer to: It depends. What's the mission?
+
+procedure node022
+begin
+Reply(168);
+BOption(169,node999,4);
+GOption(170,node023,4);
+
+end
+// Answer to: Not a problem. Where shall I find her?
+
+procedure node023
+begin
+set_global_var(GVAR_QUEST_FRIEDA_DELIVERY,QUEST_ACCEPTED);
+Reply(171);
+GOption(172,node999,4);
+
+end
+// Answer to: Stupid PC
+
+procedure node024
+begin
+Reply(100);
+NOption(174,node025,-3);
+NOption(129,node999,-3);
+
+end
+// Answer to: Big badda BOOM!
+
+procedure node025
+begin
+Reply(175);
+NOption(176,node006,-3);
+end
+
+procedure node026
+begin
+Reply(188);
+NOption(189,node027,4);
+end
+
+procedure node027
+begin
+Reply(190);
+NOption(191,node028,4);
+end
+
+procedure node028
+begin
+Reply(192);
+NOption(193,node028a,4);
+NOption(194,node999,4);
+end
+
+// TODO ZZZ
+procedure node028a begin
+   set_global_var(GVAR_QUEST_SAVE_JEAN, 1);
+   call node999;
+end
+
+//xxxxxxxxxxxxxxxxxxxx

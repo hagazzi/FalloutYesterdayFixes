@@ -1,0 +1,8 @@
+# Grammar pass done
+
+{100}{}{You see a figure resembling a walking, sun-bleached chunk of beef jerky.}
+{101}{}{Mmmm...}
+{102}{}{Brains...}
+{103}{}{Mooooaaaan...}
+{104}{}{Pain... stop...}
+{105}{}{*slurp*}

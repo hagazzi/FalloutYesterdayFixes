@@ -1,0 +1,1204 @@
+/*
+
+        Name:
+        Location:
+        Description:
+
+           Created: 07/10/2020 20:07:31
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBDAVIDE
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Gestalt1;
+procedure Gestalt1a;
+procedure Gestalt1a1;
+procedure Gestalt1a1a;
+procedure Gestalt1a1a1;
+procedure Gestalt1a2;
+procedure initial;
+procedure subsequent;
+procedure davide1;
+procedure davide2;
+procedure davide3;
+procedure davide3a;
+procedure davide3a1;
+procedure davide3a1a;
+procedure davide3a2;
+procedure davide3a2a;
+procedure davide3a2a1;
+procedure davide3a3;
+procedure davide3a3a;
+procedure davide3a3b;
+procedure davide3b;
+procedure davide3b1;
+procedure davide3b1a;
+procedure davide3b1a1;
+procedure davide3b1a1a;
+procedure davide3c;
+procedure davide3c1;
+procedure davide3c1a;
+procedure davide3c1a1;
+procedure davide3c1a1a;
+procedure davide3c1a1a1;
+procedure davide3c1b;
+procedure davide3c1b1;
+procedure davide3c1b1_2;
+procedure davide3c1b2;
+procedure davide4;
+procedure davide4a;
+procedure davide4a1;
+procedure davide4a2;
+procedure davide4b;
+procedure davide4b1;
+procedure davide4b1a;
+procedure davide4b2;
+procedure AQ;
+procedure AQ1;
+procedure AQ1a;
+procedure AQ1a1;
+procedure AQ2;
+procedure AQ2a;
+procedure AQ2a1;
+procedure Vaultdeath1;
+procedure Vaultdeath2;
+procedure Vaultdeath3;
+procedure Vaultdeath4;
+procedure Vaultdeath5;
+procedure Vaultdeath6;
+procedure Vaultdeath7;
+procedure migrate1;
+procedure migrate2;
+procedure feud1;
+procedure feud2;
+procedure feud3;
+procedure starve1;
+procedure starve2;
+procedure starve3;
+procedure attack1;
+procedure attack2;
+procedure attack3;
+procedure attack4;
+procedure attack4a;
+procedure attack4b;
+procedure home1;
+procedure home2;
+procedure home3;
+procedure RedoHistory;
+procedure Dumb_Hurt;
+procedure Dumb_Hurt_1;
+procedure Dumb_Hurt_2;
+procedure Dumb_Hurt_3;
+procedure Dumb_Hurt_4;
+procedure Dumb_Hurt_5;
+procedure Dumb_Hurt_6;
+procedure Dumb_Hurt_7;
+procedure Dumb_healed;
+procedure Dumb_healed_payment;
+procedure dumb_pay;
+procedure dumb_pay_check;
+procedure dumb_pay_check_fail;
+procedure Dumb_pay_check_success;
+procedure Dumb_unhurt;
+procedure RadReward;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Poor                       (8)
+#define LVAR_DontCharge                 (9)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+  critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+call new_plague_check(self_obj, LVAR_Herebefore);
+
+   if(random(1,2) == 1) then
+      set_obj_visibility(self_obj, 1);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude) and obj_is_visible_flag(self_obj)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+if (local_var(LVAR_Herebefore)==0) then begin
+       call initial;
+end else if (local_var(LVAR_Herebefore)==1) then begin
+       call subsequent;
+end
+       gSay_End;
+       end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+/* inc_evil_critter */
+/* inc_neutral_critter */
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Gestalt1
+begin
+Reply(200);
+NOption(201,Gestalt1a,4);
+NOption(202,davide1,4);
+end
+
+procedure Gestalt1a
+begin
+Reply(230);
+NOption(231,Gestalt1a1,4);
+NOption(232,AQ,4);
+NOption(233,Gestalt1a2,4);
+NOption(234,davide2,4);
+NOption(235,Node999,4);
+end
+
+procedure Gestalt1a1
+begin
+Reply(260);
+NOption(261,Gestalt1a1a,4);
+end
+
+procedure Gestalt1a1a
+begin
+Reply(290);
+NOption(291,Gestalt1a1a1,4);
+end
+
+procedure Gestalt1a1a1
+begin
+Reply(320);
+NOption(321,AQ,4);
+// NOTE: this option should only be visible if the PC is injured, poisoned, or radiated.
+if(dude_is_poisoned or dude_is_irradiated or Is_Hurt(dude_obj)) then
+NOption(322,davide2,4);
+NOption(323,Node999,4);
+BOption(324,Node999,4);
+end
+
+// Node Gestalt1a2
+//
+// Notes:
+//
+
+procedure Gestalt1a2
+begin
+Reply(350);
+// NOTE: This option should only be visible if the pC is wounded, radiated, or poisoned.
+if(dude_is_poisoned or dude_is_irradiated or Is_Hurt(dude_obj)) then
+NOption(351,davide2,4);
+// NOTE: This option should only be visible if the pC has a companion in tow who is wounded, radiated, or poisoned.
+If_Party_Has_Injured then
+NOption(352,davide4,4);
+NOption(353,AQ,4);
+NOption(354,Node999,4);
+end
+
+procedure initial
+begin
+Reply(380);
+NOption(mstr(381)+dude_name+mstr(382),davide1,4);
+// NOTE: This option should only be visible if the PC is slightly injured, slightly poisoned, or has taken a small dose of radiation.
+if(random(1,2) == 1) then begin
+   if(dude_is_poisoned or dude_is_irradiated or Is_Hurt(dude_obj)) then
+   NOption(mstr(383)+dude_name+mstr(384),davide2,4);
+end else begin
+   // NOTE: This option should only be visible if the PC is heavily injured, heavily poisoned, or has taken a large dose of radiation.
+   if(dude_is_poisoned or dude_is_irradiated or Is_Hurt(dude_obj)) then
+   NOption(mstr(385)+dude_name+mstr(386),davide3,4);
+end
+// NOTE: This option should only be visible if the PC has any wounded, poisoned, or radiated party members present.
+If_Party_Has_Injured then
+NOption(mstr(387)+dude_name+mstr(388),davide4,4);
+NOption(389,Node999,4);
+// NOTE: This option only visible if the player is stupid and injured, radiated, or poisoned.
+if(dude_is_poisoned or dude_is_irradiated or Is_Hurt(dude_obj)) then
+NOption(390,Dumb_Hurt,-3);
+NOption(391,Dumb_unhurt,-3);
+
+if(global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS) == 500 or global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS) == 1000) then begin
+   NOption(392,RadReward,4);
+   NOption(393,RadReward,-3);
+end
+end
+
+// Node subsequent
+//
+// Notes:
+//
+// This should be the starting node for any subsequant conversations that Davide and the PC may have after the PC has talked to Davide once.
+
+procedure subsequent
+begin
+Reply(410);
+// NOTE: This option should only be visible if the PC is injured, radiated, or poisoned.
+if(dude_is_poisoned or dude_is_irradiated or Is_Hurt(dude_obj)) then
+NOption(411,davide2,4);
+NOption(412,AQ,4);
+NOption(413,RedoHistory,4);
+// NOTE: This option should only be visible if the PC has a companion NPC who is wounded, radiated, or poisoned.
+If_Party_Has_Injured then
+NOption(414,davide4,4);
+NOption(415,Node999,4);
+NOption(416,Gestalt1,4);
+// NOTE: This option not visible if the player could not afford to pay Davide's fee earlier.
+if(local_var(LVAR_Poor) == 0) then
+NOption(417,Dumb_Hurt,-3);
+NOption(418,Dumb_unhurt,-3);
+end
+
+procedure davide1
+begin
+Reply(mstr(440)+dude_name+mstr(441));
+NOption(442,AQ,4);
+NOption(443,Gestalt1,4);
+NOption(444,Node999,4);
+end
+
+procedure davide2
+begin
+Reply(470);
+if(random(1,2) == 1) then
+// NOTE: This option should only be visible if the PC has more than 80% of his max hp.
+NOption(471,davide3a,4);
+// NOTE: This option should only be visible if the PC has less than 80% of his max hp.
+else
+NOption(472,davide3a,4);
+// NOTE: This option should only be visible if the PC is poisoned.
+if(dude_is_poisoned) then
+NOption(473,davide3b,4);
+// NOTE: This option should only be visible if the PC is radiated.
+if(dude_is_irradiated) then
+NOption(474,davide3c,4);
+end
+
+procedure davide3
+begin
+Reply(500);
+// NOTE: This option should only be visible if the PC is injured.
+if(Is_Hurt(dude_obj)) then
+NOption(472,davide3a,4);
+// NOTE: this option should only be visible if the PC is poisoned.
+if(dude_is_poisoned) then
+NOption(501,davide3b,4);
+// NOTE: this option should only be visible if the PC is radiated.
+if(dude_is_irradiated) then
+NOption(502,davide3c,4);
+end
+
+procedure davide3a
+begin
+Reply(530);
+if(dude_caps >= 50) then begin
+NOption(531,davide3a1,4);
+end else begin
+// NOTE: This option should only be visible if the PC doesn't have as many caps as Davide asked for.
+//(xx) should be 80% of the PC's total caps
+//This option should check the PC's barter skill to be 60%
+if (has_skill(dude_obj,SKILL_BARTER)>=60) then
+NOption(532,davide3a2,4);
+// NOTE: This option should only be visible if the PC doesn't have as many caps as Davide asked for.
+//(xx) should be 80% of the PC's total caps
+//This option should check the PC's barter skill to be 60%
+if (has_skill(dude_obj,SKILL_BARTER)<60) then
+NOption(532,davide3a3,4);
+end
+end
+
+procedure davide3a1
+begin
+Reply(560);
+NOption(561,davide3a1a,4);
+end
+
+procedure davide3a1a
+begin
+   if(local_var(LVAR_DontCharge) == 1) then begin
+      set_local_var(LVAR_DontCharge, 0);
+      call HealPlayer(2, 0, HEAL_HURT, 1);
+   end else begin
+      call HealPlayer(2, -50, HEAL_HURT, 1);
+   end
+
+Reply(590);
+NOption(591,AQ,4);
+// NOTE: this option should only be visible if the PC is poisoned or radiated.
+if(dude_is_poisoned or dude_is_irradiated) then
+NOption(592,davide3,4);
+NOption(593,Node999,4);
+end
+
+procedure davide3a2
+begin
+Reply(620);
+NOption(621,davide3a2a,4);
+end
+
+procedure davide3a2a
+begin
+Reply(650);
+NOption(651,davide3a2a1,4);
+end
+
+procedure davide3a2a1
+begin
+   game_time_advance(ONE_GAME_HOUR);
+Reply(680);
+// NOTE: This option should only be visible if the player got to this node through bargaining to have his hit points restored.
+if(Is_Hurt(dude_obj)) then
+NOption(681,davide3a1,4);
+// NOTE: This option should only be visible if the player got to this node through bargaining to have his poison levels removed.
+else if (dude_is_poisoned) then
+NOption(681,davide3b1,4);
+// NOTE: This option should only be visible if the player got to this node through bargaining to have his radiation levels removed.
+else if (dude_is_irradiated) then
+NOption(681,davide3c1a,4);
+end
+
+procedure davide3a3
+begin
+Reply(710);
+if (has_skill(dude_obj,SKILL_CONVERSANT)>50) and (get_critter_stat(dude_obj,STAT_ch)>=6) then
+NOption(711,davide3a3a,4);
+if (has_skill(dude_obj,SKILL_CONVERSANT)<=50) or (get_critter_stat(dude_obj,STAT_ch)<=5) then
+NOption(711,davide3a3b,4);
+NOption(712,AQ,4);
+BOption(713,Node999,4);
+end
+
+procedure davide3a3a
+begin
+   set_local_var(LVAR_DontCharge, 1);
+Reply(740);
+NOption(741,davide3a1,4);
+NOption(742,davide3a1,4);
+end
+
+procedure davide3a3b
+begin
+Reply(770);
+// NOTE: This option should remove the amount of caps specified by Davide.
+NOption(771,davide3a1,4);
+NOption(772,AQ,4);
+NOption(773,Node999,4);
+end
+
+procedure davide3b
+begin
+Reply(800);
+
+if(dude_caps >= 75) then begin
+   NOption(801,davide3b1,4);
+end else begin
+   if (has_skill(dude_obj,SKILL_BARTER)>=60) then
+      NOption(802,davide3a2,4);
+   if (has_skill(dude_obj,SKILL_GAMBLING)<60) then
+      NOption(802,davide3a3,4);
+end
+
+end
+
+procedure davide3b1
+begin
+Reply(830);
+NOption(831,davide3b1a,4);
+end
+
+procedure davide3b1a
+begin
+  call HealPlayer(16, -75, HEAL_POISON, 1);
+Reply(860);
+NOption(861,davide3b1a1,4);
+BOption(862,Node999,4);
+end
+
+procedure davide3b1a1
+begin
+Reply(890);
+NOption(891,davide3b1a1a,4);
+BOption(892,Node999,4);
+end
+
+procedure davide3b1a1a
+begin
+Reply(920);
+NOption(921,AQ,4);
+// NOTE: This option should only be visible if the PC is injured or radiated.
+if(Is_Hurt(dude_obj) or dude_is_irradiated) then
+NOption(922,davide2,4);
+NOption(923,Node999,4);
+end
+
+procedure davide3c
+begin
+Reply(950);
+// NOTE: [CONTINUE]
+NOption(951,davide3c1,4);
+end
+
+procedure davide3c1
+begin
+Reply(980);
+if(dude_caps >= 100) then begin
+   NOption(981,davide3c1a,4);
+   NOption(982,davide3c1b,4);
+end else begin
+   if (has_skill(dude_obj,SKILL_BARTER)>=60) then
+   NOption(983,davide3a2,4);
+   if (has_skill(dude_obj,SKILL_BARTER)<60) then
+   NOption(983,davide3a3,4);
+end
+end
+
+procedure davide3c1a
+begin
+Reply(1010);
+NOption(831,davide3c1a1,4);
+end
+
+procedure davide3c1a1
+begin
+call HealPlayer(12, -100, HEAL_RADIATION, 1);
+Reply(1040);
+NOption(861,davide3c1a1a,4);
+BOption(862,Node999,4);
+end
+
+procedure davide3c1a1a
+begin
+Reply(1070);
+NOption(891,davide3c1a1a1,4);
+BOption(892,Node999,4);
+end
+
+procedure davide3c1a1a1
+begin
+Reply(1100);
+NOption(921,AQ,4);
+NOption(1101,davide2,4);
+NOption(923,Node999,4);
+end
+
+// Node davide3c1b
+//
+// Notes:
+//
+// (xx) will be the amount of caps that Davide would barter a pack of Rad-away for.
+
+procedure davide3c1b
+begin
+Reply(1130);
+if(dude_caps >= 200) then
+   NOption(1131,davide3c1b1_2,4);
+else
+   NOption(1132,davide3c1b2,4);
+end
+
+procedure davide3c1b1_2 begin
+   item_caps_adjust(dude_obj, -200);
+   give_pid_qty(dude_obj, PID_RADAWAY, 1)
+   call davide3c1b1;
+end
+
+procedure davide3c1b1
+begin
+Reply(1160);
+NOption(1161,AQ,4);
+NOption(592,davide2,4);
+NOption(1162,Node999,4);
+end
+
+procedure davide3c1b2
+begin
+Reply(1190);
+NOption(1191,davide3c1a,4);
+NOption(1192,davide3c1b1,4);
+end
+
+procedure davide4
+begin
+Reply(1220);
+//This option needs to be automatically generated for each NPC that the PC has with him but only visible for the NPC's that need healing.
+If_Party_Has_Injured then
+NOption(1221,davide4a,4);
+// NOTE: This option should only be visible if the PC has more than one NPC with him who is wounded, radiated, or poisoned.
+If_Party_Has_Injured then
+NOption(1222,davide4b,4);
+NOption(1223,AQ,4);
+NOption(1224,Node999,4);
+end
+
+procedure davide4a
+begin
+Reply(1250);
+if(dude_caps >= 100) then begin
+   NOption(1251,davide4a1,4);
+end else begin
+   // NOTE: This option should only be visible if the PC has a barter skill of 60 or more
+   //(xx) should be 70% of what Davide charged, or all of the PC's current caps, whichever is more.
+   if (has_skill(dude_obj,SKILL_BARTER)>=60) then
+      NOption(1252,davide4a1,4);
+   if (has_skill(dude_obj,SKILL_BARTER)<60) then
+      NOption(1252,davide4a2,4);
+end
+end
+
+procedure davide4a1
+begin
+   call HealPlayer(5, -100, HEAL_PARTY, 1);
+Reply(1280);
+// NOTE: This option should only be visible if the PC has another companion NPC who is injured, radiated, or poisoned.
+If_Party_Has_Injured then
+NOption(1281,davide4,4);
+NOption(1282,AQ,4);
+NOption(1283,Node999,4);
+end
+
+procedure davide4a2
+begin
+Reply(1310);
+// NOTE: This option should remove the specified amount of caps from the PC's inventory.
+NOption(1311,davide4a1,4);
+NOption(1312,AQ,4);
+NOption(1313,Node999,4);
+end
+
+// Node davide4b
+//
+// Notes:
+//
+// This node should calculate the poison levels, radiation levels, and current hp damage of each NPC and show an appropriate price.
+
+procedure davide4b
+begin
+Reply(1340);
+// NOTE: This option should remove the amount of caps specified by Davide.
+if(dude_caps >= 400) then begin
+NOption(1341,davide4b1,4);
+end else begin
+   if (has_skill(dude_obj,SKILL_BARTER)>=60) then
+      NOption(1342,davide4b1,4);
+   if (has_skill(dude_obj,SKILL_BARTER)<60) then
+      NOption(1342,davide4b2,4);
+end
+end
+
+procedure davide4b1
+begin
+Reply(1370);
+NOption(1371,davide4b1a,4);
+end
+
+procedure davide4b1a
+begin
+
+   call HealPlayer(12, -400, HEAL_PARTY, 1);
+
+Reply(1400);
+// NOTE: This option should only be visible if the PC is injured, radiated, or poisoned.
+if(dude_is_irradiated or dude_is_poisoned or Is_Hurt(dude_obj)) then
+NOption(1401,davide2,4);
+NOption(1402,AQ,4);
+NOption(1403,Node999,4);
+end
+
+procedure davide4b2
+begin
+Reply(1430);
+// NOTE: this option should remove the amount of caps specified by Davide.
+if(dude_caps >= 200) then
+NOption(1431,davide4b1,4);
+NOption(1432,AQ,4);
+NOption(1433,Node999,4);
+end
+
+procedure AQ
+begin
+Reply(1460);
+if (get_critter_stat(dude_obj,STAT_pe)>=7) then
+NOption(1461,AQ1,4);
+if (get_critter_stat(dude_obj,STAT_st)<=6) then
+NOption(1462,AQ1,4);
+NOption(1463,AQ2,4);
+end
+
+procedure AQ1
+begin
+Reply(1490);
+NOption(1491,AQ1a,4);
+NOption(1492,Vaultdeath3,4);
+end
+
+procedure AQ1a
+begin
+Reply(1520);
+// NOTE: this option should only be visible if the PC has a perception of 6 or higher
+if (get_critter_stat(dude_obj,STAT_pe)>=6) then
+NOption(1521,AQ1a1,4);
+// NOTE: This option should only be visible if the PC has a perception of less than 6.
+if (get_critter_stat(dude_obj,STAT_pe)<=5) then
+NOption(1522,Vaultdeath2,4);
+end
+
+procedure AQ1a1
+begin
+Reply(1550);
+NOption(1551,Vaultdeath1,4);
+end
+
+procedure AQ2
+begin
+Reply(1580);
+NOption(1581,AQ2a,4);
+end
+
+procedure AQ2a
+begin
+Reply(1610);
+NOption(1611,AQ1a,4);
+NOption(1612,AQ2a1,4);
+BOption(1613,Node999,4);
+end
+
+procedure AQ2a1
+begin
+Reply(1640);
+// NOTE: this option should only be visible if the PC is injured, poisoned, or radiated.
+if(dude_is_poisoned or dude_is_irradiated or Is_Hurt(dude_obj)) then
+NOption(1641,davide2,4);
+NOption(1642,Node999,4);
+end
+
+procedure Vaultdeath1
+begin
+Reply(1670);
+NOption(1671,Vaultdeath3,4);
+end
+
+procedure Vaultdeath2
+begin
+Reply(1700);
+NOption(1701,Vaultdeath1,4);
+end
+
+procedure Vaultdeath3
+begin
+Reply(1730);
+NOption(1731,Vaultdeath4,4);
+NOption(1732,AQ,4);
+end
+
+procedure Vaultdeath4
+begin
+Reply(1760);
+NOption(1761,Vaultdeath5,4);
+end
+
+procedure Vaultdeath5
+begin
+Reply(1790);
+NOption(1791,Vaultdeath6,4);
+NOption(1792,AQ,4);
+BOption(1793,Node999,4);
+end
+
+procedure Vaultdeath6
+begin
+Reply(1820);
+NOption(1821,Vaultdeath7,4);
+end
+
+procedure Vaultdeath7
+begin
+Reply(1850);
+NOption(1851,migrate1,4);
+NOption(1852,Vaultdeath1,4);
+NOption(1853,AQ,4);
+NOption(1854,Node999,4);
+end
+
+procedure migrate1
+begin
+Reply(1880);
+NOption(1881,migrate2,4);
+end
+
+procedure migrate2
+begin
+Reply(1910);
+NOption(1911,feud1,4);
+NOption(1912,migrate1,4);
+NOption(1853,AQ,4);
+NOption(1854,Node999,4);
+end
+
+procedure feud1
+begin
+Reply(1940);
+NOption(1941,feud2,4);
+end
+
+procedure feud2
+begin
+Reply(1970);
+NOption(1971,feud3,4);
+end
+
+procedure feud3
+begin
+Reply(2000);
+NOption(2001,starve1,4);
+NOption(2002,feud1,4);
+NOption(1853,AQ,4);
+NOption(1854,Node999,4);
+end
+
+procedure starve1
+begin
+Reply(2030);
+NOption(2031,starve2,4);
+end
+
+procedure starve2
+begin
+Reply(2060);
+NOption(2061,starve3,4);
+end
+
+procedure starve3
+begin
+Reply(2090);
+NOption(2091,attack1,4);
+NOption(2092,starve2,4);
+NOption(1853,AQ,4);
+NOption(1854,Node999,4);
+end
+
+procedure attack1
+begin
+Reply(2120);
+NOption(2121,attack2,4);
+end
+
+procedure attack2
+begin
+Reply(2150);
+NOption(2151,attack3,4);
+end
+
+procedure attack3
+begin
+Reply(2180);
+NOption(2181,attack4,4);
+end
+
+procedure attack4
+begin
+Reply(2210);
+NOption(2211,attack4a,4);
+NOption(2212,attack4b,4);
+NOption(2213,attack1,4);
+NOption(2214,AQ,4);
+NOption(2215,Node999,4);
+end
+
+procedure attack4a
+begin
+Reply(2240);
+NOption(2241,home1,4);
+NOption(2242,Node999,4);
+end
+
+procedure attack4b
+begin
+Reply(2270);
+NOption(2271,home1,4);
+NOption(2272,Node999,4);
+end
+
+procedure home1
+begin
+Reply(2300);
+NOption(2301,home2,4);
+end
+
+procedure home2
+begin
+Reply(2330);
+NOption(2331,home3,4);
+end
+
+procedure home3
+begin
+Reply(2360);
+NOption(2361,home1,4);
+NOption(2362,RedoHistory,4);
+NOption(2363,Node999,4);
+end
+
+// Node RedoHistory
+//
+// Notes:
+//
+// Only the parts that the PC has heard should be visible.
+
+procedure RedoHistory
+begin
+Reply(2390);
+NOption(2391,Vaultdeath1,4);
+NOption(2392,migrate1,4);
+NOption(2393,feud1,4);
+NOption(2394,starve1,4);
+NOption(2395,attack1,4);
+NOption(2396,home1,4);
+NOption(2397,davide1,4);
+end
+
+procedure Dumb_Hurt
+begin
+Reply(2420);
+// NOTE: This option should only be visible if the player is wounded.
+if(Is_Hurt(dude_obj)) then
+NOption(1371,Dumb_Hurt_1,-3);
+// NOTE: This option should only be visible if the player is poisoned.
+if(dude_is_poisoned) then
+NOption(1371,Dumb_Hurt_2,-3);
+// NOTE: This option should only be visible if the player is radiated.
+if(dude_is_irradiated) then
+NOption(1371,Dumb_Hurt_3,-3);
+// NOTE: This option should only be visible if the player is injured and poisoned.
+if(dude_is_poisoned and Is_Hurt(dude_obj)) then
+NOption(1371,Dumb_Hurt_4,-3);
+// NOTE: This option should only be visisble if the player is wounded and radiated.
+if(dude_is_irradiated and Is_Hurt(dude_obj)) then
+NOption(1371,Dumb_Hurt_5,-3);
+// NOTE: This option should only be visible if the player is poisoned and radiated.
+if(dude_is_poisoned and dude_is_irradiated and not(Is_Hurt(dude_obj))) then
+NOption(1371,Dumb_Hurt_6,-3);
+// NOTE: This option should only be visible if the player is wounded, poisoned, and radiated.
+if(dude_is_poisoned and dude_is_irradiated and Is_Hurt(dude_obj)) then
+NOption(1371,Dumb_Hurt_7,-3);
+end
+
+procedure Dumb_Hurt_1
+begin
+Reply(2450);
+NOption(2451,Dumb_healed,-3);
+end
+
+procedure Dumb_Hurt_2
+begin
+Reply(2480);
+NOption(2451,Dumb_healed,4);
+end
+
+procedure Dumb_Hurt_3
+begin
+Reply(2510);
+NOption(2451,Dumb_healed,-3);
+end
+
+procedure Dumb_Hurt_4
+begin
+Reply(2540);
+NOption(2451,Dumb_healed,-3);
+end
+
+procedure Dumb_Hurt_5
+begin
+Reply(2570);
+NOption(2451,Dumb_healed,-3);
+end
+
+procedure Dumb_Hurt_6
+begin
+Reply(2600);
+NOption(2451,Dumb_healed,-3);
+end
+
+procedure Dumb_Hurt_7
+begin
+Reply(2630);
+NOption(2451,Dumb_healed,-3);
+end
+
+procedure Dumb_healed
+begin
+
+fadeout(1);
+critter_heal(dude_obj, Injured_How_Much(dude_obj));
+critter_uninjure(dude_obj, (DAM_CRIP_LEG_LEFT bwor DAM_CRIP_LEG_RIGHT bwor DAM_CRIP_ARM_LEFT bwor DAM_CRIP_ARM_RIGHT));
+poison(dude_obj, -get_poison(dude_obj));
+radiation_dec(dude_obj, 500);
+game_time_advance(ONE_GAME_HOUR * random(2,12));
+fadein(1);
+
+Reply(2660);
+NOption(2661,Dumb_healed_payment,-3);
+end
+
+procedure Dumb_healed_payment
+begin
+Reply(2690);
+NOption(2691,dumb_pay,-3);
+end
+
+// Node dumb_pay
+//
+// Notes:
+//
+// Davide's price should be about 10% lower than other doctors' standard prices because he is a nice guy. :-)
+
+procedure dumb_pay
+begin
+Reply(2720);
+NOption(2721,dumb_pay_check,-3);
+end
+
+procedure dumb_pay_check
+begin
+Reply(2750);
+// NOTE: This option only visible if the PC has enough caps to pay Davide's fee.
+if(dude_caps >= 50) then
+NOption(1371,Dumb_pay_check_success,-3);
+// NOTE: this option only visible if the PC does not have enough to pay Davide's fee.
+if(dude_caps < 50) then
+NOption(1371,dumb_pay_check_fail,-3);
+end
+
+// Node dumb_pay_check_fail
+//
+// Notes:
+//
+// remove all caps from the player's inventory.
+
+procedure dumb_pay_check_fail
+begin
+   set_local_var(LVAR_Poor, 1);
+Reply(2780);
+NOption(2781,Node999,-3);
+end
+
+// Node Dumb_pay_check_success
+//
+// Notes:
+//
+// remove the earlier specified caps from the players inventory
+
+procedure Dumb_pay_check_success
+begin
+   item_caps_adjust(dude_obj, -50);
+   set_local_var(LVAR_Poor, 0);
+Reply(2810);
+NOption(2781,Node999,-3);
+end
+
+procedure Dumb_unhurt
+begin
+Reply(2840);
+NOption(2781,Node999,-3);
+end
+
+procedure RadReward begin
+   item_caps_adjust(dude_obj, global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS));
+   set_global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS, 0);
+
+   Reply(2870);
+NOption(593,Node999,4);
+NOption(2661,Node999,-3);
+
+
+end
+
+//xxxxxxxxxxxxxxxxxxxx

@@ -1,0 +1,568 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Billy-Bob
+        Location:
+        Description: Spreads anti-human hate propaganda
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created:
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+//#include "..\headers\<TownName.h>"
+
+#define NAME                    SCRIPT_HDBBOB
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_HOOVER_DAM)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+#include "..\headers\party.h"
+#include "..\headers\hdam.h"
+
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure node025;
+procedure node026;
+procedure node027;
+procedure node028;
+procedure node029;
+procedure node998;
+procedure node999;
+procedure node004;
+procedure node024;
+procedure node003;
+procedure node023;
+procedure node022;
+procedure node014;
+procedure node020;
+procedure node017;
+procedure node019;
+procedure node018;
+procedure node016;
+procedure node013;
+procedure node011;
+procedure node012;
+procedure node010;
+procedure node009;
+procedure node008;
+procedure node007;
+procedure node006;
+procedure node005;
+procedure node002;
+procedure node001;
+procedure node019a;
+procedure node029a;
+procedure node030;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+/* Script Specific Procedure Calls */
+                                    // This Node is Always Combat
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+
+   #define LVAR_Herebefore                 (4)
+   #define LVAR_Hostile                    (5)
+   #define LVAR_Personal_Enemy             (6)
+   #define LVAR_Caught_Thief               (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+
+   Only_Once:=0;
+
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM, TEAM_TROGS);
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_TORR);
+
+   if (not(obj_is_visible_flag(self_obj))) then
+      destroy_object(self_obj);
+
+end
+
+procedure timed_event_p_proc
+begin
+
+end
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+   if ( (local_var(LVAR_Hostile) == 2) and self_can_see_dude) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+   end
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+      set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc
+begin
+
+   Evil_Critter:=1;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if (dude_is_stupid) then begin
+      if (self_can_speak) then
+         floater_bad(104);
+   end else begin
+      call set_idiot_savant_int;
+
+      start_gdialog(NAME, self_obj, 4, HEAD_BILLY_BOB, -1);
+      gsay_start;
+      call node001;
+      gsay_end;
+      end_dialogue;
+
+      call restore_idiot_savant_int;
+   end
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_evil_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if local_var( LVAR_Herebefore)==0 then
+      display_mstr(100);
+   else
+      display_mstr(102);
+
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(101);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+// START DIALOGUE.
+
+procedure node001
+begin
+if local_var( LVAR_Herebefore)==0 then
+begin
+   Reply(200);
+   NOption(201,node002,4);
+   BOption(202,node998,4);
+   BOption(203,node998,4);
+   if (dude_item(PID_HATE_FLIERS)) then
+      NOption(204,node003,4);
+   NOption(205,node004,4);
+end
+else begin
+   Reply(206);
+   NOption(201,node002,4);
+   BOption(207,node999,4);
+   BOption(208,node998,4);
+   if (dude_item(PID_HATE_FLIERS)) then begin
+      if (dude_skill(SKILL_CONVERSANT) >= 100) then
+         NOption(209,node003,4);
+      else
+         NOption(210,node003,4);
+   end
+   NOption(205,node004,4);
+end
+
+end
+
+procedure node002
+begin
+Reply(211);
+NOption(212,node005,4);
+NOption(214,node004,4);
+NOption(213,node999,4);
+
+end
+
+
+procedure node005
+begin
+Reply(215);
+NOption(217,node006,4);
+NOption(216,node999,4);
+if (dude_item(PID_HATE_FLIERS)) then
+   BOption(218,node003,4);
+end
+
+
+procedure node006
+begin
+
+   variable str;
+   str = "";
+
+   if (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_NONE) then
+      str = " " + mstr(1246);
+
+   if (Otto_In_Party) then
+      Reply(mstr(239) + " " + mstr(1244) + str);
+   else
+      Reply(mstr(239) + " " + mstr(1245) + str);
+
+NOption(240,node007,4);
+if (global_var( GVAR_QUEST_DELIVERANCE) == QUEST_KNOWN) then
+NOption(241,node003,4);
+NOption(242,node999,4);
+BOption(243,node998,4);
+if (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_NONE) then
+NOption(1247,node030,4);
+end
+
+
+procedure node007
+begin
+Reply(244);
+NOption(245,node008,4);
+
+end
+
+
+procedure node008
+begin
+Reply(246);
+if (global_var( GVAR_QUEST_DELIVERANCE) == QUEST_KNOWN) then
+   NOption(247,node003,4);
+NOption(248,node009,4);
+NOption(249,node999,4);
+
+end
+
+
+procedure node009
+begin
+Reply(250);
+NOption(251,node010,4);
+NOption(252,node999,4);
+BOption(253,node998,4);
+if (global_var(GVAR_QUEST_DELIVERANCE) == QUEST_KNOWN) then
+NOption(254,node011,4);
+if (dude_knows_mary_jo) then
+   BOption(292,node025,4);
+end
+
+
+procedure node010
+begin
+Reply(255);
+BOption(256,node012,4);
+if (global_var(GVAR_QUEST_DELIVERANCE) == QUEST_KNOWN) then begin
+   if (dude_skill(SKILL_CONVERSANT) < 100) then
+      NOption(257,node011,4);
+   else
+      NOption(258,node011,4);
+end
+BOption(259,node998,4);
+
+end
+
+
+procedure node012
+begin
+   set_global_var(GVAR_QUEST_DELIVERANCE, QUEST_ACCEPTED);
+   give_pid_qty(dude_obj, PID_BIG_BOOK_OF_SCIENCE, 1)
+   give_pid_qty(dude_obj, PID_SCUM_PITS_KEY, 1)
+
+end
+
+procedure node011
+begin
+Reply(229);
+NOption(230,node013,4);
+NOption(231,node014,4);
+BOption(232,node998,4);
+BOption(233,node999,4);
+if (dude_item(PID_HATE_FLIERS)) then
+   BOption(234,node998,4);
+
+end
+
+
+procedure node013
+begin
+Reply(260);
+if (dude_skill(SKILL_CONVERSANT) >= 125) then
+NOption(261,node016,4);
+NOption(262,node017,4);
+NOption(263,node014,4);
+BOption(264,node998,4);
+GOption(265,node999,4);
+
+end
+
+
+procedure node016
+begin
+Reply(266);
+NOption(267,node018,4);
+
+end
+
+
+procedure node018
+begin
+Reply(268);
+NOption(269,node019,4);
+
+end
+
+
+procedure node019
+begin
+
+Reply(270);
+GOption(271,node019a,4);
+NOption(272,node019a,4);
+BOption(273,node998,4);
+
+end
+
+procedure node019a begin
+   give_xp(2500);
+   display_mstr(105);
+   set_global_var(GVAR_QUEST_DELIVERANCE, QUEST_COMPLETED);
+
+   call Node999;
+end
+
+
+procedure node017
+begin
+Reply(274);
+GOption(275,node010,4);
+NOption(276,node020,4);
+if (dude_skill(SKILL_CONVERSANT) >= 125) then
+NOption(277,node019,4);
+
+end
+
+
+procedure node020
+begin
+Reply(278);
+BOption(280,node998,4);
+NOption(279,node999,4);
+BOption(281,node998,4);
+GOption(282,node010,4);
+
+end
+
+
+procedure node014
+begin
+Reply(283);
+BOption(284,node998,4);
+BOption(285,node998,4);
+BOption(286,node998,4);
+if (dude_skill(SKILL_CONVERSANT) >= 100) then
+NOption(287,node014,4);
+NOption(288,node022,4);
+if (dude_item(PID_HATE_FLIERS)) then
+   BOption(289,node998,4);
+
+end
+
+
+procedure node022
+begin
+Reply(290);
+NOption(291,node023,4);
+
+end
+
+
+procedure node023
+begin
+   fadeout(1);
+   set_obj_visibility(self_obj, 1);
+   fadein(1);
+   give_xp(2500);
+   display_mstr(105);
+   set_global_var(GVAR_QUEST_DELIVERANCE, QUEST_COMPLETED);
+   call Node999;
+end
+
+
+procedure node003
+begin
+Reply(219);
+if (global_var(GVAR_QUEST_DELIVERANCE) == QUEST_KNOWN) then
+NOption(220,node024,4);
+NOption(221,node999,4);
+BOption(222,node998,4);
+if dude_item(PID_HATE_FLIERS) then
+   NOption(223,node011,4);
+
+end
+
+
+procedure node024
+begin
+Reply(235);
+NOption(236,node999,4);
+BOption(237,node998,4);
+if (dude_item(PID_HATE_FLIERS)) then
+   NOption(238,node011,4);
+
+end
+
+
+procedure node004
+begin
+Reply(224);
+if (global_var(GVAR_QUEST_DELIVERANCE) == QUEST_KNOWN) then
+NOption(225,node003,4);
+BOption(226,node998,4);
+NOption(227,node009,4);
+NOption(228,node999,4);
+
+end
+
+procedure node025
+begin
+Reply(293);
+if (dude_knows_mary_jo_birthmark) then
+   BOption(294,node026,4);
+NOption(295,node027,4);
+end
+
+procedure node026
+begin
+Reply(296);
+BOption(297,node028,4);
+NOption(298,node029,4);
+end
+
+procedure node027
+begin
+Reply(299);
+NOption(g_mstr(350),node999,4);
+end
+
+procedure node028
+begin
+Reply(300);
+BOption(301,node998,4);
+end
+
+procedure node029
+begin
+Reply(302);
+NOption(g_mstr(350),node029a,4);
+end
+
+procedure node029a begin
+   set_obj_visibility(self_obj, 1);
+   set_global_var(GVAR_QUEST_DELIVERANCE, TROG_NCR_WAR);
+   display_mstr(106);
+   call node999;
+end
+
+procedure node030
+begin
+   set_global_var(GVAR_QUEST_RECALIBRATE_GENERATORS, QUEST_KNOWN);
+Reply(400);
+NOption(401,node999,4);
+end
+
+// END DIALOGUE.
+
+procedure node999
+begin
+set_local_var(LVAR_Herebefore, 1);
+end
+
+// START COMBAT.
+
+procedure node998
+begin
+set_local_var(LVAR_Hostile, 2);
+end
+
+//xxxxxxxxxxxxxxxxxxxx

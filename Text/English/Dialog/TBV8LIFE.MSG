@@ -1,0 +1,9 @@
+
+{100}{}{You see: Multi-Monitor Computer.}
+{101}{}{These multi-monitor computer stations are useful for running diagnostics and surveillance camera feed while the user is working on something else.}
+{102}{}{It indicates that the Vault generator is not producing enough power.}
+{103}{}{The power is back on but the Vault's life support system is deactivated.}
+{104}{}{The Vault's life support system is activated.}
+{105}{}{You successfully activate the Vault's life support system.}
+{106}{}{You fail to activate the Vault's life support system.}
+{107}{}{The computer does not have enough power to activate the Vault's life support system.}

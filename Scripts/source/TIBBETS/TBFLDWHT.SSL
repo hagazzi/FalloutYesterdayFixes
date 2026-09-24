@@ -1,0 +1,143 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\tibbets.h"
+
+#define NAME                    SCRIPT_TBFLDWHT
+
+/* Standard Script Procedures */
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure use_p_proc;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+procedure use_skill_on_p_proc;
+procedure use_obj_on_p_proc;
+procedure zap(variable o);
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure look_at_p_proc begin
+   script_overrides;
+
+end
+
+procedure description_p_proc begin
+   script_overrides;
+
+end
+
+procedure use_p_proc begin
+   call zap(source_obj);
+end
+
+
+procedure map_enter_p_proc begin
+
+   if(elevation(self_obj) != elevation(dude_obj)) then begin
+      return;
+   end
+
+   reg_anim_begin();
+   reg_anim_animate_forever(self_obj, ANIM_stand);
+   reg_anim_end();
+
+   add_timer_event(self_obj, 1, 1);
+end
+
+procedure map_update_p_proc begin
+
+   if(elevation(self_obj) != elevation(dude_obj)) then begin
+      return;
+   end
+
+    reg_anim_begin();
+    reg_anim_animate_forever(self_obj, ANIM_stand);
+    reg_anim_end();
+end
+
+procedure timed_event_p_proc begin
+  if (fixed_param == 1) then begin
+      if (
+         (anim_busy(self_obj) == false) and
+         (combat_is_initialized == 0) and
+         (elevation(self_obj) == elevation(dude_obj))
+         ) then begin
+         reg_anim_begin();
+         reg_anim_animate_forever(self_obj, ANIM_stand);
+         reg_anim_end();
+      end
+      add_timer_event(self_obj, 1, 1);
+  end
+end
+
+procedure use_skill_on_p_proc begin
+   if (
+   action_being_used == SKILL_LOCKPICK or
+   action_being_used == SKILL_TRAPS or
+   action_being_used == SKILL_REPAIR or
+   action_being_used == SKILL_SCIENCE
+   ) then begin
+       script_overrides;
+       call zap(source_obj);
+   end
+end
+
+procedure use_obj_on_p_proc begin
+   variable tool := obj_pid(obj_being_used_with);
+
+   if (
+   tool == PID_LOCKPICKS or
+   tool == PID_EXP_LOCKPICK_SET or
+   tool == PID_MULTI_TOOL or
+   tool == PID_SUPER_TOOL_KIT
+   ) then begin
+       script_overrides;
+       call zap(source_obj);
+   end
+end
+
+
+procedure zap(variable o) begin
+   critter_dmg(o, 1, DMG_electrical);
+
+   if(random(0, 1) == 0) then begin
+      play_sfx("ZAPPER");
+   end else begin
+      play_sfx("ZAPPER1");
+   end
+end

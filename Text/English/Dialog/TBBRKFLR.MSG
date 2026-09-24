@@ -1,0 +1,3 @@
+
+{100}{}{Some sort of mechanical force damaged this wire. It should be an easy fix.}
+{101}{}{The electrical power from broken wire shouldn't prove deadly for an adult but it would certainly kill a child.}

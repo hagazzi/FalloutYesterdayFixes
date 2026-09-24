@@ -1,0 +1,61 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#include "..\headers\updatmap.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure pickup_p_proc;
+
+
+/* Defines */
+#define NAME                  SCRIPT_FDWAGON
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+import variable FD_Caravan_Master_Ptr;
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+end
+
+procedure pickup_p_proc begin
+    // Someone is watching this wagon and we have been caught
+    if ((FD_Caravan_Master_Ptr != 0) and obj_can_see_obj(FD_Caravan_Master_Ptr, dude_obj)) then begin
+      if (can_speak(FD_Caravan_Master_Ptr)) then
+          float_msg(FD_Caravan_Master_Ptr, message_str(SCRIPT_GENERIC, random(3325, 3329)), FLOAT_COLOR_BAD);
+      if (not(is_critter_dead(FD_Caravan_Master_Ptr))) then begin
+         attack_setup(FD_Caravan_Master_Ptr, dude_obj);
+      end
+  end
+
+end

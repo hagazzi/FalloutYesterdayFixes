@@ -1,0 +1,870 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name:
+        Location:
+        Description:
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created:
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_HDAILIS
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_HOOVER_DAM)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+#include "..\headers\party.h"
+#include "..\headers\Caravan.h"
+#include "..\headers\hdam.h"
+#include "..\headers\hdgatenr.h"
+
+#define START_DAY               (21)
+#define CURRENT_CARAVAN         (GVAR_CHEM_CARAVAN)
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+procedure map_update_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node001a;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+procedure Node012;
+procedure Node013;
+procedure Node014;
+procedure Node015;
+procedure Node016;
+procedure Node017;
+procedure Node018;
+procedure Node018a;
+procedure Node019;
+procedure Node020;
+procedure Node021;
+procedure Node022;
+procedure Node023;
+procedure Node024;
+procedure Node024a;
+procedure Node025;
+procedure Node026;
+procedure GiveLedger(variable caps);
+procedure Node027;
+procedure Node028;
+procedure Node029;
+procedure Node030;
+procedure Node031;
+procedure Node032;
+procedure Node032a;
+procedure Node033;
+procedure Node034;
+procedure Node035;
+procedure Node036;
+procedure Node037;
+procedure Node038;
+procedure Node039;
+procedure Node040;
+procedure Node040a;
+procedure Node041;
+procedure Node042;
+procedure Node043;
+procedure ResistArrest;
+procedure JailTime;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_No_More_Caravans           (7)
+#define LVAR_Paid4Ledger                (8)
+#define LVAR_GoAwayTime                 (9)
+#define LVAR_Node27Once                 (10)
+#define LVAR_InJail                     (11)
+#define LVAR_Infiltrated                (12)
+#define LVAR_Recreate_Ledger_Once       (13)
+#define LVAR_Frame_Enzo_Talk          (14)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+import variable Ailis_Ptr;
+
+procedure start begin
+   Ailis_Ptr = self_obj;
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   switch_team(self_obj,TEAM_HOOVER_DAM)
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_STORE_OWNER);
+   add_timer_event(self_obj,game_ticks(1),1);
+   Ailis_Ptr = self_obj;
+end
+
+procedure map_update_p_proc begin
+   Ailis_Ptr = self_obj;
+end
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if (map_var(MVAR_TAMPERED_CC_DOOR) == 1) then begin
+      switch_team(self_obj,TEAM_CRIMSON_CARAVAN)
+      add_timer_event(self_obj,game_ticks(3),3);
+   end
+
+   if ((global_var(GVAR_ENEMY_HOOVER_DAM) == 1) and self_can_see_dude) then begin
+       self_attack_dude;
+   end
+
+   if ((local_var(LVAR_Hostile) == 2) and self_can_see_dude) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+
+       if (global_var(GVAR_CC_ARREST) != CC_ARREST_IN_PROGRESS) then begin
+         set_global_var(GVAR_ENEMY_HOOVER_DAM,1);
+      end
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   Evil_Critter:=1;
+   Slavery_Tolerant:=SLAVE_PROUD;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if (local_var(LVAR_InJail) == 1) then
+      display_mstr(122);
+   else if(
+      (global_var(GVAR_QUEST_EXTORT_AILIS) == QUEST_COMPLETED) and
+      (local_var(LVAR_GoAwayTime) > 0) and
+      ((game_time - local_var(LVAR_GoAwayTime)) / ONE_GAME_HOUR >= 24)
+      ) then begin
+      if (local_var(LVAR_Recreate_Ledger_Once) == 0) then begin
+         give_pid_qty(self_obj, PID_WRITTEN_LEDGER, 1)
+         set_local_var(LVAR_Recreate_Ledger_Once, 1);
+      end
+      switch_team(self_obj,TEAM_CRIMSON_CARAVAN)
+      floater_bad(980);
+      call Node998;
+   end else begin
+
+      call set_idiot_savant_int;
+
+      call CalculateCaravanRunSuccessRate(CURRENT_CARAVAN);
+
+      if ((global_var(CURRENT_CARAVAN) == CARAVAN_ABANDONED) and (local_var(LVAR_No_More_Caravans) == 0) and (global_var(GVAR_CC_ARREST) != CC_ARREST_IN_PROGRESS)) then
+         call Node001;
+      else if ((global_var(CURRENT_CARAVAN) == CARAVAN_ABANDONED) and (local_var(LVAR_No_More_Caravans) == 1) and (global_var(GVAR_CC_ARREST) != CC_ARREST_IN_PROGRESS)) then
+         call Node001a;
+      else begin
+         start_gdialog(NAME,self_obj,4,HEAD_AILIS_MCLAFFERTY,-1);
+         gSay_Start;
+
+         if (global_var(GVAR_CC_ARREST) == CC_ARREST_IN_PROGRESS) then
+            call Node027;
+         else if (is_3s_dead and (global_var(GVAR_3S_SHOWDOWN) == SHOWDOWN_DONE) and (global_var(GVAR_QUEST_FRAME_ENZO) == QUEST_DEFAULT_SOLVE) and (local_var(LVAR_Frame_Enzo_Talk) == 0)) then
+            call Node041;
+         else if (global_var(CURRENT_CARAVAN) == CARAVAN_THEFT) then
+            call Node002;
+         else if (global_var(CURRENT_CARAVAN) == CARAVAN_TOTAL_FAILURE) then
+            call Node003;
+         else if (global_var(CURRENT_CARAVAN) == CARAVAN_FAILURE) then
+            call Node004;
+         else if (global_var(CURRENT_CARAVAN) == CARAVAN_AVERAGE_SUCCESS) then
+            call Node005;
+         else if (global_var(CURRENT_CARAVAN) == CARAVAN_COMPLETE_SUCCESS) then
+            call Node006;
+         else if (dude_is_stupid) then
+            call Node007;
+         else if (local_var(LVAR_Herebefore) == 1) then
+            call Node020;
+         else
+            call Node008;
+
+         gSay_End;
+         end_dialogue;
+      end
+
+      call restore_idiot_savant_int;
+
+      if (Only_Once == 1) then begin
+         load_map("hdgatest", 0);
+      end
+      else if ((caravan_status == CARAVAN_STATUS_ON_JOB) and (caravan_end == AREA_BLACKFOOT)) then begin
+         mark_on_map(caravan_end)
+         set_global_var(GVAR_CARAVAN_START_TIME, game_time);
+         world_map;
+      end
+   end
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_evil_critter
+   set_ailis_dead;
+
+   // Major died before Ailis, so set proper states
+   if (major_dead and (global_var(GVAR_CC_ARREST) == CC_ARREST_IN_PROGRESS) and (cur_map_index == MAP_HOOVER_DAM_NORTH_GATE)) then begin
+      set_global_var(GVAR_CC_ARREST, CC_ARREST_DONE);
+      set_global_var(GVAR_QUEST_ARREST_AILIS, AILIS_KILLED);
+   end
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+       display_mstr(100);
+   else
+       display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+   set_local_var(LVAR_Herebefore, 1);
+end
+
+procedure timed_event_p_proc begin
+   if (fixed_param == 1) then begin
+      if (self_can_speak and (global_var(GVAR_CC_ARREST) == CC_ARREST_IN_PROGRESS) and (local_var(LVAR_Node27Once) == 0)) then begin
+         dialogue_system_enter;
+      end else
+         add_timer_event(self_obj,game_ticks(1),1);
+  end
+  else if (fixed_param == 2) then begin
+   if (
+      (global_var(GVAR_QUEST_ARREST_AILIS) == AILIS_ARRESTED) and
+      not(obj_is_visible_flag(self_obj))
+      ) then begin
+         move_to(self_obj, 25107, self_elevation);
+         critter_attempt_placement(self_obj, 25107, self_elevation);
+         set_obj_visibility(self_obj, 0);
+         set_local_var(LVAR_InJail, 1);
+      end
+  end
+  else if (fixed_param == 3) then begin
+      float_msg(self_obj, message_str(SCRIPT_GENERIC, random(3625, 3628)), FLOAT_COLOR_BAD);
+      set_map_var(MVAR_TAMPERED_CC_DOOR, 2);
+      call Node998;
+  end
+
+end
+
+procedure Skill_Check_001_Barter begin
+   variable roll_temp;
+   roll_temp := roll_vs_skill(dude_obj, SKILL_BARTER, -99);
+   if is_success(roll_temp) then
+   begin
+   call Node023;
+   end
+   else begin
+   call Node024;
+    end
+   end
+
+procedure Skill_Check_002_Speech begin
+   variable roll_temp;
+   roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -99);
+   if is_success(roll_temp) then
+   begin
+   call Node030;
+   end
+   else begin
+   call Node029;
+      end
+   end
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+procedure Node001 begin
+   set_local_var(LVAR_No_More_Caravans,1);
+   floater_bad(103);
+end
+
+procedure Node001a begin
+   floater_bad(119);
+end
+
+procedure Node002 begin
+   set_local_var(LVAR_No_More_Caravans,1);
+   Reply(104);
+
+   NOption(105,Node999,4);
+   BOption(121,Node998,4);
+   BOption(106,Node999,4);
+end
+
+procedure Node003 begin
+   set_global_var(CURRENT_CARAVAN,CARAVAN_NONE);
+   Reply(107);
+
+   BOption(108,Node999,4);
+   NOption(109,Node999,4);
+end
+
+procedure Node004 begin
+   set_global_var(CURRENT_CARAVAN,CARAVAN_NONE);
+   item_caps_adjust(dude_obj,50);
+
+   Reply(110);
+
+   NOption(111,Node999,4);
+   BOption(112,Node999,4);
+end
+
+procedure Node005 begin
+   set_global_var(CURRENT_CARAVAN,CARAVAN_NONE);
+   item_caps_adjust(dude_obj,100);
+
+   Reply(113);
+
+   NOption(114,Node999,4);
+   NOption(115,Node999,4);
+end
+
+procedure Node006 begin
+   set_global_var(CURRENT_CARAVAN,CARAVAN_NONE);
+   item_caps_adjust(dude_obj,150);
+
+   Reply(116);
+
+   NOption(117,Node999,4);
+   NOption(118,Node999,4);
+end
+
+procedure Node007 begin
+   Reply(119);
+
+   NOption(120,Node999,-3);
+end
+
+procedure Node008 begin
+   Reply(200);
+
+   if (dude_item_count(PID_WRITTEN_LEDGER) > 0) then
+      NOption(206,Node021,4);
+
+   if (global_var(GVAR_3S_CARAVAN_RUNS) >= 1) then
+      NOption(205,Node026,4);
+   else if (get_day == START_DAY) then
+      NOption(205,Node017,4);
+   else
+      NOption(205,Node019,4);
+
+   NOption(201,Node009,4);
+   NOption(202,Node015,4);
+   NOption(203,Node016,4);
+
+   if (
+      (global_var(GVAR_CIPHER_FOOD) == CIPHER_FOOD_NONE) and
+      (global_var(GVAR_QUEST_CIPHERS_MORE_FOOD) == QUEST_ACCEPTED)
+   ) then begin
+      NOption(208,Node042,4);
+   end
+
+   NOption(204,Node999,4);
+end
+
+procedure Node009 begin
+   Reply(230);
+   if ((global_var(GVAR_CRIMSON_CARAVAN_RUNS) >= 3) and not(ncr_bos_war_ended) and (global_var(GVAR_QUEST_FRAME_ENZO) == QUEST_NONE)) then
+      NOption(231,Node012,4);
+   else
+      NOption(231,Node010,4);
+end
+
+procedure Node010 begin
+   Reply(260);
+   NOption(261,Node011,4);
+end
+
+procedure Node011 begin
+   Reply(290);
+   NOption(291,Node999,4);
+end
+
+procedure Node012 begin
+   Reply(320);
+   NOption(321,Node013,4);
+end
+
+procedure Node013 begin
+   Reply(350);
+   NOption(351,Node014,4);
+   BOption(352,Node998,4);
+end
+
+procedure Node014 begin
+   Reply(380);
+   GOption(381,Node033,4);
+   BOption(382,Node032,4);
+end
+
+procedure Node015 begin
+   Reply(410);
+   NOption(411,Node020,4);
+end
+
+procedure Node016 begin
+   Reply(650);
+
+   NOption(mstr(651) + dude_name + mstr(652),Node020,4);
+
+   if (global_var(GVAR_3S_CARAVAN_RUNS) >= 1) then
+      NOption(mstr(651) + dude_name + mstr(653),Node026,4);
+   else if (get_day == START_DAY) then
+      NOption(mstr(651) + dude_name + mstr(653),Node017,4);
+   else
+      NOption(mstr(651) + dude_name + mstr(653),Node019,4);
+
+   NOption(654,Node999,4);
+end
+
+procedure Node017 begin
+   if (party_size > 1) then
+       Reply(681);
+   else
+       Reply(680);
+
+   NOption(682,Node018,4);
+   NOption(683,Node999,4);
+end
+
+procedure Node018 begin
+   Reply(710);
+   NOption(711,Node018a,4);
+end
+
+procedure Node018a begin
+   variable Caravan_Carts;
+   variable Caravan_Guards;
+
+   Caravan_Carts := random(1, 2);
+   Caravan_Guards := random(1, 4);
+   Caravan_Guards := (Caravan_Guards - party_size);
+   if (Caravan_Guards < 1) then
+      Caravan_Guards := 1;
+
+   set_global_var(CURRENT_CARAVAN, CARAVAN_ON_CARAVAN);
+   set_caravan_status(CARAVAN_STATUS_ON_JOB);
+   set_global_var(GVAR_CARAVAN_EXPECTED_TIME, CARAVAN_RUN_DAYS_HOOVER_DAM_BLACKFOOT);
+
+   set_global_var(GVAR_CARAVAN_START,AREA_HOOVER_DAM);
+   set_global_var(GVAR_CARAVAN_END,AREA_BLACKFOOT);
+
+   if (not(dude_is_caravan_master)) then
+      set_caravan_masters(1);
+   set_caravan_guards(Caravan_Guards);
+   set_caravan_carts(Caravan_Carts);
+   set_caravan_brahmin(2 * Caravan_Carts);
+   set_caravan_drivers(Caravan_Carts);
+end
+
+procedure Node019 begin
+   Reply(740);
+   NOption(741,Node999,4);
+end
+
+procedure Node020 begin
+
+   if (local_var(LVAR_Paid4Ledger) == 1) then begin
+      Reply(772);
+
+      if (dude_item_count(PID_WRITTEN_LEDGER) > 0) then
+         NOption(206,Node021,4);
+
+   end
+   else begin
+
+      Reply(770);
+
+      if (dude_item_count(PID_WRITTEN_LEDGER) > 0) then
+         NOption(206,Node021,4);
+
+      if (global_var(GVAR_3S_CARAVAN_RUNS) >= 1) then
+         NOption(205,Node026,4);
+      else if (get_day == START_DAY) then
+         NOption(205,Node017,4);
+      else
+         NOption(205,Node019,4);
+
+      if (
+         (global_var(GVAR_QUEST_MEET_DODGE) == 1) and
+         (global_var(GVAR_CRIMSON_CARAVAN_RUNS) >= 3) and
+         (global_var(GVAR_AILIS_DODGE_MEET_OK) == 0)
+         ) then
+         BOption(701,Node031,4);
+
+
+      if (global_var(GVAR_QUEST_FRAME_ENZO) == QUEST_PAST_PART_2) then
+         GOption(207,Node040,4);
+
+      NOption(201,Node009,4);
+      NOption(202,Node015,4);
+      NOption(203,Node016,4);
+
+      if (
+         (global_var(GVAR_CIPHER_FOOD) == CIPHER_FOOD_NONE) and
+         (global_var(GVAR_QUEST_CIPHERS_MORE_FOOD) == QUEST_ACCEPTED)
+      ) then begin
+         NOption(208,Node042,4);
+      end
+   end
+
+   NOption(204,Node999,4);
+
+end
+
+procedure Node021 begin
+
+   if (global_var(GVAR_QUEST_FIND_DEVONS_CONTACTS) == 1) then begin
+      give_xp(500);
+      display_mstr(123);
+      set_global_var(GVAR_QUEST_FIND_DEVONS_CONTACTS, 2);
+   end
+
+   Reply(800);
+   if (local_var(LVAR_Paid4Ledger) == 0) then
+      BOption(801,Node022,4);
+   else
+      BOption(801,Node025,4);
+end
+
+procedure Node022 begin
+   Reply(830);
+   BOption(831,Skill_Check_001_Barter,4);
+end
+
+procedure Node023 begin
+   call GiveLedger(10000);
+   Reply(860);
+
+   if (dude_item_count(PID_WRITTEN_LEDGER) > 0) then
+      BOption(861,Node025,4);
+
+   BOption(862,Node999,4);
+
+end
+
+procedure Node024 begin
+   Reply(890);
+   BOption(891,Node024a,4);
+   if (dude_item_count(PID_WRITTEN_LEDGER) > 0) then
+      BOption(861,Node998,4);
+   BOption(892,Node998,4);
+end
+
+procedure Node024a begin
+   set_local_var(LVAR_GoAwayTime, game_time);
+   set_global_var(GVAR_QUEST_EXTORT_AILIS, QUEST_COMPLETED);
+   call GiveLedger(5000);
+   call Node999;
+end
+
+procedure Node025 begin
+   Reply(920);
+   BOption(g_mstr(350),Node998,4);
+end
+
+procedure Node026 begin
+   if (dude_item(PID_BUSINESS_CARD) or (local_var(LVAR_Infiltrated) == 1)) then begin
+
+      if (local_var(LVAR_Infiltrated) == 0) then begin
+         set_global_var(GVAR_QUEST_3SOME_SPYJOIN, QUEST_COMPLETED);
+         give_xp(250);
+         display_mstr(954);
+         set_local_var(LVAR_Infiltrated, 1);
+         Reply(951);
+      end else
+         Reply(952);
+
+      if (get_day == START_DAY) then
+         NOption(953,Node017,4);
+      else
+         NOption(953,Node019,4);
+   end
+   else begin
+      Reply(950);
+      NOption(g_mstr(350),Node999,4);
+   end
+end
+
+procedure GiveLedger(variable caps) begin
+   remove_pid_qty(dude_obj, PID_WRITTEN_LEDGER, 1)
+   item_caps_adjust(dude_obj, caps);
+   set_local_var(LVAR_Paid4Ledger, 1);
+   give_xp(caps / 10);
+   display_mstr(863);
+end
+
+procedure Node027 begin
+   set_local_var(LVAR_Node27Once, 1);
+   Reply(1010);
+   BOption(1011,Node028,4);
+   BOption(1012,Node028,-3);
+end
+
+procedure Node028 begin
+   Reply(1040);
+   BOption(1041,ResistArrest,1);
+   BOption(1042,Skill_Check_002_Speech,4);
+   BOption(1043,Skill_Check_002_Speech,-3);
+end
+
+procedure Node029 begin
+   Reply(1070);
+   BOption(1041,ResistArrest,1);
+end
+
+procedure Node030 begin
+   Reply(1100);
+   BOption(g_mstr(350),JailTime,1);
+end
+
+procedure Node031 begin
+   set_global_var(GVAR_AILIS_DODGE_MEET_OK, 1);
+   Reply(1130);
+   BOption(1131,Node999,4);
+end
+
+procedure Node032 begin
+   Reply(893);
+   BOption(891,Node032a,4);
+   BOption(106,Node998,4);
+end
+
+procedure Node032a begin
+   set_local_var(LVAR_GoAwayTime, game_time);
+   set_global_var(GVAR_QUEST_EXTORT_AILIS, QUEST_COMPLETED);
+   call Node999;
+end
+
+procedure Node033 begin
+   Reply(440);
+   NOption(441,Node034,4);
+end
+
+procedure Node034 begin
+   Reply(470);
+   NOption(471,Node035,4);
+end
+
+procedure Node035 begin
+   Reply(500);
+   NOption(501,Node036,4);
+end
+
+procedure Node036 begin
+   Reply(530);
+   NOption(531,Node037,4);
+end
+
+procedure Node037 begin
+   Reply(560);
+   NOption(561,Node038,4);
+end
+
+procedure Node038 begin
+   Reply(590);
+   GOption(591,Node039,4);
+   BOption(592,Node998,4);
+end
+
+procedure Node039 begin
+
+   set_global_var(GVAR_QUEST_FRAME_ENZO, QUEST_ACCEPTED);
+   give_pid_qty(dude_obj, PID_PLASTIC_EXPLOSIVES, 2)
+   give_pid_qty(dude_obj, PID_ANONYMOUS_LETTER, 1)
+
+   Reply(620);
+   NOption(291,Node999,4);
+end
+
+procedure Node040 begin
+   variable tmp;
+
+   set_global_var(GVAR_QUEST_FRAME_ENZO, QUEST_COMPLETED);
+   give_xp(1500);
+   item_caps_adjust(dude_obj, 2000);
+	tmp := play_sfall_sound("data\\sound\\SFX\\ailsbomb.wav", 0);
+
+   Reply(1160);
+   NOption(1161,Node040a,4);
+end
+
+procedure Node040a begin
+   Only_Once = 1;
+   call Node999;
+end
+
+procedure Node041 begin
+
+   set_local_var(LVAR_Frame_Enzo_Talk, 1);
+
+   Reply(1190);
+   NOption(1191,Node999,4);
+end
+
+procedure Node042
+begin
+Reply(1220);
+NOption(1221,Node999,4);
+if (dude_caps >= 10000) then begin
+   NOption(1222,Node043,4);
+end
+end
+
+procedure Node043
+begin
+set_global_var(GVAR_CIPHER_FOOD, CIPHER_FOOD_HOOVER_DAM_CARAVANS);
+item_caps_adjust(dude_obj, -10000);
+Reply(1250);
+NOption(1251,Node999,4);
+end
+
+procedure ResistArrest begin
+   switch_team(self_obj, TEAM_CRIMSON_CARAVAN)
+   call Node998;
+end
+
+procedure JailTime begin
+   set_global_var(GVAR_CC_ARREST, CC_ARREST_DONE);
+   set_global_var(GVAR_QUEST_ARREST_AILIS, AILIS_ARRESTED);
+   set_local_var(LVAR_GoAwayTime, 0);
+   move_obj_inven_to_obj(self_obj, tile_contains_pid_obj(24912, 0, PID_FOOTLOCKER_RUSTY_LEFT));
+   fadeout(1);
+   set_obj_visibility(self_obj, 1);
+   add_timer_event(self_obj,game_ticks(1),2);
+   fadein(1);
+   call Node999;
+end
+
+//xxxxxxxxxxxxxxxxxxxx

@@ -1,0 +1,8 @@
+
+{100}{}{You fail to understand this schematic.}
+{101}{}{You learn how to craft a "Light Gun," a Cipher term for a Laser Pistol.}
+{102}{}{You learn how to craft an "Invisible Fire Detector," a Cipher term for a Geiger Counter.}
+{103}{}{You learn how to craft a "Third Eye," a Cipher term for a Motion Sensor.}
+{104}{}{You learn how to craft a "Lightning Rod," a Cipher term for a Cattle Prod.}
+{105}{}{You see a fading kiva schematic.}
+{106}{}{You find a hidden schematic beneath the one you were researching. You learn how to craft a "Sky Claw's Soul", a Cipher term for a Docking Clamp Chip.}

@@ -1,0 +1,652 @@
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TG /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+
+#define NAME                    SCRIPT_TBBAKA
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+#include "..\headers\footsteps.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+/* User defined variables */
+
+variable visit;
+
+import variable Scouted_Crypts;
+import variable is_crypt;
+import variable is_fool;
+import variable broken_gen;
+import variable skippy_talk;
+import variable know_power;
+import variable know_fools;
+import variable know_crypts;
+import variable Crypt_Pointer;
+import variable Fool_Pointer;
+import variable Phrax_Pointer;
+import variable Rock_Pointer;
+
+import variable Fool_Taunt;
+import variable Crypt_Taunt;
+import variable Fool_Counter;
+import variable Crypt_Counter;
+
+variable This_Once;
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure baka00;
+procedure baka00a;
+procedure baka00b;
+procedure baka01;
+procedure baka01_1;
+procedure baka02;
+procedure baka02a;
+procedure baka03;
+procedure baka04;
+procedure baka05;
+procedure baka06;
+procedure baka07;
+procedure baka07a;
+procedure baka08;
+procedure baka08_1;
+procedure baka09;
+procedure baka10;
+procedure baka11;
+procedure baka12;
+procedure baka13;
+procedure baka14;
+procedure baka15;
+procedure baka16;
+procedure baka17;
+procedure baka17a;
+procedure baka18;
+procedure baka19;
+procedure baka20;
+procedure baka21;
+procedure baka22;
+procedure baka23;
+procedure baka24;
+procedure baka25;
+procedure baka25_1;
+procedure baka25a;
+procedure baka26;
+procedure baka27;
+procedure baka28;
+procedure baka29;
+procedure baka30;
+procedure baka26a;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+   if (is_fool) then begin
+      switch_team(self_obj,TEAM_PLAYER)
+   end
+   else begin
+      switch_team(self_obj,TEAM_FOOLS)
+   end
+
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   switch_team(self_obj,TEAM_FOOLS)
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+   call critter_setup_footsteps_map_enter(self_obj, WALKING_TICKS_DEFAULT, RUNNING_TICKS_DEFAULT);
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if (Crypt_Taunt) then begin
+      Crypt_Taunt := 0;
+      if (random(1, 5) == 1) then
+         floater_bad_rand(200, 213);
+   end
+   else begin
+      if ((global_var(GVAR_GANG_WAR) == 1) and (self_tile != 20725)) then begin
+         animate_move_to_tile(20725);
+      end
+      else begin
+         if (self_tile == 20725) then begin
+            add_timer_event(self_obj, game_ticks(2), 1);
+         end
+         else begin
+            if (broken_gen and (self_tile != 27504)) then begin
+               set_global_var(GVAR_GANG_WAR, 2);
+               animate_move_to_tile(27504);
+            end
+            else begin
+               if ((self_tile == 27504) and (global_var(GVAR_GANG_WAR) == 2)) then begin
+                  set_obj_visibility(self_obj, 1);
+                  Fool_Counter := Fool_Counter - 1;
+               end
+               else begin
+                  if ((local_var(LVAR_Hostile) != 0) and self_can_see_dude) then begin
+                     set_local_var(LVAR_Hostile,1);
+                     self_attack_dude;
+                     //Macro made by Tom to keep the critter fleeing.
+                  end
+               end
+            end
+         end
+      end
+   end
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+   Evil_Critter:=1;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if (Crypt_Counter == 0) then begin
+      floater_good(178);
+      add_timer_event(self_obj, game_ticks(4), 4);
+   end
+   else begin
+      call set_idiot_savant_int;
+
+      start_gdialog(NAME, self_obj, 4, HEAD_BAKA, BACKGROUND_JUNKTOWN);
+      gSay_Start;
+      if (is_crypt == 1) then begin
+         call baka00;
+      end
+      else begin
+         if (is_fool == 1) then begin
+            if (visit == 0) then
+               call baka22;
+            else
+               call baka26;
+         end
+         else begin
+            if (local_var(LVAR_Herebefore) == 0) then
+               call baka06;
+            else
+               call baka12;
+         end
+      end
+      gSay_End;
+      end_dialogue;
+
+      call restore_idiot_savant_int;
+   end
+
+end
+
+procedure timed_event_p_proc begin
+   variable critters, critter, team;
+
+   if (fixed_param == 1) then begin
+      set_global_var(GVAR_GANG_WAR, 0);
+      if (self_can_speak and (Fool_Taunt == 0)) then begin
+         Fool_Taunt := 1;
+         floater_bad_rand(200, 220);
+      end
+      add_timer_event(self_obj, 4, 2);
+   end
+   else if (fixed_param == 2) then begin
+      if(self_can_speak) then begin
+         critters := objects_in_radius(self_tile, get_critter_base_stat(self_obj, STAT_pe), self_elevation, OBJ_TYPE_CRITTER);
+
+         foreach (critter in critters) begin
+            if(critter_attackable(critter) and obj_can_see_obj(self_obj, critter)) then begin
+               team := has_trait(TRAIT_OBJECT, critter, OBJECT_TEAM_NUM);
+
+               if(TEAM_CRYPTS == team) then begin
+                  self_attack_critter(critter);
+                  break;
+               end
+            end
+         end
+      end
+   end
+   else if (fixed_param == 3) then begin
+         if (self_can_see_dude) then begin
+            call Node998;
+         end
+   end
+   else if (fixed_param == 4) then begin
+      set_global_var(GVAR_VT_HOLOGRAM, 1);
+      display_msg(message_str(SCRIPT_SCRPHEAP, 403));
+      destroy_obj_inven(dude_obj);
+      load_map("tbsrvc03", 0);
+   end
+
+   call critter_setup_footsteps_timed_event(self_obj, WALKING_TICKS_DEFAULT, RUNNING_TICKS_DEFAULT, SFX_FOOTSTEP_MEDIUM_SHOE);
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+   Fool_Counter := Fool_Counter - 1;
+/* Increment the aligned critter counter*/
+   inc_evil_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (know_fools == 1) then
+      display_mstr(101);
+   else
+      display_mstr(100);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+procedure baka00 begin
+   Reply(102);
+   NOption(103, baka00a, 4);
+   NOption(104, baka03, 4);
+   NOption(105, baka00b, 4);
+   NOption(303, baka00a, -3);
+   NOption(304, baka03, -3);
+   NOption(305, baka00b, -3);
+end
+
+procedure baka00a begin
+   if (is_success(roll_vs_skill(dude_obj, SKILL_CONVERSANT, 0))) then begin
+      call baka02;
+   end
+   else begin
+      call baka01;
+   end
+end
+
+procedure baka00b begin
+   add_timer_event(self_obj, game_ticks(20), 3);
+end
+
+procedure baka01 begin
+   Reply(106);
+   NOption(164, baka01_1, 1);
+end
+
+procedure baka01_1 begin
+   Reply(174);
+   BOption(163, Node998, 1);
+end
+
+procedure baka02 begin
+   Reply(107);
+   NOption(164, baka02a, 1);
+end
+
+procedure baka02a begin
+   is_fool := 1;
+   is_crypt := 0;
+   Reply(173);
+   NOption(163, Node999, 1);
+end
+
+procedure baka03 begin
+   if (dude_is_male) then
+      Reply(108);
+   else
+      Reply(179);
+   BOption(109, Node998, 1);
+   NOption(110, baka05, 4);
+   NOption(111, baka04, 4);
+   NOption(310, baka05, -3);
+   NOption(311, baka04, -3);
+end
+
+procedure baka04 begin
+   if (dude_is_male) then
+      Reply(112);
+   else
+      Reply(180);
+   BOption(163, Node998, 1);
+end
+
+procedure baka05 begin
+   Reply(113);
+   BOption(163, Node998, 1);
+end
+
+procedure baka06 begin
+   know_fools := 1;
+   Reply(114);
+   NOption(115, baka07, 4);
+   NOption(315, baka07, -3);
+   if (know_crypts == 1) then begin
+      NOption(116, baka08, 4);
+      NOption(316, baka08, -3);
+   end
+   NOption(117, baka09, 4);
+   NOption(317, baka09, -3);
+end
+
+procedure baka07 begin
+   Reply(118);
+   NOption(164, baka07a, 1);
+   NOption(171, Node999, 4);
+   NOption(371, Node999, -3);
+end
+
+procedure baka07a begin
+   Reply(172);
+   NOption(119, baka08, 4);
+   NOption(171, Node999, 4);
+   NOption(319, baka08, -3);
+   NOption(371, Node999, -3);
+end
+
+procedure baka08 begin
+   Reply(120);
+   NOption(164, baka08_1, 1);
+end
+
+procedure baka08_1 begin
+   Reply(175);
+   is_fool := 1;
+   NOption(163, Node999, 1);
+end
+
+procedure baka09 begin
+   Reply(121);
+   NOption(122, baka10, 4);
+   NOption(123, baka11, 4);
+   NOption(322, baka10, -3);
+   NOption(323, baka11, -3);
+end
+
+procedure baka10 begin
+   Reply(124);
+   BOption(163, Node998, 1);
+end
+
+procedure baka11 begin
+   Reply(125);
+   NOption(163, Node999, 1);
+end
+
+procedure baka12 begin
+   Reply(126);
+   NOption(127, baka13, 4);
+   NOption(327, baka13, -3);
+   if (know_power == 1) then begin
+      NOption(128, baka17, 4);
+      NOption(328, baka17, -3);
+   end
+   NOption(168, Node999, 4);
+   NOption(368, Node999, -3);
+end
+
+procedure baka13 begin
+   Reply(129);
+   NOption(130, baka14, 4);
+   NOption(131, baka15, 4);
+   NOption(330, baka14, -3);
+   NOption(331, baka15, -3);
+   if (dude_is_male) then begin
+      NOption(132, baka16, 4);
+      NOption(332, baka16, -3);
+   end
+   else begin
+      NOption(181, baka16, 4);
+      NOption(381, baka16, -3);
+   end
+   NOption(170, Node999, 4);
+   NOption(370, Node999, -3);
+end
+
+procedure baka14 begin
+   Reply(133);
+   is_fool := 1;
+   NOption(163, Node999, 1);
+end
+
+procedure baka15 begin
+   Reply(134);
+   BOption(163, Node998, 1);
+end
+
+procedure baka16 begin
+   Reply(135);
+   skippy_talk := 1;
+   NOption(163, Node999, 1);
+end
+
+procedure baka17 begin
+   Reply(136);
+   NOption(164, baka17a, 1);
+end
+
+procedure baka17a begin
+   Reply(176);
+   NOption(137, baka18, 4);
+   NOption(138, Node999, 4);
+   NOption(337, baka18, -3);
+   NOption(338, Node999, -3);
+end
+
+procedure baka18 begin
+   Reply(139);
+   NOption(140, baka19, 4);
+   NOption(141, Node999, 4);
+   NOption(340, baka19, -3);
+   NOption(341, Node999, -3);
+end
+
+procedure baka19 begin
+   Reply(142);
+   NOption(143, baka20, 4);
+   NOption(144, baka21, 4);
+   NOption(343, baka20, -3);
+   NOption(344, baka21, -3);
+end
+
+procedure baka20 begin
+   Reply(145);
+   is_fool := 1;
+   NOption(163, Node999, 1);
+end
+
+procedure baka21 begin
+   Reply(146);
+   BOption(163, Node998, 1);
+end
+
+procedure baka22 begin
+   visit := 1;
+   Reply(147);
+   NOption(148, baka23, 4);
+   NOption(149, baka24, 4);
+   NOption(348, baka23, -3);
+   NOption(349, baka24, -3);
+   if (obj_pid(critter_inven_obj(dude_obj, 0)) != PID_METAL_ARMOR) then begin
+      NOption(150, baka29, 4);
+      NOption(350, baka29, -3);
+   end
+end
+
+procedure baka23 begin
+   Reply(151);
+   NOption(152, baka24, 4);
+   NOption(352, baka24, -3);
+end
+
+procedure baka24 begin
+   know_power := 1;
+   Reply(153);
+   NOption(154, baka25, 4);
+   NOption(354, baka25, -3);
+end
+
+procedure baka25 begin
+   Reply(155);
+   NOption(164, baka25_1, 1);
+end
+
+procedure baka25_1 begin
+   Reply(177);
+   NOption(156, baka25a, 1);
+end
+
+procedure baka25a begin
+   Scouted_Crypts := 1;
+   set_global_var(GVAR_CSCOUT_1, 1);
+end
+
+procedure baka26 begin
+   Reply(157);
+   NOption(158, baka26a, 4);
+   NOption(159, baka27, 4);
+   NOption(343, baka26a, -3);
+   NOption(344, baka27, -3);
+end
+
+procedure baka27 begin
+   Reply(160);
+   NOption(163, Node999, 1);
+end
+
+procedure baka28 begin
+   Reply(161);
+   set_global_var(GVAR_GANG_WAR, 1);
+   NOption(163, Node999, 1);
+end
+
+procedure baka29 begin
+   Reply(162);
+   NOption(163, Node999, 1);
+end
+
+procedure baka30 begin
+   Reply(169);
+   NOption(163, Node999, 1);
+end
+
+procedure baka26a begin
+   if (Scouted_Crypts == 2) then
+      call baka28;
+   else
+      call baka30;
+end
+
+//xxxxxxxxxxxxxxxxxxxx

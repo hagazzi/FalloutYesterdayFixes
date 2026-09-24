@@ -1,0 +1,74 @@
+/*
+	Animate forever
+*/
+
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_MVWATERM
+
+procedure start;
+procedure map_enter_p_proc;
+//procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+//variable sfx;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   add_timer_event(self_obj, game_ticks(random(1,12)), 1);
+end
+
+procedure timed_event_p_proc begin
+
+    //variable wav, fid;
+
+  if (fixed_param == 1) then begin
+      if (
+         (global_var(GVAR_QUEST_SABOTAGE_WIND_TURBINE) != QUEST_COMPLETED) and
+         obj_on_screen(self_obj) and
+         (not(anim_busy(self_obj))) and
+         (not(combat_is_initialized)) and
+         (self_elevation == dude_elevation)
+         ) then begin
+            reg_anim_clear(self_obj);
+            animate_set_frame(0);
+            reg_anim_begin();
+            reg_anim_animate(self_obj, ANIM_stand, -1);
+            reg_anim_end();
+
+         /*if(
+            obj_can_hear_obj(dude_obj, self_obj) and
+            (self_elevation == dude_elevation)
+            ) then begin
+            fid := self_fid;
+            if (fid == 33558226) then begin
+               wav := "sfx_windmill_0" + random(1, 4);
+            end
+            if(sfx == 0) then begin
+                sfx := play_sfall_sound("data\\sound\\SFX\\" + wav + ".wav", 1);
+            end
+        end else begin
+            stop_sfall_sound(sfx);
+            sfx := 0;
+        end*/
+
+      end
+      /*else if (combat_is_initialized) then begin
+         reg_anim_clear(self_obj);
+      end*/
+      add_timer_event(self_obj, game_ticks(random(1,12)), 1);
+  end
+end
+/*
+procedure map_exit_p_proc begin
+
+   if(sfx) then begin
+       stop_sfall_sound(sfx);
+   end
+
+end
+*/

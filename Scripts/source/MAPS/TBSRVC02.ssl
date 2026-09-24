@@ -1,0 +1,53 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\tibbets.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_TBSRVC02
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if(
+      (global_var(GVAR_TIBBETS_BATTALION_ATTACK) == 0) and
+      ((get_year > 2253) or
+      (get_month > 10 and get_year == 2253) or
+      (get_day == 31 and get_month == 10 and get_year == 2253))
+   ) then begin
+      call TibbetsAttack;
+   end
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_TIBBETS), 1);
+
+   fadein(1);
+   Tibbets_Lighting;
+end
+
+procedure map_update_p_proc begin
+   Tibbets_Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

@@ -1,0 +1,490 @@
+/*
+
+        Name:           Fat Talbot
+        Location:
+        Description:
+
+           Created: 28/09/2020 08:46:07
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBTALBO
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure A1;
+procedure A2;
+procedure B1;
+procedure C1;
+procedure D2;
+procedure D3;
+procedure D4;
+procedure D5;
+procedure D6;
+procedure E1;
+procedure E2;
+procedure E3;
+procedure F1;
+procedure F2;
+procedure G1;
+procedure I1;
+procedure C1_1;
+procedure C1_5;
+procedure D2_1;
+procedure D3_1;
+procedure D4_5;
+procedure D5_10;
+procedure D6_5;
+procedure Node999_1;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Pissed               (8)
+#define LVAR_Caps_Given               (9)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+
+   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+   call new_plague_check(self_obj, LVAR_Herebefore);
+
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if(local_var(LVAR_Pissed) == 1) then begin
+      floater_bad_rand(230, 231);
+      return;
+   end
+
+   if(local_var(LVAR_Caps_Given) >= 100) then begin
+      floater_good(260);
+      return;
+   end
+
+
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+
+
+if (local_var(LVAR_Herebefore)==0) then begin
+       call A1;
+end else if (local_var(LVAR_Herebefore)==1) then begin
+       call A2;
+end
+
+       gSay_End;
+       end_dialogue;
+
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+
+   add_timer_event(self_obj, game_ticks(random(3, 5)), 0);
+
+    if (random(1, 30) == 1) then begin
+       floater_rand(200, 204);
+   end
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+/* inc_evil_critter */
+/* inc_neutral_critter */
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+procedure A1
+begin
+Reply(290);
+NOption(291,B1,4);
+// NOTE: subtract 1 cap
+if (dude_caps>=1) then
+NOption(292,C1_1,4);
+// NOTE: - 5 caps
+if (dude_caps>=5) then
+NOption(293,C1_5,4);
+// NOTE: -1 karma
+NOption(294,Node999_1,4);
+// NOTE: - 1 cap
+if (dude_caps>=1) then
+NOption(mstr(295)+dude_name+mstr(296),D2_1,-3);
+NOption(mstr(297)+dude_name+mstr(298),E3,-3);
+NOption(299,Node999,-3);
+end
+
+procedure A2
+begin
+Reply(320);
+// NOTE: - 1 cap
+if (dude_caps>=1) then
+NOption(321,C1_1,4);
+NOption(322,E1,4);
+NOption(323,Node999,4);
+// NOTE: -1 cap
+if (dude_caps>=1) then
+NOption(mstr(295)+dude_name+mstr(296),D2_1,-3);
+NOption(mstr(324)+dude_name+mstr(325),E3,-3);
+// NOTE: -1 karma
+NOption(326,Node999_1,-3);
+end
+
+procedure B1
+begin
+Reply(350);
+NOption(351,E2,4);
+// NOTE: -  5 caps
+if (dude_caps>=5) then
+NOption(352,C1_5,4);
+NOption(353,Node999,4);
+end
+
+procedure C1
+begin
+Reply(380);
+NOption(381,E1,4);
+NOption(382,Node999,4);
+end
+
+procedure D2
+begin
+Reply(410);
+// NOTE: -1 cap
+if (dude_caps>=1) then
+NOption(411,D3_1,-3);
+NOption(mstr(412)+dude_name+mstr(413),E3,-3);
+NOption(414,Node999,-3);
+end
+
+procedure D3
+begin
+Reply(mstr(440)+dude_name+mstr(441));
+// NOTE: -5 caps
+if (dude_caps>=5) then
+NOption(442,D4_5,-3);
+NOption(443,E3,-3);
+NOption(mstr(444)+dude_name+mstr(445),Node999,-3);
+BOption(446,Node999,-3);
+end
+
+procedure D4
+begin
+Reply(mstr(470)+dude_name+mstr(471));
+// NOTE: -10 caps
+if (dude_caps>=10) then
+NOption(mstr(472)+dude_name+mstr(473),D5_10,-3);
+NOption(474,E3,-3);
+if (dude_caps==0) then
+NOption(475,Node999,-3);
+end
+
+procedure D5
+begin
+Reply(500);
+// NOTE: -5 caps
+if (dude_caps>=5) then
+NOption(501,D6_5,-3);
+NOption(502,E3,-3);
+NOption(503,Node999,-3);
+end
+
+procedure D6
+begin
+Reply(530);
+set_local_var(LVAR_Pissed, 1);
+give_xp(100);
+display_mstr(150);
+NOption(531,Node999,-3);
+NOption(532,Node999,-3);
+end
+
+procedure E1
+begin
+Reply(560);
+NOption(561,F1,4);
+NOption(562,F1,4);
+end
+
+procedure E2
+begin
+Reply(590);
+NOption(591,F1,4);
+NOption(592,F1,4);
+end
+
+procedure E3
+begin
+Reply(620);
+NOption(621,F1,-3);
+NOption(622,Node999,-3);
+end
+
+procedure F1
+begin
+Reply(650);
+NOption(651,F2,4);
+NOption(652,F2,-3);
+end
+
+procedure F2
+begin
+Reply(680);
+NOption(681,G1,4);
+NOption(682,Node999,4);
+NOption(683,G1,-3);
+NOption(684,Node999,-3);
+end
+
+procedure G1
+begin
+Reply(710);
+NOption(711,I1,4);
+NOption(712,Node999,4);
+NOption(713,I1,-3);
+NOption(714,Node999,-3);
+end
+
+procedure I1
+begin
+Reply(740);
+NOption(741,Node999,4);
+NOption(742,Node999,4);
+NOption(743,Node999,-3);
+NOption(744,Node999,-3);
+end
+
+
+procedure C1_1 begin
+   item_caps_adjust(dude_obj, -1);
+   inc_local_var_amt(LVAR_Caps_Given, 1);
+   call C1;
+end
+
+procedure C1_5 begin
+   item_caps_adjust(dude_obj, -5);
+   inc_local_var_amt(LVAR_Caps_Given, 5);
+   call C1;
+end
+
+procedure D2_1 begin
+   item_caps_adjust(dude_obj, -1);
+   inc_local_var_amt(LVAR_Caps_Given, 1);
+   call D2;
+end
+
+procedure D3_1 begin
+   item_caps_adjust(dude_obj, -1);
+   inc_local_var_amt(LVAR_Caps_Given, 1);
+   call D3;
+end
+
+procedure D4_5 begin
+   item_caps_adjust(dude_obj, -5);
+   inc_local_var_amt(LVAR_Caps_Given, 5);
+   call D4;
+end
+
+procedure D5_10 begin
+   item_caps_adjust(dude_obj, -10);
+   inc_local_var_amt(LVAR_Caps_Given, 10);
+   call D5;
+end
+
+procedure D6_5 begin
+   item_caps_adjust(dude_obj, -5);
+   inc_local_var_amt(LVAR_Caps_Given, 5);
+   call D6;
+end
+
+procedure Node999_1 begin
+   dec_general_rep(1);
+end
+
+//xxxxxxxxxxxxxxxxxxxx

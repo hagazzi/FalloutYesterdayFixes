@@ -1,0 +1,351 @@
+// gl_pipwake.int
+
+
+#include "..\HEADERS\DEFINE.H"
+#include "..\HEADERS\define_extra.h"
+#include "..\HEADERS\COMMAND.H"
+#include "..\HEADERS\party.H"
+#include "..\HEADERS\sfall.h"
+#include "..\HEADERS\MRFIXIT.h"
+
+procedure start;
+procedure resting;
+procedure wakeup;
+
+variable rest_sfx, rest_hours;
+
+procedure start begin
+   if game_loaded then begin
+      register_hook_proc(HOOK_RESTTIMER, resting);
+      register_hook_proc(HOOK_GAMEMODECHANGE, wakeup);
+   end
+end
+
+procedure resting begin
+   rest_hours = get_sfall_arg_at(2);
+   rest_sfx := 1;
+end
+
+procedure wakeup begin
+   variable event = get_sfall_arg_at(0);
+
+   // Exit to Main Menu
+   if (event == 1) then begin
+      call delete_button;
+
+      if (global_var(GVAR_SHADER_ID) > 0) then begin
+         deactivate_shader(global_var(GVAR_SHADER_ID));
+      end
+
+   end
+   else begin
+      variable mode = get_game_mode;
+
+     /*
+     TODO Test these as well, probably safe
+      #define INTFACEUSE  (0x8000)
+      #define INTFACELOOT (0x10000)
+      #define HEROWIN     (0x40000)
+      #define COUNTERWIN  (0x100000) // counter window for moving multiple items or setting a timer
+*/
+      // Modes that might overlap with the craft button
+      if (mode bwand (WORLDMAP bwor DIALOG bwor SAVEGAME bwor LOADGAME bwor OPTIONS bwor HELP bwor CHARSCREEN bwor PIPBOY bwor AUTOMAP bwor BARTER bwor DIALOGVIEW)) then begin
+         call delete_button;
+      end else begin
+         // Need to add the button with a delay otherwise it bleeds through fadeout/fadein/screen anims
+         add_timer_event(dude_obj, 1, 20000);
+      end
+   end
+
+   if(rest_sfx == 1) then begin
+      rest_sfx := 0;
+      play_sfx("pipwake");
+      display_msg(g_mstr(608));
+   end
+
+   if ((has_fake_trait(TRAIT_rabid) or has_fake_perk(PERK_cancerous_growth)) and (rest_hours >= 48)) then begin
+      call HealPlayer(0, 0, HEAL_CRIPPLE, 0);
+   end
+
+   if (global_var(GVAR_HOLODISK_FEEDING_MACHINE) == 1 and (obj_is_carrying_obj_pid(dude_obj, PID_HOLODISK_FEEDING) > 0)) then begin
+      set_global_var(GVAR_HOLODISK_FEEDING_MACHINE, 2);
+
+      give_pid_qty(dude_obj, PID_HOLODISK_FEEDING_DL, 1)
+      remove_pid_qty(dude_obj, PID_HOLODISK_FEEDING, 1)
+  end
+
+  if (global_var(GVAR_HOLODISK_TIME_MACHINE) == 1 and (obj_is_carrying_obj_pid(dude_obj, PID_HOLODISK_TIMEMACHINE) > 0)) then begin
+   set_global_var(GVAR_HOLODISK_TIME_MACHINE, 2);
+
+    give_pid_qty(dude_obj, PID_HOLODISK_TIMEMACHINE_DL, 1)
+    remove_pid_qty(dude_obj, PID_HOLODISK_TIMEMACHINE, 1)
+   end
+
+   if (global_var(GVAR_HOLODISK_BOS_HONOR_CODE) == 1 and (obj_is_carrying_obj_pid(dude_obj, PID_HOLODISK_BOS_HONOR_CODE) > 0)) then begin
+      set_global_var(GVAR_HOLODISK_BOS_HONOR_CODE, 2);
+
+      give_pid_qty(dude_obj, PID_HOLODISK_BOS_HONOR_CODE_DL, 1)
+      remove_pid_qty(dude_obj, PID_HOLODISK_BOS_HONOR_CODE, 1)
+   end
+
+if (global_var(GVAR_HOLODISK_TRACI_NIELS_AUTOBIOGRAPHY) == 1 and (obj_is_carrying_obj_pid(dude_obj, PID_HOLODISK_TRACI_NIELS_AUTOBIOGRAPHY) > 0)) then begin
+   set_global_var(GVAR_HOLODISK_TRACI_NIELS_AUTOBIOGRAPHY, 2);
+
+    give_pid_qty(dude_obj, PID_HOLODISK_TRACI_NIELS_AUTOBIOGRAPHY_DL, 1)
+    remove_pid_qty(dude_obj, PID_HOLODISK_TRACI_NIELS_AUTOBIOGRAPHY, 1)
+end
+
+if (global_var(GVAR_HOLODISK_ENCLAVE_STATE) == 1 and (obj_is_carrying_obj_pid(dude_obj, PID_ENCLAVE_HOLODISK) > 0)) then begin
+   set_global_var(GVAR_HOLODISK_ENCLAVE_STATE, 2);
+
+    give_pid_qty(dude_obj, PID_ENCLAVE_HOLODISK_DL, 1)
+    remove_pid_qty(dude_obj, PID_ENCLAVE_HOLODISK, 1)
+end
+
+if (global_var(GVAR_HOLODISK_MAXSON_BUNKER_HISTORY) == 1 and (obj_is_carrying_obj_pid(dude_obj, PID_HOLODISK_MAXSON_BUNKER_HISTORY) > 0)) then begin
+   set_global_var(GVAR_HOLODISK_MAXSON_BUNKER_HISTORY, 2);
+
+    give_pid_qty(dude_obj, PID_HOLODISK_MAXSON_BUNKER_HISTORY_DL, 1)
+    remove_pid_qty(dude_obj, PID_HOLODISK_MAXSON_BUNKER_HISTORY, 1)
+end
+
+if (global_var(GVAR_HOLODISK_COS) == 1 and (obj_is_carrying_obj_pid(dude_obj, PID_HOLODISK_COS) > 0)) then begin
+   set_global_var(GVAR_HOLODISK_COS, 2);
+
+    give_pid_qty(dude_obj, PID_HOLODISK_COS_DL, 1)
+    remove_pid_qty(dude_obj, PID_HOLODISK_COS, 1)
+end
+
+if (global_var(GVAR_HOLODISK_PROJECT_CHIMERA) == 1 and (obj_is_carrying_obj_pid(dude_obj, PID_HOLODISK_S1C) > 0)) then begin
+   set_global_var(GVAR_HOLODISK_PROJECT_CHIMERA, 2);
+
+    give_pid_qty(dude_obj, PID_HOLODISK_S1C_DL, 1)
+    remove_pid_qty(dude_obj, PID_HOLODISK_S1C, 1)
+end
+
+if (
+   (global_var(GVAR_CRAFT_GUNS_AND_BULLETS) == 0) and
+   (dude_skill(SKILL_SMALL_GUNS) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_GUNS_AND_BULLETS, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_US_ARMY_30_HANDY_FLAMETHROWER_RECIPES) == 0) and
+   (dude_skill(SKILL_BIG_GUNS) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_US_ARMY_30_HANDY_FLAMETHROWER_RECIPES, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_NIKOLA_TESLA_AND_YOU) == 0) and
+   (dude_skill(SKILL_ENERGY_WEAPONS) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_NIKOLA_TESLA_AND_YOU, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_PUGILISM_ILLUSTRATED) == 0) and
+   (dude_skill(SKILL_UNARMED_COMBAT) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_PUGILISM_ILLUSTRATED, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_GROGNAK_THE_BARBARIAN) == 0) and
+   (dude_skill(SKILL_MELEE) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_GROGNAK_THE_BARBARIAN, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_HOW_TO_BE_A_WORLD_CLASS_TRIATHLETE) == 0) and
+   (dude_skill(SKILL_THROWING) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_HOW_TO_BE_A_WORLD_CLASS_TRIATHLETE, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_FIRST_AID_BOOK) == 0) and
+   (dude_skill(SKILL_FIRST_AID) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_FIRST_AID_BOOK, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_MEDICAL_ENCYCLOPEDIA) == 0) and
+   (dude_skill(SKILL_DOCTOR) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_MEDICAL_ENCYCLOPEDIA, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_CHINESE_ARMY_SPECIAL_OPS_TRAINING_MANUAL) == 0) and
+   (dude_skill(SKILL_SNEAK) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_CHINESE_ARMY_SPECIAL_OPS_TRAINING_MANUAL, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_HOME_SECURITY) == 0) and
+   (dude_skill(SKILL_LOCKPICK) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_HOME_SECURITY, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_DONT_STEAL_THIS_BOOK) == 0) and
+   (dude_skill(SKILL_STEAL) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_DONT_STEAL_THIS_BOOK, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_MADDOCKS_TRICKS_TRAPS) == 0) and
+   (dude_skill(SKILL_TRAPS) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_MADDOCKS_TRICKS_TRAPS, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_GUNS_AND_BULLETS) == 0) and
+   (dude_skill(SKILL_SCIENCE) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_GUNS_AND_BULLETS, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_DEANS_ELECTRONICS) == 0) and
+   (dude_skill(SKILL_REPAIR) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_DEANS_ELECTRONICS, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_MAKING_FRIENDS_WITH_BIG_FAT_LIARS) == 0) and
+   (dude_skill(SKILL_CONVERSANT) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_MAKING_FRIENDS_WITH_BIG_FAT_LIARS, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_TALES_OF_A_JUNKTOWN_JERKY_VENDOR) == 0) and
+   (dude_skill(SKILL_BARTER) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_TALES_OF_A_JUNKTOWN_JERKY_VENDOR, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_ZEN_GAMBLING) == 0) and
+   (dude_skill(SKILL_GAMBLING) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_ZEN_GAMBLING, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_SCOUT_HANDBOOK) == 0) and
+   (dude_skill(SKILL_OUTDOORSMAN) >= 100)
+   ) then begin
+   set_global_var(GVAR_CRAFT_SCOUT_HANDBOOK, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_DYNAMITE) == 0) and
+   (dude_skill(SKILL_TRAPS) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_DYNAMITE, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_LEATHER_JACKET) == 0) and
+   (dude_skill(SKILL_REPAIR) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_LEATHER_JACKET, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_LEATHER_ARMOR) == 0) and
+   (dude_skill(SKILL_REPAIR) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_LEATHER_ARMOR, 1);
+end
+
+
+if (
+   (global_var(GVAR_CRAFT_LEATHER_ARMOR_MKII) == 0) and
+   (dude_skill(SKILL_REPAIR) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_LEATHER_ARMOR_MKII, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_COMBAT_LEATHER_JACKET) == 0) and
+   (dude_skill(SKILL_REPAIR) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_COMBAT_LEATHER_JACKET, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_ANTIDOTE) == 0) and
+   (dude_skill(SKILL_FIRST_AID) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_ANTIDOTE, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_STIMPAK) == 0) and
+   (dude_skill(SKILL_DOCTOR) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_STIMPAK, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_SUPER_STIMPAK) == 0) and
+   (dude_skill(SKILL_DOCTOR) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_SUPER_STIMPAK, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_PSYCHO) == 0) and
+   (dude_skill(SKILL_DOCTOR) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_PSYCHO, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_POISONED_STIMPAK) == 0) and
+   (dude_skill(SKILL_DOCTOR) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_POISONED_STIMPAK, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_POISONED_SUPER_STIMPAK) == 0) and
+   (dude_skill(SKILL_DOCTOR) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_POISONED_SUPER_STIMPAK, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_ELECTRONIC_LOCKPICKS) == 0) and
+   (dude_skill(SKILL_SCIENCE) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_ELECTRONIC_LOCKPICKS, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_ELECTRONIC_LOCKPICKS_MKII) == 0) and
+   (dude_skill(SKILL_SCIENCE) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_ELECTRONIC_LOCKPICKS_MKII, 1);
+end
+
+if (
+   (global_var(GVAR_CRAFT_RAT_TAIL_LUCKY_CHARM) == 0) and
+   (dude_skill(SKILL_OUTDOORSMAN) >= 50)
+   ) then begin
+   set_global_var(GVAR_CRAFT_RAT_TAIL_LUCKY_CHARM, 1);
+end
+
+end

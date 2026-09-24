@@ -1,0 +1,103 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_FACLCS
+
+/* Standard Script Procedures */
+procedure start;
+procedure spatial_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+
+
+
+procedure start begin
+end
+
+procedure spatial_p_proc begin
+    if(source_obj == dude_obj) then begin
+        fadeout(1);
+        tile_set_center(16294);
+        add_timer_event(self_obj, game_ticks(1), 1);
+        add_timer_event(self_obj, game_ticks(7), 2);
+        add_timer_event(self_obj, game_ticks(12), 3);
+        add_timer_event(self_obj, game_ticks(20), 4);
+        add_timer_event(self_obj, game_ticks(23), 5);
+        add_timer_event(self_obj, game_ticks(24), 6);
+   end
+end
+
+procedure timed_event_p_proc begin
+    variable cl1 = obj_blocking_tile(16694, 1, BLOCKING_TYPE_AI);
+    variable cl2 = obj_blocking_tile(16294, 1, BLOCKING_TYPE_AI);
+    if(fixed_param == 1) then begin
+        fadein(1);
+        obj_floater_type(cl1, mstr(100), FLOAT_COLOR_BAD);
+        game_ui_disable;
+    end
+    else if(fixed_param == 2) then begin
+        obj_floater_type(cl2, mstr(101), FLOAT_COLOR_SAD);
+        obj_floater_type(cl1, "", FLOAT_COLOR_NORMAL);
+    end
+    else if(fixed_param == 3) then begin
+        obj_floater_type(cl1, mstr(102), FLOAT_COLOR_BAD);
+        obj_floater_type(cl2, "", FLOAT_COLOR_NORMAL);
+    end
+    else if(fixed_param == 4) then begin
+        obj_floater_type(cl2, mstr(103), FLOAT_COLOR_SAD);
+        obj_floater_type(cl1, "", FLOAT_COLOR_NORMAL);
+    end
+    else if(fixed_param == 5) then begin
+        fadeout(1);
+        destroy_object(cl1);
+        destroy_object(cl2);
+        destroy_object(obj_blocking_tile(15495, 1, BLOCKING_TYPE_AI));
+        destroy_object(obj_blocking_tile(15295, 1, BLOCKING_TYPE_AI));
+        destroy_object(obj_blocking_tile(15096, 1, BLOCKING_TYPE_AI));
+        destroy_object(obj_blocking_tile(14896, 1, BLOCKING_TYPE_AI));
+        destroy_object(obj_blocking_tile(14895, 1, BLOCKING_TYPE_AI));
+        destroy_object(obj_blocking_tile(14894, 1, BLOCKING_TYPE_AI));
+        destroy_object(obj_blocking_tile(14494, 1, BLOCKING_TYPE_AI));
+    end
+    else if(fixed_param == 6) then begin
+        fadein(1);
+        game_ui_enable;
+        set_global_var(GVAR_FA_LEGION_GONE, global_var(GVAR_FA_LEGION_GONE) + 1);
+        destroy_object(self_obj);
+    end
+end

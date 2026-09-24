@@ -1,0 +1,3 @@
+
+{100}{}{You enter the correct door entry key combination.}
+{101}{}{You see the VACCS 8 blast door entry computer.}

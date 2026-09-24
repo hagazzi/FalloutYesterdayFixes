@@ -1,0 +1,24 @@
+/*
+	Hide only in ACT I
+*/
+
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_HIDEACT1
+
+procedure start;
+procedure map_enter_p_proc;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+    if(global_var(GVAR_ACT) == 1) then
+        set_obj_visibility(self_obj, 1);
+     else if (not(obj_is_visible_flag(self_obj))) then
+         set_obj_visibility(self_obj, 0);
+
+end

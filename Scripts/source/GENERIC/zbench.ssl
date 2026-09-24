@@ -1,0 +1,77 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#ifndef NAME
+#define NAME                    SCRIPT_ZBENCH
+#endif
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure use_skill_on_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+    script_overrides;
+    fadeout(1);
+    inc_global_var(GVAR_ST_TRAINING);
+    game_time_advance(ONE_GAME_HOUR);
+
+    if(global_var(GVAR_ST_TRAINING) == 100) then begin
+        display_mstr(100);
+        call set_dude_attr(STAT_st, get_dude_attr(STAT_st) + 1);
+    end else begin
+        display_mstr(101);
+    end
+
+    fadein(1);
+end
+
+procedure use_skill_on_p_proc begin
+
+   if (
+      (action_being_used == SKILL_SCIENCE) and
+      is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, 0))
+   ) then begin
+      script_overrides;
+      display_mstr(102);
+   end
+end

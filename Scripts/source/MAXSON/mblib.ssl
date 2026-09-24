@@ -1,0 +1,227 @@
+/*
+
+        Name:
+        Location:
+        Description:
+
+           Created: 19/01/2021 20:07:16
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_MBLIB
+
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure talk_p_proc;
+procedure use_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+procedure map_update_p_proc;
+procedure animfrvr;
+
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node002_mlp;
+procedure Node002_lrec;
+procedure Node002_ppec;
+procedure Node002_x;
+procedure Node002_ta;
+procedure Node002_ba;
+procedure Node002_hpa;
+
+
+
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+
+procedure use_p_proc begin
+if (source_obj == dude_obj) then
+   dialogue_system_enter;
+end
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+
+call animfrvr;
+   add_timer_event(self_obj, 1, 1);
+
+
+end
+
+procedure map_update_p_proc begin
+   if (
+      (not(combat_is_initialized)) and
+      (self_elevation == dude_elevation)
+   ) then
+   begin
+      call animfrvr;
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       call Node001;
+       gSay_End;
+       end_dialogue;
+
+
+end
+
+procedure timed_event_p_proc begin
+
+   variable wav, fid;
+
+ if (fixed_param == 1) then begin
+     if (
+        (not(anim_busy(self_obj))) and
+        (not(combat_is_initialized)) and
+        (self_elevation == dude_elevation)
+        ) then begin
+           call animfrvr;
+     end
+     add_timer_event(self_obj, 1, 1);
+ end
+end
+
+procedure animfrvr begin
+  reg_anim_begin();
+  reg_anim_animate_forever(self_obj, ANIM_stand);
+  reg_anim_end();
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+procedure Node001
+begin
+Reply(200);
+NOption(201,Node002_mlp,4);
+NOption(202,Node002_lrec,4);
+NOption(203,Node002_ppec,4);
+NOption(204,Node002_x,4);
+NOption(205,Node002_ta,4);
+NOption(206,Node002_ba,4);
+NOption(207,Node002_hpa,4);
+NOption(208,Node999,4);
+end
+
+procedure Node002
+begin
+Reply(230);
+NOption(231,Node001,4);
+NOption(208,Node999,4);
+end
+
+procedure Node002_mlp begin
+   set_global_var(GVAR_CRAFT_MAGNETO_LASER_PISTOL, 1);
+   call Node002;
+end
+
+procedure Node002_lrec begin
+   set_global_var(GVAR_CRAFT_LASER_RIFLE_EXT_CAP, 1);
+   call Node002;
+end
+
+procedure Node002_ppec begin
+   set_global_var(GVAR_CRAFT_PLASMA_PISTOL_EXT_CAP, 1);
+   call Node002;
+end
+
+procedure Node002_x begin
+   set_global_var(GVAR_CRAFT_XL70E3, 1);
+   call Node002;
+end
+
+procedure Node002_ta begin
+   set_global_var(GVAR_CRAFT_TESLA_ARMOR, 1);
+   call Node002;
+end
+
+procedure Node002_ba begin
+   set_global_var(GVAR_CRAFT_BROTHERHOOD_ARMOR, 1);
+   call Node002;
+end
+
+procedure Node002_hpa begin
+   set_global_var(GVAR_CRAFT_HARDENED_POWER_ARMOR, 1);
+   call Node002;
+end
+
+//xxxxxxxxxxxxxxxxxxxx

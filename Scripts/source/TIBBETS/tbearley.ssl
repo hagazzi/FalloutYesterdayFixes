@@ -1,0 +1,629 @@
+/*
+
+        Name:           Early
+        Location:
+        Description:
+
+           Created: 05/10/2020 15:22:01
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_C /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBEARLEY
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure PCbeenblinded;
+procedure PCnottalkedzoNPC;
+procedure Starting_Switch_Node;
+procedure Greeting;
+procedure Greeting_2;
+procedure Gen_Conversation_0;
+procedure Gen_Conversation_1;
+procedure Gen_Conversation_2;
+procedure Gen_Conversation_3;
+procedure Hostile_0;
+procedure Hostile_1;
+procedure Hostile_2;
+procedure Bad_Beer_Challenge_intro;
+procedure Bad_Beer_Challenge_anyway;
+procedure Bad_Beer_Challenge_0;
+procedure Bad_Beer_Challenge_1;
+procedure Bad_Beer_Challenge_5;
+procedure Bad_Beer_Challenge_11;
+procedure Bad_Beer_Challenge_16;
+procedure Bad_Beer_Challenge_21;
+procedure Bad_Beer_Challenge_26;
+procedure Bad_Beer_Challenge_31;
+procedure Bad_Beer_Challenge_36;
+procedure Bad_Beer_Challenge_41;
+procedure Bad_Beer_Challenge_46;
+procedure Bad_Beer_Challenge_47;
+procedure Bad_Beer_Challenge_48;
+procedure Bad_Beer_Challenge_49;
+procedure Bad_Beer_Challenge_51;
+procedure Bad_Beer_Challenge_56;
+procedure Bad_Beer_Challenge_61;
+procedure Bad_Beer_Challenge_Finish_0;
+procedure Bad_Beer_Challenge_Finish_1;
+procedure Bad_Beer_Challenge_Finish_2;
+procedure Pissed;
+procedure DrinkBeer;
+procedure Won;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Won_Challenge               (8)
+#define LVAR_Dude_Blinded               (9)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable beer_count:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   beer_count:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+   call new_plague_check(self_obj, LVAR_Herebefore);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=1;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if(local_var(LVAR_Won_Challenge) == 2) then begin
+      floater_bad_rand(250, 252);
+      return;
+   end
+
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+
+
+if (local_var(LVAR_Herebefore)==0) then begin
+       call Greeting;
+end else if (local_var(LVAR_Herebefore)==1) and (local_var(LVAR_Won_Challenge)==0) and (local_var(LVAR_Dude_Blinded) == 0) then begin
+       call Greeting_2;
+end else if (local_var(LVAR_Herebefore)==1) and (local_var(LVAR_Won_Challenge)==1) and (local_var(LVAR_Dude_Blinded) == 0) then begin
+       call Gen_Conversation_0;
+end else if (local_var(LVAR_Herebefore)==1) and (local_var(LVAR_Won_Challenge)==0) and (local_var(LVAR_Dude_Blinded) == 1) then begin
+       call Hostile_0;
+end else if (local_var(LVAR_Herebefore)==1) and (local_var(LVAR_Won_Challenge)==1) and (local_var(LVAR_Dude_Blinded) == 1) then begin
+       call Gen_Conversation_0;
+end
+
+       gSay_End;
+       end_dialogue;
+
+
+   call restore_idiot_savant_int;
+
+end
+
+
+procedure timed_event_p_proc begin
+
+   add_timer_event(self_obj,game_ticks(random(3, 5)),0);
+
+    if (random(0, 30) == 1) then begin
+       if(local_var(LVAR_Dude_Blinded) == 1) then
+          floater_good_rand(200, 203);
+       else if(local_var(LVAR_Won_Challenge) == 1) then
+          floater_bad_rand(240, 244);
+       else
+          floater_rand(230, 232);
+   end
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+ inc_evil_critter
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Greeting
+begin
+if (dude_is_male) then Reply(290); else
+if (dude_is_female) then Reply(291);
+if(global_var(GVAR_KNOW_BAD_BEER) == 1) then begin
+   NOption(mstr(292)+dude_name+mstr(293),Bad_Beer_Challenge_anyway,4);
+end else begin
+   NOption(mstr(294)+dude_name+mstr(295),Bad_Beer_Challenge_intro,4);
+end
+NOption(mstr(296)+dude_name+mstr(297),Gen_Conversation_0,4);
+NOption(298,Node999,4);
+if(global_var(GVAR_KNOW_BAD_BEER) == 1) then begin
+   NOption(mstr(299)+dude_name+mstr(300),Bad_Beer_Challenge_anyway,-3);
+end else begin
+   NOption(301,Bad_Beer_Challenge_intro,-3);
+end
+NOption(mstr(299)+dude_name+mstr(302),Gen_Conversation_0,-3);
+NOption(303,Node999,-3);
+end
+
+procedure Greeting_2
+begin
+Reply(mstr(320)+dude_name+mstr(321));
+NOption(322,Bad_Beer_Challenge_intro,4);
+NOption(323,Gen_Conversation_0,4);
+NOption(324,Node999,4);
+NOption(325,Bad_Beer_Challenge_intro,-3);
+NOption(326,Gen_Conversation_0,-3);
+NOption(327,Node999,-3);
+end
+
+procedure Gen_Conversation_0
+begin
+if (dude_is_male) then Reply(mstr(350)+dude_name+mstr(351)); else
+if (dude_is_female) then Reply(mstr(352)+dude_name+mstr(351));
+NOption(353,Gen_Conversation_1,4);
+NOption(354,Gen_Conversation_2,4);
+NOption(355,Gen_Conversation_3,4);
+NOption(357,Node999,4);
+NOption(358,Gen_Conversation_1,-3);
+NOption(359,Gen_Conversation_2,-3);
+NOption(360,Gen_Conversation_3,4);
+NOption(362,Node999,-3);
+end
+
+procedure Gen_Conversation_1
+begin
+Reply(380);
+NOption(381,Gen_Conversation_0,4);
+NOption(382,Node999,4);
+NOption(383,Gen_Conversation_0,-3);
+NOption(384,Node999,-3);
+end
+
+procedure Gen_Conversation_2
+begin
+if (dude_is_male) then Reply(410); else
+if (dude_is_female) then Reply(411);
+NOption(381,Gen_Conversation_0,4);
+NOption(412,Node999,4);
+NOption(413,Gen_Conversation_0,-3);
+NOption(414,Node999,-3);
+end
+
+procedure Gen_Conversation_3
+begin
+Reply(440);
+NOption(441,Gen_Conversation_0,4);
+NOption(442,Node999,4);
+NOption(443,Gen_Conversation_0,-3);
+NOption(327,Node999,-3);
+end
+
+procedure Hostile_0
+begin
+Reply(mstr(470)+dude_name+mstr(471));
+if(local_var(LVAR_Won_Challenge) == 0) then
+   NOption(472,Bad_Beer_Challenge_11,4);
+NOption(473,Hostile_1,4);
+BOption(474,Node998,4);
+NOption(475,Node999,4);
+if(local_var(LVAR_Won_Challenge) == 0) then
+   NOption(476,Bad_Beer_Challenge_11,-3);
+NOption(477,Hostile_1,-3);
+BOption(478,Node998,-3);
+NOption(362,Node999,-3);
+end
+
+procedure Hostile_1 begin
+Reply(500);
+BOption(501,Hostile_2,4);
+NOption(502,Gen_Conversation_0,4);
+NOption(503,Hostile_2,-3);
+NOption(504,Gen_Conversation_0,-3);
+end
+
+procedure Hostile_2
+begin
+Reply(530);
+BOption(531,Node998,4);
+BOption(532,Pissed,4);
+NOption(533,Node999,4);
+BOption(534,Node998,-3);
+BOption(535,Pissed,-3);
+NOption(536,Node999,4);
+end
+
+procedure Bad_Beer_Challenge_intro
+begin
+if (dude_is_male) then Reply(560); else
+if (dude_is_female) then Reply(561);
+NOption(562,Bad_Beer_Challenge_11,4);
+NOption(563,Bad_Beer_Challenge_0,6);
+NOption(564,Gen_Conversation_0,4);
+NOption(565,Node999,4);
+NOption(566,Bad_Beer_Challenge_11,-3);
+NOption(567,Gen_Conversation_0,-3);
+NOption(303,Node999,-3);
+end
+
+procedure Bad_Beer_Challenge_anyway
+begin
+Reply(mstr(590)+dude_name+mstr(591));
+NOption(592,Bad_Beer_Challenge_11,4);
+NOption(593,Gen_Conversation_0,4);
+NOption(594,Node999,4);
+NOption(595,Bad_Beer_Challenge_11,-3);
+NOption(596,Gen_Conversation_0,-3);
+NOption(597,Node999,-3);
+end
+
+procedure Bad_Beer_Challenge_0
+begin
+Reply(620);
+NOption(621,Bad_Beer_Challenge_1,4);
+end
+
+procedure Bad_Beer_Challenge_1
+begin
+Reply(650);
+NOption(651,Bad_Beer_Challenge_11,4);
+NOption(652,Gen_Conversation_0,4);
+end
+
+procedure Bad_Beer_Challenge_5
+begin
+Reply(680);
+NOption(681,Node999,1);
+end
+
+procedure Bad_Beer_Challenge_11
+begin
+Reply(mstr(710)+dude_name+mstr(711));
+NOption(712,Bad_Beer_Challenge_16,1);
+NOption(713,Bad_Beer_Challenge_5,4);
+NOption(714,Bad_Beer_Challenge_5,-3);
+end
+
+procedure Bad_Beer_Challenge_16
+begin
+call DrinkBeer;
+Reply(740);
+NOption(741,Bad_Beer_Challenge_21,4);
+NOption(742,Bad_Beer_Challenge_5,4);
+NOption(743,Bad_Beer_Challenge_21,-3);
+NOption(744,Bad_Beer_Challenge_5,-3);
+end
+
+procedure Bad_Beer_Challenge_21
+begin
+call DrinkBeer;
+Reply(770);
+NOption(771,Bad_Beer_Challenge_26,4);
+NOption(772,Bad_Beer_Challenge_5,4);
+NOption(773,Bad_Beer_Challenge_26,-3);
+NOption(303,Bad_Beer_Challenge_5,-3);
+end
+
+procedure Bad_Beer_Challenge_26
+begin
+   call DrinkBeer;
+Reply(800);
+NOption(801,Bad_Beer_Challenge_31,4);
+NOption(802,Bad_Beer_Challenge_5,4);
+NOption(803,Bad_Beer_Challenge_31,-3);
+NOption(804,Bad_Beer_Challenge_5,-3);
+end
+
+procedure Bad_Beer_Challenge_31
+begin
+   call DrinkBeer;
+
+Reply(830);
+NOption(831,Bad_Beer_Challenge_36,4);
+NOption(832,Bad_Beer_Challenge_5,4);
+NOption(833,Bad_Beer_Challenge_36,-3);
+NOption(834,Bad_Beer_Challenge_5,-3);
+end
+
+procedure Bad_Beer_Challenge_36
+begin
+call DrinkBeer;
+
+critter_injure(dude_obj, DAM_BLIND);
+set_local_var(LVAR_Dude_Blinded, 1);
+
+
+if (dude_is_male) then Reply(860); else
+if (dude_is_female) then Reply(861);
+NOption(712,Bad_Beer_Challenge_41,1);
+end
+
+procedure Bad_Beer_Challenge_41
+begin
+   call DrinkBeer;
+
+Reply(890);
+NOption(891,Bad_Beer_Challenge_46,4);
+NOption(892,Bad_Beer_Challenge_5,4);
+NOption(893,Bad_Beer_Challenge_46,-3);
+NOption(894,Bad_Beer_Challenge_5,-3);
+end
+
+procedure Bad_Beer_Challenge_46
+begin
+Reply(920);
+NOption(921,Bad_Beer_Challenge_47,4);
+NOption(922,Node999,4);
+NOption(923,Bad_Beer_Challenge_47,-3);
+NOption(924,Node999,-3);
+end
+
+procedure Bad_Beer_Challenge_47
+begin
+Reply(950);
+if (get_critter_stat(dude_obj,STAT_ch)>=6) then
+NOption(951,Bad_Beer_Challenge_48,4);
+NOption(952,Bad_Beer_Challenge_49,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=6) then
+NOption(953,Bad_Beer_Challenge_48,-3);
+NOption(954,Bad_Beer_Challenge_49,-3);
+end
+
+procedure Bad_Beer_Challenge_48
+begin
+   dec_general_rep(5);
+Reply(980);
+NOption(712,Bad_Beer_Challenge_51,1);
+end
+
+procedure Bad_Beer_Challenge_49
+begin
+   call DrinkBeer;
+Reply(1010);
+NOption(1011,Bad_Beer_Challenge_51,4);
+NOption(1012,Bad_Beer_Challenge_51,-3);
+end
+
+procedure Bad_Beer_Challenge_51
+begin
+      call DrinkBeer;
+Reply(mstr(1040)+dude_name+mstr(351));
+NOption(1041,Bad_Beer_Challenge_56,4);
+NOption(1042,Bad_Beer_Challenge_56,-3);
+end
+
+procedure Bad_Beer_Challenge_56
+begin
+   call DrinkBeer;
+Reply(1070);
+NOption(1071,Bad_Beer_Challenge_61,4);
+NOption(1072,Bad_Beer_Challenge_61,-3);
+end
+
+procedure Bad_Beer_Challenge_61
+begin
+   call DrinkBeer;
+Reply(1100);
+NOption(1101,Bad_Beer_Challenge_Finish_0,4);
+BOption(1102,Bad_Beer_Challenge_Finish_2,4);
+NOption(1103,Bad_Beer_Challenge_Finish_0,-3);
+BOption(1104,Bad_Beer_Challenge_Finish_2,-3);
+end
+
+procedure Bad_Beer_Challenge_Finish_0
+begin
+Reply(1130);
+NOption(1131,Bad_Beer_Challenge_Finish_1,4);
+BOption(1132,Bad_Beer_Challenge_Finish_2,4);
+NOption(1133,Node999,4);
+NOption(1134,Bad_Beer_Challenge_Finish_1,-3);
+BOption(1135,Bad_Beer_Challenge_Finish_2,-3);
+NOption(1136,Node999,-3);
+end
+
+procedure Bad_Beer_Challenge_Finish_1
+begin
+call Won;
+Reply(1160);
+NOption(1161,Gen_Conversation_0,4);
+NOption(1162,Node999,4);
+NOption(1163,Gen_Conversation_0,-3);
+NOption(1164,Node999,-3);
+end
+
+procedure Bad_Beer_Challenge_Finish_2
+begin
+   call Won;
+Reply(1190);
+NOption(1191,Node999,1);
+end
+
+procedure Pissed begin
+   call Node999;
+   set_local_var(LVAR_Won_Challenge, 2);
+end
+
+procedure DrinkBeer begin
+   beer_count += 1;
+end
+
+procedure Won begin
+   inc_tibbets_rep(10);
+   item_caps_adjust(dude_obj, 3000);
+   set_local_var(LVAR_Won_Challenge, 1);
+
+end
+
+//xxxxxxxxxxxxxxxxxxxx

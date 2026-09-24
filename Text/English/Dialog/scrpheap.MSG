@@ -1,0 +1,9 @@
+# Grammar pass done
+{100}{}{Welcome to SimTek 5000: Black & White Edition, }
+{101}{}{. Initializing the simulation hologram, "Vault Dweller's Memoirs".}
+{102}{}{You come across a small town. A wall of junked cars blocks easy entrance, and a hazy smoke hangs low over the town.}
+{400}{}{With the generator broken, there is little reason for the gangs to fight over Scrapheap. Your job here is done.}
+{402}{}{With the gangs defeated, Scrapheap is a safe haven once again.}
+{403}{}{Shutting down SimTek 5000. Have a nice day!}
+{404}{}{You've gathered intelligence on the Crypts.}
+{405}{}{You've gathered intelligence on the Fools.}

@@ -1,0 +1,23 @@
+
+{100}{}{You've arrived at the bustling North Gate area of Hoover Dam's Rim, a hub where caravans frequently come and go.}
+{101}{}{You were fined 100 caps.}
+{102}{}{You were fined}
+{103}{}{cap}
+{104}{}{caps}
+{105}{}{You finally found some peace and quiet away from the wasteland, right in a cozy cell with the Sheriff's broken Geiger counter that ticks like a lullaby.}
+
+{106}{}{Jail time! Haha!}
+{107}{}{Hope the radroaches in my cell are friendlier than those outside.}
+
+{108}{}{Ailis love trash cans. Ailis bad. Ailis go jail.}
+{109}{}{Ailis, we know all about your dealings with the Brotherhood. Your little operation is over.}
+
+{110}{}{Attention! End-of-shift inspection.}
+{111}{}{Hmmm, what the hell?}
+{112}{}{Identify yourself!}
+{113}{}{Ma,am! Private Ryan, ma'am!}
+{114}{}{Ma,am! Private}
+{115}{}{, ma'am!}
+{116}{}{Ummm... Private Costa?}
+{117}{}{Oh yeah, the rookie from Fort Desolation. Didn't recognize you in the dark. Carry on, private.}
+{118}{}{You're not Costa. You're dead meat!}

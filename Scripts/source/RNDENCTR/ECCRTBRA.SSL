@@ -1,0 +1,121 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Generic Brahmin
+        Location: Wherever
+        Description: Generic brahmin thingy
+
+        Log:
+
+           Created: December 02, 1997
+
+           Updated:
+*/
+
+/* Include Files */
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\caravan.h"
+#include "..\headers\footsteps.h"
+
+#define NAME                    SCRIPT_ECCRTBRA
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure combat_p_proc;
+procedure timed_event_p_proc;
+
+#define br_mstr(x)                              message_str(SCRIPT_ZCBRAHMN,x)
+
+procedure start begin
+end
+
+procedure critter_p_proc begin
+end
+
+procedure destroy_p_proc begin
+   if ((self_team == TEAM_PLAYER) and map_is_random_encounter) then begin
+       rm_caravan_brahmin(1);
+   end
+end
+
+
+procedure look_at_p_proc begin
+   script_overrides;
+   display_msg(br_mstr(100));
+end
+
+procedure description_p_proc begin
+   script_overrides;
+   display_msg(br_mstr(105));
+end
+
+procedure combat_p_proc begin
+   if (fixed_param == COMBAT_SUBTYPE_TURN) then begin
+       script_overrides;
+       debug_msg("I'm strapped in and won't move.");
+   end
+end
+
+procedure use_obj_on_p_proc begin
+   // if you give a Brahmin beer or booze, it'll fall down and take damage. This was pulled from the original
+   //    fallout script
+
+   variable item_pid;
+   item_pid := obj_pid(obj_being_used_with);
+
+   if (pid_is_alcohol_pid(item_pid)) then begin
+      variable item := 0;
+      script_overrides;
+      item := obj_being_used_with;
+      rm_obj_from_inven(source_obj,obj_being_used_with);
+      destroy_object(item);
+      if ((critter_state(self_obj) bwand DAM_KNOCKED_DOWN) == FALSE) then begin
+         reg_anim_clear(self_obj);
+         reg_anim_begin();
+            reg_anim_animate(self_obj,ANIM_hit_from_front,-1);
+            reg_anim_animate(self_obj,ANIM_fall_back,5);
+            reg_anim_animate(self_obj,ANIM_fall_back_sf,-1);
+         reg_anim_end();
+         critter_injure(self_obj,DAM_KNOCKED_DOWN);
+      end
+   end
+end
+
+procedure use_skill_on_p_proc begin
+   if (action_being_used == SKILL_STEAL) then begin
+      script_overrides;
+   end
+   call injure_with_skill;
+end
+
+procedure map_enter_p_proc begin
+   if (map_is_random_encounter) then begin
+      if (self_team == TEAM_CARAVAN) then begin
+         // was already set in bhrnddst.int, but lets set again for the heck of it
+         switch_team(self_obj,TEAM_CARAVAN)
+         debug_msg("We are on a caravan and team is already TEAM_CARAVAN");
+      end else begin
+         debug_msg("We are on a caravan and team is now TEAM_PLAYER");
+         switch_team(self_obj,TEAM_PLAYER)
+      end
+   end else begin
+      debug_msg("We are not on a caravan and team is now TEAM_BRAHMIN");
+      switch_team(self_obj,TEAM_BRAHMIN)
+   end
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_GENERIC_BRAHMIN);
+   call critter_setup_footsteps_map_enter(self_obj, WALKING_TICKS_SLOWER, RUNNING_TICKS_DEFAULT);
+end
+
+procedure timed_event_p_proc begin
+   call critter_setup_footsteps_timed_event(self_obj, WALKING_TICKS_SLOWER, RUNNING_TICKS_DEFAULT, SFX_FOOTSTEP_HARD_SHOE);
+end

@@ -1,0 +1,1224 @@
+#
+# ����������������������������������������������������������������������������?
+#
+# Text labels and messages used in PIPBOY.C
+#
+# (These MUST match "text message" enumeration on the top of PIPBOY.C)
+#
+# ����������������������������������������������������������������������������?
+
+#
+# Special holiday dates
+#
+{100}{}{Happy New Year's Day!}      # New years
+{101}{}{Happy Valentine's Day!}     # Valentine's Day
+{102}{}{Happy All Fool's Day!}      # April fools
+{103}{}{Happy Ship Day!}            # Shipping day!
+{104}{}{Happy Independence Day!}    # Independence day
+{105}{}{Happy Halloween!}           # Halloween
+{106}{}{Happy Thanksgiving Day!}    # Thanksgiving
+{107}{}{Merry Christmas!}           # X-mas
+
+#
+# System messages
+#
+{200}{}{MORE}
+{201}{}{BACK}
+{202}{}{STATUS}
+{203}{}{No current tasks.}
+{204}{}{CLUES}  # clues gone
+{205}{}{AUTOMAPS}
+{206}{}{VIDEO ARCHIVES}
+{207}{}{DATA}
+{208}{}{}
+{209}{}{}
+{210}{}{Status}
+{211}{}{DATA}
+{212}{}{of}
+{213}{}{Page}
+{214}{}{DONE}
+{215}{}{You cannot rest at this location!}
+
+#
+# Alarm clock
+#
+{300}{}{ALARM CLOCK}
+{301}{}{Hit Points}
+{302}{}{Rest for ten minutes}
+{303}{}{Rest for thirty minutes}
+{304}{}{Rest for an hour}
+{305}{}{Rest for two hours}
+{306}{}{Rest for three hours}
+{307}{}{Rest for four hours}
+{308}{}{Rest for five hours}
+{309}{}{Rest for six hours}
+{310}{}{Rest until morning (0800)}
+{311}{}{Rest until noon (1200)}
+{312}{}{Rest until evening (1800)}
+{313}{}{Rest until midnight (0000)}
+{314}{}{Rest until healed}
+{315}{}{Rest until party is healed}
+
+#
+# Holodisk titles
+#
+{400}{}{Power Armor Specs}
+{401}{}{Vault Locations v34.129}
+{402}{}{Brotherhood Code}
+{403}{}{Survival Recipes}
+{404}{}{Important Vault Statistics}
+{405}{}{Nuclear Blast Effects}
+{406}{}{Additional Publications}
+{407}{}{Vault Boy v2075.11.65541}
+{408}{}{Maxson Bunker History}
+{409}{}{Traci Niels AAA}
+{410}{}{GNN Transcript}
+{411}{}{NCR History Holodisk}
+{412}{}{State of the Nation}
+{413}{}{Circle of Steel Diary}
+{414}{}{Project Chimera}
+
+#
+# Movie archive titles
+# Order must match the list (see gmovie.h)
+#
+{500}{}{Logo}               # Not shown in Pipboy
+{501}{}{A is for Atom}                        # Not shown in Pipboy
+{502}{}{Vault-Tec Movie}                 # Shown immediately
+{503}{}{A is for Atom}          # Shown immediately
+{504}{}{Time Machine Trailer}
+{505}{}{Story of Hoover Dam}
+{506}{}{Vats Destruction}
+{507}{}{Cathedral Destruction}
+{508}{}{The End}
+{509}{}{Tanker to Derrick}
+{510}{}{Vault 13 Invasion}
+{511}{}{Derrick Exploding}
+{512}{}{::Error::}
+{513}{}{::Error::}
+{514}{}{::Error::}
+{515}{}{::Error::}
+{516}{}{Credits}
+
+#
+# Things for the Mac version to speak
+#
+#
+{600}{}{Status}
+{601}{}{Clues}  # Clues gone
+{602}{}{Automaps}
+{603}{}{Archives}
+{604}{}{Alarm Clock}
+{605}{}{Doo da doo da dum dee dee doodly doo dum dum dum doo da doo da doo da doo da doo da doo da doo}
+{606}{}{Welcome to the RobCo Lil-Pip 3000.}
+{607}{}{So long.}
+{608}{}{Wake up.}
+{609}{}{PIP! Beastlords don't want to wear this armor.}
+{610}{}{PIP! To possess an animal, reach into its mind using Examine.}
+{611}{}{PIP! Select one new optional Trait at Level 1.}
+{612}{}{PIP! Select two new optional Traits at Level 1.}
+{613}{}{PIP! Applying super mutant racial modifiers.}
+{614}{}{PIP! Applying ghoul racial modifiers.}
+
+#
+# Status thread text
+#
+# Format:
+# 0 City name
+# 1 ... 9 thread/quest name
+#
+{700}{}{Vault 13}
+{701}{}{Calm rebel faction.}
+{702}{}{Destroy the Mutant leader.}
+{703}{}{Destroy the source of the Mutants.}
+{704}{}{Find the Water Chip.}
+{705}{}{Find the Water Thief.}
+#
+{710}{}{Buried Vault}
+#
+{720}{}{Shady Sands}
+{721}{}{Cure Jarvis of Radscorpion Poison.}
+{722}{}{Make Poison Antidote.}
+{723}{}{Rescue Tandi from the Raiders.}
+{724}{}{Stop the Radscorpions.}
+#
+{730}{}{Junktown}
+{731}{}{Help Saul.}
+{732}{}{Kill Killian.}
+{733}{}{Rescue Sinthia.}
+{734}{}{Save Trish.}
+{735}{}{Stop Gizmo.}
+{736}{}{Bust the Skulz gang.}
+#
+{740}{}{Raiders}
+#
+{750}{}{Necropolis}
+{751}{}{Destroy the Super Mutants at the Watershed.}
+{752}{}{Fix the Necropolis water pump.}
+#
+{760}{}{Hub}
+{761}{}{Destroy Deathclaw.}
+{762}{}{Dispose of Jain.}
+{763}{}{Dispose of merchant.}
+{764}{}{Find the missing caravans.}
+{765}{}{Steal necklace from the Merchants.}
+#
+{770}{}{Brotherhood}
+{771}{}{Become an Initiate.}
+{772}{}{Rescue Initiate from the Hub.}
+#
+{780}{}{Military Base}
+#
+{790}{}{Glow}
+{791}{}{Disarm Traps for the Facility.}
+{792}{}{Turn on power for the Glow.}
+#
+{800}{}{Boneyard}
+{801}{}{Become a Blade.}
+{802}{}{Deliver Locket for Romero.}
+{803}{}{Deliver package from the Gun Runners.}
+{804}{}{Find Children spy in the Followers.}
+{805}{}{Fix hydroponic farms in Adytum.}
+{806}{}{Rescue Jason Zimmerman.}
+{807}{}{Stop the Gangs from attacking Adytum.}
+#
+{810}{}{Cathedral}
+
+
+#
+# Holodisk text
+#
+
+# Computer Downlod of the Power Armor Specs
+# Uses the global var COMPUTER_POWER_ARMOR
+
+{1000}{}{The T-51b Powered Infantry Armor is designed with the}
+{1001}{}{latest passive defense features for both civilian and}
+{1002}{}{military disturbances. The back-mounted TX-28}
+{1003}{}{MicroFusion Pack generates 60,000 Watts to power the}
+{1004}{}{HiFlo hydraulic systems built into the frame of the suit.}
+{1005}{}{Made of the latest poly-laminate composite, the T-51b}
+{1006}{}{shell is lightweight and capable of absorbing over 2500}
+{1007}{}{Joules of kinetic impact. The 10 micron silver ablative}
+{1008}{}{coating can reflect laser and radiation emissions without}
+{1009}{}{damage to the composite subsurface.}
+{1010}{}{**END-DISK**}
+
+# Holodisk from the Brotherhood Library
+# uses the global var BROTHERHOOD_LIBRARY_DISK
+
+{2000}{}{Vault Locations v34.129 Revision C (Western USA)}
+{2001}{}{**END-PAR**}
+#
+{2002}{}{Hello, and welcome to the latest edition of the Western}
+{2003}{}{United States Vault Location Pamphlet. We hope you}
+{2004}{}{enjoy the pamphlet, and remember Vaults are not just}
+{2005}{}{for the upwardly mobile, but for everyone.}
+{2006}{}{**END-PAR**}
+#
+{2007}{}{Vault 12}
+{2008}{}{**END-PAR**}
+#
+{2009}{}{Under the sprawling metropolis of Bakersfield, lies the}
+{2010}{}{technological magnificence of Vault 12. Built with every}
+{2011}{}{amenity in mind for the prospective Vault Dweller,}
+{2012}{}{Vault 12 was given the "Pressed Vault Suit"}
+{2013}{}{award for attention to preparedness. Buried far}
+{2014}{}{underground, the protection that Vault Dwellers will}
+{2015}{}{receive will be unprecedented. Much like all other}
+{2016}{}{Vaults, Vault 12 has been fitted with the newest in}
+{2017}{}{Vault Water Purification Systems. Able to take even}
+{2018}{}{the waste located in the sewers of Bakersfield, this}
+{2019}{}{system is able to deliver over 15,000 gallons of pure,}
+{2020}{}{refreshing drinking water every day.}
+{2021}{}{**END-PAR**}
+#
+{2022}{}{Vault 13}
+{2023}{}{**END-PAR**}
+#
+{2024}{}{Located in a scenic mountainous region northwest of}
+{2025}{}{Vault 12, this Vault offers an endless supply of pure}
+{2026}{}{water to the inhabitants. The rumors that the water}
+{2027}{}{table in the area could easily be contaminated in the}
+{2028}{}{event of a Nuclear War have been found by the}
+{2029}{}{Department of Water and Power to be completely}
+{2030}{}{unfounded. In the event that the water in the area}
+{2031}{}{were to become tainted, remote even though it may be,}
+{2032}{}{Vault 13 has been fitted with the government approved}
+{2033}{}{Vault Water Purification System. Rated to work without}
+{2034}{}{significant loss of output for over 250,000 hours,}
+{2035}{}{prospective Vault Dwellers should have nothing to fear.}
+{2036}{}{**END-PAR**}
+#
+{2037}{}{Vault 15}
+{2038}{}{**END-PAR**}
+#
+{2039}{}{Due east from Vault 13, construction on this Vault has}
+{2040}{}{gone extremely smoothly. Much work was done to}
+{2041}{}{reinforce the walls of the third level of this Vault, to}
+{2042}{}{make all the future Vault Dwellers more secure in the}
+{2043}{}{knowledge that in the event of even a major earthquake,}
+{2044}{}{the regulatory computers of the Vault would continue}
+{2045}{}{to function. Recent tours of the newly constructed}
+{2046}{}{Vault, have had many a potential Vault Dweller walking}
+{2047}{}{away with a new found awe of the improvements done to}
+{2048}{}{this already impressive Vault.}
+{2049}{}{**END-DISK**}
+
+
+
+# *** Brotherhood of Steel Honor Code ***
+# *** Maxson's History ***
+{3000}{}{My father was a security guard at a secret military base}
+{3001}{}{in the desert of southern California. A typical MP, I}
+{3002}{}{remember mostly his strength. When it came time for}
+{3003}{}{the revolution, I respected his convictions. He stayed}
+{3004}{}{behind, to help those who were disabled and wounded,}
+{3005}{}{even the scis. He put the well being of myself and my}
+{3006}{}{mother into the hands of his best friend, and ordered}
+{3007}{}{us into the desert with the other rebels.}
+{3008}{}{**END-PAR**}
+# -
+{3009}{}{We, very few, marched into the wastes. The only thought}
+{3010}{}{on my mind was that I would never see my father again.}
+{3011}{}{He knew that to stay behind was death. And still, he}
+{3012}{}{stayed. He respected the flag, the CIC and the badge}
+{3013}{}{that he wore.}
+{3014}{}{**END-PAR**}
+# -
+{3015}{}{What an idiot.}
+{3016}{}{**END-PAR**}
+# -
+{3017}{}{He died for the sins of others. That will never happen}
+{3018}{}{again to us. We will become self-sufficient. We will}
+{3019}{}{become keepers of knowledge and lore. We will survive}
+{3020}{}{the end of civilization. We will take responsibility}
+{3021}{}{for our actions, and we will hold accountable the}
+{3022}{}{actions of others.}
+{3023}{}{**END-PAR**}
+# -
+{3024}{}{This I pledge to you, Maxson, my son. The Brotherhood}
+{3025}{}{of Steel is justly named. We are a Brotherhood. Unlike}
+{3026}{}{my father, we will stand back to back with those that}
+{3027}{}{share our convictions and beliefs. We are Steel. We are}
+{3028}{}{hard. We have been sharpened to and edge.}
+{3029}{}{**END-PAR**}
+# -
+{3030}{}{Always remember the fires that we were forged in.}
+{3031}{}{Never forget. }
+{3032}{}{The motto from a previous time, and our motto now.}
+{3033}{}{**END-DISK**}
+# Survival Recipes
+{4000}{}{VDSG - APPENDIX 6: SURVIVAL RECIPES}
+{4001}{}{**END-PAR**}
+{4002}{}{Mushroom Clouds}
+{4003}{}{(preheat oven to 200 degrees Fahrenheit / 90 degrees }
+{4004}{}{Celsius)}
+{4005}{}{**END-PAR**}
+{4006}{}{3-4 egg whites (at room temperature) }
+{4007}{}{1/4 teaspoon cream of tartar}
+{4008}{}{1 cup superfine sugar*}
+{4009}{}{cocoa}
+{4010}{}{8 oz / 200 g dark chocolate (bittersweet or semi-sweet)}
+{4011}{}{**END-PAR**}
+{4012}{}{Beat the eggs and tartar with an electric mixer until }
+{4013}{}{soft peaks form. Add the sugar a little at a time while }
+{4014}{}{continuing to beat, until all the sugar is in and the }
+{4015}{}{mixture is glossy and stiff.}
+{4016}{}{Using a piping bag with a no. 8 tip, pipe out an equal }
+{4017}{}{number of caps and stems onto an ungreased non-stick }
+{4018}{}{cookie sheet. The caps should be about the diameter of a }
+{4019}{}{quarter, and the stems should be about an inch high and }
+{4020}{}{the diameter of a soda straw.}
+{4021}{}{Sprinkle cocoa over the caps and stems, and then}
+{4022}{}{blow on them to spread out the cocoa more evenly. You}
+{4023}{}{may want to do this outside, as cocoa goes everywhere.}
+{4024}{}{Bake for 2 hours at 200 F / 90 C.}
+{4025}{}{Carefully remove the caps and stems from the}
+{4026}{}{cookie sheet. With a dull knife, snip the top of each}
+{4027}{}{stem so it has a flat top surface.}
+{4028}{}{Melt the chocolate (in a double boiler or microwave). }
+{4029}{}{Spread the chocolate on the base of each cap }
+{4030}{}{with a butter knife or spatula, and use it to glue a }
+{4031}{}{stem in place. Put the assembled mushrooms in the }
+{4032}{}{refrigerator for 20 minutes to harden the chocolate, }
+{4033}{}{then put them in an airtight container.}
+{4034}{}{Makes 3-4 dozen.}
+{4035}{}{**END-PAR**}
+{4036}{}{Desert Salad}
+{4037}{}{(Increase or reduce ingredient portions to taste)}
+{4038}{}{**END-PAR**}
+{4039}{}{1 lb / 500 g extra lean ground beef}
+{4040}{}{(turkey may be substituted)}
+{4041}{}{1/2 head of iceberg lettuce, cut}
+{4042}{}{3 oz / 100 g pinto beans}
+{4043}{}{6 oz / 200 g sliced olives}
+{4044}{}{4 oz / 150 g cheddar cheese}
+{4045}{}{6 oz / 200 g tortilla chips}
+{4046}{}{1 firm tomato}
+{4047}{}{1 16 oz / 500 ml bottle of Catalina dressing}
+{4048}{}{1 avocado (optional)}
+{4049}{}{**END-PAR**}
+{4050}{}{Brown the meat, drain.}
+{4051}{}{In large bowl, mix lettuce, beans, and olives. Crush }
+{4052}{}{chips and add. Cut tomato into small chunks and add to }
+{4053}{}{bowl. Shred cheese and add. Slice avocado and add. Add}
+{4054}{}{meat. Toss with dressing. Serve.}
+{4055}{}{Makes 4-6 portions.}
+{4056}{}{**END-PAR**}
+{4057}{}{*superfine sugar is NOT confectioner's sugar or 10X sugar. }
+{4058}{}{If you cannot find superfine sugar, it's easy to make. Just }
+{4059}{}{put granulated sugar in a blender or food processor, and }
+{4060}{}{blend for 1 minute.}
+{4061}{}{**END-PAR**}
+{4062}{}{Bon Appetit,}
+{4063}{}{Timothy Cain, your Vault Chef}
+{4064}{}{**END-PAR**}
+{4065}{}{**END-DISK**}
+# - Vault Stats
+{5000}{}{IMPORTANT VAULT STATISTICS - REVIEWED: JAN 18TH, 2076}
+{5001}{}{**END-PAR**}
+{5002}{}{Construction Period ......................~6 years}
+{5003}{}{Starting Budget .............................$400,000,000,000}
+{5004}{}{Final Budget, with interest .......$645,000,000,000}
+{5005}{}{Total number of occupants ........1,000 (at capacity)}
+{5006}{}{Total duration .................................10 years (at capacity)}
+{5007}{}{Number of living quarters ..........100 (hot bunking }
+{5008}{}{required if at maximum capacity)}
+{5009}{}{Door thickness ...............................4 yards, steel}
+{5010}{}{Earth coverage................................3,200,000 tons of }
+{5011}{}{soil, at 200 feet}
+{5012}{}{Computer control system ...........Think machine}
+{5013}{}{Primary power supply ...................Geo-thermal}
+{5014}{}{Secondary power supply...............General Atomics }
+{5015}{}{or Poseidon Energy Nuclear Power backup systems}
+{5016}{}{Power requirements.......................3.98MW/day}
+{5017}{}{Stores ...............................................Complete construction }
+{5018}{}{equipment, hydro-agricultural farms, water purification }
+{5019}{}{from underground river, defensive weaponry to equip 10 }
+{5020}{}{men, communication, social and entertainment files (for }
+{5021}{}{total duration)}
+{5022}{}{**END-DISK**}
+# - Nuclear Blast Effects
+{6000}{}{NUCLEAR BLAST EFFECTS}
+{6001}{}{**END-PAR**}
+{6002}{}{Vaults are designed to provide protection from the }
+{6003}{}{effects of a nuclear blast. To better understand the }
+{6004}{}{protection provided, we have included a section from the }
+{6005}{}{High Energy Weapons FAQ that explains how a nuclear }
+{6006}{}{blast causes damage.}
+{6007}{}{**END-PAR**}
+{6008}{}{The first thing bomb victims experience is the intense }
+{6009}{}{flux of photons from the blast, which releases 70-80% of }
+{6010}{}{the bomb's energy. The effects go up to third degree }
+{6011}{}{thermal burns and are not a pretty sight. Initial }
+{6012}{}{deaths are due to this effect.}
+{6013}{}{**END-PAR**}
+{6014}{}{The next phenomenon is the supersonic blast front. You }
+{6015}{}{see it before you hear it. The pressure front has the }
+{6016}{}{effect of blowing away anything in its path.}
+{6017}{}{**END-PAR**}
+{6018}{}{After the front comes the overpressure phase. It would }
+{6019}{}{feel like being underwater a few hundred meters. (At a }
+{6020}{}{few thousand meters under the sea, pressurized hulls }
+{6021}{}{implode.) The pressure gradually dies off, and there is }
+{6022}{}{a negative overpressure phase, with a reversed blast }
+{6023}{}{wind. This reversal is due to air rushing back to fill }
+{6024}{}{the void left by the explosion.}
+{6025}{}{**END-PAR**}
+{6026}{}{The air gradually returns to normal atmospheric }
+{6027}{}{pressure. At this stage, fires caused by electrical }
+{6028}{}{destruction and ignited debris turn the place into a }
+{6029}{}{firestorm.}
+{6030}{}{**END-PAR**}
+{6031}{}{Then come the middle term effects such as keloid }
+{6032}{}{formation and retinal blastoma. Genetic or hereditary }
+{6033}{}{damage can appear up to forty years after initial }
+{6034}{}{irradiation.}
+{6035}{}{**END-PAR**}
+{6036}{}{ATMOSPHERIC EFFECTS OF BLASTS}
+{6037}{}{**END-PAR**}
+{6038}{}{- The Mushroom Cloud. The heat from fusion and }
+{6039}{}{fission instantaneously raises the surrounding air to 10 }
+{6040}{}{million degrees C. This superheated air plasma gives }
+{6041}{}{off so much light that it looks brighter than the sun, }
+{6042}{}{and is visible hundreds of kilometers (km) away. The }
+{6043}{}{resultant fireball quickly expands. It is made up of hot }
+{6044}{}{air, and hence rises at a rate of a few hundred meters }
+{6045}{}{per second. After a minute or so, the fireball has risen }
+{6046}{}{to a few kilometers, and has cooled off to the extent }
+{6047}{}{that it no longer radiates.}
+{6048}{}{**END-PAR**}
+{6049}{}{The surrounding cooler air exerts some drag on this }
+{6050}{}{rising air, which slows down the outer edges of the }
+{6051}{}{cloud. The unimpeded inner portion rises a bit quicker }
+{6052}{}{than the outer edges. A vacuum effect occurs when the }
+{6053}{}{outer portion occupies the vacuum left by the higher }
+{6054}{}{inner portion. The result is a smoke ring.}
+{6055}{}{**END-PAR**}
+{6056}{}{The inner material gradually expands out into a }
+{6057}{}{mushroom cloud, due to convection. If the explosion is }
+{6058}{}{on the ground, dirt and radioactive debris get sucked up }
+{6059}{}{the stem, which sits below the fireball.}
+{6060}{}{**END-PAR**}
+{6061}{}{Collisions and ionization of the cloud particles result }
+{6062}{}{in lightning bolts flickering to the ground.}
+{6063}{}{**END-PAR**}
+{6064}{}{Initially, the cloud is orange-red due to a chemical }
+{6065}{}{reaction when the air is heated. When the cloud cools}
+{6066}{}{to air temperature, the water vapor starts to}
+{6067}{}{condense. The cloud turns from red to white.}
+{6068}{}{**END-PAR**}
+{6069}{}{In the final stages, the cloud can get about 100km}
+{6070}{}{across and 40km high, for a megaton class explosion.}
+{6071}{}{**END-PAR**}
+{6072}{}{- Electromagnetic Pulse (EMP). A nuclear explosion }
+{6073}{}{gives off radiation at all wavelengths of light. Some is }
+{6074}{}{in the radio/radar portion of the spectrum - the EMP }
+{6075}{}{effect. The EMP effect increases the higher you go into }
+{6076}{}{the atmosphere. High altitude explosions can knock out }
+{6077}{}{electronics by inducing a current surge in closed }
+{6078}{}{circuit metallic objects - electronics, power lines, }
+{6079}{}{phone lines, TVs, radios, etc. The damage range can be }
+{6080}{}{over 1000km.}
+{6081}{}{**END-PAR**}
+{6082}{}{OVERVIEW OF IMMEDIATE EFFECTS}
+{6083}{}{**END-PAR**}
+{6084}{}{The three categories of immediate effects are: blast, }
+{6085}{}{thermal radiation (heat), and prompt ionizing or nuclear }
+{6086}{}{radiation. Their relative importance varies with the }
+{6087}{}{yield of the bomb. At low yields, all three can be }
+{6088}{}{significant sources of injury. With an explosive yield }
+{6089}{}{of about 2.5 kilotons (kT), the three effects are }
+{6090}{}{roughly equal. All are capable of inflicting fatal }
+{6091}{}{injuries at a range of 1 km.}
+{6092}{}{**END-PAR**}
+{6093}{}{The fraction of a bomb's yield emitted as thermal }
+{6094}{}{radiation, blast, and ionizing radiation is essentially }
+{6095}{}{constant for all yields, but the way the different forms }
+{6096}{}{of energy interact with air and target vary }
+{6097}{}{dramatically.}
+{6098}{}{**END-PAR**}
+{6099}{}{Air is essentially transparent to thermal radiation. The }
+{6100}{}{thermal radiation affects exposed surfaces, producing }
+{6101}{}{damage by rapid heating. A bomb that is 100 times }
+{6102}{}{larger can produce equal thermal radiation intensities }
+{6103}{}{over areas 100 times larger. The area of an (imaginary) }
+{6104}{}{sphere centered on the explosion increases with the }
+{6105}{}{square of the radius. Thus the destructive radius }
+{6106}{}{increases with the square root of the yield (this is the }
+{6107}{}{familiar inverse square law of electromagnetic }
+{6108}{}{radiation). Actually the rate of increase is somewhat }
+{6109}{}{less, partly due to the fact that larger bombs emit heat }
+{6110}{}{more slowly which reduces the damage produced by }
+{6111}{}{each calorie of heat. It is important to note that the }
+{6112}{}{area subjected to damage by thermal radiation }
+{6113}{}{increases almost linearly with yield.}
+{6114}{}{**END-PAR**}
+{6115}{}{Blast effect is a volume effect. The blast wave }
+{6116}{}{deposits energy in the material it passes through, }
+{6117}{}{including air. When the blast wave passes through solid }
+{6118}{}{material, the energy left behind causes damage.}
+{6119}{}{When it passes through air it simply grows weaker. The }
+{6120}{}{more matter the energy travels through, the smaller the }
+{6121}{}{effect. The amount of matter increases with the volume }
+{6122}{}{of the imaginary sphere centered on the explosion. }
+{6123}{}{Blast effects thus scale with the inverse cube law}
+{6124}{}{which relates radius to volume.}
+{6125}{}{**END-PAR**}
+{6126}{}{The intensity of nuclear radiation decreases with the }
+{6127}{}{inverse square law like thermal radiation. However }
+{6128}{}{nuclear radiation is also strongly absorbed by the air }
+{6129}{}{it travels through, which causes the intensity to drop }
+{6130}{}{off much more rapidly.}
+{6131}{}{**END-PAR**}
+{6132}{}{These scaling laws show that the effects of thermal }
+{6133}{}{radiation grow rapidly with yield (relative to blast), }
+{6134}{}{while those of radiation rapidly decline.}
+{6135}{}{**END-PAR**}
+{6136}{}{In a small nuclear attack (bomb yield approx. 15kT) }
+{6137}{}{casualties (including fatalities) would be seen from all }
+{6138}{}{three causes. Burns (including those caused by an }
+{6139}{}{ensuing fire storm) would be the most prevalent serious }
+{6140}{}{injury (two thirds of those who would die the first}
+{6141}{}{day would be burn victims), and occur at the greatest }
+{6142}{}{range. Blast and burn injuries would be found in 60-70% }
+{6143}{}{of all survivors. People close enough to suffer }
+{6144}{}{significant radiation illness would be well inside the }
+{6145}{}{lethal effects radius for blast and flash burns, as a }
+{6146}{}{result only 30% of injured survivors would show }
+{6147}{}{radiation illness. Many of those people would be }
+{6148}{}{sheltered from burns and blast and thus escape the }
+{6149}{}{main effects. Even so, most victims with radiation }
+{6150}{}{illness would also have blast injuries or burns as well.}
+{6151}{}{**END-PAR**}
+{6152}{}{With yields in the range of hundreds of kilotons or }
+{6153}{}{greater (typical for strategic warheads) immediate }
+{6154}{}{radiation injury becomes insignificant. Dangerous }
+{6155}{}{radiation levels only exist so close to the explosion }
+{6156}{}{that surviving the blast is impossible. On the other }
+{6157}{}{hand, fatal burns can be inflicted well beyond the range }
+{6158}{}{of substantial blast damage. A 20 megaton bomb can }
+{6159}{}{cause potentially fatal third degree burns at a range of }
+{6160}{}{40km, where the blast can do little more than break }
+{6161}{}{windows and cause superficial cuts.}
+{6162}{}{**END-PAR**}
+{6163}{}{A convenient rule of thumb for estimating the short-}
+{6164}{}{term fatalities from all causes due to a nuclear attack }
+{6165}{}{is to count everyone inside the 5 psi blast overpressure }
+{6166}{}{contour around the hypocenter as a fatality. In reality, }
+{6167}{}{substantial numbers of people inside the contour will}
+{6168}{}{survive and substantial numbers outside the contour }
+{6169}{}{will die, but the assumption is that these two groups }
+{6170}{}{will be roughly equal in size and balance out. This }
+{6171}{}{completely ignores any possible fallout effects.}
+{6172}{}{**END-PAR**}
+{6173}{}{OVERVIEW OF DELAYED EFFECTS}
+{6174}{}{**END-PAR**}
+{6175}{}{-Radioactive Contamination. The chief delayed effect is}
+{6176}{}{the creation of huge amounts of radioactive material }
+{6177}{}{with long lifetimes (half-lives ranging from days to }
+{6178}{}{millennia). The primary source of these products is the }
+{6179}{}{debris left from fission reactions. A potentially }
+{6180}{}{significant secondary source is neutron capture by}
+{6181}{}{non-radioactive isotopes both within the bomb and in }
+{6182}{}{the outside environment.}
+{6183}{}{**END-PAR**}
+{6184}{}{When atoms fission they can split in some 40 different }
+{6185}{}{ways, producing a mix of about 80 different isotopes. }
+{6186}{}{These isotopes vary widely in stability; some are }
+{6187}{}{completely stable while others undergo radioactive }
+{6188}{}{decay with half-lives of fractions of a second. The}
+{6189}{}{decaying isotopes may themselves form stable or }
+{6190}{}{unstable daughter isotopes. The mixture thus quickly }
+{6191}{}{becomes even more complex, some 300 different }
+{6192}{}{isotopes of 36 elements have been identified in fission }
+{6193}{}{products. }
+{6194}{}{**END-PAR**}
+{6195}{}{Short-lived isotopes release their decay energy rapidly, }
+{6196}{}{creating intense radiation fields that also decline }
+{6197}{}{quickly. Long-lived isotopes release energy over long }
+{6198}{}{periods of time, creating radiation that is much less }
+{6199}{}{intense but more persistent. Fission products thus }
+{6200}{}{initially have a very high level of radiation that }
+{6201}{}{declines quickly, but as the intensity of radiation }
+{6202}{}{drops, so does the rate of decline.}
+{6203}{}{**END-PAR**}
+{6204}{}{A useful rule-of-thumb is the "rule of sevens". This }
+{6205}{}{rule states that for every seven-fold increase in time }
+{6206}{}{following a fission detonation (starting at or after 1 }
+{6207}{}{hour), the radiation intensity decreases by a factor of }
+{6208}{}{10. Thus after 7 hours, the residual fission}
+{6209}{}{radioactivity declines 90%, to one-tenth its level of 1 }
+{6210}{}{hour. After 7*7 hours (49 hours, approx. 2 days), the }
+{6211}{}{level drops again by 90%. After 7*2 days (2 weeks) it }
+{6212}{}{drops a further 90%; and so on for 14 weeks. The rule is }
+{6213}{}{accurate to 25% for the first two weeks, and is accurate }
+{6214}{}{to a factor of two for the first six months. After 6}
+{6215}{}{months, the rate of decline becomes much more rapid. }
+{6216}{}{The rule of sevens corresponds to an approximate t^-}
+{6217}{}{1.2 scaling relationship.}
+{6218}{}{**END-PAR**}
+{6219}{}{These radioactive products are most hazardous when }
+{6220}{}{they settle to the ground as "fallout". The rate at }
+{6221}{}{which fallout settles depends very strongly on the }
+{6222}{}{altitude at which the explosion occurs, and to a lesser }
+{6223}{}{extent on the size of the explosion.}
+{6224}{}{**END-PAR**}
+{6225}{}{If the explosion is a true air-burst (the fireball does }
+{6226}{}{not touch the ground), when the vaporized radioactive }
+{6227}{}{products cool enough to condense and solidify, they will }
+{6228}{}{do so to form microscopic particles. These particles are }
+{6229}{}{mostly lifted high into the atmosphere by the rising }
+{6230}{}{fireball, although significant amounts are deposited in}
+{6231}{}{the lower atmosphere by mixing that occurs due to }
+{6232}{}{convective circulation within the fireball. The larger }
+{6233}{}{the explosion, the higher and faster the fallout is }
+{6234}{}{lofted, and the smaller the proportion that is deposited }
+{6235}{}{in the lower atmosphere. For explosions with yields of }
+{6236}{}{100kT or less, the fireball does not rise above the }
+{6237}{}{troposphere where precipitation occurs. All of this }
+{6238}{}{fallout will thus be brought to the ground by weather }
+{6239}{}{processes within months at most (usually much faster). }
+{6240}{}{In the megaton range, the fireball rises so high that it }
+{6241}{}{enters the stratosphere. The stratosphere is dry, and no}
+{6242}{}{weather processes exist there to bring fallout down }
+{6243}{}{quickly. Small fallout particles will descend over a }
+{6244}{}{period of months or years. Such long-delayed fallout }
+{6245}{}{has lost most of its hazard by the time it comes down, }
+{6246}{}{and will be distributed on a global scale. As yields}
+{6247}{}{increase above 100kT, progressively more and more of }
+{6248}{}{the total fallout is injected into the stratosphere.}
+{6249}{}{**END-PAR**}
+{6250}{}{An explosion closer to the ground (close enough for the }
+{6251}{}{fireball to touch) sucks large amounts of dirt into the }
+{6252}{}{fireball. The dirt usually does not vaporize, and if it }
+{6253}{}{does, there is so much of it that it forms large }
+{6254}{}{particles. The radioactive isotopes are deposited on }
+{6255}{}{soil particles, which can fall quickly to earth. }
+{6256}{}{Fallout is deposited over a time span of minutes to }
+{6257}{}{days, creating downwind contamination both nearby and }
+{6258}{}{thousands of kilometers away. The most intense }
+{6259}{}{radiation is created by nearby fallout, because it is }
+{6260}{}{more densely deposited, and because short-lived }
+{6261}{}{isotopes haven't decayed yet. Weather conditions can }
+{6262}{}{affect this considerably of course. In particular, }
+{6263}{}{rainfall can "rain out" fallout to create very intense }
+{6264}{}{localized concentrations. Both external exposure to }
+{6265}{}{penetrating radiation, and internal exposure (ingestion }
+{6266}{}{of radioactive material) pose serious health risks.}
+{6267}{}{**END-PAR**}
+{6268}{}{Explosions close to the ground that do not touch it can }
+{6269}{}{still generate substantial hazards immediately below }
+{6270}{}{the burst point by neutron-activation. Neutrons }
+{6271}{}{absorbed by the soil can generate considerable }
+{6272}{}{radiation for several hours.}
+{6273}{}{**END-PAR**}
+{6274}{}{The megaton class weapons have been largely retired, }
+{6275}{}{being replaced with much smaller yield warheads. The }
+{6276}{}{yield of a modern strategic warhead is, with few }
+{6277}{}{exceptions, now typically in the range of 200-750 kT. }
+{6278}{}{Recent work with sophisticated climate models has }
+{6279}{}{shown that this reduction in yield results in a much }
+{6280}{}{larger proportion of the fallout being deposited in the }
+{6281}{}{lower atmosphere, and a much faster and more intense }
+{6282}{}{deposition of fallout than had been assumed in studies }
+{6283}{}{made during the sixties and seventies. The reduction in }
+{6284}{}{aggregate strategic arsenal yield that occurred when }
+{6285}{}{high yield weapons were retired in favor of more }
+{6286}{}{numerous lower yield weapons has actually increased }
+{6287}{}{the fallout risk.}
+{6288}{}{**END-DISK**}
+# - Additional Publications
+{7000}{}{ADDITIONAL PUBLICATIONS}
+{7001}{}{**END-PAR**}
+{7002}{}{VAULT DWELLER'S SURVIVAL GUIDE - VDSG - }
+{7003}{}{(abridged version)}
+{7004}{}{**END-PAR**}
+{7005}{}{- For Survivors of the End of World caused by a }
+{7006}{}{Limited Scale Nuclear War}
+{7007}{}{- A condensed version of the VDSG, containing just }
+{7008}{}{the important information you need!}
+{7009}{}{- Effective Date March, 2077}
+{7010}{}{**END-PAR**}
+{7011}{}{COPING WITH MR. VIRUS!}
+{7012}{}{**END-PAR**}
+{7013}{}{- For Survivors of the End of World caused by a }
+{7014}{}{Disease}
+{7015}{}{- Featuring the latest Super Ebola Quarantine }
+{7016}{}{Techniques!}
+{7017}{}{- An extended pamphlet for the whole family! }
+{7018}{}{Includes the popular How-To-Burn-Diseased-Bodies }
+{7019}{}{section.}
+{7020}{}{- WARNING; All references to the government }
+{7021}{}{sanctioned and controlled FEV virus are not allowed }
+{7022}{}{in this publication.}
+{7023}{}{- Fifteenth Edition - December 2076}
+{7024}{}{**END-PAR**}
+{7025}{}{HOW TO EAT RAT }
+{7026}{}{**END-PAR**}
+{7027}{}{- - For Survivors of the End of World caused by a }
+{7028}{}{Starvation}
+{7029}{}{- Over 101 recipes, from basic meals to a complete }
+{7030}{}{set of dishes, all the way from snacks to desserts!}
+{7031}{}{NEW FOR '77: 15 five-minute Recipes and the tasty }
+{7032}{}{Rodent a la King!}
+{7033}{}{- Second Edition}
+{7034}{}{**END-PAR**}
+{7035}{}{FLOTATION HOMES AND SEAWEED}
+{7036}{}{**END-PAR**}
+{7037}{}{- - For Survivors of the End of World caused by a }
+{7038}{}{Flooding}
+{7039}{}{- A complete survival guide for the ocean}
+{7040}{}{bound. More tips, instructions, and plans}
+{7041}{}{than you could possibly ever use.}
+{7042}{}{- Houseboat Cruise Control!}
+{7043}{}{- Drowned-A permanent state of being?}
+{7044}{}{- We field-test the latest waterproof SPF 900 }
+{7045}{}{sunscreens}
+{7046}{}{- Plant a garden you can come back to! }
+{7047}{}{- Waterbeds-A practical alternative }
+{7048}{}{- Coping with your new mobile home }
+{7049}{}{- Special Vault Dwellers Issue - July 2076}
+{7050}{}{**END-PAR**}
+{7051}{}{HOW TO DODGE FALLING ROCKS}
+{7052}{}{**END-PAR**}
+{7053}{}{- For Survivors of the End of World caused by a }
+{7054}{}{Meteor}
+{7055}{}{- Available the 3rd quarter of 2078}
+{7056}{}{**END-DISK**}
+# -
+{8000}{}{A simple image and lots of encoded data.}
+{8001}{}{**END-PAR**}
+{8002}{}{..............................................NUKE....................................................................}
+{8003}{}{.....................................NUKENUKENUKE........................................................}
+{8004}{}{................................NUKENUKENUKENUKE...................................................}
+{8005}{}{..............................NUKENUKENUKENUKENUKE..........................................}
+{8006}{}{............................NUKENUKENUKENUKENUKE............................................}
+{8007}{}{............................NUKENUKENUKENUKENUKE............................................}
+{8008}{}{.........................NUKENUKENUKENUKENUKE...............................................}
+{8009}{}{..........................NUKENUKENUKENUKENUKE..............................................}
+{8010}{}{..........................NUKENUKENUKENUKENUKE..............................................}
+{8011}{}{...........................................NUKENUKE...........................................................}
+{8012}{}{...........................................NUKENUKE...........................................................}
+{8013}{}{...........................................NUKENUKE...........................................................}
+{8014}{}{...........................................NUKENUKE...........................................................}
+{8015}{}{...........................................NUKENUKE...........................................................}
+{8016}{}{...........................................NUKENUKE...........................................................}
+{8017}{}{...........................................NUKENUKE...........................................................}
+{8018}{}{...........................................NUKENUKE...........................................................}
+{8019}{}{.....................................NUKENUKENUKE.....................................................}
+{8020}{}{............................NUKENUKENUKENUKENUKE..........................................}
+{8021}{}{..................NUKENUKENUKENUKENUKENUKENUKE...............................}
+{8022}{}{................NUKENUKENUKENUKENUKENUKENUKE...............................}
+{8023}{}{****************GROUND ZERO******************}
+{8024}{}{********************************************}
+{8025}{}{********************************************}
+{8026}{}{********************************************}
+{8027}{}{********************************************}
+{8028}{}{********************************************}
+{8029}{}{******************VAULT*********************}
+{8030}{}{********************************************}
+{8031}{}{********************************************}
+{8032}{}{********************************************}
+{8033}{}{********************************************}
+{8034}{}{**END-DISK**}
+# -
+{9000}{}{In the year 2067, Senator Todd Peterson decided to }
+{9001}{}{build a secret bunker to house himself and his family }
+{9002}{}{should war break out. Senator Peterson was a }
+{9003}{}{wealthy man in his own right, but lacked the funds }
+{9004}{}{necessary for such a project. Through secret }
+{9005}{}{dealings with Poseidon Oil and a covert branch of the }
+{9006}{}{government known as the Enclave, the final funding }
+{9007}{}{for the project was attained. A construction sight }
+{9008}{}{was chosen in southern Colorado and work began.}
+{9009}{}{**END-PAR**}
+{9010}{}{Ten years after the construction was completed, war }
+{9011}{}{did indeed break out. Senator Peterson was in }
+{9012}{}{Washington DC at the time and, much to his chagrin, }
+{9013}{}{was taken completely by surprise. The senator made }
+{9014}{}{a desperate attempt to gather his family and reach the }
+{9015}{}{bunker, but his small plane never arrived. The bunker }
+{9016}{}{might have remained lost were it not for a surviving }
+{9017}{}{member of the senator's family, Ben Schilling.}
+{9018}{}{**END-PAR**}
+{9019}{}{In the year 2077, Captain Roger Maxson left the }
+{9020}{}{Mariposa military base and traveled to the secret Lost }
+{9021}{}{Hills bunker for the purpose of establishing a new }
+{9022}{}{military order. He brought with him a loyal group of }
+{9023}{}{followers consisting of both military personnel and }
+{9024}{}{scientists. Among these was Corporal Ben Shilling. }
+{9025}{}{It was at this time that Maxson established the }
+{9026}{}{Brotherhood of Steel. As the Brotherhood grew they }
+{9027}{}{began to look into the possibility of expanding their }
+{9028}{}{operations. It was then that Ben Schilling revealed }
+{9029}{}{the location of the Senator Peterson's bunker. The }
+{9030}{}{location was filed for future use.}
+{9031}{}{**END-PAR**}
+{9032}{}{In the year 2231, Jeremy Maxson, was leading a }
+{9033}{}{thriving Brotherhood of Steel. Jeremy decided that it }
+{9034}{}{was time to expand BOS operations into the east. He }
+{9035}{}{sent an expeditionary force composed of five paladins }
+{9036}{}{to confirm the location of Peterson's bunker. The }
+{9037}{}{expedition leader, Andrea Brixley, discovered the }
+{9038}{}{bunker, disabled its security, and opened it for }
+{9039}{}{habitation. For over a decade she and her fellow }
+{9040}{}{paladins explored the east and forged relationships }
+{9041}{}{with many of the tribes that inhabited the area.}
+{9042}{}{**END-PAR**}
+{9043}{}{In the year 2242, Jeremy Maxson renamed the bunker }
+{9044}{}{after his famous ancestor, Roger Maxson. He then }
+{9045}{}{sent a full compliment of troops for occupation. }
+{9046}{}{Andrea Brixley was promoted to Elder, given the rank }
+{9047}{}{of General, and placed in charge. The remainder of }
+{9048}{}{her exploratory team was given the title of Elder as }
+{9049}{}{well. It was not long afterward that the war with the }
+{9050}{}{New California Republic was announced.}
+{9051}{}{**END-PAR**}
+{9052}{}{- Chronicler Elder Paladin Glenn Deering}
+{9053}{}{**END-DISK**}
+# -
+{10000}{}{I began my career in the Brotherhood as a scribe but got }
+{10001}{}{tired of the technical side of life. I asked to be }
+{10002}{}{placed in a combat role and was given the chance to }
+{10003}{}{prove myself. I was found to be a competent combatant }
+{10004}{}{who also had the advantage of being able to repair }
+{10005}{}{equipment on the fly in the field. I worked }
+{10006}{}{my way up the ranks and soon earned the title of Elder.}
+{10007}{}{**END-PAR**}
+{10008}{}{I am a headstrong no holds barred kind of woman. I am }
+{10009}{}{opinionated, I know it, and I don't care. I will often voice }
+{10010}{}{my opinion tactlessly whether or not it is asked for. }
+{10011}{}{Considered a bitch by most anyone who knows me }
+{10012}{}{and I could not care less. As someone once said, }
+{10013}{}{well-behaved women seldom make history.}
+{10014}{}{**END-PAR**}
+{10015}{}{- An Abbreviated Autobiography}
+{10016}{}{- Elder Paladin Traci Niels, January 3rd, 2253}
+{10017}{}{**END-DISK**}
+# Sierra Base GNN Transscript
+{11000}{}{Galaxy News Network}
+{11001}{}{Transcript of Broadcast January 11, 2073}
+{11002}{}{Today's top story on GNN. In a financial coup,}
+{11003}{}{the US managed to be the first to tap the world's}
+{11004}{}{last remaining supply of oil. Until recently this}
+{11005}{}{reserve of oil was thought to be unattainable}
+{11006}{}{due to the deposit being located thousands}
+{11007}{}{of feet beneath the surface of the Pacific Ocean.}
+{11008}{}{With the world's supply of oil nearing depletion,}
+{11009}{}{a race to be the first to create a method to}
+{11010}{}{extract this deposit ensued. We at the GNN}
+{11011}{}{are proud to announce that US is the first to do}
+{11012}{}{so and thus claim the oil as property of the United}
+{11013}{}{States. Way to go US!}
+{11014}{}{**END-PAR**}
+{11015}{}{China cries foul as news of the success circulates}
+{11016}{}{around the globe. According to President Xin of }
+{11017}{}{China, their drilling platform project was scheduled}
+{11018}{}{for completion months before the US project, however}
+{11019}{}{the Chinese platform had a string of unfortunate}
+{11020}{}{accidents delaying their project significantly.}
+{11021}{}{President Xin is also quoted in saying that he has}
+{11022}{}{definitive proof that the US was behind the sabotage}
+{11023}{}{of their oil platform and formally requests that an}
+{11024}{}{international panel be appointed to investigate.}
+{11025}{}{**END-PAR**}
+{11026}{}{In other news, riots rock the nation as}
+{11027}{}{gasoline prices skyrocket to all time highs. Records}
+{11028}{}{were broken as the price of gas surpassed the current}
+{11029}{}{rate of gold bullion.}
+{11030}{}{**END-PAR**}
+{11031}{}{Here at home, the winter temperature is a chilly }
+{11032}{}{100-110F with lows reaching a freezing 90F along}
+{11033}{}{the coast. Dress warmly today!}
+{11034}{}{**END-PAR**}
+{11035}{}{Galaxy News Network}
+{11036}{}{Transcript of Broadcast June 24, 2074}
+{11037}{}{Negotiations between the US and other world powers}
+{11038}{}{has come to a dramatic end, with the President walking}
+{11039}{}{out of oil talks with the other world powers. After a}
+{11040}{}{much heated debate, the President stormed out of the}
+{11041}{}{meeting and declared that the last known supply of}
+{11042}{}{petroleum will be used exclusively by the US and the}
+{11043}{}{US will not sell or trade any oil to outside parties.}
+{11044}{}{Threats of UN sanctions fall on deaf ears.}
+{11045}{}{**END-PAR**}
+{11046}{}{Industry screeches to a halt across the globe as oil}
+{11047}{}{reserves are depleted. The cries of the desperate,}
+{11048}{}{however, do not fall upon deaf ears as exports from}
+{11049}{}{the US increase twentyfold despite UN sanctions. The}
+{11050}{}{US economy is seeing it's greatest growth since the}
+{11051}{}{Reagan Era.}
+{11052}{}{**END-PAR**}
+{11053}{}{Galaxy News Network}
+{11054}{}{Transcript of Broadcast February 14, 2075}
+{11055}{}{History was made today as Canada, by popular demand}
+{11056}{}{of its citizens, agreed to be annexed by the US.}
+{11057}{}{The President is quoted as saying, "Canada is one of}
+{11058}{}{the world's greatest sources of hockey players" and will}
+{11059}{}{be a welcome addition to the U.S. In return, sources say}
+{11060}{}{Canada will receive a full 10% of the world's remaining}
+{11061}{}{supply of oil, controlled exclusively by the US, as well}
+{11062}{}{as a 50% reduction in taxes since they now fall under US}
+{11063}{}{tax laws.}
+{11064}{}{**END-PAR**}
+{11065}{}{In sports today, the Little Rock Saints and the Anaheim}
+{11066}{}{Jets battled it out at Super Bowl CXII. It was a real}
+{11067}{}{nail-biter, but J. Montana IV managed to save the day}
+{11068}{}{by running the ball all the way from the 5 yard line}
+{11069}{}{to score the winning touch down during the final seconds}
+{11070}{}{of the game. The final score 95 - 90. The Anaheim}
+{11071}{}{Jets win Super Bowl CXII.}
+{11072}{}{**END-PAR**}
+{11073}{}{Galaxy News Network}
+{11074}{}{Transcript of Broadcast February 15, 2075}
+{11075}{}{In a stunning display of solidarity, the House of}
+{11076}{}{Representatives and Congress both voted unanimously to}
+{11077}{}{impeach the President for jaywalking. Both houses stated}
+{11078}{}{that the President is not above the law and should have}
+{11079}{}{known better than to jaywalk. Both sides deny this had}
+{11080}{}{anything to do with the recent annexation of Canada.}
+{11081}{}{**END-PAR**}
+{11082}{}{Galaxy News Network}
+{11083}{}{Transcript of Broadcast March 30, 2076}
+{11084}{}{Today the President ordered the Pacific Fleet to the}
+{11085}{}{Poseidon deep sea oil derrick located at a secret }
+{11086}{}{location out in the Pacific. He cited concerns over that}
+{11087}{}{military exercises staged by the Chinese fleet are}
+{11088}{}{"unacceptably close to our strategic oil reserves."}
+{11089}{}{The Chinese government denied any hostile intentions.}
+{11090}{}{**END-PAR**}
+{11091}{}{A recent poll suggests that 54% of GNN viewers think}
+{11092}{}{that the President is using this as a diversionary }
+{11093}{}{tactic to take the public's eye off the President's }
+{11094}{}{recent admission to having multiple extramarital affairs }
+{11095}{}{with campaign staffers. Our poll also suggests that 70% }
+{11096}{}{don't care about these affairs and are happy with the way }
+{11097}{}{the President is running the country. A whopping 60% also}
+{11098}{}{think he should keep having these affairs if that is what }
+{11099}{}{it takes to keep the country running smoothly.}
+{11100}{}{**END-PAR**}
+{11101}{}{Galaxy News Network}
+{11102}{}{Transcript of Broadcast October, 10 2077}
+{11103}{}{WAR! A state of war is declared as China invades the }
+{11104}{}{United States by way of Alaska! Protests by the US fall }
+{11105}{}{on deaf ears as the UN council chooses to ignore this }
+{11106}{}{blatant act of aggression. The President of the United }
+{11107}{}{States is calling on YOU to help defend our country }
+{11108}{}{against those that would do harm to her. YOU are urged to }
+{11109}{}{go down to your local recruiting office and join the }
+{11110}{}{armed forces. Uncle Sam needs YOU! For Justice, for }
+{11111}{}{Freedom and Mom's Apple Pie.}
+{11112}{}{**END-PAR**}
+{11113}{}{Galaxy News Network}
+{11114}{}{Transcript of Broadcast October, 22, 2077}
+{11115}{}{Thanks to the brave souls of the armed forces and our }
+{11116}{}{newly developed power armored combat suits, US forces}
+{11117}{}{have pushed back the Chinese invaders. Crippled by lack of }
+{11118}{}{fuel, US forces have pushed the invaders back to their}
+{11119}{}{home capital of Beijing.}
+{11120}{}{**END-DISK**}
+
+{12000}{}{NEW CALIFORNIA REPUBLIC INFORMATION DISK 1}
+{12001}{}{**END-PAR**}
+{12002}{}{We're Here! Why not join us?}
+{12003}{}{**END-PAR**}
+{12004}{}{There's a wonderful future ahead - and it could be   }
+{12005}{}{yours with the New California Republic!}
+{12006}{}{**END-PAR**}
+{12007}{}{But what is it, you want to know?}
+{12008}{}{**END-PAR**}
+{12009}{}{HOW BIG IS NCR?}
+{12010}{}{Founded eighty years ago, the NCR is now comprised of }
+{12011}{}{the states of Shady, Los Angeles, Maxson, Hub, and    }
+{12012}{}{Dayglow.  Approximately 700,000 citizens are pleased  }
+{12013}{}{to call NCR home.}
+{12014}{}{**END-PAR**}
+{12015}{}{WHAT DOES NCR STAND FOR?}
+{12016}{}{The New California Republic is dedicated to bringing  }
+{12017}{}{peace, security and justice to the people of the great}
+{12018}{}{west.  NCR's fine police forces constantly patrol and }
+{12019}{}{arrest any raiders, cannibals, slavers, and lawless  }
+{12020}{}{mutants within the country, and the NCR Army valiantly}
+{12021}{}{protects the borders against outside marauders. To    }
+{12022}{}{ensure justice and liberty, all citizens have access  }
+{12023}{}{to NCR's courts and the right to vote for a           }
+{12024}{}{representative of their choice to sit in the Hall of  }
+{12025}{}{Congress. In the words of President Tandi,            }
+{12026}{}{"A safe people is a strong people."}
+{12027}{}{**END-PAR**}
+{12028}{}{WHO'S IN CHARGE HERE?}
+{12029}{}{NCR may be a bit different from what you're used to.  }
+{12030}{}{There are no chieftains, town bosses, kings, or       }
+{12031}{}{dictators here. Our leaders are elected by the people!}
+{12032}{}{That's right -- every state has the right to send     }
+{12033}{}{representatives to the Hall of Congress. These        }
+{12034}{}{representatives select the President and              }
+{12035}{}{Vice-President to head the council and it is their    }
+{12036}{}{advice which guides the President's decisions.  For   }
+{12037}{}{ten terms now, President Tandi has been the unanimous }
+{12038}{}{choice of the council, who respect her wisdom and     }
+{12039}{}{foresight.                                            }
+{12040}{}{**END-PAR**}
+{12041}{}{SOUNDS GREAT! HOW DO I JOIN THE NCR?}
+{12042}{}{All law-abiding and peaceful people, human or mutant, }
+{12043}{}{are eligible to become citizens of NCR. To become a   }
+{12044}{}{citizen all you have to do is move to NCR and present }
+{12045}{}{your claim for immigration. After citizenship training}
+{12046}{}{and processing your application,  you will be notified}
+{12047}{}{of your new status as a PC (Provisional Citizen). From}
+{12048}{}{there, it's only a short step to full citizenship!}
+{12049}{}{**END-PAR**}
+{12050}{}{Of course, NCR is not for everybody - slavers,        }
+{12051}{}{unreformed mutants, known raiders, and other          }
+{12052}{}{undesirables need not apply!                          }
+{12053}{}{**END-PAR**}
+{12054}{}{BUT I WHAT IF MY ENTIRE TOWN WANTS TO JOIN?}
+{12055}{}{Depending on where your town is located, NCR does     }
+{12056}{}{accept petitions by villages, towns, bases,           }
+{12057}{}{city-states, even minor kingdoms for annexation by    }
+{12058}{}{NCR. Once the petition is accepted, NCR will grant    }
+{12059}{}{your town territorial status. Once the needed police  }
+{12060}{}{and army presence is established and any banditry or  }
+{12061}{}{other lawlessness has been dealt with, your village   }
+{12062}{}{can apply for full statehood in the NCR. It's that    }
+{12063}{}{simple!}
+{12064}{}{**END-PAR**}
+{12065}{}{So remember - WE'RE HERE. WHY NOT JOIN US?}
+{12066}{}{**END-PAR**}
+{12067}{}{Prepared by the New California Relations Advisory Panel}
+{12068}{}{**END-PAR**}
+{12069}{}{NCRAP Pub. #A7-7893b}
+{12070}{}{This page was intentionally left blank.}
+{12071}{}{**END-DISK**}
+# State of the Nation
+{13000}{}{Memo: State of the Nation}
+{13001}{}{From: President Dick Richardson}
+{13002}{}{To: The People of this Great Nation}
+{13003}{}{Subject: The State of the Union Address}
+{13004}{}{**END-PAR**}
+{13005}{}{Fellow Americans, I have been honored to be the steward}
+{13006}{}{that will take the American people back to the mainland}
+{13007}{}{to reclaim the United States for its own citizens. We }
+{13008}{}{will be the first generation free of the mutant threat }
+{13009}{}{in over one hundred years.}
+{13010}{}{**END-PAR**}
+{13011}{}{It's been a long wait, and the work that has made this }
+{13012}{}{possible has been difficult. At times it seemed }
+{13013}{}{impossible, however through the brave and tireless }
+{13014}{}{efforts of our own head of the Chemical Corps, Dr. }
+{13015}{}{Charles Curling, the hour of our salvation is now at }
+{13016}{}{hand.}
+{13017}{}{**END-PAR**}
+{13018}{}{Brave, steadfast, blah, blah, blah. Jeez, does anyone }
+{13019}{}{really listen to this stuff?}
+{13020}{}{**END-PAR**}
+{13021}{}{--Notes to self-}
+{13022}{}{1)  Go on like this for a bit to cover Curling's project.}
+{13023}{}{2)  Tell everyone how steadfast, etc., they are}
+{13024}{}{     Yadda, yadda, yadda}
+{13025}{}{**END-PAR**}
+{13026}{}{Be sure to make a plug for reelection.}
+{13027}{}{**END-PAR**}
+{13028}{}{Remember NOT to hug my intern on the way down from the}
+{13029}{}{podium.}
+{13030}{}{**END-PAR**}
+{13031}{}{Important: Finish writing this soon. We'll be able to }
+{13032}{}{gas those damn mutants any week now if Curling's report}
+{13033}{}{is correct.}
+{13034}{}{**END-DISK**}
+# Circle of Steel Diary
+{14000}{}{[Begin holodisk record]}
+{14001}{}{**END-PAR**}
+{14002}{}{Entry #1:}
+{14003}{}{**END-PAR**}
+{14004}{}{Our path has been decided, and the cause is noble. We }
+{14005}{}{were Brotherhood once, but now we are more. We are the }
+{14006}{}{Circle of Steel, formed from the ashes of betrayal. We've }
+{14007}{}{salvaged the Stealth Boys, the tech our former leaders }
+{14008}{}{shunned due to baseless fears of mental side effects.}
+{14009}{}{**END-PAR**}
+{14010}{}{Entry #8:}
+{14011}{}{**END-PAR**}
+{14012}{}{The Stealth Boys, they're remarkable. The invisible veil they }
+{14013}{}{cast, it's like slipping into another world. We're }
+{14014}{}{shadows now, infiltrating NCR territories, collecting }
+{14015}{}{vital intel. But the Brotherhood...they're watching, I can }
+{14016}{}{feel it. }
+{14017}{}{**END-PAR**}
+{14018}{}{Entry #15:}
+{14019}{}{**END-PAR**}
+{14020}{}{We are besieged on all sides. The NCR, the Brotherhood, }
+{14021}{}{they're closing in. But our cause is just, our methods are }
+{14022}{}{sound. We shall prevail. The Stealth Boys protect us, }
+{14023}{}{they make us untouchable. But the shadows... they're }
+{14024}{}{longer now. Darker. Can a shadow cast a shadow?}
+{14025}{}{**END-PAR**}
+{14026}{}{Entry #21:}
+{14027}{}{**END-PAR**}
+{14028}{}{Whispers in the dark. Voices that are not there. Images }
+{14029}{}{that fade when I turn to see them. Are these the side }
+{14030}{}{effects the Brotherhood feared? No. No, they're tricks, }
+{14031}{}{deceptions, smoke screens cast by our enemies. We're not }
+{14032}{}{the sick ones...they are.}
+{14033}{}{**END-PAR**}
+{14034}{}{Entry #26:}
+{14035}{}{**END-PAR**}
+{14036}{}{The walls of our bunker are closing in. Betrayal breeds }
+{14037}{}{in every corner, every shadow. Are we not all Circle of }
+{14038}{}{Steel? Can I trust no one? They whisper about me, plot }
+{14039}{}{against me, I know it. The Stealth Boys, they are our }
+{14040}{}{salvation, our curse. But who am I without my shadow?}
+{14041}{}{**END-PAR**}
+{14042}{}{Entry #32:}
+{14043}{}{**END-PAR**}
+{14044}{}{Who's there? I see you, skulking in the corners of my sight. }
+{14045}{}{My mind? The Brotherhood... traitors! The Stealth Boys, }
+{14046}{}{they stole them, stole my mind. Or was it me? Was it }
+{14047}{}{us? I can't...I can't remember. We were supposed to be }
+{14048}{}{the heroes...}
+{14049}{}{**END-PAR**}
+{14050}{}{[End holodisk record]}
+{14051}{}{**END-DISK**}
+# Project Chimera
+{15000}{}{WARNING! Access to this diary is restricted. Any }
+{15001}{}{unauthorized attempt to access or disseminate its }
+{15002}{}{contents will result in severe consequences.}
+{15003}{}{**END-PAR**}
+{15004}{}{ENTRY #1}
+{15005}{}{**END-PAR**}
+{15006}{}{DATE: Classified}
+{15007}{}{LOCATION: S1C}
+{15008}{}{**END-PAR**}
+{15009}{}{**END-PAR**}
+{15010}{}{Today marks the beginning of Project Chimera, a }
+{15011}{}{clandestine endeavor shrouded in secrecy. Our mission: }
+{15012}{}{to push the boundaries of genetic experimentation for }
+{15013}{}{military purposes. The laboratory hums with }
+{15014}{}{anticipation as we embark on this historic journey.}
+{15015}{}{**END-PAR**}
+{15016}{}{ENTRY #2}
+{15017}{}{**END-PAR**}
+{15018}{}{DATE: Classified}
+{15019}{}{LOCATION: S1C}
+{15020}{}{**END-PAR**}
+{15021}{}{**END-PAR**}
+{15022}{}{Progress is swift as we delve deeper into the }
+{15023}{}{intricacies of genetic cherry-picking. Our experiments }
+{15024}{}{yield promising results, with specimens exhibiting }
+{15025}{}{remarkable adaptability to diverse environments. The }
+{15026}{}{potential for military application is undeniable.}
+{15027}{}{**END-PAR**}
+{15028}{}{ENTRY #3}
+{15029}{}{**END-PAR**}
+{15030}{}{DATE: Classified}
+{15031}{}{LOCATION: S1C}
+{15032}{}{**END-PAR**}
+{15033}{}{**END-PAR**}
+{15034}{}{The decision to establish our operations at Hoover Dam }
+{15035}{}{proves fortuitous. The region's heightened levels of }
+{15036}{}{radioactive isotopes provide an ideal backdrop for our }
+{15037}{}{research. Specimens thrive in this environment, }
+{15038}{}{showcasing unprecedented mutations that surpass our }
+{15039}{}{expectations.}
+{15040}{}{**END-PAR**}
+{15041}{}{ENTRY #4}
+{15042}{}{**END-PAR**}
+{15043}{}{DATE: Classified}
+{15044}{}{LOCATION: S1C}
+{15045}{}{**END-PAR**}
+{15046}{}{**END-PAR**}
+{15047}{}{Our creations grow to full size, a testament to the }
+{15048}{}{meticulous planning and dedication of our team. Each }
+{15049}{}{specimen represents a leap forward in genetic }
+{15050}{}{engineering, capable of wreaking havoc on any ecosystem }
+{15051}{}{it encounters. The potential for military exploitation }
+{15052}{}{is staggering.}
+{15053}{}{**END-PAR**}
+{15054}{}{ENTRY #5}
+{15055}{}{**END-PAR**}
+{15056}{}{DATE: Classified}
+{15057}{}{LOCATION: S1C}
+{15058}{}{**END-PAR**}
+{15059}{}{**END-PAR**}
+{15060}{}{As our experiments progress, ethical considerations }
+{15061}{}{weigh heavy on my mind. The consequences of our actions, }
+{15062}{}{both intended and unintended, are profound. Yet, the }
+{15063}{}{pursuit of scientific advancement drives us forward, }
+{15064}{}{blurring the lines between our victory and moral }
+{15065}{}{responsibility.}
+{15066}{}{**END-PAR**}
+{15067}{}{ENTRY #6}
+{15068}{}{**END-PAR**}
+{15069}{}{DATE: Classified}
+{15070}{}{LOCATION: S1C}
+{15071}{}{**END-PAR**}
+{15072}{}{**END-PAR**}
+{15073}{}{Despite the risks, we press on, fueled by the belief }
+{15074}{}{that our work will make a difference on the battlefield. }
+{15075}{}{The team beams with pride as we push the boundaries }
+{15076}{}{of what is possible. Project Chimera represents }
+{15077}{}{the pinnacle of scientific achievement, a testament }
+{15078}{}{to timeless human ingenuity. Bravo, to us!}
+{15079}{}{**END-DISK**}

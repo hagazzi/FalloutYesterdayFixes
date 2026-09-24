@@ -1,0 +1,62 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_MVCAVES
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure start begin
+end
+
+
+procedure map_enter_p_proc begin
+
+   variable enter_str = mstr(100);
+
+   fadein(1);
+
+   if (global_var(GVAR_MVCAVES_FREEFALL) == 1) then begin
+      variable sfxd, animsfx, animd;
+      animd = pick_one(ANIM_fall_back, ANIM_fall_front);
+      if (animd == ANIM_fall_back) then
+         animsfx = ANIM_hit_from_back;
+      else
+         animsfx = ANIM_hit_from_front;
+
+      set_global_var(GVAR_MVCAVES_FREEFALL, 0);
+      reg_anim_begin();
+      reg_anim_animate(dude_obj, animd, -1);
+      sfxd := sfx_build_char_name(dude_obj, animsfx, snd_contact);
+      reg_anim_play_sfx(dude_obj, sfxd, 1);
+      reg_anim_end();
+      dude_floater_bad(101);
+      critter_heal(dude_obj, -11 + dude_agility);
+      enter_str += " " + mstr(102);
+   end
+
+   if (
+      not(is_loading_game) and
+      map_first_run )
+      then begin
+         display_msg(enter_str);
+   end
+
+end
+
+procedure map_update_p_proc begin
+   Cavern_Lighting;
+end
+
+
+procedure map_exit_p_proc begin
+   fadeout(1);
+end

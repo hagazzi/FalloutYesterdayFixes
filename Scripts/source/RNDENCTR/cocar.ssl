@@ -1,0 +1,170 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_COCAR
+#define LVAR_Warn             (8)
+
+#include "..\headers\party.h"
+#include "..\headers\vehicles.h"
+
+import variable SE_Bob_Ptr;
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+procedure BobWarning(variable o);
+procedure RepairHighwayman(variable refuel)
+;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+   script_overrides;
+   display_mstr(300);
+end
+
+procedure use_obj_on_p_proc begin
+   variable bonus, pid;
+   bonus := 0;
+   pid = obj_pid(obj_being_used_with);
+
+   if (pid == PID_SUPER_TOOL_KIT) then begin
+      bonus := 40;
+   end else if (pid == PID_MULTI_TOOL) then begin
+      bonus := 20;
+   end
+
+   if (
+      pid == PID_SUPER_TOOL_KIT or
+      pid == PID_MULTI_TOOL
+   ) then begin
+      script_overrides;
+      call BobWarning(source_obj);
+      if(is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -20 + bonus))) then begin
+            display_mstr(301);
+        end
+   end
+   else if (
+      pid == PID_ELECTRIC_CAR_ENGINE or pid == PID_CHARGED_ELECTRIC_CAR_ENGINE
+   ) then begin
+      script_overrides;
+      variable refuel = 0;
+      if (pid == PID_CHARGED_ELECTRIC_CAR_ENGINE) then begin
+         refuel = 1;
+      end
+      play_sfx("CARREPAR");
+      fadeout(1);
+      remove_pid_qty(dude_obj, pid, 1)
+      call RepairHighwayman(refuel);
+   end
+
+
+end
+
+procedure use_skill_on_p_proc begin
+
+   if (
+      (action_being_used == SKILL_SCIENCE) and
+      is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, -20))
+   ) then begin
+      script_overrides;
+      display_mstr(302);
+   end else if (action_being_used == SKILL_REPAIR) then begin
+      script_overrides;
+
+
+        call BobWarning(source_obj);
+
+        if(is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -20))) then begin
+            display_mstr(303);
+        end
+
+
+   end
+end
+
+procedure BobWarning(variable o) begin
+   if(can_speak(SE_Bob_Ptr) and obj_can_see_obj(SE_Bob_Ptr,o) and (global_var(GVAR_CAR_MART_BOB_TOOLS) == 0)) then begin
+         if(local_var(LVAR_Warn) == 0) then begin
+            obj_floater_type(SE_Bob_Ptr, mstr(200), FLOAT_COLOR_BAD);
+            set_local_var(LVAR_Warn, 1);
+         end else if (local_var(LVAR_Warn) == 1) then begin
+            obj_floater_type(SE_Bob_Ptr, mstr(201), FLOAT_COLOR_BAD);
+            attack_setup(SE_Bob_Ptr, o);
+      end
+   end
+end
+
+procedure RepairHighwayman(variable refuel) begin
+   // Remove the old car
+   variable tile, elev;
+   tile = 24106;
+   elev = 0;
+   Scenery_Creation_Hex:=tile;
+   Dest_Block_Cycle(2,1,elev)
+   Dest_Block_Cycle(1,1,elev)
+   Dest_Block_Cycle(0,3,elev)
+   Dest_Block_Cycle(1,1,elev)
+   Dest_Block_Cycle(0,4,elev)
+   Dest_Block_Cycle(5,1,elev)
+   Dest_Block_Cycle(4,1,elev)
+   Dest_Block_Cycle(5,1,elev)
+   Dest_Block_Cycle(3,3,elev)
+   Dest_Block_Cycle(4,1,elev)
+   Dest_Block_Cycle(3,4,elev)
+
+   set_obj_visibility(self_obj, 1);
+
+   // Create new car
+   set_global_var(GVAR_PLAYER_GOT_HIGHWAYMAN, 1);
+   if (refuel == 1) then begin
+      set_global_var(GVAR_VEHICLE_GAS_HIGHWAYMAN, 80000);
+   end
+   Create_Car(CAR_CAR_MART_HEX, 0)
+
+   // Destroy at the end, otherwise the script ends abruptly
+
+   fadein(1);
+   destroy_object(self_obj);
+end

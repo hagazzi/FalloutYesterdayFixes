@@ -1,0 +1,48 @@
+# Grammar pass done
+
+{100}{}{You see a friendly person.}
+{101}{}{You see a merchant.}
+
+{102}{}{Welcome! Step right up, folks!}
+{103}{}{Hey! Wait! I have things that could help you along!}
+{104}{}{Hey! Do you have anything to trade for these?}
+{105}{}{This must be my lucky day. Come, see what I have for sale.}
+{106}{}{Looking for something special?}
+{107}{}{Caps jingling in your pocket? In need of a little pick-me-up? I've got just the right kind of stuff.}
+{108}{}{Friend! Let's see if we can strike a deal.}
+{109}{}{Need supplies for your next journey?}
+{110}{}{I've got the best deals and a smile for every customer.}
+{111}{}{Looking to trade? You've come to the right place!}
+{112}{}{Fresh off the caravan, straight to you! Quality goods at fair prices, guaranteed.}
+{113}{}{Come one, come all! I've got you covered.}
+{114}{}{Let's make some magic happen with a little barter.}
+{115}{}{Feeling lucky? Test your fortune with my selection of junk.}
+{116}{}{Caps burning a hole in your pocket? Let's fix that.}
+{117}{}{A visit to my stand is sure to lift your spirits.}
+{118}{}{Welcome to the NCR market, where quality goods meet unbeatable prices!}
+{119}{}{Need supplies for your journey through NCR territory?}
+{120}{}{Looking to trade? You won't find better deals this side of Hoover Dam, partner.}
+{121}{}{Step into my shop and browse the finest selection of NCR-approved gear and provisions.}
+{122}{}{Caps or no caps, everyone's welcome here!}
+{123}{}{Don't let the desert sun get you down! Stock up on essentials and keep on fighting the good fight.}
+{124}{}{Feeling parched? Quench your thirst with our selection of almost 60% purified water and Nuka-Cola.}
+{125}{}{Got your eye on something shiny?}
+{126}{}{We've got tasty treats to satisfy any craving.}
+{127}{}{Got junk to trade? Bring it on over.}
+{128}{}{Don't let the geckos and cazadores get the best of you! Gear up with supplies for any nasties out there.}
+{129}{}{My shop has everything you need to thrive in the NCR.}
+{130}{}{Welcome to the heart of the Republic! Let's make sure you're well-equipped.}
+
+{200}{}{Would you like to trade?}
+{201}{}{Hey there! It's really great that you dropped by. Would you like to trade some things?}
+{202}{}{Would you be interested in a little trade?}
+
+{250}{}{That'd be good.}
+{251}{}{Sorry, have to keep on moving.}
+{252}{}{Yah. Me got stuff!}
+{253}{}{Me go.}
+
+{260}{}{Good trading with you. Good luck in your travels.}
+{261}{}{Bye.}
+
+{270}{}{Glad to have you back. Can I interest you in something else?}

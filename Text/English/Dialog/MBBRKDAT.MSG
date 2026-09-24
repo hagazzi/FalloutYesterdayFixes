@@ -1,0 +1,5 @@
+
+{100}{}{You successfully recovered the data from the damaged reels and repaired the computer.}
+{101}{}{You failed to recovered the data from the damaged reels.}
+{102}{}{Looks like the reels are damaged. You will need to recover the data.}
+{103}{}{You successfully recovered the data from the damaged reels and repaired the computer.}

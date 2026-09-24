@@ -1,0 +1,4 @@
+
+{100}{}{The console is offline.}
+{101}{}{You manage to get a grasp of how this console functions.}
+{102}{}{You manage to rewire the interface and disable the forcefield.}

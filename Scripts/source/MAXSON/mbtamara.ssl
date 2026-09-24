@@ -1,0 +1,1045 @@
+/*
+
+        Name:           Tamara
+        Location:
+        Description:
+
+           Created: 22/01/2021 18:54:19
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+#include "..\HEADERS\maxbunkr.h"
+
+#define NAME                    SCRIPT_MBTAMARA
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_BROTHERHOOD)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+procedure Skill_Check_000_Luck;
+procedure Skill_Check_001_Luck;
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Tamara_Generic;
+procedure Tamara_Robbery_1;
+procedure Tamara_1a_1;
+procedure Tamara_1a_2;
+procedure Tamara_1a_2D_1;
+procedure Tamara_1a_2D_2;
+procedure Tamara_1b_1;
+procedure Tamara_2_1;
+procedure Tamara_2_2;
+procedure Tamara_2_3;
+procedure Tamara_2_4a;
+procedure Tamara_2_4b_1;
+procedure Tamara_2_4b_2;
+procedure Tamara_3_1;
+procedure Tamara_3_2a_1;
+procedure Tamara_3_2a_2;
+procedure Tamara_3_2a_3a_1;
+procedure Tamara_3_2a_3a_2a;
+procedure Tamara_3_2a_3a_2b;
+procedure Tamara_3_2a_3b_1;
+procedure Tamara_3_2a_3b_2a;
+procedure Tamara_3_2a_3b_2b;
+procedure Tamara_3_2b_1;
+procedure Tamara_3_2b_2a_1;
+procedure Tamara_3_2b_2a_2;
+procedure Tamara_3_2b_2b;
+procedure Tamara_3_2b_2c;
+procedure Tamara_3_2c_1;
+procedure Tamara_3_2c_2a;
+procedure Tamara_3_2c_2b_1;
+procedure Tamara_3_2c_2b_2;
+procedure Tamara_3_2d_1;
+procedure Tamara_3_2d_2a;
+procedure Tamara_3_2d_2b;
+procedure Tamara_3_2e_1;
+procedure Tamara_3_2e_2a_1;
+procedure Tamara_3_2e_2a_2a_1;
+procedure Tamara_3_2e_2a_2a_2;
+procedure Tamara_3_2e_2a_2b;
+procedure Tamara_3_2e_2b_1;
+procedure Tamara_3_2e_2b_2;
+procedure Tamara_3_2e_2b_3;
+procedure Tamara_3_2e_2b_4;
+procedure Tamara_3_2e_2b_5;
+procedure Tamara_3_2e_2b_9;
+procedure Tamara_4_1;
+procedure Tamara_4_2;
+procedure Tamara_B1_a1;
+procedure Tamara_B1_a2;
+procedure Tamara_B1_a3;
+procedure Tamara_B1_a4;
+procedure Tamara_B1_a5_a1;
+procedure Tamara_B1_a5_a2;
+procedure Tamara_B1_a5_b1;
+procedure Tamara_B1_a5_b2_a1;
+procedure Tamara_B1_a5_b2_a2;
+procedure Tamara_B1_a5_b2_b;
+procedure Tamara_B1_b1;
+procedure Tamara_B1_b2;
+procedure Node058;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Robbery (8)
+#define LVAR_Free_Booze (9)
+
+#define CAPS_FRIDGE (tile_contains_pid_obj(18392, self_elevation, 574))
+
+variable Tamara_Round := 0;
+variable Tamara_Free_Booze := 0;
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_BROTHERHOOD_OF_STEEL);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+add_timer_event(self_obj,game_ticks(random(1,5)),0);
+call new_plague_check(self_obj, LVAR_Herebefore);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+   if(global_var(GVAR_BROTHERHOOD_KLAXON) == 1) then
+      set_local_var(LVAR_Hostile,2);
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+if(local_var(LVAR_Robbery) == 1) then begin
+   if(global_var(GVAR_JON_DEAD) == 0) then
+      floater_bad(150);
+   else
+      floater_bad(151);
+   call Node998;
+end
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+   start_gdialog(NAME,self_obj,4,-1,-1);
+   gSay_Start;
+if (local_var(LVAR_Herebefore)==0) then begin
+       call Tamara_1a_1;
+end else if (local_var(LVAR_Herebefore)==1) then begin
+       call Tamara_1b_1;
+end
+gSay_End;
+end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+
+   if (random(0, 30) == 1) then begin
+      if(local_var(LVAR_Robbery) == 1) then
+         floater_rand(230,235);
+      else
+         floater_rand(200, 205);
+  end
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+/* inc_evil_critter */
+/* inc_neutral_critter */
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure Skill_Check_000_Luck begin
+variable roll_temp;
+roll_temp := do_check(dude_obj, STAT_lu, -3);
+if is_success(roll_temp) then
+begin
+call Tamara_B1_a5_b2_a1;
+end
+else begin
+call Tamara_B1_a5_b2_b;
+ end
+end
+
+procedure Skill_Check_001_Luck begin
+   variable roll_temp;
+   roll_temp := do_check(dude_obj, STAT_lu, -5);
+   if is_success(roll_temp) then
+   begin
+   call Tamara_B1_a5_a1;
+   end
+   else begin
+   call Tamara_B1_a5_b1;
+    end
+   end
+
+   procedure Skill_Check_003_Speech begin
+      variable roll_temp;
+      roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -25);
+      if is_success(roll_temp) then
+      begin
+      call Tamara_3_2e_2b_2;
+      end
+      else begin
+      call Tamara_3_2e_2b_9;
+       end
+      end
+
+      procedure Skill_Check_004_Speech begin
+         variable roll_temp;
+         roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -25);
+         if is_success(roll_temp) then
+         begin
+         call Tamara_3_2e_2b_3;
+         end
+         else begin
+         call Tamara_3_2e_2b_9;
+          end
+         end
+
+procedure Skill_Check_005_Speech begin
+   variable roll_temp;
+   roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -25);
+   if is_success(roll_temp) then
+   begin
+   call Tamara_3_2e_2b_4;
+   end
+   else begin
+   call Tamara_3_2e_2b_9;
+      end
+   end
+
+   procedure Skill_Check_006_Speech begin
+      variable roll_temp;
+      roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -25);
+      if is_success(roll_temp) then
+      begin
+      call Tamara_3_2e_2b_5;
+      end
+      else begin
+      call Tamara_3_2e_2b_9;
+         end
+      end
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+procedure Tamara_1a_1
+begin
+if (dude_is_male) then Reply(260); else
+if (dude_is_female) then Reply(261);
+NOption(262,Tamara_1a_2,4);
+NOption(263,Tamara_3_1,4);
+NOption(264,Tamara_2_1,4);
+// NOTE: IF the PC's Perception<7 OR the PC has a weapon in neither weapon slot, go to Tamara_B1_b1 instead.
+if (get_critter_stat(dude_obj,STAT_pe)>=7 or dude_is_armed) then
+NOption(265,Tamara_B1_a1,4);
+else begin
+if (get_critter_stat(dude_obj,STAT_st)<=6 or not(dude_is_armed)) then
+NOption(265,Tamara_B1_b1,4);
+end
+NOption(266,Node999,4);
+NOption(267,Tamara_1a_2D_1,-3);
+NOption(268,Node999,-3);
+end
+
+procedure Tamara_1a_2
+begin
+if (dude_is_male) then Reply(290); else
+if (dude_is_female) then Reply(290);
+NOption(263,Tamara_3_1,4);
+NOption(264,Tamara_2_1,4);
+NOption(265,Tamara_B1_a1,4);
+NOption(266,Node999,4);
+end
+
+procedure Tamara_1a_2D_1
+begin
+Reply(320);
+NOption(321,Tamara_1a_2D_2,-3);
+NOption(322,Tamara_3_2a_2,-3);
+NOption(323,Node999,-3);
+end
+
+procedure Tamara_1a_2D_2
+begin
+Reply(350);
+NOption(351,Tamara_3_2c_1,-3);
+NOption(352,Tamara_3_2b_1,-3);
+NOption(323,Node999,-3);
+end
+
+procedure Tamara_1b_1
+begin
+Reply(380);
+NOption(381,Tamara_3_1,4);
+NOption(382,Tamara_3_2a_1,4);
+NOption(383,Tamara_2_1,4);
+// NOTE: IF the PC's Perception<7 OR the PC has a weapon in neither weapon slot, go to Tamara_B1_b1 instead.
+if (get_critter_stat(dude_obj,STAT_pe)>=7 or dude_is_armed) then
+NOption(265,Tamara_B1_a1,4);
+if (get_critter_stat(dude_obj,STAT_pe)<=6 or not(dude_is_armed)) then
+
+NOption(384,Node999,4);
+NOption(385,Tamara_1a_2D_1,-3);
+NOption(mstr(386)+dude_name+mstr(387),Node999,-3);
+end
+
+procedure Tamara_2_1
+begin
+if (dude_is_male) then Reply(410); else
+if (dude_is_female) then Reply(411);
+NOption(412,Tamara_2_2,4);
+end
+
+procedure Tamara_2_2
+begin
+Reply(440);
+NOption(412,Tamara_2_3,4);
+end
+
+procedure Tamara_2_3
+begin
+if (dude_is_male) then Reply(470); else
+if (dude_is_female) then Reply(471);
+if (item_caps_total(dude_obj)>=50) then
+NOption(472,Tamara_2_4a,4);
+if (item_caps_total(dude_obj)<50) then
+NOption(473,Tamara_2_4b_1,4);
+end
+
+// Node Tamara_2_4a
+//
+// Notes:
+//
+// IF the variable Tamara_Round<1, the condition is triggered where Harris, the bar patron, finds the Lucky Horseshoe in his drink, as per the quest of the same name.\
+
+procedure Tamara_2_4a
+begin
+
+fadeout(1);
+set_global_var(GVAR_MB_ROUND_FOR_EVERYONE, 1);
+fadein(1);
+
+if (dude_is_male) then Reply(500); else
+if (dude_is_female) then Reply(501);
+NOption(263,Tamara_3_1,4);
+NOption(502,Node999,4);
+end
+
+procedure Tamara_2_4b_1
+begin
+Reply(530);
+NOption(412,Tamara_2_4b_2,4);
+end
+
+procedure Tamara_2_4b_2
+begin
+Reply(560);
+NOption(561,Tamara_3_1,4);
+NOption(562,Tamara_3_2a_1,4);
+NOption(563,Node999,4);
+end
+
+procedure Tamara_3_1
+begin
+Reply(590);
+NOption(591,Tamara_3_2b_1,4);
+NOption(592,Tamara_3_2c_1,4);
+NOption(593,Tamara_3_2d_1,4);
+NOption(594,Tamara_3_2e_1,4);
+NOption(562,Tamara_3_2a_1,4);
+NOption(595,Node999,4);
+end
+
+procedure Tamara_3_2a_1
+begin
+Reply(620);
+NOption(621,Tamara_3_2a_2,4);
+NOption(622,Node999,4);
+end
+
+procedure Tamara_3_2a_2
+begin
+Reply(650);
+NOption(651,Tamara_3_2a_3a_1,4);
+NOption(652,Tamara_3_2a_3b_1,4);
+NOption(653,Tamara_3_1,4);
+NOption(622,Node999,4);
+NOption(654,Tamara_3_2a_3a_1,-3);
+NOption(655,Tamara_3_2a_3b_1,-3);
+NOption(656,Tamara_1a_2D_2,-3);
+NOption(268,Node999,4);
+end
+
+procedure Tamara_3_2a_3a_1
+begin
+Reply(680);
+if (item_caps_total(dude_obj)>=5) then
+NOption(681,Tamara_3_2a_3a_2a,4);
+if (item_caps_total(dude_obj)<5) then
+NOption(682,Tamara_3_2a_3a_2b,4);
+NOption(652,Tamara_3_2a_3b_1,4);
+NOption(653,Tamara_3_1,4);
+NOption(622,Node999,4);
+if (item_caps_total(dude_obj)>=5) then
+NOption(683,Tamara_3_2a_3a_2a,-3);
+NOption(684,Tamara_1a_2D_2,-3);
+NOption(685,Node999,-3);
+end
+
+// Node Tamara_3_2a_3a_2a
+//
+// Notes:
+//
+// Deduct five caps from the PC's inventory. Add one Meat Jerky to the PC's inventory.
+
+procedure Tamara_3_2a_3a_2a
+begin
+   item_caps_adjust(dude_obj, -5);
+   give_pid_qty(dude_obj, PID_MEAT_JERKY, 1)
+Reply(710);
+NOption(711,Tamara_4_1,4);
+NOption(712,Tamara_3_1,4);
+NOption(713,Tamara_3_2a_2,4);
+NOption(714,Node999,4);
+NOption(715,Tamara_1a_2D_2,-3);
+NOption(716,Tamara_3_2a_2,-3);
+NOption(717,Node999,-3);
+end
+
+procedure Tamara_3_2a_3a_2b
+begin
+Reply(740);
+NOption(741,Tamara_3_1,4);
+NOption(622,Node999,4);
+end
+
+procedure Tamara_3_2a_3b_1
+begin
+Reply(770);
+if (item_caps_total(dude_obj)>=8) then
+NOption(771,Tamara_3_2a_3b_2a,4);
+if (item_caps_total(dude_obj)<8) then
+NOption(772,Tamara_3_2a_3b_2b,4);
+NOption(651,Tamara_3_2a_3a_1,4);
+NOption(653,Tamara_3_1,4);
+NOption(622,Node999,4);
+if (item_caps_total(dude_obj)>=8) then
+NOption(683,Tamara_3_2a_3b_2a,-3);
+NOption(684,Tamara_1a_2D_2,-3);
+NOption(268,Node999,-3);
+end
+
+// Node Tamara_3_2a_3b_2a
+//
+// Notes:
+//
+// Deduct eight caps from the PC's inventory. Add one Iguana-on-a-stick to the PC's inventory.
+
+procedure Tamara_3_2a_3b_2a
+begin
+
+   item_caps_adjust(dude_obj, -8);
+   give_pid_qty(dude_obj, PID_IGUANA_ON_A_STICK, 1)
+
+Reply(800);
+NOption(711,Tamara_4_1,4);
+NOption(712,Tamara_3_1,4);
+NOption(713,Tamara_3_2a_2,4);
+NOption(714,Node999,4);
+NOption(801,Tamara_3_2a_2,-3);
+NOption(802,Tamara_1a_2D_2,-3);
+NOption(717,Node999,-3);
+end
+
+procedure Tamara_3_2a_3b_2b
+begin
+Reply(830);
+NOption(831,Tamara_3_2a_3a_1,4);
+NOption(832,Tamara_3_1,4);
+NOption(622,Node999,4);
+end
+
+procedure Tamara_3_2b_1
+begin
+Reply(860);
+NOption(861,Tamara_3_2b_2a_1,4);
+// NOTE: Deduct two caps from the PC's inventory.
+if (item_caps_total(dude_obj)>=2) then
+NOption(862,Tamara_3_2b_2b,4);
+if (item_caps_total(dude_obj)<2) then
+NOption(863,Tamara_3_2b_2c,4);
+NOption(864,Node999,4);
+if (item_caps_total(dude_obj)>=2) then
+NOption(683,Tamara_3_2b_2b,-3);
+NOption(268,Node999,-3);
+end
+
+procedure Tamara_3_2b_2a_1
+begin
+Reply(890);
+// NOTE: Deduct two caps from the PC's inventory.
+if (item_caps_total(dude_obj)>=2) then
+NOption(862,Tamara_3_2b_2b,4);
+if (item_caps_total(dude_obj)<2) then
+NOption(863,Tamara_3_2b_2c,4);
+NOption(891,Tamara_3_2b_2a_2,4);
+NOption(864,Node999,4);
+end
+
+procedure Tamara_3_2b_2a_2
+begin
+Reply(920);
+// NOTE: Deduct two caps from the PC's inventory.
+if (item_caps_total(dude_obj)>=2) then
+NOption(921,Tamara_3_2b_2b,4);
+if (item_caps_total(dude_obj)<2) then
+NOption(922,Tamara_3_2b_2c,4);
+NOption(864,Node999,4);
+end
+
+procedure Tamara_3_2b_2b
+begin
+   item_caps_adjust(dude_obj, -2);
+   dude_eat_food(drink_meal);
+Reply(950);
+NOption(711,Tamara_4_1,4);
+NOption(951,Tamara_3_1,4);
+NOption(952,Tamara_3_2a_2,4);
+NOption(714,Node999,4);
+NOption(953,Tamara_1a_2D_2,-3);
+NOption(954,Tamara_3_2a_2,-3);
+NOption(955,Node999,-3);
+end
+
+procedure Tamara_3_2b_2c
+begin
+Reply(980);
+NOption(981,Tamara_3_2b_2b,4);
+NOption(982,Node999,4);
+end
+
+procedure Tamara_3_2c_1
+begin
+Reply(1010);
+if (item_caps_total(dude_obj)>=3) then
+NOption(1011,Tamara_3_2c_2a,4);
+if (item_caps_total(dude_obj)<3) then
+NOption(1012,Tamara_3_2c_2b_1,4);
+NOption(864,Node999,4);
+if (item_caps_total(dude_obj)>=3) then
+NOption(683,Tamara_3_2c_2a,-3);
+NOption(268,Node999,-3);
+end
+
+// Node Tamara_3_2c_2a
+//
+// Notes:
+//
+// Deduct three caps from the PC's inventory. Add a bottle of Nuka Cola to the PC's inventory.
+
+procedure Tamara_3_2c_2a
+begin
+
+   item_caps_adjust(dude_obj, -3);
+   give_pid_qty(dude_obj, PID_NUKA_COLA, 1)
+
+Reply(1040);
+NOption(711,Tamara_4_1,4);
+NOption(951,Tamara_3_1,4);
+NOption(952,Tamara_3_2a_2,4);
+NOption(714,Node999,4);
+NOption(953,Tamara_1a_2D_2,-3);
+NOption(954,Tamara_3_2a_2,-3);
+NOption(268,Node999,-3);
+end
+
+procedure Tamara_3_2c_2b_1
+begin
+Reply(1070);
+if (item_caps_total(dude_obj)>=3) then
+NOption(1071,Tamara_3_2b_1,4);
+NOption(861,Tamara_3_2b_2a_1,4);
+NOption(1072,Tamara_3_2c_2b_2,4);
+NOption(864,Node999,4);
+end
+
+procedure Tamara_3_2c_2b_2
+begin
+Reply(1100);
+NOption(1101,Tamara_3_1,4);
+NOption(1102,Node999,4);
+end
+
+procedure Tamara_3_2d_1
+begin
+Reply(1130);
+if (item_caps_total(dude_obj)>=5) then
+NOption(681,Tamara_3_2d_2a,4);
+if (item_caps_total(dude_obj)<5) then
+NOption(1012,Tamara_3_2d_2b,4);
+NOption(864,Node999,4);
+end
+
+// Node Tamara_3_2d_2a
+//
+// Notes:
+//
+// Deduct five caps from the PC's inventory. Add a bottle of beer (normal, not Gamma Gulp) to the PC's inventory.
+
+procedure Tamara_3_2d_2a
+begin
+
+   item_caps_adjust(dude_obj, -5);
+   give_pid_qty(dude_obj, PID_BEER, 1)
+
+Reply(1160);
+NOption(711,Tamara_4_1,4);
+NOption(951,Tamara_3_1,4);
+NOption(952,Tamara_3_2a_2,4);
+NOption(714,Node999,4);
+end
+
+procedure Tamara_3_2d_2b
+begin
+Reply(1190);
+NOption(1191,Tamara_3_2b_1,4);
+NOption(861,Tamara_3_2b_2a_1,4);
+NOption(1192,Tamara_3_2c_1,4);
+NOption(1072,Tamara_3_2c_2b_2,4);
+NOption(864,Node999,4);
+end
+
+procedure Tamara_3_2e_1
+begin
+Reply(1220);
+NOption(1221,Tamara_3_2e_2a_1,4);
+NOption(1222,Tamara_3_2e_2b_1,4);
+NOption(864,Node999,4);
+end
+
+procedure Tamara_3_2e_2a_1
+begin
+Reply(1250);
+if (item_caps_total(dude_obj)>=10) then
+NOption(1251,Tamara_3_2e_2a_2a_1,4);
+if (item_caps_total(dude_obj)<10) then
+NOption(1252,Tamara_3_2e_2a_2b,4);
+NOption(864,Node999,4);
+end
+
+// Node Tamara_3_2e_2a_2a_1
+//
+// Notes:
+//
+// Deduct ten caps from the PC's inventory. Add a bottle of Booze to the PC's inventory.
+
+procedure Tamara_3_2e_2a_2a_1
+begin
+
+   item_caps_adjust(dude_obj, -10);
+   give_pid_qty(dude_obj, PID_BOOZE, 1)
+
+Reply(1280);
+NOption(711,Tamara_4_1,4);
+NOption(951,Tamara_3_2e_2a_2a_2,4);
+NOption(952,Tamara_3_2a_2,4);
+NOption(714,Node999,4);
+end
+
+procedure Tamara_3_2e_2a_2a_2
+begin
+Reply(1310);
+NOption(1311,Tamara_3_1,4);
+NOption(1312,Tamara_3_2a_2,4);
+NOption(714,Node999,4);
+end
+
+procedure Tamara_3_2e_2a_2b
+begin
+Reply(1340);
+NOption(1341,Tamara_3_2d_1,4);
+NOption(1342,Tamara_3_2a_2,4);
+NOption(864,Node999,4);
+end
+
+procedure Tamara_3_2e_2b_1
+begin
+Reply(1370);
+// NOTE: If the variable Tamara_Free_Booze>0, go straight to Tamara_3_2e_2b_9 instead.
+//Moderate speech check. IF failed, go to Tamara_3_2e_2b_9 instead.
+if(local_var(LVAR_Free_Booze) == 1) then
+NOption(1371,Tamara_3_2e_2b_9,4);
+else
+NOption(1371,Skill_Check_003_Speech,4);
+NOption(1372,Tamara_3_2e_2a_1,4);
+NOption(864,Node999,4);
+end
+
+procedure Tamara_3_2e_2b_2
+begin
+if (dude_is_male) then Reply(1400); else
+if (dude_is_female) then Reply(1401);
+// NOTE: Moderate speech check. IF failed, go to Tamara_3_2e_2b_9 instead.
+NOption(1402,Skill_Check_004_Speech,4);
+NOption(1403,Tamara_3_2e_2a_1,4);
+NOption(864,Node999,4);
+end
+
+procedure Tamara_3_2e_2b_3
+begin
+Reply(1430);
+// NOTE: Moderate speech check. IF failed, go to Tamara_3_2e_2b_9 instead.
+NOption(1431,Skill_Check_005_Speech,4);
+NOption(1403,Tamara_3_2e_2a_1,4);
+NOption(864,Node999,4);
+end
+
+procedure Tamara_3_2e_2b_4
+begin
+Reply(1460);
+// NOTE: Moderate speech check. IF failed, go to Tamara_3_2e_2b_9 instead.
+NOption(1403,Skill_Check_006_Speech,4);
+NOption(864,Node999,4);
+end
+
+// Node Tamara_3_2e_2b_5
+//
+// Notes:
+//
+// Add a bottle of Booze to the PC's inventory. Increment the variable Tamara_Free_Booze by 1.
+
+procedure Tamara_3_2e_2b_5
+begin
+
+set_local_var(LVAR_Free_Booze, 1);
+give_pid_qty(dude_obj, PID_BOOZE, 1)
+
+if (dude_is_male) then Reply(1490); else
+if (dude_is_female) then Reply(1491);
+NOption(1492,Tamara_4_1,4);
+NOption(951,Tamara_3_2e_2a_2a_2,4);
+NOption(952,Tamara_3_2a_2,4);
+NOption(1493,Node999,4);
+end
+
+procedure Tamara_3_2e_2b_9
+begin
+Reply(1520);
+NOption(1521,Tamara_3_2e_2a_1,4);
+NOption(1522,Node999,4);
+end
+
+procedure Tamara_4_1
+begin
+Reply(1550);
+NOption(1551,Tamara_4_2,4);
+NOption(951,Tamara_3_1,4);
+NOption(1552,Tamara_3_2a_2,4);
+end
+
+procedure Tamara_4_2
+begin
+Reply(1580);
+NOption(1581,Node058,4);
+NOption(951,Tamara_3_1,4);
+NOption(1552,Tamara_3_2a_2,4);
+NOption(1582,Node999,4);
+end
+
+// Node Tamara_B1_a1
+//
+// Notes:
+//
+// After this dialogue has finished, Tamara will attack the PC if he ever tries to speak to her again.
+
+procedure Tamara_B1_a1
+begin
+Reply(1610);
+set_local_var(LVAR_Robbery,1);
+// NOTE: IF the PC's strength<7, go to Tamara_B1_b1 instead.
+if (get_critter_stat(dude_obj,STAT_st)>=7) then
+NOption(1611,Tamara_B1_a2,4);
+if (get_critter_stat(dude_obj,STAT_st)<=6) then
+NOption(1611,Tamara_B1_b1,4);
+BOption(1612,Node998,4);
+end
+
+procedure Tamara_B1_a2
+begin
+Reply(1640);
+NOption(1641,Tamara_B1_a3,4);
+NOption(1642,Node999,4);
+end
+
+procedure Tamara_B1_a3
+begin
+Reply(1670);
+NOption(1671,Tamara_B1_a4,4);
+NOption(1642,Node999,4);
+end
+
+procedure Tamara_B1_a4
+begin
+Reply(1700);
+// NOTE: Difficult roll against the PC's Luck. IF failed, go to Tamara_B1_a5_b1 instead.
+NOption(412,Skill_Check_001_Luck,4);
+NOption(268,Node999,4);
+end
+
+procedure Tamara_B1_a5_a1
+begin
+Reply(1730);
+NOption(1731,Tamara_B1_a5_a2,4);
+NOption(1732,Node999,4);
+end
+
+// Node Tamara_B1_a5_a2
+//
+// Notes:
+//
+// Increase the number of caps in the PC's inventory by 200 + [(PC's luck) * 5]\
+
+procedure Tamara_B1_a5_a2
+begin
+
+   move_obj_inven_to_obj(CAPS_FRIDGE, self_obj);
+
+   if(item_caps_total(self_obj) > 0) then
+      item_caps_adjust(dude_obj, item_caps_total(self_obj));
+
+      dec_general_rep(-15);
+      inc_bos_rep(-25);
+
+Reply(1760);
+// NOTE: Increase the number of caps in the PC's inventory by 200 + [(PC's luck) * 5]
+//Lots of negative karma, etc.
+NOption(1761,Node999,4);
+NOption(268,Node999,4);
+end
+
+procedure Tamara_B1_a5_b1
+begin
+Reply(1790);
+// NOTE: Moderate roll against the PC's Luck. IF failed, go to Tamara_B1_a5_b2_b instead.
+NOption(412,Skill_Check_000_Luck,4);
+BOption(1791,Node998,4);
+NOption(268,Node999,4);
+end
+
+procedure Tamara_B1_a5_b2_a1
+begin
+Reply(1820);
+NOption(412,Tamara_B1_a5_b2_a2,4);
+BOption(1791,Node998,4);
+NOption(268,Node999,4);
+end
+
+procedure Tamara_B1_a5_b2_a2
+begin
+Reply(1850);
+NOption(1851,Tamara_B1_a5_a2,4);
+NOption(1732,Node999,4);
+end
+
+procedure Tamara_B1_a5_b2_b
+begin
+Reply(1880);
+BOption(1881,Node998,4);
+BOption(1791,Node998,4);
+NOption(268,Node999,4);
+end
+
+// Node Tamara_B1_b1
+//
+// Notes:
+//
+// After this dialogue has finished, Tamara will attack the PC if he ever tries to speak to her again.
+
+procedure Tamara_B1_b1
+begin
+   set_local_var(LVAR_Robbery,1);
+if (dude_is_male) then Reply(1910); else
+if (dude_is_female) then Reply(1911);
+NOption(1912,Tamara_B1_b2,4);
+BOption(1612,Node998,4);
+NOption(268,Node999,4);
+end
+
+procedure Tamara_B1_b2
+begin
+Reply(1940);
+BOption(1791,Node998,4);
+end
+
+procedure Node058
+begin
+   set_map_var(MVAR_KNOW_COMMANDER_BEER, 1);
+Reply(1970);
+NOption(1971,Node999,4);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

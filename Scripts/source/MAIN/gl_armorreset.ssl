@@ -1,0 +1,151 @@
+// gl_armorreset.int
+procedure start;
+procedure reset_pc_armor_stats(variable armor);
+procedure reset_npc_armor_stats(variable critter, variable armor);
+procedure set_npc_armor_bonus(variable critter, variable dtdr_arr);
+procedure inventorymove_handler;
+procedure invenwield_handler;
+
+#include "..\HEADERS\DEFINE.H"
+#include "..\HEADERS\define_extra.h"
+#include "..\HEADERS\COMMAND.H"
+#include "..\HEADERS\party.H"
+#include "..\HEADERS\sfall.h"
+
+#define party_equip_armor(critter)  (critter == Vic_Ptr) or (critter == Myron_Ptr) or (critter == Alexandra_Ptr) or  \
+                                    (critter == Sulik_Ptr) or (critter == Lenny_Ptr) or \
+                                    (critter == Miria_Ptr)
+
+procedure start begin
+   if game_loaded then begin
+      register_hook_proc(HOOK_INVENTORYMOVE, inventorymove_handler);
+      register_hook_proc(HOOK_INVENWIELD, invenwield_handler);
+   end
+end
+
+procedure reset_pc_armor_stats(variable armor) begin
+   variable i, j;
+   if (armor > 0) then begin
+      set_pc_extra_stat(STAT_ac, get_proto_data(armor, PROTO_AR_AC) + has_trait(TRAIT_PERK, dude_obj, PERK_dodger) * 5);
+      // DT loop
+      for (i := STAT_dmg_thresh; i <= STAT_dmg_thresh_explosion; i++) begin
+         set_pc_extra_stat(i, get_proto_data(armor, (i * 4))); // PROTO_AR_DT_*
+      end
+      // DR loop
+      for (i := STAT_dmg_resist; i <= STAT_dmg_resist_explosion; i++) begin
+         set_pc_extra_stat(i, get_proto_data(armor, (i + 16 + j))); // PROTO_AR_DR_*
+         j += 3;
+      end
+      set_pc_extra_stat(STAT_dmg_resist, get_proto_data(armor, PROTO_AR_DR_NORMAL) + has_trait(TRAIT_PERK, dude_obj, PERK_toughness) * 10 + dude_is_prizefighter * 5);
+   end else begin
+      set_pc_extra_stat(STAT_ac, has_trait(TRAIT_PERK, dude_obj, PERK_dodger) * 5);
+      for (i := STAT_dmg_thresh; i <= STAT_dmg_resist_explosion; i++) begin
+         set_pc_extra_stat(i, 0);
+      end
+      set_pc_extra_stat(STAT_dmg_resist, has_trait(TRAIT_PERK, dude_obj, PERK_toughness) * 10 + dude_is_prizefighter * 5);
+   end
+end
+
+procedure reset_npc_armor_stats(variable critter, variable armor) begin
+   variable i, j;
+   if (armor > 0) then begin
+      set_critter_extra_stat(critter, STAT_ac, get_proto_data(armor, PROTO_AR_AC));
+      // DT loop
+      for (i := STAT_dmg_thresh; i <= STAT_dmg_thresh_explosion; i++) begin
+         set_critter_extra_stat(critter, i, get_proto_data(armor, (i * 4))); // PROTO_AR_DT_*
+      end
+      // DR loop
+      for (i := STAT_dmg_resist; i <= STAT_dmg_resist_explosion; i++) begin
+         set_critter_extra_stat(critter, i, get_proto_data(armor, (i + 16 + j))); // PROTO_AR_DR_*
+         j += 3;
+      end
+      set_critter_extra_stat(critter, STAT_dmg_resist_emp, get_proto_data(armor, PROTO_AR_DR_EMP) + 500);
+   end else begin
+      set_critter_extra_stat(critter, STAT_ac, 0);
+      for (i := STAT_dmg_thresh; i <= STAT_dmg_resist_explosion; i++) begin
+         set_critter_extra_stat(critter, i, 0);
+      end
+      set_critter_extra_stat(critter, STAT_dmg_resist_emp, 500);
+   end
+end
+
+procedure set_npc_armor_bonus(variable critter, variable dtdr_arr) begin
+   variable i;
+   for (i := STAT_dmg_thresh; i <= STAT_dmg_resist_explosion; i++) begin
+      set_critter_extra_stat(critter, i, get_critter_extra_stat(critter, i) + dtdr_arr[i - STAT_dmg_thresh]);
+   end
+end
+
+procedure inventorymove_handler begin
+   variable
+   armor,
+      pid,
+      slot := get_sfall_arg,
+      item_moved := get_sfall_arg;
+
+   if(has_fake_trait(TRAIT_beastlord)) then begin
+      pid := obj_pid(item_moved);
+      if(
+         (slot == 3) and
+         (
+            (pid == PID_METAL_ARMOR) or
+            (pid == PID_POWERED_ARMOR) or
+            (pid == PID_COMBAT_ARMOR) or
+            (pid == PID_HARDENED_POWER_ARMOR) or
+            (pid == PID_BROTHERHOOD_COMBAT_ARMOR) or
+            (pid == PID_TESLA_ARMOR) or
+            (pid == PID_ADVANCED_POWER_ARMOR) or
+            (pid == PID_ADVANCED_POWER_ARMOR_MK2) or
+            (pid == PID_METAL_ARMOR_MK_II) or
+            (pid == PID_COMBAT_ARMOR_MK_II)
+         )
+      ) then begin
+            remove_armor(dude_obj)
+            unwield_slot(dude_obj, INVEN_TYPE_WORN);
+            inven_unwield(dude_obj);
+            display_msg(g_mstr(609));
+      end
+   end
+
+
+   /*if (obj_item_subtype(item_moved) == item_type_armor) and slot then begin
+      if (obj_pid(critter_inven_obj(dude_obj, INVEN_TYPE_WORN)) > 0) then begin
+         call reset_pc_armor_stats(obj_pid(critter_inven_obj(dude_obj, INVEN_TYPE_WORN)));
+      end else begin
+         call reset_pc_armor_stats(-1);
+      end
+   end*/
+end
+
+procedure invenwield_handler begin
+  /* variable
+      critter := get_sfall_arg,
+      item := get_sfall_arg,
+      slot := get_sfall_arg,
+      wielding := get_sfall_arg,
+      level, dtdr_arr;
+
+   if party_equip_armor(critter) and (slot == INVEN_TYPE_WORN) then begin
+      if wielding then begin
+         call reset_npc_armor_stats(critter, obj_pid(critter_inven_obj(critter, INVEN_TYPE_WORN)));
+      end else begin
+         call reset_npc_armor_stats(critter, obj_pid(item));
+      end
+
+      if (critter == Myron_Ptr) then begin
+         set_critter_extra_stat(critter, STAT_ac, get_critter_extra_stat(critter, STAT_ac) + 5);
+      end
+      if (critter == Lenny_Ptr) then begin
+         level := get_npc_level(mstr_scrname(239));
+         // Do not set EMP DR bonus
+         switch level begin
+            case 1: dtdr_arr := [1, 2, 2, 1, 1, 0, 2, 10, 15, 15, 10, 10, 0, 15];
+            case 2: dtdr_arr := [1, 2, 2, 1, 1, 0, 2, 10, 20, 20, 10, 10, 0, 15];
+            case 3: dtdr_arr := [2, 2, 2, 2, 1, 0, 2, 15, 25, 25, 15, 10, 0, 15];
+            default: dtdr_arr := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+         end
+         fix_array(dtdr_arr);
+         call set_npc_armor_bonus(critter, dtdr_arr);
+      end
+   end*/
+end

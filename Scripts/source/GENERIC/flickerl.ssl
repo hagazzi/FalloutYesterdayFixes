@@ -1,0 +1,36 @@
+/*******************************************************************************
+        Name: Flickering light
+        Location:
+        Description: A light that flickers. You wonder why no one thought of this before?
+
+
+*******************************************************************************/
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_FLICKERL
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   add_timer_event(self_obj, random(1, 2), 0);
+end
+
+procedure timed_event_p_proc begin
+
+    if (random(1, 2) == 1) then begin
+        obj_set_light_level(self_obj, 100, 8);
+    end else begin
+        obj_set_light_level(self_obj, 0, 0);
+    end
+
+    add_timer_event(self_obj,random(1, 2),0);
+end

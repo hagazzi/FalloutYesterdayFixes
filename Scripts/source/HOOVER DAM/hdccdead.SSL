@@ -1,0 +1,42 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: "Out of Bidness" sign
+        Location:
+        Description:
+
+        Log:
+
+           Created: May 27, 1998
+
+           Updated:
+*/
+
+/* Include Files */
+
+#include "..\headers\define.h"
+
+#define NAME                        SCRIPT_HDCCDEAD
+
+#include "..\headers\command.h"
+#include "..\headers\hdam.h"
+
+procedure start;
+procedure map_enter_p_proc;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   if (is_loading_game == false) then begin
+      variable invis;
+      invis = 1;
+
+      if (cc_dead) then
+         invis = 0;
+
+      set_obj_visibility(self_obj, invis);
+   end
+end

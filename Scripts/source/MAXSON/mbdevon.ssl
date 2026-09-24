@@ -1,0 +1,516 @@
+/*
+
+        Name:           Devon Hill
+        Location:
+        Description:
+
+           Created: 28/12/2020 14:55:26
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TG /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+
+#define NAME                    SCRIPT_MBDEVON
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_BROTHERHOOD)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+#include "..\HEADERS\maxbunkr.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure StopFirst;
+procedure StopAgain;
+procedure TalkFirst;
+procedure TalkAgain;
+procedure Angry;
+procedure Questions;
+procedure Whois;
+procedure Bunker;
+procedure Work;
+procedure GetPast;
+procedure MorePersonal;
+procedure Ed;
+procedure Brixley;
+procedure Troubles;
+procedure LifeDeath;
+procedure Bribe;
+procedure BeatUp;
+procedure Seduce;
+procedure EdSent;
+procedure Dumb;
+procedure DumbAgain;
+procedure DumbTalk;
+procedure DumbTalkAgain;
+procedure Node025;
+procedure Node026;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+#define ARMORY_DOOR (obj_blocking_tile(25928, 0, BLOCKING_TYPE_BLOCK))
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   switch_team(self_obj,TEAM_BROTHERHOOD_OF_STEEL)
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+
+add_timer_event(self_obj,game_ticks(random(3,5)),0);
+
+call new_plague_check(self_obj, LVAR_Herebefore);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   Evil_Critter:=1;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,HEAD_HILL,BACKGROUND_BHOOD);
+       gSay_Start;
+
+if(map_var(MVAR_WARN_ARMORY) != 0) then begin
+
+   if(map_var(MVAR_WARN_ARMORY) == 1) then
+      call StopFirst;
+   else if(map_var(MVAR_WARN_ARMORY) >= 2) then
+      call StopAgain;
+   else if(map_var(MVAR_WARN_ARMORY) == -1) then
+      call Angry;
+
+end else begin
+
+      if(local_var(LVAR_Herebefore) == 0) then
+         call TalkFirst;
+      else
+         call TalkAgain;
+
+end
+
+      gSay_End;
+       end_dialogue;
+
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+
+   if(not(combat_is_initialized) and self_can_see_dude) then begin
+      if((tile_distance(dude_tile, tile_num(ARMORY_DOOR)) <= 1) and obj_is_locked(ARMORY_DOOR)) then begin
+         Get_In_Obj_Face(dude_obj)
+         inc_map_var(MVAR_WARN_ARMORY);
+         dialogue_system_enter;
+      end
+      else if(not(obj_is_locked(ARMORY_DOOR))) then begin
+         Get_In_Obj_Face(dude_obj)
+         set_map_var(MVAR_WARN_ARMORY, -1);
+         dialogue_system_enter;
+      end
+   end
+
+   add_timer_event(self_obj,game_ticks(random(3,5)),0);
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+ inc_evil_critter
+give_pid_qty(self_obj, PID_DEVONS_HEAD, 1)
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+procedure StopFirst
+begin
+Reply(230);
+if(map_var(MVAR_KNOW_POISONER_STIMPAK) == 1 and map_var(MVAR_KNOW_POISONER_VIDEO) == 1 and global_var(GVAR_QUEST_FIND_POISONER) == 1) then
+NOption(291,Node025,4);
+NOption(231,GetPast,4);
+NOption(232,BeatUp,4);
+NOption(233,Whois,4);
+NOption(234,Node999,4);
+NOption(235,Dumb,-3);
+end
+
+procedure StopAgain
+begin
+if (dude_is_male) then Reply(260); else
+if (dude_is_female) then Reply(261);
+if(map_var(MVAR_KNOW_POISONER_STIMPAK) == 1 and map_var(MVAR_KNOW_POISONER_VIDEO) == 1 and global_var(GVAR_QUEST_FIND_POISONER) == 1) then
+NOption(291,Node025,4);
+NOption(262,Questions,4);
+NOption(263,BeatUp,4);
+NOption(264,Node999,4);
+NOption(265,DumbAgain,-3);
+end
+
+procedure TalkFirst
+begin
+Reply(290);
+if(map_var(MVAR_KNOW_POISONER_STIMPAK) == 1 and map_var(MVAR_KNOW_POISONER_VIDEO) == 1 and global_var(GVAR_QUEST_FIND_POISONER) == 1) then
+NOption(291,Node025,4);
+NOption(292,Whois,4);
+NOption(293,Questions,4);
+NOption(294,Node999,4);
+NOption(295,DumbTalk,-3);
+end
+
+procedure TalkAgain
+begin
+Reply(320);
+if(map_var(MVAR_KNOW_POISONER_STIMPAK) == 1 and map_var(MVAR_KNOW_POISONER_VIDEO) == 1 and global_var(GVAR_QUEST_FIND_POISONER) == 1) then
+NOption(291,Node025,4);
+NOption(321,Questions,4);
+NOption(322,Node999,4);
+NOption(323,DumbTalkAgain,-3);
+end
+
+procedure Angry
+begin
+Reply(350);
+BOption(351,Node998,1);
+end
+
+// Node Questions
+//
+// Notes:
+//
+// Main hub for questions
+
+procedure Questions
+begin
+Reply(380);
+NOption(381,Whois,4);
+NOption(382,Bunker,4);
+NOption(383,Work,4);
+NOption(384,GetPast,4);
+NOption(385,Node999,4);
+end
+
+procedure Whois
+begin
+Reply(410);
+NOption(411,MorePersonal,4);
+NOption(412,Questions,4);
+NOption(413,Node999,4);
+end
+
+procedure Bunker
+begin
+Reply(440);
+NOption(441,Work,4);
+NOption(412,Questions,4);
+NOption(442,Node999,4);
+end
+
+procedure Work
+begin
+Reply(470);
+NOption(471,Ed,4);
+NOption(472,Brixley,4);
+NOption(412,Questions,4);
+NOption(442,Node999,4);
+end
+
+procedure GetPast
+begin
+if (dude_is_male) then Reply(500); else
+if (dude_is_female) then Reply(501);
+NOption(502,LifeDeath,4);
+NOption(503,Bribe,4);
+NOption(504,BeatUp,4);
+if(dude_is_female) then
+NOption(505,Seduce,4);
+if(map_var(MVAR_KNOW_ED) == 1) then
+NOption(506,EdSent,4);
+NOption(507,Questions,4);
+NOption(508,Node999,4);
+end
+
+procedure MorePersonal
+begin
+Reply(530);
+NOption(531,Questions,4);
+NOption(532,Node999,4);
+NOption(533,Node999,4);
+end
+
+procedure Ed
+begin
+Reply(560);
+NOption(472,Brixley,4);
+NOption(561,Questions,4);
+NOption(442,Node999,4);
+end
+
+procedure Brixley
+begin
+Reply(590);
+NOption(591,Troubles,4);
+NOption(471,Ed,4);
+NOption(561,Questions,4);
+NOption(442,Node999,4);
+end
+
+procedure Troubles
+begin
+Reply(620);
+NOption(621,Ed,4);
+NOption(622,Questions,4);
+NOption(623,Node999,4);
+end
+
+procedure LifeDeath
+begin
+Reply(650);
+NOption(651,GetPast,4);
+NOption(652,Questions,4);
+NOption(623,Node999,4);
+end
+
+procedure Bribe
+begin
+Reply(680);
+NOption(681,GetPast,4);
+NOption(682,GetPast,4);
+NOption(561,Questions,4);
+NOption(623,Node999,4);
+end
+
+procedure BeatUp
+begin
+Reply(710);
+NOption(711,Angry,4);
+NOption(712,Node999,4);
+end
+
+procedure Seduce
+begin
+Reply(740);
+NOption(682,GetPast,4);
+NOption(561,Questions,4);
+NOption(623,Node999,4);
+end
+
+procedure EdSent
+begin
+Reply(770);
+NOption(771,GetPast,4);
+NOption(561,Questions,4);
+NOption(623,Node999,4);
+end
+
+procedure Dumb
+begin
+Reply(800);
+NOption(801,Node999,-3);
+NOption(802,Angry,-3);
+end
+
+procedure DumbAgain
+begin
+Reply(830);
+NOption(801,Node999,-3);
+NOption(802,Angry,-3);
+end
+
+procedure DumbTalk
+begin
+if (dude_is_male) then Reply(860); else
+if (dude_is_female) then Reply(861);
+NOption(862,Node999,-3);
+end
+
+procedure DumbTalkAgain
+begin
+Reply(890);
+NOption(862,Node999,-3);
+end
+
+procedure Node025
+begin
+Reply(920);
+NOption(921,Node026,4);
+end
+
+procedure Node026
+begin
+
+   switch_team(self_obj,TEAM_CIRCLE_OF_STEEL)
+   set_global_var(GVAR_QUEST_FIND_POISONER, 2);
+Reply(950);
+BOption(951,Node998,4);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

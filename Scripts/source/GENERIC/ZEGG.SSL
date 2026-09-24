@@ -1,0 +1,86 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Egg
+        Location:
+        Description:
+
+        Log:
+
+           Created:
+
+           Updated:
+*/
+
+/* Include Files */
+
+#include "..\headers\define.h"
+//#include "..\headers\<TownName.h>"
+
+#define NAME                    SCRIPT_ZEGG
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+//#include "..\headers\ModReact.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure combat_p_proc;
+
+/* Local variables which do not need to be saved between map changes. */
+
+procedure start begin
+end
+
+procedure critter_p_proc begin
+end
+
+procedure destroy_p_proc begin
+
+   /* Increment the aligned critter counter*/
+   inc_neutral_critter
+
+   /* Set global_variable for Enemy status*/
+   if (cur_map_index == MAP_HOOVER_DAM_SCUM_PITS) then begin
+      inc_global_var(GVAR_QUEST_HYDROPONICS_DEAD_CRITTERS);
+   end
+
+end
+
+procedure damage_p_proc begin
+   script_overrides;
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_obj_on_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+   if (action_being_used == SKILL_STEAL) then begin
+      script_overrides;
+   end
+   call injure_with_skill;
+end
+
+procedure map_enter_p_proc begin
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_EGGS);
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_SPORE_PLANT);
+end
+
+procedure combat_p_proc begin
+   script_overrides;
+end

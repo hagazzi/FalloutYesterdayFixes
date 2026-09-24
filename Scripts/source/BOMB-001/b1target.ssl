@@ -1,0 +1,461 @@
+/*
+
+        Name:
+        Location:
+        Description:
+
+           Created: 22.12.2023. 10:37:34
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_B1TARGET
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure talk_p_proc;
+procedure use_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+procedure retarget_m1_bloomfield;
+procedure retarget_m1_blackfoot;
+procedure retarget_m1_hoover_dam;
+procedure retarget_m2_new_canaan;
+procedure retarget_m2_burham_springs;
+procedure retarget_m2_jericho;
+procedure retarget_m3_shady_sands;
+procedure retarget_m3_the_reservation;
+procedure retarget_m4_new_reno;
+procedure retarget_m4_ouroboros;
+procedure retarget_m4_flagstaff;
+procedure retarget_m5_vault_city;
+procedure retarget_m5_the_nursery;
+procedure retarget_m6_dogtown;
+procedure retarget_m6_boulder_dome;
+procedure retarget_m7_lost_hills_bunker;
+procedure retarget_m7_mesa_verde;
+procedure retarget_m7_twin_mothers;
+procedure retarget_m7_maxson_bunker;
+procedure retarget_m7_fort_abandon;
+procedure retarget_m7_circle_junction;
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+
+procedure use_p_proc begin
+	if (source_obj == dude_obj) then begin
+      if (self_tile == 11912) then begin
+   		dialogue_system_enter;
+      end
+      else begin
+         display_mstr(150);
+      end
+   end
+end
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+end
+
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+   start_gdialog(NAME,self_obj,4,-1,-1);
+   gSay_Start;
+   call Node001;
+   gSay_End;
+   end_dialogue;
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Node001
+begin
+Reply(200);
+NOption(201,Node002,1);
+NOption(202,Node003,1);
+NOption(203,Node999,1);
+end
+
+procedure Node002
+begin
+Reply(230);
+NOption(231,Node001,1);
+end
+
+procedure Node003
+begin
+
+variable m1_town, m2_town, m3_town, m4_town, m5_town, m6_town, m7_town, m8_town;
+
+Reply(mstr(259) + (8 - global_var(GVAR_QUEST_16_MDOORS_DISABLE)) + mstr(260));
+
+if (global_var(GVAR_BOMB001_M1_TARGET) == AREA_HOOVER_DAM) then
+   m1_town = mstr_map(1509);
+else if (global_var(GVAR_BOMB001_M1_TARGET) == AREA_BLOOMFIELD) then
+   m1_town = mstr_map(1514);
+else if (global_var(GVAR_BOMB001_M1_TARGET) == AREA_BLACKFOOT) then
+   m1_town = mstr_map(1505);
+
+if(global_var(GVAR_BOMB001_M1_DISABLED) == 0) then
+NOption(mstr(261) + m1_town +  "]",Node004,1);
+
+if (global_var(GVAR_BOMB001_M2_TARGET) == AREA_NEW_CANAAN) then
+   m2_town = mstr_map(1517);
+else if (global_var(GVAR_BOMB001_M2_TARGET) == AREA_BURHAM_SPRINGS) then
+   m2_town = mstr_map(1512);
+else if (global_var(GVAR_BOMB001_M2_TARGET) == AREA_JERICHO) then
+   m2_town = mstr_map(1516);
+
+if(global_var(GVAR_BOMB001_M2_DISABLED) == 0) then
+NOption(mstr(262) + m2_town +  "]",Node005,1);
+
+if (global_var(GVAR_BOMB001_M3_TARGET) == 0) then
+   m3_town = mstr(151);
+else if (global_var(GVAR_BOMB001_M3_TARGET) == AREA_THE_RESERVATION) then
+   m3_town = g_mstr(1111) + " " + mstr_map(1511);
+
+if(global_var(GVAR_BOMB001_M3_DISABLED) == 0) then
+NOption(mstr(263) + m3_town +  "]",Node006,1);
+
+if (global_var(GVAR_BOMB001_M4_TARGET) == 0) then
+   m4_town = mstr(152);
+else if (global_var(GVAR_BOMB001_M4_TARGET) == AREA_OUROBOROS) then
+   m4_town = mstr_map(1510);
+else if (global_var(GVAR_BOMB001_M4_TARGET) == 999) then
+   m4_town = mstr(156);
+
+if(global_var(GVAR_BOMB001_M4_DISABLED) == 0) then
+NOption(mstr(264) + m4_town +  "]",Node007,1);
+
+if (global_var(GVAR_BOMB001_M5_TARGET) == 0) then
+   m5_town = mstr(153);
+else if (global_var(GVAR_BOMB001_M5_TARGET) == AREA_THE_NURSERY) then
+   m5_town = g_mstr(1111) + " " + mstr_map(1513);
+
+if(global_var(GVAR_BOMB001_M5_DISABLED) == 0) then
+NOption(mstr(265) + m5_town +  "]",Node008,1);
+
+if (global_var(GVAR_BOMB001_M6_TARGET) == AREA_DOGTOWN) then
+   m6_town = mstr_map(1502);
+else if (global_var(GVAR_BOMB001_M6_TARGET) == AREA_BOULDER_DOME) then
+   m6_town = mstr_map(1501);
+
+if(global_var(GVAR_BOMB001_M6_DISABLED) == 0) then
+NOption(mstr(266) + m6_town +  "]",Node009,1);
+
+if (global_var(GVAR_BOMB001_M7_TARGET) == 0) then
+   m7_town = mstr(154);
+else if (global_var(GVAR_BOMB001_M7_TARGET) == AREA_MESA_VERDE) then
+   m7_town = mstr_map(1506);
+else if (global_var(GVAR_BOMB001_M7_TARGET) == AREA_TWIN_MOTHERS) then
+   m7_town = mstr_map(1507);
+
+if(global_var(GVAR_BOMB001_M7_DISABLED) == 0) then
+NOption(mstr(267) + m7_town +  "]",Node010,1);
+
+if (global_var(GVAR_BOMB001_M8_TARGET) == AREA_BROTHERHOOD_OF_STEEL) then
+   m8_town = mstr(155);
+else if (global_var(GVAR_BOMB001_M8_TARGET) == AREA_FORT_ABANDON) then
+   m8_town = mstr_map(1504);
+else if (global_var(GVAR_BOMB001_M8_TARGET) == AREA_CIRCLE_JUNCTION) then
+   m8_town = mstr_map(1503);
+
+if(global_var(GVAR_BOMB001_M8_DISABLED) == 0) then
+NOption(mstr(268) + m8_town +  "]",Node011,1);
+
+NOption(231,Node001,1);
+end
+
+procedure Node004
+begin
+Reply(290);
+NOption(293,retarget_m1_hoover_dam,1);
+NOption(291,retarget_m1_bloomfield,1);
+NOption(292,retarget_m1_blackfoot,1);
+NOption(231,Node003,1);
+end
+
+procedure retarget_m1_bloomfield begin
+   set_global_var(GVAR_BOMB001_M1_TARGET, AREA_BLOOMFIELD);
+   call Node003;
+end
+
+procedure retarget_m1_blackfoot begin
+   set_global_var(GVAR_BOMB001_M1_TARGET, AREA_BLACKFOOT);
+   call Node003;
+end
+
+procedure retarget_m1_hoover_dam begin
+   set_global_var(GVAR_BOMB001_M1_TARGET, AREA_HOOVER_DAM);
+   call Node003;
+end
+
+procedure Node005
+begin
+Reply(320);
+NOption(321,retarget_m2_new_canaan,1);
+NOption(322,retarget_m2_burham_springs,1);
+NOption(323,retarget_m2_jericho,1);
+NOption(231,Node003,1);
+end
+
+procedure retarget_m2_new_canaan begin
+   set_global_var(GVAR_BOMB001_M2_TARGET, AREA_NEW_CANAAN);
+   call Node003;
+end
+
+procedure retarget_m2_burham_springs begin
+   set_global_var(GVAR_BOMB001_M2_TARGET, AREA_BURHAM_SPRINGS);
+   call Node003;
+end
+
+procedure retarget_m2_jericho begin
+   set_global_var(GVAR_BOMB001_M2_TARGET, AREA_JERICHO);
+   call Node003;
+end
+
+procedure Node006
+begin
+Reply(350);
+NOption(351,retarget_m3_shady_sands,1);
+NOption(352,retarget_m3_the_reservation,1);
+NOption(231,Node003,1);
+end
+
+procedure retarget_m3_shady_sands begin
+   set_global_var(GVAR_BOMB001_M3_TARGET, 0);
+   call Node003;
+end
+
+procedure retarget_m3_the_reservation begin
+   set_global_var(GVAR_BOMB001_M3_TARGET, AREA_THE_RESERVATION);
+   call Node003;
+end
+
+procedure Node007
+begin
+Reply(380);
+NOption(381,retarget_m4_new_reno,1);
+NOption(382,retarget_m4_ouroboros,1);
+NOption(383,retarget_m4_flagstaff,1);
+NOption(231,Node003,1);
+end
+
+procedure retarget_m4_new_reno begin
+   set_global_var(GVAR_BOMB001_M4_TARGET, 0);
+   call Node003;
+end
+
+procedure retarget_m4_ouroboros begin
+   set_global_var(GVAR_BOMB001_M4_TARGET, AREA_OUROBOROS);
+   call Node003;
+end
+
+procedure retarget_m4_flagstaff begin
+   set_global_var(GVAR_BOMB001_M4_TARGET, 999);
+   call Node003;
+end
+
+procedure Node008
+begin
+Reply(410);
+NOption(411,retarget_m5_vault_city,1);
+NOption(412,retarget_m5_the_nursery,1);
+NOption(231,Node003,1);
+end
+
+procedure retarget_m5_vault_city begin
+   set_global_var(GVAR_BOMB001_M5_TARGET, 0);
+   call Node003;
+end
+
+procedure retarget_m5_the_nursery begin
+   set_global_var(GVAR_BOMB001_M5_TARGET, AREA_THE_NURSERY);
+   call Node003;
+end
+
+procedure Node009
+begin
+Reply(440);
+NOption(441,retarget_m6_dogtown,1);
+NOption(442,retarget_m6_boulder_dome,1);
+NOption(231,Node003,1);
+end
+
+procedure retarget_m6_dogtown begin
+   set_global_var(GVAR_BOMB001_M6_TARGET, AREA_DOGTOWN);
+   call Node003;
+end
+
+procedure retarget_m6_boulder_dome begin
+   set_global_var(GVAR_BOMB001_M6_TARGET, AREA_BOULDER_DOME);
+   call Node003;
+end
+
+procedure Node010
+begin
+Reply(470);
+NOption(471,retarget_m7_lost_hills_bunker,1);
+NOption(472,retarget_m7_mesa_verde,1);
+NOption(473,retarget_m7_twin_mothers,1);
+NOption(231,Node003,1);
+end
+
+procedure retarget_m7_lost_hills_bunker begin
+   set_global_var(GVAR_BOMB001_M7_TARGET, 0);
+   call Node003;
+end
+
+procedure retarget_m7_mesa_verde begin
+   set_global_var(GVAR_BOMB001_M7_TARGET, AREA_MESA_VERDE);
+   call Node003;
+end
+
+procedure retarget_m7_twin_mothers begin
+   set_global_var(GVAR_BOMB001_M7_TARGET, AREA_TWIN_MOTHERS);
+   call Node003;
+end
+
+procedure Node011
+begin
+Reply(500);
+NOption(501,retarget_m7_maxson_bunker,1);
+NOption(502,retarget_m7_fort_abandon,1);
+NOption(503,retarget_m7_circle_junction,1);
+NOption(231,Node003,1);
+end
+
+procedure retarget_m7_maxson_bunker begin
+   set_global_var(GVAR_BOMB001_M8_TARGET, AREA_BROTHERHOOD_OF_STEEL);
+   call Node003;
+end
+
+procedure retarget_m7_fort_abandon begin
+   set_global_var(GVAR_BOMB001_M8_TARGET, AREA_FORT_ABANDON);
+   call Node003;
+end
+
+procedure retarget_m7_circle_junction begin
+   set_global_var(GVAR_BOMB001_M8_TARGET, AREA_CIRCLE_JUNCTION);
+   call Node003;
+end
+
+//xxxxxxxxxxxxxxxxxxxx

@@ -1,0 +1,835 @@
+/*
+
+        Name:           Ken Neff
+        Location:       Bottom Floor of Vault 31, Board Room
+        Description:    Ken Neff is the one that gives the PC the quest to go grab the Mr. Handy OS. However, nothing the PC says gets passed on to the CEO, in true corporate fashion. Also, when the PC returns, Ken Neff just gives him a floater saying \\\\\"Go see Mr. Bergandi.\\\\\"
+
+           Created: 07/10/2020 20:38:05
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_C /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBSIREN
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure StartT;
+procedure aaa;
+procedure A1;
+procedure A2;
+procedure B1;
+procedure B2;
+procedure B3;
+procedure C2;
+procedure C3;
+procedure C1;
+procedure C4;
+procedure E1;
+procedure E11;
+procedure E12;
+procedure E2;
+procedure E21;
+procedure E3;
+procedure F1;
+procedure F12;
+procedure F2;
+procedure G1;
+procedure G2;
+procedure Handy1;
+procedure Handy2;
+procedure Handy3;
+procedure Handy31;
+procedure Handy4;
+procedure Handy5;
+procedure Refusal1;
+procedure Refusal2;
+procedure Refusal3;
+procedure Refusal4;
+procedure Team1;
+procedure Team2;
+procedure Team3;
+procedure Team31;
+procedure Team4;
+procedure Want1;
+procedure End1;
+procedure End2;
+procedure H1;
+procedure H2;
+procedure Solo1;
+procedure Solo2;
+procedure End3;
+procedure Solo3;
+procedure Solo4;
+procedure Solo5;
+procedure Solo6;
+procedure Solo7;
+procedure Solo8;
+procedure Solo9;
+procedure Solo0;
+procedure b;
+procedure c;
+procedure d;
+procedure e;
+procedure f;
+procedure g;
+procedure h;
+procedure j1;
+procedure j2;
+procedure j3;
+procedure j4;
+procedure j5;
+procedure j6;
+procedure k;
+procedure l;
+procedure m;
+procedure n;
+procedure o;
+procedure o2;
+procedure ppp;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+call new_plague_check(self_obj, LVAR_Herebefore);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+if (local_var(LVAR_Herebefore)==0) then begin
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       call StartT;
+       gSay_End;
+       end_dialogue;
+end else begin
+   float_msg(self_obj, mstr(150)+dude_name+mstr(1281), FLOAT_COLOR_NORMAL);
+end
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+/* inc_evil_critter */
+/* inc_neutral_critter */
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure StartT
+begin
+Reply(200);
+NOption(201,A1,4);
+NOption(202,A2,4);
+NOption(203,Node999,4);
+NOption(mstr(204)+dude_name+mstr(205),A1,-3);
+NOption(206,Node999,-3);
+end
+
+procedure aaa
+begin
+Reply(230);
+NOption(231,b,-3);
+end
+
+procedure A1
+begin
+Reply(260);
+NOption(mstr(261)+dude_name+mstr(262),A2,4);
+NOption(mstr(204)+dude_name+mstr(263),aaa,-3);
+end
+
+procedure A2
+begin
+Reply(mstr(290)+dude_name+mstr(291));
+NOption(292,B1,4);
+NOption(293,B2,4);
+if (has_skill(dude_obj,SKILL_CONVERSANT)>19) then
+NOption(294,B3,5);
+end
+
+procedure B1
+begin
+Reply(320);
+NOption(321,C1,4);
+NOption(322,C2,4);
+end
+
+procedure B2
+begin
+Reply(350);
+NOption(351,C3,4);
+end
+
+procedure B3
+begin
+Reply(380);
+if(global_var(GVAR_QUEST_KNOW_CODE) > 0) then
+NOption(381,E1,6);
+NOption(382,E2,5);
+NOption(383,E3,4);
+end
+
+procedure C2
+begin
+Reply(410);
+NOption(411,C4,4);
+end
+
+procedure C3
+begin
+Reply(440);
+NOption(441,C4,4);
+end
+
+procedure C1
+begin
+Reply(470);
+if (has_skill(dude_obj,SKILL_SCIENCE)>=30) then
+NOption(471,E11,6);
+if (has_skill(dude_obj,SKILL_SCIENCE)>=20) then
+NOption(472,E21,5);
+NOption(473,E3,4);
+end
+
+procedure C4
+begin
+Reply(500);
+if (has_skill(dude_obj,SKILL_SCIENCE)>=30) then
+NOption(471,E12,6);
+if (has_skill(dude_obj,SKILL_SCIENCE)>=20) then
+NOption(472,E21,5);
+NOption(501,E3,4);
+end
+
+procedure E1
+begin
+Reply(mstr(530)+dude_name+mstr(531));
+NOption(532,F1,6);
+NOption(533,F2,6);
+end
+
+procedure E11
+begin
+Reply(560);
+NOption(561,F2,4);
+NOption(562,F12,4);
+end
+
+procedure E12
+begin
+Reply(590);
+NOption(591,F2,4);
+NOption(592,F12,4);
+end
+
+procedure E2
+begin
+Reply(mstr(620)+dude_name+mstr(621));
+NOption(622,Handy31,4);
+end
+
+procedure E21
+begin
+Reply(650);
+NOption(651,Handy31,4);
+end
+
+procedure E3
+begin
+Reply(680);
+NOption(681,Handy1,4);
+end
+
+procedure F1
+begin
+Reply(710);
+NOption(711,Handy3,4);
+end
+
+procedure F12
+begin
+Reply(740);
+NOption(711,Handy3,4);
+end
+
+procedure F2
+begin
+Reply(770);
+if (get_critter_stat(dude_obj,STAT_pe)<6) then
+NOption(771,G1,4);
+if (get_critter_stat(dude_obj,STAT_pe)>5) then
+NOption(772,G2,4);
+NOption(773,F1,4);
+end
+
+procedure G1
+begin
+Reply(800);
+NOption(801,F1,4);
+end
+
+procedure G2
+begin
+Reply(830);
+NOption(831,F1,4);
+end
+
+procedure Handy1
+begin
+Reply(860);
+NOption(861,Handy2,4);
+NOption(862,Handy4,4);
+end
+
+procedure Handy2
+begin
+Reply(890);
+NOption(891,Handy3,4);
+end
+
+procedure Handy3
+begin
+Reply(920);
+NOption(921,Handy4,4);
+end
+
+procedure Handy31
+begin
+Reply(950);
+NOption(951,Handy4,4);
+end
+
+procedure Handy4
+begin
+Reply(980);
+NOption(711,Handy5,4);
+end
+
+procedure Handy5
+begin
+Reply(mstr(1010)+dude_name+mstr(1011));
+NOption(1012,Want1,4);
+end
+
+procedure Refusal1
+begin
+Reply(1040);
+NOption(1041,Refusal2,4);
+NOption(1042,Refusal3,4);
+NOption(1043,Team1,4);
+end
+
+procedure Refusal2
+begin
+Reply(1070);
+NOption(1071,Refusal4,4);
+if (get_critter_stat(dude_obj,STAT_pe)>5) then
+NOption(1072,H1,4);
+end
+
+procedure Refusal3
+begin
+Reply(1100);
+// NOTE: This should lead to the cutscene.
+NOption(1101,Node999,4);
+end
+
+procedure Refusal4
+begin
+Reply(1130);
+// NOTE: This leads to the cutscene.
+NOption(1131,Node999,4);
+end
+
+procedure Team1
+begin
+Reply(1160);
+// NOTE: This option should spawn the NPC teammates by the door.
+NOption(1161,Team2,4);
+NOption(1162,Team3,4);
+if (has_skill(dude_obj,SKILL_CONVERSANT)>34) then
+NOption(1163,Solo1,4);
+NOption(1164,Refusal3,4);
+// NOTE: This option should spawn the NPC teammates by the door.
+NOption(1165,End1,4);
+end
+
+// Node Team2
+//
+// Notes:
+//
+// PC should receive equipment withdrawal forms here.
+
+procedure Team2
+begin
+Reply(mstr(1190)+dude_name+mstr(1191));
+NOption(1192,End2,4);
+end
+
+procedure Team3
+begin
+Reply(1220);
+NOption(1221,Team2,4);
+if (has_skill(dude_obj,SKILL_CONVERSANT)>=35) then
+NOption(1222,Solo3,4);
+if (has_skill(dude_obj,SKILL_CONVERSANT)>=35) then
+NOption(1223,Solo4,4);
+end
+
+procedure Team31
+begin
+Reply(1250);
+if (has_skill(dude_obj,SKILL_CONVERSANT)>=35) then
+NOption(1251,Solo3,4);
+if (has_skill(dude_obj,SKILL_CONVERSANT)>=35) then
+NOption(1252,Solo4,4);
+NOption(1253,Team4,4);
+end
+
+// Node Team4
+//
+// Notes:
+//
+// PC should receive equipment withdrawal forms here.
+
+procedure Team4
+begin
+Reply(mstr(1280)+dude_name+mstr(1281));
+NOption(1282,Node999,4);
+end
+
+procedure Want1
+begin
+Reply(1310);
+NOption(1311,Team1,4);
+// NOTE: This option should appear if the player notices the notes in node G2.
+NOption(1312,Refusal1,4);
+end
+
+// Node End1
+//
+// Notes:
+//
+// PC should receive equipment withdrawal forms here.
+
+procedure End1
+begin
+Reply(mstr(1340)+dude_name+mstr(1281));
+// NOTE: Quest accepted. Add the Vault quest to the Pipboy.
+NOption(1341,Node999,4);
+end
+
+procedure End2
+begin
+Reply(1370);
+// NOTE: Quest accepted. Add the Vault quest to the Pipboy.
+NOption(1371,Node999,4);
+end
+
+procedure H1
+begin
+Reply(1400);
+NOption(1401,H2,4);
+end
+
+procedure H2
+begin
+Reply(1430);
+// NOTE: This should lead to the cut scene.
+NOption(1431,Node999,4);
+end
+
+procedure Solo1
+begin
+Reply(1460);
+NOption(1461,Team31,4);
+end
+
+procedure Solo2
+begin
+Reply(1490);
+NOption(1491,End3,4);
+end
+
+// Node End3
+//
+// Notes:
+//
+// PC should receive equipment withdrawal forms here.
+
+procedure End3
+begin
+Reply(mstr(1520)+dude_name+mstr(1521));
+// NOTE: Quest accepted. Add the Vault quest to the Pipboy, and reward 1000 XP to PC.
+NOption(1522,Node999,4);
+end
+
+procedure Solo3
+begin
+Reply(1550);
+NOption(1551,Solo5,4);
+end
+
+procedure Solo4
+begin
+Reply(mstr(1580)+dude_name+mstr(1281));
+NOption(1581,Solo8,4);
+end
+
+procedure Solo5
+begin
+Reply(1610);
+NOption(1611,Solo6,4);
+end
+
+procedure Solo6
+begin
+Reply(mstr(1640)+dude_name+mstr(1641));
+NOption(1642,Solo7,4);
+end
+
+procedure Solo7
+begin
+Reply(mstr(1580)+dude_name+mstr(1281));
+NOption(1670,Solo0,4);
+NOption(1671,Team2,4);
+end
+
+procedure Solo8
+begin
+Reply(1550);
+NOption(1551,Solo9,4);
+end
+
+procedure Solo9
+begin
+Reply(1610);
+NOption(1611,Solo0,4);
+end
+
+procedure Solo0
+begin
+Reply(1760);
+NOption(1761,Solo2,4);
+NOption(1762,Team2,4);
+NOption(1763,Refusal1,4);
+end
+
+procedure b
+begin
+Reply(1790);
+NOption(1791,c,-3);
+end
+
+procedure c
+begin
+Reply(1820);
+NOption(1821,d,-3);
+end
+
+procedure d
+begin
+Reply(1850);
+NOption(1851,e,-3);
+end
+
+procedure e
+begin
+Reply(1880);
+NOption(1881,f,-3);
+end
+
+procedure f
+begin
+Reply(1910);
+NOption(1911,g,-3);
+end
+
+procedure g
+begin
+Reply(1940);
+NOption(1941,h,-3);
+end
+
+procedure h
+begin
+Reply(1970);
+NOption(1971,j1,-3);
+NOption(1972,j2,-3);
+end
+
+procedure j1
+begin
+Reply(2000);
+NOption(2001,j3,-3);
+end
+
+procedure j2
+begin
+Reply(2030);
+NOption(2031,j4,-3);
+end
+
+procedure j3
+begin
+Reply(2060);
+NOption(2061,j5,-3);
+end
+
+procedure j4
+begin
+Reply(2090);
+NOption(2091,k,-3);
+end
+
+procedure j5
+begin
+Reply(2120);
+NOption(2121,j6,-3);
+end
+
+procedure j6
+begin
+Reply(2150);
+NOption(2151,k,-3);
+end
+
+procedure k
+begin
+Reply(2180);
+NOption(2181,l,-3);
+end
+
+procedure l
+begin
+Reply(2210);
+NOption(2211,m,-3);
+end
+
+procedure m
+begin
+Reply(2240);
+NOption(2241,n,-3);
+end
+
+procedure n
+begin
+Reply(2270);
+NOption(2271,o,-3);
+end
+
+procedure o
+begin
+Reply(2300);
+NOption(2301,o2,-3);
+end
+
+// Node o2
+//
+// Notes:
+//
+// The PC should receive the equipment withdrawal forms here.
+
+procedure o2
+begin
+Reply(2330);
+NOption(2331,ppp,-3);
+end
+
+procedure ppp
+begin
+Reply(mstr(2360)+dude_name+mstr(1281));
+NOption(2361,Node999,-3);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

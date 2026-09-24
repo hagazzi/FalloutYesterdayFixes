@@ -1,0 +1,526 @@
+/*
+
+        Name:           Jerry
+        Location:
+        Description:
+
+           Created: 28/12/2020 19:51:21
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TG /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_MBJERRY
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_BROTHERHOOD)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure First;
+procedure AA;
+procedure BB;
+procedure CC;
+procedure DD;
+procedure EE;
+procedure FF;
+procedure GG;
+procedure HH;
+procedure II;
+procedure JJ;
+procedure KK;
+procedure LL;
+procedure MM;
+procedure NN;
+procedure OO;
+procedure PP;
+procedure QQ;
+procedure RR;
+procedure SS;
+procedure Q1;
+procedure Q2;
+procedure Q3;
+procedure Q4;
+procedure QF;
+procedure QS;
+procedure QR;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Codes_Quest_Once           (8)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_BROTHERHOOD_OF_STEEL);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+
+   add_timer_event(self_obj, game_ticks(1), 0);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+   if(global_var(GVAR_BROTHERHOOD_KLAXON) == 1) then
+      set_local_var(LVAR_Hostile,2);
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+   GetReaction;
+
+   if(local_var(LVAR_Herebefore) == 1) then begin
+
+      if (local_var(LVAR_Codes_Quest_Once) == 0 and global_var(GVAR_QUEST_FIND_POISONER) == 3) then begin
+         call set_idiot_savant_int;
+         start_gdialog(NAME,self_obj,4,HEAD_JERRY_CORSETTI,BACKGROUND_BHOOD);
+         gSay_Start;
+         call Q1;
+         gSay_End;
+         end_dialogue;
+         call restore_idiot_savant_int;
+      end
+      else if (global_var(GVAR_QUEST_FIND_ARMORY_CODES) == QUEST_ACCEPTED) then begin
+         call set_idiot_savant_int;
+         start_gdialog(NAME,self_obj,4,HEAD_JERRY_CORSETTI,BACKGROUND_BHOOD);
+         gSay_Start;
+         call QR;
+         gSay_End;
+         end_dialogue;
+         call restore_idiot_savant_int;
+      end
+      else if(dude_is_male) then begin
+         floater_bad(150);
+      end
+      else begin
+         floater_bad(151);
+      end
+   end
+   else begin
+      call set_idiot_savant_int;
+      start_gdialog(NAME,self_obj,4,HEAD_JERRY_CORSETTI,BACKGROUND_BHOOD);
+      gSay_Start;
+      call First;
+      gSay_End;
+      end_dialogue;
+      call restore_idiot_savant_int;
+   end
+end
+
+procedure timed_event_p_proc begin
+   if (
+      (local_var(LVAR_Codes_Quest_Once) == 0) and
+      (global_var(GVAR_QUEST_FIND_POISONER) == 3) and
+      self_can_see_dude and
+      self_can_speak and
+      not(game_ui_is_disabled)
+      ) then begin
+         dialogue_system_enter;
+   end else begin
+      add_timer_event(self_obj, game_ticks(1), 0);
+   end
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+/* inc_evil_critter */
+/* inc_neutral_critter */
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure First
+begin
+Reply(mstr(200)+dude_name+mstr(201));
+NOption(202,AA,4);
+NOption(203,BB,4);
+NOption(204,AA,-3);
+NOption(205,KK,-3);
+end
+
+procedure AA
+begin
+Reply(230);
+NOption(231,CC,4);
+NOption(232,Node999,4);
+NOption(233,CC,-3);
+NOption(234,Node999,-3);
+end
+
+procedure BB
+begin
+Reply(260);
+NOption(261,Node999,4);
+NOption(262,Node999,-3);
+end
+
+procedure CC
+begin
+Reply(290);
+NOption(291,DD,4);
+NOption(292,EE,4);
+NOption(293,Node999,4);
+NOption(294,DD,-3);
+NOption(295,EE,-3);
+NOption(296,Node999,-3);
+end
+
+procedure DD
+begin
+Reply(320);
+NOption(321,FF,4);
+NOption(322,BB,4);
+NOption(323,FF,-3);
+NOption(324,BB,-3);
+end
+
+procedure EE
+begin
+Reply(350);
+NOption(351,GG,4);
+NOption(352,HH,4);
+NOption(353,GG,-3);
+NOption(354,HH,-3);
+end
+
+procedure FF
+begin
+Reply(380);
+NOption(381,II,4);
+NOption(382,Node999,4);
+NOption(383,II,-3);
+NOption(384,Node999,-3);
+end
+
+procedure GG
+begin
+Reply(410);
+NOption(411,II,4);
+NOption(412,DD,4);
+NOption(413,II,-3);
+NOption(414,DD,-3);
+end
+
+procedure HH
+begin
+if (dude_is_male) then Reply(440); else
+if (dude_is_female) then Reply(441);
+NOption(442,BB,4);
+NOption(443,BB,-3);
+NOption(444,LL,4);
+NOption(445,LL,-3);
+end
+
+procedure II
+begin
+Reply(470);
+NOption(471,Node999,4);
+NOption(472,JJ,-3);
+end
+
+procedure JJ
+begin
+Reply(500);
+NOption(501,Node999,-3);
+end
+
+procedure KK
+begin
+Reply(530);
+NOption(531,Node999,-3);
+end
+
+procedure LL
+begin
+Reply(560);
+NOption(561,MM,4);
+NOption(562,MM,-3);
+end
+
+procedure MM
+begin
+Reply(590);
+NOption(591,Node999,4);
+NOption(592,Node999,-3);
+NOption(593,NN,4);
+NOption(594,NN,-3);
+end
+
+procedure NN
+begin
+   Reply(620);
+   NOption(621,OO,4);
+   NOption(622,OO,-3);
+end
+
+procedure OO
+begin
+   Reply(650);
+   NOption(561,PP,4);
+   NOption(562,PP,-3);
+end
+
+procedure PP
+begin
+   Reply(680);
+   NOption(681,QQ,4);
+   NOption(682,QQ,-3);
+end
+
+procedure QQ
+begin
+   Reply(710);
+   NOption(711,RR,4);
+   NOption(712,RR,-3);
+end
+
+procedure RR
+begin
+   Reply(740);
+   NOption(741,SS,4);
+   NOption(742,SS,-3);
+end
+
+procedure SS
+begin
+   Reply(770);
+   NOption(771,Node999,4);
+   NOption(772,Node999,-3);
+end
+
+procedure Q1
+begin
+
+   set_local_var(LVAR_Codes_Quest_Once, 1);
+
+   if (dude_is_male) then
+      Reply(mstr(800) + " " + mstr(802));
+   else
+      Reply(mstr(801) + " " + mstr(802));
+
+   NOption(803,Q2,4);
+end
+
+procedure Q2
+begin
+   Reply(830);
+   NOption(831,Q3,4);
+   BOption(832,QF,4);
+end
+
+procedure Q3
+begin
+   Reply(860);
+   GOption(861,Q4,4);
+   BOption(832,QF,4);
+end
+
+procedure Q4
+begin
+
+   set_global_var(GVAR_QUEST_FIND_ARMORY_CODES, QUEST_ACCEPTED);
+
+   if (dude_is_male) then
+      Reply(mstr(890) + " " + mstr(892));
+   else
+      Reply(mstr(891) + " " + mstr(892));
+
+   NOption(531,Node999,4);
+end
+
+procedure QF
+begin
+   Reply(920);
+   BOption(921,Node999,4);
+end
+
+procedure QR
+begin
+   Reply(950);
+   if (dude_item(PID_ISAACS_DECRYPTION_ALGORITHM)) then
+      GOption(951,QS,4);
+   NOption(952,Node999,4);
+   BOption(832,QF,4);
+
+end
+
+procedure QS
+begin
+   give_xp(1000);
+   remove_pid_qty(dude_obj, PID_ISAACS_DECRYPTION_ALGORITHM, 1)
+   set_global_var(GVAR_QUEST_FIND_ARMORY_CODES, QUEST_COMPLETED);
+   give_pid_qty(dude_obj, PID_LASER_ARRAY_GUN, 1)
+   if (dude_is_male) then
+      Reply(mstr(980) + " " + mstr(981) + " " + mstr(983));
+   else
+      Reply(mstr(980) + " " + mstr(982) + " " + mstr(983));
+
+   BOption(984,Node999,4);
+end
+
+//xxxxxxxxxxxxxxxxxxxx

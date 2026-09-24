@@ -1,0 +1,32 @@
+/*
+	Hide in ACT II
+*/
+
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_BDGENRL
+
+procedure map_enter_p_proc;
+procedure description_p_proc;
+procedure start;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+    if(global_var(GVAR_ACT) >= 2) then begin
+        set_obj_visibility(self_obj, 1);
+     end
+
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+   procedure description_p_proc begin
+    script_overrides;
+    display_mstr(102);
+ end

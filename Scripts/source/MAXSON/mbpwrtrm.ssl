@@ -1,0 +1,188 @@
+/*
+
+        Name:           Maxson Bunker Network
+        Location:
+        Description:
+
+           Created: 02/01/2021 18:31:42
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_MBPWRTRM
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure talk_p_proc;
+procedure use_skill_on_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node999_klaxon;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       call Node001;
+       gSay_End;
+       end_dialogue;
+
+
+   call restore_idiot_savant_int;
+
+end
+
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Node001
+begin
+Reply(200);
+NOption(201,Node002,1);
+NOption(202,Node999,1);
+end
+
+procedure Node002
+begin
+Reply(230);
+if(obj_is_carrying_obj_pid(self_obj,PID_MB_LIBRARY_KEYCARD)>0)  then
+NOption(231,Node003,1);
+NOption(202,Node999,1);
+end
+
+procedure Node003
+begin
+Reply(260);
+NOption(261,Node004,1);
+end
+
+procedure Node004
+begin
+   variable sfx;
+
+   fadeout(1);
+   sfx := play_sfall_sound("data\\sound\\SFX\\pipes.wav", 0);
+
+   fadein(1);
+   set_global_var(GVAR_BROTHERHOOD_DEAD, 1);
+   inc_bos_rep(-50);
+
+Reply(290);
+if(obj_is_carrying_obj_pid(self_obj,PID_MB_LIBRARY_KEYCARD)>0)  then
+NOption(291,Node999,1);
+NOption(292,Node999_klaxon,1);
+end
+
+procedure Node005
+begin
+Reply(320);
+NOption(321,Node999,1);
+end
+
+procedure Node999_klaxon
+begin
+   set_global_var(GVAR_BROTHERHOOD_KLAXON, 1);
+   set_global_var(GVAR_WELCOME_BOS, -1);
+call Node999;
+end
+
+
+//xxxxxxxxxxxxxxxxxxxx

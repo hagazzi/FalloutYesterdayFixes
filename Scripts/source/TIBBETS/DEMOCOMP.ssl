@@ -1,0 +1,115 @@
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_DEMOCOMP
+
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure computer00;
+procedure computer01;
+procedure computer02;
+procedure computer03;
+procedure computer04;
+procedure computer05;
+procedure computer07;
+
+import variable broken_gen;
+
+variable test;
+variable WORKING;
+variable used_before;
+
+procedure start
+begin
+   if ((script_action == 11) and (broken_gen != 1)) then begin
+        start_gdialog(NAME, self_obj, 4, -1, -1);
+        gSay_Start;
+      call computer01;
+      gSay_End;
+        end_dialogue;
+   end
+   else begin
+      if ((script_action == 6) and (broken_gen != 1)) then begin
+         script_overrides;
+         if (WORKING == 1) then begin
+            dialogue_system_enter;
+         end
+         else begin
+            call computer00;
+         end
+      end
+      else begin
+         if ((script_action == 21) or (script_action == 3)) then begin
+            script_overrides;
+            display_mstr(100);
+         end
+      end
+   end
+end
+
+procedure computer00
+begin
+   if (has_skill(dude_obj, SKILL_SCIENCE) > has_skill(dude_obj, SKILL_REPAIR)) then begin
+      test := roll_vs_skill(dude_obj, SKILL_SCIENCE, 0);
+   end
+   else begin
+      test := roll_vs_skill(dude_obj, SKILL_REPAIR, 0);
+   end
+   if (is_success(test)) then begin
+    display_mstr(101);
+      WORKING := 1;
+   end
+   else begin
+    display_mstr(103);
+      if (is_critical(test)) then begin
+        display_mstr(104);
+         critter_dmg(dude_obj, 1, DMG_electrical);
+      end
+   end
+end
+
+procedure computer01
+begin
+    Reply(105);
+    NOption(106, computer02,1);
+    NOption(107, computer07,1);
+end
+
+procedure computer02
+begin
+    Reply(108);
+    NOption(109, computer03,1);
+    NOption(110, computer07,1);
+end
+
+procedure computer03
+begin
+    Reply(111);
+    NOption(112, computer04,1);
+    NOption(113, computer05,1);
+    NOption(114, computer07,1);
+end
+
+procedure computer04
+begin
+    Reply(115);
+    NOption(116, computer03,1);
+end
+
+procedure computer05
+begin
+    if (not(used_before)) then begin
+        fadeout(1);
+        give_exp_points(100);
+        display_mstr(119);
+        used_before := 1;
+        fadein(1);
+    end
+    game_time_advance(ONE_GAME_MINUTE * 120);
+    dude_floater_good(118);
+end
+
+procedure computer07
+begin
+end

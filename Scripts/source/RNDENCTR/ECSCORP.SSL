@@ -1,0 +1,77 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/* Random Encounter scripts. These will be filled in more once they
+   have been designed.
+*/
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_ECSCORP
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+
+procedure start;
+procedure combat_p_proc;
+procedure destroy_p_proc;
+procedure critter_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+
+variable starttile := 0;
+
+procedure map_enter_p_proc begin
+   starttile := self_tile;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_RND_SCORPION);
+   reg_anim_clear(self_obj);
+   reg_anim_begin();
+   animate_rotation(Random(0, 5));
+   reg_anim_end();
+end
+
+procedure map_exit_p_proc begin
+   call BeastlordUnpossess(TEAM_RND_SCORPION);
+end
+
+procedure start begin
+end
+
+procedure critter_p_proc begin
+   if (self_can_see_dude) then begin
+      self_attack_dude;
+   end
+
+   if (not anim_busy(self_obj)) then begin
+      reg_anim_clear(self_obj);
+      reg_anim_begin();
+      animate_move_to_tile(tile_num_in_direction(starttile, Random(0, 5), Random(3, 10)));
+      reg_anim_end();
+   end
+end
+
+procedure destroy_p_proc begin
+  inc_neutral_critter
+  give_pid_qty(self_obj, PID_SCORPION_TAIL, 1)
+end
+
+procedure description_p_proc begin
+   call BeastlordPossess;
+end
+
+procedure combat_p_proc begin
+   if (fixed_param == COMBAT_SUBTYPE_HIT_SUCCEEDED) then begin
+     // if (target_obj == dude_obj) then begin
+         if (not(is_success(do_check(target_obj,STAT_lu,-1)))) then begin
+            poison(target_obj,random(3,15));
+         end
+      //end
+   end
+end
+
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end

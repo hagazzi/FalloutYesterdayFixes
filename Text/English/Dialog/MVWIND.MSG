@@ -1,0 +1,18 @@
+{100}{}{The wind turbine has been sabotaged. It no longer functions.}
+{101}{}{You see a wind turbine. It is the only source of power for water makers.}
+{102}{}{You clip some wires on the transformer. The wind turbine no longer functions.}
+{103}{}{The cutters are of no further use.}
+{104}{}{That item is useless on the wind turbine.}
+{105}{}{You notice nothing in particular about the wind turbine.}
+{106}{}{The wind turbine itself looks fairly tamper-proof; however you notice a set of wires between the transformer and the wind turbine.}
+{107}{}{You cannot see anything special about this large wind turbine.}
+{108}{}{You can determine nothing further about the wind turbine.}
+{109}{}{The wires could be repaired, but it may take a while, and there is no guarantee of success.}
+{110}{}{You cannot see anything special about the damaged wind turbine.}
+{111}{}{You are unable to perform any further repair.}
+{112}{}{There is no need to repair the wind turbine. It is functioning perfectly.}
+{113}{}{You are unable to repair the functioning wind turbine.}
+{114}{}{It takes several hours, but you fix the wind turbine.}
+{115}{}{You cannot fix the wind turbine.}
+{116}{}{Further tampering with the wind turbine yields nothing.}
+{117}{}{That skill has no effect on the wind turbine.}

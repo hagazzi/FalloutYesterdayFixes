@@ -1,0 +1,65 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_ZBOXBAG
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+
+#define LVAR_Training_Done              (8)
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+   script_overrides;
+
+   if (local_var(LVAR_Training_Done) == 1) then begin
+        display_mstr(100);
+   end
+   else begin
+        fadeout(1);
+        game_time_advance(ONE_GAME_HOUR);
+        fadein(1);
+        critter_mod_skill(dude_obj, SKILL_UNARMED_COMBAT, 1);
+        display_mstr(101);
+        set_local_var(LVAR_Training_Done, 1);
+   end
+end

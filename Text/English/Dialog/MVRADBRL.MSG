@@ -1,0 +1,2 @@
+
+{100}{}{You discover that the empty glowing barrel held contaminated fertilizer.}

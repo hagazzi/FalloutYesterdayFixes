@@ -1,0 +1,51 @@
+#include "..\headers\define.h"
+#define NAME                    SCRIPT_VCCPI
+
+
+#include "..\headers\command.h"
+procedure start;
+procedure description_p_proc;
+procedure use_p_proc;
+
+#define LVAR_OpenMe               (1)
+
+procedure start begin
+end
+
+procedure description_p_proc begin
+   display_mstr(101);
+end
+
+procedure use_p_proc begin
+   script_overrides;
+   variable vaccs_dri_ptr = tile_contains_pid_obj(14286, 0, PID_V8_VAULT_DOOR);
+
+   if(obj_is_open(vaccs_dri_ptr)) then begin
+      display_msg(mstr_item(10));
+   end
+   else begin
+      if(get_critter_stat(source_obj, STAT_lu) >= 6) then begin
+         display_msg(mstr_stat(700));
+         set_local_var(LVAR_OpenMe, 1);
+      end
+      else if (global_var(GVAR_KNOW_VACCS8_PWD) == 2) then begin
+         display_mstr(100);
+         set_local_var(LVAR_OpenMe, 1);
+      end
+      else begin
+         if (global_var(GVAR_KNOW_VACCS8_PWD) == 0) then begin
+            set_global_var(GVAR_KNOW_VACCS8_PWD, 1);
+         end
+         play_sfx("SLDOORSO");
+         display_msg(mstr_stat(701));
+      end
+
+      if ((local_var(LVAR_OpenMe) == 1) and not(obj_is_open(vaccs_dri_ptr))) then begin
+         use_obj(vaccs_dri_ptr);
+         if (source_obj == dude_obj) then begin
+            play_sfx("SLDOORSO");
+            destroy_object(tile_contains_pid_obj(14686, 0, PID_BLOCKING_HEX));
+         end
+      end
+   end
+end

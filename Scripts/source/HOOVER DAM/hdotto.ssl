@@ -1,0 +1,851 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Otto
+        Location: Hoover Dam
+        Description:
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created:
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_HDOTTO
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_HOOVER_DAM)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+#include "..\headers\party.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure node049;
+procedure node029;
+procedure node048;
+procedure node047;
+procedure node046;
+procedure node028;
+procedure node038;
+procedure node037;
+procedure node036;
+procedure node045;
+procedure node044;
+procedure node043;
+procedure node027;
+procedure node042;
+procedure node041;
+procedure node040;
+procedure node039;
+procedure node026;
+procedure node035;
+procedure node034;
+procedure node033;
+procedure node032;
+procedure node031;
+procedure node030;
+procedure node025;
+procedure node024;
+procedure node023;
+procedure node022;
+procedure node021;
+procedure node020;
+procedure node019;
+procedure node018;
+procedure node999;
+procedure node003;
+procedure node012;
+procedure node015;
+procedure node014;
+procedure node013;
+procedure node011;
+procedure node010;
+procedure node009;
+procedure node006;
+procedure node008;
+procedure node005;
+procedure node017;
+procedure node016;
+procedure node007;
+procedure node004;
+procedure node002;
+procedure node001;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure use_skill_on_p_proc;
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+import variable generic_watcher;
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM, TEAM_HOOVER_DAM);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_PEASANT);
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+   if ((local_var(LVAR_Hostile) == 2) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+   end
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (not(Otto_In_Party) and obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       set_global_var(GVAR_ENEMY_HOOVER_DAM,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+   start_gdialog(NAME, self_obj, 4, HEAD_OTTO, -1);
+   gsay_start;
+   if (dude_is_stupid) then
+      call node018;
+   else
+      call node001;
+   gsay_end;
+   end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+      if (local_var(LVAR_Herebefore) == 0) then
+           display_mstr(100);
+      else
+           display_mstr(103);
+
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+      if (local_var(LVAR_Herebefore) == 0) then
+           display_mstr(101);
+      else
+           display_mstr(102);
+end
+
+procedure node001
+begin
+Reply(104);
+NOption(105,node002,4);
+NOption(106,node003,4);
+if local_var(LVAR_Herebefore) == 1 then
+NOption(111,node005,4);
+if ((global_var(GVAR_QUEST_UPGRADE_FILTER) == FILTRATION_SCHEMATICS_SEARCHING) and (dude_item(PID_FILTRATION_SCHEMATICS))) then
+GOption(224,node015,4);
+NOption(107,node999,4);
+end
+
+procedure node002
+begin
+Reply(108);
+NOption(110,node004,4);
+NOption(111,node005,4);
+if global_var(GVAR_QUEST_UPGRADE_FILTER) == QUEST_NONE then
+NOption(112,node006,4);
+NOption(113,node999,4);
+
+end
+
+procedure node004
+begin
+Reply(117);
+if (global_var(GVAR_QUEST_UPGRADE_FILTER) < FILTRATION_SCHEMATICS_FOUND)then
+NOption(118,node007,4);
+NOption(111,node005,4);
+if global_var(GVAR_QUEST_UPGRADE_FILTER) == QUEST_NONE then
+NOption(112,node006,4);
+NOption(113,node999,4);
+
+end
+
+procedure node007
+begin
+Reply(213);
+NOption(214,node016,4);
+
+end
+
+procedure node016
+begin
+Reply(215);
+NOption(216,node017,4);
+NOption(217,node999,4);
+
+end
+
+procedure node017
+begin
+Reply(218);
+NOption(219,node014,4);
+NOption(220,node999,4);
+
+end
+
+procedure node005
+begin
+if global_var(GVAR_QUEST_UPGRADE_FILTER) != FILTRATION_SCHEMATICS_FOUND then
+begin
+Reply(119);
+NOption(120,node008,4);
+NOption(121,node999,4);
+end
+else
+call node024;
+
+end
+
+procedure node008
+begin
+Reply(221);
+NOption(206,node014,4);
+
+end
+
+procedure node006
+begin
+Reply(194);
+NOption(195,node009,4);
+NOption(196,node005,4);
+NOption(197,node999,4);
+
+end
+
+procedure node009
+begin
+Reply(198);
+NOption(199,node010,4);
+
+end
+
+procedure node010
+begin
+Reply(200);
+NOption(201,node011,4);
+NOption(202,node012,4);
+
+end
+
+procedure node011
+begin
+Reply(203);
+NOption(204,node013,4);
+
+end
+
+procedure node013
+begin
+Reply(205);
+NOption(206,node014,4);
+
+end
+
+procedure node014
+begin
+   set_global_var(GVAR_QUEST_UPGRADE_FILTER, FILTRATION_SCHEMATICS_SEARCHING);
+Reply(207);
+NOption(208,node999,4);
+if (dude_item(PID_FILTRATION_SCHEMATICS)) then
+NOption(209,node015,4);
+NOption(210,node005,4);
+
+end
+
+procedure node015
+begin
+   set_global_var(GVAR_QUEST_UPGRADE_FILTER, FILTRATION_SCHEMATICS_FOUND);
+remove_pid_qty(dude_obj,PID_FILTRATION_SCHEMATICS, 1)
+Reply(211);
+NOption(212,node005,4);
+
+end
+
+procedure node012
+begin
+Reply(222);
+NOption(223,node011,4);
+
+end
+
+procedure node003
+begin
+Reply(114);
+NOption(110,node004,4);
+NOption(111,node005,4);
+NOption(112,node006,4);
+NOption(113,node999,4);
+
+end
+// End Dialogue.
+
+procedure node999
+begin
+   set_local_var( LVAR_Herebefore,1);
+end
+
+
+//--------------------------
+// STUPID
+//--------------------------
+
+procedure node018
+begin
+Reply(225);
+if (global_var(GVAR_QUEST_UPGRADE_FILTER) < FILTRATION_SCHEMATICS_FOUND) then
+NOption(226,node019,-3);
+else
+NOption(233,node022,-3);
+NOption(228,node999,-3);
+
+end
+
+procedure node019
+begin
+Reply(227);
+NOption(228,node999,-3);
+NOption(229,node020,-3);
+
+end
+
+procedure node020
+begin
+Reply(230);
+if (dude_item(PID_FILTRATION_SCHEMATICS)) then
+NOption(231,node021,-3);
+NOption(228,node999,-3);
+
+end
+
+procedure node021
+begin
+   set_global_var(GVAR_QUEST_UPGRADE_FILTER, FILTRATION_SCHEMATICS_FOUND);
+remove_pid_qty(dude_obj,PID_FILTRATION_SCHEMATICS, 1)
+Reply(232);
+NOption(228,node999,-3);
+
+end
+
+procedure node022
+begin
+Reply(234);
+NOption(235,node023,-3);
+
+end
+
+//  UPGRADES
+
+procedure node023
+begin
+
+if (dude_item(PID_PLASMA_RIFLE)) then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_PLASMA_RIFLE, 1)
+give_pid_qty(dude_obj,PID_TURBO_PLASMA_RIFLE , 1)
+Reply(250);
+end
+else
+if dude_item(PID_LASER_RIFLE) then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_LASER_RIFLE, 1)
+give_pid_qty(dude_obj,PID_LASER_RIFLE_EXT_CAP, 1)
+Reply(249);
+end
+else
+if dude_item(PID_HUNTING_RIFLE) then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_HUNTING_RIFLE, 1)
+give_pid_qty(dude_obj,PID_SCOPED_HUNTING_RIFLE, 1)
+Reply(243);
+end
+else
+if dude_item(PID_FN_FAL) then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_FN_FAL, 1)
+give_pid_qty(dude_obj,PID_FN_FAL_NIGHT_SCOPE, 1)
+Reply(244);
+end
+else
+if dude_item(PID_ASSAULT_RIFLE) then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_ASSAULT_RIFLE, 1)
+give_pid_qty(dude_obj,PID_ASSAULT_RIFLE_EXT_MAG, 1)
+Reply(245);
+end
+else
+if dude_item(PID_DESERT_EAGLE) then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_DESERT_EAGLE, 1)
+give_pid_qty(dude_obj,PID_DESERT_EAGLE_EXT_MAG, 1)
+Reply(241);
+end
+else
+if dude_item(PID_44_MAGNUM_REVOLVER) then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_44_MAGNUM_REVOLVER, 1)
+give_pid_qty(dude_obj,PID_44_MAGNUM_SPEEDLOADER, 1)
+Reply(242);
+end
+else
+if dude_item(PID_LASER_PISTOL) then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_LASER_PISTOL, 1)
+give_pid_qty(dude_obj,PID_MAGNETO_LASER_PISTOL, 1)
+Reply(247);
+end
+else
+if dude_item(PID_PLASMA_PISTOL) then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_PLASMA_PISTOL, 1)
+give_pid_qty(dude_obj,PID_PLASMA_PISTOL_EXT_CART, 1)
+Reply(248);
+end
+else
+if dude_item(PID_METAL_ARMOR)then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_METAL_ARMOR, 1)
+give_pid_qty(dude_obj, PID_METAL_ARMOR_MK_II, 1)
+Reply(236);
+end
+else
+if dude_item(PID_COMBAT_ARMOR)then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_COMBAT_ARMOR, 1)
+give_pid_qty(dude_obj, PID_COMBAT_ARMOR_MK_II, 1)
+Reply(237);
+end
+else
+if dude_item(PID_SPEAR)then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_SPEAR, 1)
+give_pid_qty(dude_obj, PID_SHARP_SPEAR, 1)
+Reply(238);
+end
+else
+if dude_item(PID_CATTLE_PROD)then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_CATTLE_PROD, 1)
+give_pid_qty(dude_obj, PID_SUPER_CATTLE_PROD, 1)
+Reply(240);
+end
+else
+if dude_item(PID_POWER_FIST)then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_POWER_FIST, 1)
+give_pid_qty(dude_obj, PID_MEGA_POWER_FIST, 1)
+Reply(239);
+end
+else
+if dude_item(PID_FLAMER)then
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_FLAMER, 1)
+give_pid_qty(dude_obj, PID_IMPROVED_FLAMETHROWER, 1)
+Reply(246);
+end
+else
+Reply(252);
+
+NOption(251,node999,4);
+
+end
+
+
+
+procedure node024
+begin
+Reply(122);
+NOption(123,node025,4);
+NOption(124,node026,4);
+NOption(125,node027,4);
+NOption(126,node028,4);
+NOption(127,node029,4);
+NOption(128,node999,4);
+
+end
+
+procedure node025
+begin
+Reply(129);
+if dude_item(PID_ASSAULT_RIFLE) then
+NOption(130,node030,4);
+if dude_item(PID_FN_FAL) then
+NOption(131,node031,4);
+if dude_item(PID_HUNTING_RIFLE) then
+NOption(132,node032,4);
+if dude_item(PID_LASER_RIFLE) then
+NOption(133,node033,4);
+if dude_item(PID_PLASMA_RIFLE) then
+NOption(134,node034,4);
+if dude_item(PID_SHOTGUN) then
+NOption(135,node035,4);
+NOption(113,node999,4);
+
+end
+
+procedure node030
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_ASSAULT_RIFLE, 1)
+give_pid_qty(dude_obj,PID_ASSAULT_RIFLE_EXT_MAG, 1)
+Reply(151);
+NOption(152,node024,4);
+
+end
+
+procedure node031
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_FN_FAL, 1)
+give_pid_qty(dude_obj,PID_FN_FAL_NIGHT_SCOPE, 1)
+Reply(153);
+NOption(154,node024,4);
+
+end
+
+procedure node032
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_HUNTING_RIFLE, 1)
+give_pid_qty(dude_obj,PID_SCOPED_HUNTING_RIFLE, 1)
+Reply(155);
+NOption(156,node024,4);
+
+end
+
+procedure node033
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_LASER_RIFLE, 1)
+give_pid_qty(dude_obj,PID_LASER_RIFLE_EXT_CAP, 1)
+Reply(157);
+NOption(158,node024,4);
+
+end
+
+procedure node034
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_PLASMA_RIFLE, 1)
+give_pid_qty(dude_obj,PID_TURBO_PLASMA_RIFLE , 1)
+Reply(159);
+NOption(160,node024,4);
+
+end
+
+procedure node035
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_SHOTGUN, 1)
+give_pid_qty(dude_obj,PID_SAWED_OFF_SHOTGUN , 1)
+Reply(161);
+NOption(162,node024,4);
+
+end
+
+procedure node026
+begin
+Reply(136);
+if dude_item(PID_DESERT_EAGLE) then
+NOption(137,node039,4);
+if dude_item(PID_44_MAGNUM_REVOLVER) then
+NOption(138,node040,4);
+if dude_item(PID_LASER_PISTOL) then
+NOption(139,node041,4);
+if dude_item(PID_PLASMA_PISTOL) then
+NOption(140,node042,4);
+NOption(113,node999,4);
+
+end
+
+procedure node039
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_DESERT_EAGLE, 1)
+give_pid_qty(dude_obj,PID_DESERT_EAGLE_EXT_MAG, 1)
+Reply(163);
+NOption(164,node024,4);
+
+end
+
+procedure node040
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_44_MAGNUM_REVOLVER, 1)
+give_pid_qty(dude_obj,PID_44_MAGNUM_SPEEDLOADER, 1)
+Reply(165);
+NOption(166,node024,4);
+
+end
+
+procedure node041
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_LASER_PISTOL, 1)
+give_pid_qty(dude_obj,PID_MAGNETO_LASER_PISTOL, 1)
+Reply(167);
+NOption(168,node024,4);
+
+end
+
+procedure node042
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_PLASMA_PISTOL, 1)
+give_pid_qty(dude_obj,PID_PLASMA_PISTOL_EXT_CART, 1)
+Reply(157);
+NOption(158,node024,4);
+
+end
+
+procedure node027
+begin
+Reply(141);
+if dude_item(PID_METAL_ARMOR)then
+NOption(142,node043,4);
+if dude_item(PID_COMBAT_ARMOR)then
+NOption(143,node044,4);
+if dude_item(PID_POWERED_ARMOR)then
+NOption(144,node045,4);
+NOption(113,node999,4);
+
+end
+
+procedure node043
+begin
+remove_armor(dude_obj)
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_METAL_ARMOR, 1)
+give_pid_qty(dude_obj, PID_METAL_ARMOR_MK_II, 1)
+Reply(169);
+NOption(170,node024,4);
+
+end
+
+procedure node044
+begin
+remove_armor(dude_obj)
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_COMBAT_ARMOR, 1)
+give_pid_qty(dude_obj, PID_COMBAT_ARMOR_MK_II, 1)
+Reply(171);
+NOption(172,node024,4);
+
+end
+
+procedure node045
+begin
+Reply(181);
+NOption(182,node036,4);
+NOption(183,node024,4);
+
+end
+
+procedure node036
+begin
+Reply(184);
+NOption(185,node024,4);
+NOption(186,node999,4);
+if (dude_item_count(PID_CHEMISTRY_MANUAL))and(dude_item_count(PID_TECHNICAL_MANUAL))then
+NOption(189,node037,4);
+NOption(190,node038,4);
+
+end
+
+procedure node037
+begin
+remove_armor(dude_obj)
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_POWERED_ARMOR, 1)
+give_pid_qty(dude_obj, PID_HARDENED_POWER_ARMOR, 1)
+Reply(192);
+NOption(193,node999,4);
+
+end
+
+procedure node038
+begin
+Reply(191);
+NOption(186,node999,4);
+
+end
+
+procedure node028
+begin
+Reply(145);
+if dude_item(PID_SPEAR)then
+NOption(146,node046,4);
+if dude_item(PID_CATTLE_PROD)then
+NOption(147,node047,4);
+if dude_item(PID_POWER_FIST)then
+NOption(148,node048,4);
+NOption(113,node999,4);
+
+end
+
+procedure node046
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_SPEAR, 1)
+give_pid_qty(dude_obj, PID_SHARP_SPEAR, 1)
+Reply(173);
+NOption(174,node024,4);
+
+end
+
+procedure node047
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_CATTLE_PROD, 1)
+give_pid_qty(dude_obj, PID_SUPER_CATTLE_PROD, 1)
+Reply(175);
+NOption(176,node024,4);
+
+end
+
+procedure node048
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_POWER_FIST, 1)
+give_pid_qty(dude_obj, PID_MEGA_POWER_FIST, 1)
+Reply(177);
+NOption(178,node024,4);
+
+end
+
+procedure node029
+begin
+Reply(149);
+if dude_item(PID_FLAMER)then
+NOption(150,node049,4);
+NOption(113,node999,4);
+
+end
+
+procedure node049
+begin
+inven_unwield(dude_obj);
+remove_pid_qty(dude_obj,PID_FLAMER, 1)
+give_pid_qty(dude_obj, PID_IMPROVED_FLAMETHROWER, 1)
+Reply(179);
+NOption(180,node024,4);
+
+end
+
+//xxxxxxxxxxxxxxxxxxxx

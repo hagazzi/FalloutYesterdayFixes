@@ -1,0 +1,3 @@
+# Grammar pass done
+
+{100}{}{You find yourself at the entrance of a rocky canyon, the walls towering high above you. To the north, you spot an old sign, while a passage to the east winds deeper into the heart of the canyon.}

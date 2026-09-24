@@ -1,0 +1,5 @@
+
+{100}{}{You avoid the laser trip wire.}
+{101}{}{avoids the laser trip wire.}
+{102}{}{You step in the path of a laser trip wire.}
+{103}{}{steps in the path of a laser trip wire.}

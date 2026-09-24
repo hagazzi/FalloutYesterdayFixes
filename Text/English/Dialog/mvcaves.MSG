@@ -1,0 +1,6 @@
+# Grammar pass done
+
+{100}{}{You descend into a vast cavern, a maze of shadowy passages and ancient, stone chambers. In the distance, faint hissing echoes through the cold air.}
+
+{101}{}{Ouch!}
+{102}{}{Choosing to freefall, you land with a thud on the solid cave floor.}

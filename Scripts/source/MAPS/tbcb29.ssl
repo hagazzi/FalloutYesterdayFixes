@@ -1,0 +1,51 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#include "..\headers\updatmap.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_TBCB29
+
+variable ffsfx;
+
+export variable maurice_ptr;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   fadein(1);
+   Tibbets_Lighting;
+
+   ffsfx := play_sfall_sound("data\\sound\\SFX\\ffield.wav", 1);
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_TIBBETS), 1);
+
+end
+
+procedure map_update_p_proc begin
+   Tibbets_Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ffsfx);
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

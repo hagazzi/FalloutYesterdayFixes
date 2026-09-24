@@ -1,0 +1,57 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#include "..\headers\updatmap.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_TBCBGEN
+
+variable ffsfx;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if(
+      (cur_map_index == MAP_TIBBETS_CELL_BLOCK_14) and
+      (global_var(GVAR_MAGIK_DEAD) == 1) and
+      not((tile_contains_obj_pid(10505, 0, PID_OUT_OF_BUSINESS_NORTH)))
+   ) then begin
+      create_object(PID_OUT_OF_BUSINESS_NORTH, 10505, 0);
+   end
+
+   fadein(1);
+   Tibbets_Lighting;
+
+   ffsfx := play_sfall_sound("data\\sound\\SFX\\ffield.wav", 1);
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_TIBBETS), 1);
+
+end
+
+procedure map_update_p_proc begin
+   Tibbets_Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ffsfx);
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

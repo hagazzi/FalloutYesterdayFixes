@@ -1,0 +1,4 @@
+
+{100}{}{You feel stronger.}
+{101}{}{You feel exhausted.}
+{102}{}{Your scientific skills deduct that you could use this device to increase your physical strength by a certain order of magnitude.}

@@ -1,0 +1,2 @@
+
+{100}{}{This is an ancient, pre-war, security robot model. It comes equipped with dual plasma guns for maximum damage.}

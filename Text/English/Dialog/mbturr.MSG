@@ -1,0 +1,5 @@
+
+{100}{}{This is a highly advanced Laser Turret. It is built using a technology you haven't seen before.}
+{101}{}{You didn't learn anything new about this turret.}
+{102}{}{'s laser rifle.}
+

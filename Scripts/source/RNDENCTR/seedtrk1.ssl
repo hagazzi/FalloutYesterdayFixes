@@ -1,0 +1,125 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_SEEDTRK1
+
+import variable se_ed_truck_fixed;
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+   if (script_action == use_skill_on_proc) then begin
+        call use_skill_on_p_proc();
+    end
+end
+
+procedure use_p_proc begin
+   script_overrides;
+   display_mstr(100);
+end
+
+procedure use_obj_on_p_proc begin
+   variable bonus;
+   bonus := 0;
+
+   if (obj_pid(obj_being_used_with) == PID_SUPER_TOOL_KIT) then begin
+      bonus := 40;
+   end else if (obj_pid(obj_being_used_with) == PID_MULTI_TOOL) then begin
+      bonus := 20;
+   end
+
+   if (
+      obj_pid(obj_being_used_with) == PID_SUPER_TOOL_KIT or
+      obj_pid(obj_being_used_with) == PID_MULTI_TOOL
+   ) then begin
+      script_overrides;
+
+      fadeout(1);
+      // Faster with tools
+      game_time_advance(18 * ONE_GAME_HOUR);
+
+      if(is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -60 + bonus))) then begin
+            give_xp(300);
+            display_mstr(101);
+            set_global_var(GVAR_FIX_EDDIE_TRUCK, 1);
+            set_obj_visibility(se_ed_truck_fixed, 0);
+            set_obj_visibility(self_obj, 1);
+        end else begin
+         display_mstr(102);
+      end
+
+        fadein(1);
+   end
+
+
+end
+
+procedure use_skill_on_p_proc begin
+
+   if (
+      (action_being_used == SKILL_SCIENCE) and
+      is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, -20))
+   ) then begin
+      script_overrides;
+      display_mstr(103);
+   end else if (action_being_used == SKILL_REPAIR) then begin
+      script_overrides;
+
+         fadeout(1);
+         game_time_advance(ONE_GAME_DAY);
+
+        if(is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -60))) then begin
+            give_xp(300);
+            display_mstr(104);
+            set_global_var(GVAR_FIX_EDDIE_TRUCK, 1);
+            set_obj_visibility(se_ed_truck_fixed, 0);
+            set_obj_visibility(self_obj, 1);
+         end else begin
+            display_mstr(105);
+         end
+
+        fadein(1);
+
+   end
+end

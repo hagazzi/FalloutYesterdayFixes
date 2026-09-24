@@ -1,0 +1,1111 @@
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+#include "..\headers\lib.arrays.h"
+
+procedure start;
+procedure perk_level_change;
+procedure perk_apply;
+procedure modify_all_skills(variable mod);
+/*
+
+
+
+
+
+Armorer
+Prerequisites: IN 4, Mechanics 5
+Ranks: 1
+Benet: You are extremely skilled at making conventional body armor (all non-Power and non-Tesla
+armor). You have +5 to your skill when making qualifying equipment. Requires a Mechanics Shop.
+
+
+Artful Dodger
+Prerequisites: AG 6, Athletics 15
+Ranks: 1
+Benet: You're quite used to using your natural
+agility to avoid attacks. You have a bonus of 2 to
+Evade.
+
+
+
+Ayyyyyy!
+Prerequisites: Security 15
+Ranks: 1
+Benet: You can punch or kick a locked object and
+add d10 × 5 to the Security check. However, if successful, this automatically opens the object and is
+always noisy.
+
+Battlefield Saint
+Prerequisites: Medic 10
+Ranks: 3
+Benet: Healing wounds under pressure comes naturally to you. Though you gain no bonus to healing
+broken limbs or curing other ailments, when successfully performing eld healing, you heal +4 hit points
+for every rank of this perk.
+
+Biff !
+Prerequisites: Melee 10
+Ranks: 1
+Benet: You make the best use of your rearms,
+even when they run out of ammo. When you score
+a hit with a Smash or Bean, your attack is increased
+by 20 for purposes of determining critical hits.
+
+Bigger They Are. . .
+Prerequisites: ST 6 and Melee 20
+Ranks: 1
+Benet: Your attacks with melee weapons have a
+greater chance of knocking an opponent over. And
+when they are knocked over, they get knocked back
+farther. Double the knockback chance and distance
+for any melee attack (not unarmed).
+
+Body's Still Warm
+Prerequisites: Unarmed 4, Steal 20
+Ranks: 1
+Benet: Your skill at theft is so calmly focused that
+you can exercise your talent even in battle. Though it
+is dicult (+10 Diculty), you may select an enemy
+in combat for theft and steal one of their unequipped
+items.
+
+Bone Head
+Prerequisites: EN 7, Level 6
+Ranks: 1
+Benet: You've been banged around enough that
+you've developed a very thick skull. Critical hits
+against your head have to exceed 25% of your total hit points to achieve a maim, and over 75% to
+achieve a break. BONUS: When combined with Unbreakable, this changes to 50% for a head maim, with
+no chance of a head break.
+
+
+
+
+Born Leader
+Prerequisites: Persuasion 15 and CH 8
+Ranks: 3
+Benet: You've nally come into your own as a
+leader, and positively radiate condence to everyone
+around you. All allies standing within three hexes
+per rank gain +1 to all skill checks.
+
+Bracing
+Prerequisites: Melee 15 or Firearms 15
+Ranks: 1
+Benet: You know how to handle weapons as big as
+you with ease. You can move with a heavy weapon in
+hand and participate in the action phase in the same
+round.
+
+Bulk Trader
+Prerequisites: Persuasion 15
+Ranks: 1
+Benet: Quantity is the name of the game, and
+you're holding all the cards. When you buy and sell
+goods, you get a +25% when you sell ve at once.
+
+Child of the Wastes
+Prerequisites: Outdoorsman 10, Melee 5, Security
+5
+Ranks: 1
+Benet: You are skilled at stalking and killing in
+the wasteland. You gain +1 to damage against all
+animals and plants. You also have +5 to relevant
+skills when making equipment at an Outdoorsman
+Camp.
+
+Cotton Fingers
+Prerequisites: AG 6, Sneak 20
+Ranks: 1
+Benet: Every interaction you take, from attacking
+enemies to opening doors, is half the volume it would
+normally be. This makes it much easier for you to
+get away with your sneaky inltration of populated
+areas.
+
+Crackerjack Timing
+Prerequisites: IN 5, Security 15
+Ranks: 1
+Benet: Punctuality is a vital element of life for
+you, and it's also a vital element of death! When you
+set the timer on a trap, it always goes o at the time
+you specied.
+
+Critical Defense
+Prerequisites: PE 5, AG 5, Firearms 5, Melee 5,
+Unarmed 5
+Ranks: 3
+Benet: You've been battered around enough in
+combat to know when you really need to get out of
+the way. As a result, when an enemy scores a hit
+on you, their attack roll is eectively lowered by 10
+points for purposes of determining critical hits.
+
+
+
+Demolition Man
+Prerequisites: IN 7, Security 5
+Ranks:
+Benet: You'll teach those caravan houses a lesson about stealing brahmin, oh yes, you will. You
+have the ability to make complex traps, bombs, and
+general explosives for a variety of nefarious purposes.
+You have +5 to your skill when making qualifying
+equipment. Requires a Science Lab.
+
+Doctor On Call
+Prerequisites: PE 6, Medic 20
+Ranks: 2
+Benet: As long as everyone is sitting still and following your directions, you can get them back to tiptop shape in no time. When using wound healing
+on characters, all characters you successfully treat
+heal an additional +4 hit points regardless of other
+bonuses.
+
+
+El Bandolero
+Prerequisites: IN 3 and Firearms 15
+Ranks: 1
+Benet: You've been carrying guns and ammo all
+over the wasteland for quite a while now, and you're
+not a drooling idiot, so you know a thing or two about
+how to store it. All ammo weight for you is reduced
+by 50%.
+
+Electronic Eye
+Prerequisites: Mechanics 15 and Investigation 5
+Ranks: 1
+Benet: You can always know the exact hit points,
+damage thresholds, and statuses of any robot you
+examine.
+
+
+
+
+
+Fists of Fury
+Prerequisites: Unarmed 15
+Ranks: 3
+Benet: You may make an additional melee or unarmed attack during the charge or action phase at a
+−4 penalty.
+
+
+
+Gunsmith
+Prerequisites: Mechanics 5
+Ranks: 1
+Benet: You have a talent for creating conventional
+rearms and ammunition. You have +5 to your skill
+when making qualifying equipment.
+
+
+I'll Sleep When I'm Dead
+Prerequisites: EN 6, Medic 15
+Ranks: 1
+Benet: You don't let shock bring you down, because it's all in your head. In fact, short of large
+holes in your chest, not much can bring you down.
+You cannot die as a result of fatigue.
+
+In Your Face!
+Prerequisites: Melee 15 or Unarmed 15
+Ranks: 1
+Benet: Opponents suer a 4 penalty with any
+rearm attack mode, Bean, Lob, or Throw when you
+are within 1 hex and holding melee weapons or are
+unarmed.
+
+Innocent Bystander
+Prerequisites: Deception 15, Steal 15
+Ranks: 1
+Benet: Your thievery is so smoothly executed that
+you can easily steal two items from someone for every
+single successful Steal check.
+
+Junk Merchant
+Prerequisites: Persuasion 10
+Ranks: 1
+Benet: All items you nd that are worth 1-5 bottlecaps are worth ve times as much when you trade
+them.
+
+
+
+
+
+
+
+Monkeywrench
+Prerequisites: Mechanics 15
+Ranks: 1
+Benet: You know the weaknesses of robots so well
+that you gain +4 to damage against them and successful attacks against them are increased by 20 for
+purposes of determining critical hits.
+
+
+
+Nice Grouping
+Prerequisites: Firearms 20
+Ranks: 3
+Benet: For every rank of this skill, the secondary
+and tertiary burst penalties are pushed out one
+round. E.g.: On a six round burst, the rst round
+would have no penalty, the second would have a 4
+penalty, and the third, fourth, fth, and sixth would
+have an 8 penalty. With two ranks of Nice Grouping,
+the rst, second, and third rounds have no penalty,
+the fourth round has a 4 penalty, and the fth and
+sixth rounds have an 8 penalty.
+
+
+Pharmacist
+Prerequisites: Medic 5
+Ranks: 1
+Benet: You have a talent for creating chems and
+medical supplies. You gain a +5 bonus when making
+qualifying equipment. Requires a Science Lab.
+
+Quick Equip
+Prerequisites: Firearms 5 or Melee 5
+Ranks: 1
+Benet: This perk allows the user to equip items
+faster than normal. You can
+  Put away and take out one small item and still
+participate in the charge or action phases.
+  Put away or take out two small items and still
+participate in the charge or action phases.
+  Put away or take out one large item and still
+participate in the charge or action phases.
+  Put away and take out one large item, but NOT
+participate in the charge or action phases.
+
+Rad Child
+Prerequisites: EN 7 or Ghoul
+Ranks: 1
+Benet: You do not take immediate damage from
+radiation. In fact, you gain extra healing while being
+exposed to it! However, radiation continues to build
+up in your system as normal. For every 10 ranks of radiation in your system, your healing rate is increased
+by 1.
+
+Simple Machines
+Prerequisites: Science 20 and IN 7
+Ranks: 1
+Benet: You are so well versed in the articial intelligence routines of robots that they suer a 4 penalty
+to hit you.
+
+Six-Shooter
+Prerequisites: Firearms 15 and PE 8
+Ranks: 1
+Benet: You know that your trusty revolvers won't
+jam like those new-fangled automatic pistols. And
+hey, if you can't drop someone in six shots (or ve),
+you need to spend more time at the ring range.
+When using revolvers, you never suer critical failures, gain +4 to range, and attacks are considered to
+be +10 for purposes of determining critical hits.
+
+
+Steady Aim
+Prerequisites: Firearms 15 and PE 6
+Ranks: 3
+Benet: You have the patience to wait for the perfect shot. You may sacrice your move action to aim,
+gaining a +2 bonus to hit per rank.
+
+
+Street Sweeper
+Prerequisites: Firearms 20 and ST 6
+Ranks: 1
+Benet: You know when to hold `em, know when to
+fold `em. . . in half with bullets! When making sweep
+attacks, you gain a +2 bonus to hit (after penalties).
+
+
+Suicide King
+Prerequisites: Cult of Personality and Persuasion
+10 and CH 8
+Ranks: 1
+Benet: When standing within your area of inuence, CNPC allies always ignore how wounded they
+are when you attempt to control them in combat.
+
+
+Tech Vulture
+Prerequisites: Mechanics 10 and PE 5
+Ranks: 1
+Benet: Waste not, want not. When you nd a
+recently destroyed robot, there is a good chance you
+will be able to salvage something useful from it. You
+may replenish tool kit charge from robots. Regain
+1d6 charges from a small robot, 1d8 from a medium,
+and 1d10 from a large.
+
+
+
+Triage
+Prerequisites: Medic 10 and Investigation 5
+Ranks: 1
+Benet: You know the exact hit points, fatigue,
+damage thresholds and primary statistics of any living creature you examine.
+
+Two-Fisted Death
+Prerequisites: AG 7, Firearms 15 or Melee 15
+Ranks: 1
+Benet: Faced with two enemies, you've got two
+guns: one for each of `em. This perk allows you to use
+two weapons at the same time with halved penalties.
+
+Unbreakable
+Prerequisites: EN 8
+Ranks: 1
+Benet: You see dead people, swing away, and no
+one calls you Mr. Glass. How's that for a pop-culture
+reference, jackass? Critical hits against your head,
+arms, legs, torso, and groin have to do 50% of your
+total hit points to achieve a break.
+
+
+
+
+Devil's Tongue			Gives the Prisoner +5% to their Deception skill
+
+Guidance Counselor			Gives give the Prisoner +5% to their Persuasion skill.
+
+Flexible			Can use this to slip between the bars of the cells.
+
+Hangdog Fighting Style
+
+Living Toolset	Otto Steed only perk		Does not require a toolset to perform mechanics
+
+Phoenix (implant)
+
+Smartest Man on Earth	Victor Presper only perk		Presper is the smartest man on Earth, with the possible exception of the Prisoner
+
+Sting Like a Bee			Gives the Prisoner a +5% critical with the Unarmed skill.
+
+Visual Standard			Allows dumb character to learn basic machine language
+
+
+Bluff Master
+requirements
+Level 8
+Charisma 3
+ranks
+1
+effects
+You can talk yourself out of a sticky situation when caught stealing.
+
+Bonehead
+Level 7
+Strength 7
+ranks
+1
+effects
+50% less chance to get knocked out
+You've been banged around enough that you've developed a very thick skull. Critical hits against your head have to exceed 25% of your total hit points to achieve a maim, and over 75% to achieve a break. BONUS: When combined with Unbreakable, this changes to 50% for a head maim, with no chance of a head break.
+
+
+Bracing
+
+
+You have learned how to brace large weapons while standing. You will receive +2 ST for the purpose of firing large guns from a standing position.
+
+requirements
+Level 4
+Endurance 5
+Big Guns 60%
+ranks
+1
+effects
++2 Strength for firing large guns from a standing position
+
+
+
+
+Brown Noser
+You've learned the value of sucking up to your superiors! You get one extra promotion for each level of this perk.
+
+
+
+req
+Level 2
+Charisma 5
+Intelligence 6
+ranks
+1
+effects
+One extra promotion for each level of this perk.
+
+
+
+Crazy Bomber
+No more singed eyebrows! With this perk, if your character experiences a failure while using explosives, the explosive in question will be defused or reset.
+
+
+requirements
+Level 9
+Intelligence 6
+Traps 60%
+Unavailable to deathclaws and dogs
+ranks
+1
+effects
+Failures while using explosives are nullified
+
+
+
+
+Lead Foot
+Your reflexes and driving ability combine to make you a very fast driver. You gain 25% speed when behind the wheel.
+equirements
+Level 3
+Pilot 60%
+Perception 6
+Agility 6
+Unavailable to deathclaws and dogs
+ranks
+1
+effects
+You gain 25% speed when behind the wheel.
+
+
+
+Leader
+You are a natural leader. Any squad member within your area of influence will receive +1 Agility and +5 to Armor Class.
+
+requirements
+Level 4
+Charisma 6
+unavailable to deathclaws and dogs
+ranks
+1
+effects
+Any squad member within your area of influence will receive +1 Agility and +10 to Armor Class.
+
+
+
+
+
+
+Steady Arm
+Your massive size means Burst Shot attacks cost one less Action Point. The official description indicates that this bonus is applied "while standing", but in Fallout Tactics 1.27 this perk makes burst shots cost one less action point regardless of stance.
+
+requirements
+Level 4
+Strength 6
+Super mutant only
+ranks
+1
+effects
+Burst Shot attacks cost one less Action Point
+
+
+
+
+
+
+
+
+Twitch Gamer
+You are a master of pip-boy games. You have unsurpassed reaction speed with your thumbs!
+equirements
+Beat a minigame
+ranks
+1
+effects
+Occasionally, an action can be performed for 0 AP
+
+
+
+
+
+
+*/
+
+
+
+procedure perk_level_change begin
+
+    if (
+        (has_fake_perk(PERK_team_player) == 0) and
+        (get_critter_stat(dude_obj, STAT_ch) >= 4) and
+        (dude_level >= 3) and
+        (true_party_size >= 1)
+    ) then begin
+        set_selectable_perk(PERK_team_player, 1, 108, mstr_perk(1220));
+    end
+    else begin
+        set_selectable_perk(PERK_team_player, 0, 108, "");
+    end
+
+    if(
+        (has_fake_perk(PERK_firewalker) < 2) and
+        (get_critter_stat(dude_obj, STAT_en) >= 8)
+    ) then begin
+        set_selectable_perk(PERK_firewalker, 1, 215, mstr_perk(1221));
+    end
+    else begin
+        set_selectable_perk(PERK_firewalker, 0, 215, "");
+    end
+
+    // TODO Double check this
+    if(
+        (has_fake_perk(PERK_mental_catalogue) == 0) and
+        (get_critter_stat(dude_obj, STAT_pe) >= 4) and
+        (has_skill(dude_obj, SKILL_SCIENCE) >= 10)
+    ) then begin
+        set_selectable_perk(PERK_mental_catalogue, 1, 216, mstr_perk(1222));
+    end
+    else begin
+        set_selectable_perk(PERK_mental_catalogue, 0, 216, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_loner) == 0) and
+        (get_critter_stat(dude_obj, STAT_ch) < 5) and
+        (dude_level >= 4) and
+        (has_skill(dude_obj, SKILL_OUTDOORSMAN) >= 40) and
+        (true_party_size == 0)
+    ) then begin
+        set_selectable_perk(PERK_loner, 1, 217, mstr_perk(1223));
+    end
+    else begin
+        set_selectable_perk(PERK_loner, 0, 217, "");
+    end
+
+    if ((has_fake_perk(PERK_hit_the_deck) == 0) and (get_critter_stat(dude_obj, STAT_ag) >= 6) and (dude_level >= 4)) then begin
+        set_selectable_perk(PERK_hit_the_deck, 1, 219, mstr_perk(1224));
+    end else begin
+        set_selectable_perk(PERK_hit_the_deck, 0, 219, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_die_hard) == 0) and
+        (get_critter_stat(dude_obj, STAT_en) >= 6) and
+        (dude_level >= 2) and
+        (has_skill(dude_obj, SKILL_FIRST_AID) >= 40)
+    ) then begin
+        set_selectable_perk(PERK_die_hard, 1, 218, mstr_perk(1225));
+    end else begin
+        set_selectable_perk(PERK_die_hard, 0, 218, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_hide_of_scars) == 0) and
+        (get_critter_stat(dude_obj, STAT_en) >= 6) and
+        (dude_level >= 10)
+    ) then begin
+        set_selectable_perk(PERK_hide_of_scars, 1, 220, mstr_perk(1226));
+    end
+    else begin
+        set_selectable_perk(PERK_hide_of_scars, 0, 220, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_stat) < 2) and
+        (get_critter_stat(dude_obj, STAT_ag) >= 6) and
+        (dude_level >= 3) and
+        (has_skill(dude_obj, SKILL_DOCTOR) >= 50) and
+        (has_skill(dude_obj, SKILL_FIRST_AID) >= 75)
+    ) then begin
+        set_selectable_perk(PERK_stat, 1, 221, mstr_perk(1227));
+    end
+    else begin
+        set_selectable_perk(PERK_stat, 0, 221, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_tunnel_rat) == 0) and
+        (get_critter_stat(dude_obj, STAT_ag) >= 6) and
+        (dude_level >= 8)
+    ) then begin
+        set_selectable_perk(PERK_tunnel_rat, 1, 222, mstr_perk(1228));
+    end
+    else begin
+        set_selectable_perk(PERK_tunnel_rat, 0, 222, "");
+    end
+
+    if ((has_fake_perk(PERK_drunken_master) == 0) and (has_skill(dude_obj, SKILL_UNARMED_COMBAT) >= 60) and (dude_level >= 3)) then begin
+        set_selectable_perk(PERK_drunken_master, 1, 223, mstr_perk(1229));
+    end
+    else begin
+        set_selectable_perk(PERK_drunken_master, 0, 223, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_tough_hide) == 0) and
+        (get_critter_stat(dude_obj, STAT_en) < 8) and
+        (dude_level >= 12)
+    ) then begin
+        set_selectable_perk(PERK_tough_hide, 1, 227, mstr_perk(1230));
+    end
+    else begin
+        set_selectable_perk(PERK_tough_hide, 0, 227, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_rad_child) == 0) and
+        (get_critter_stat(dude_obj, STAT_en) >= 6) and
+        (dude_level >= 3)
+    ) then begin
+        set_selectable_perk(PERK_rad_child, 1, 225, mstr_perk(1231));
+    end
+    else begin
+        set_selectable_perk(PERK_rad_child, 0, 225, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_divine_favor) == 0) and
+        (get_critter_stat(dude_obj, STAT_ch) >= 8) and
+        (dude_level >= 14)
+    ) then begin
+        set_selectable_perk(PERK_divine_favor, 1, 226, mstr_perk(1232));
+    end
+    else begin
+        set_selectable_perk(PERK_divine_favor, 0, 226, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_melee_master) == 0) and
+        (get_critter_stat(dude_obj, STAT_st) >= 7) and
+        (get_critter_stat(dude_obj, STAT_pe) >= 7) and
+        (has_skill(dude_obj, SKILL_MELEE) >= 250)
+    ) then begin
+        set_selectable_perk(PERK_melee_master, 1, 224, mstr_perk(1233));
+    end
+    else begin
+        set_selectable_perk(PERK_melee_master, 0, 224, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_esteemed_academic) == 0) and
+        (get_critter_stat(dude_obj, STAT_iq) >= 9) and
+        (has_skill(dude_obj, SKILL_SCIENCE) == 300) and
+        (global_var(GVAR_SCIENCE_LAB) == 1)
+    ) then begin
+        set_selectable_perk(PERK_esteemed_academic, 1, 256, mstr_perk(1234));
+    end
+    else begin
+        set_selectable_perk(PERK_esteemed_academic, 0, 256, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_advanced_research) == 0) and
+        (get_critter_stat(dude_obj, STAT_iq) >= 7) and
+        (has_skill(dude_obj, SKILL_SCIENCE) >= 50) and
+        (global_var(GVAR_SCIENCE_LAB) == 1)
+    ) then begin
+        set_selectable_perk(PERK_advanced_research, 1, 257, mstr_perk(1235));
+    end
+    else begin
+        set_selectable_perk(PERK_advanced_research, 0, 257, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_bonsai) == 0) and
+        dude_is_ghoul and
+        (has_skill(dude_obj, SKILL_OUTDOORSMAN) >= 50) and
+        (has_skill(dude_obj, SKILL_SCIENCE) >= 40) and
+        (dude_level >= 12)
+    ) then begin
+        set_selectable_perk(PERK_bonsai, 1, 281, mstr_perk(1236));
+    end
+    else begin
+        set_selectable_perk(PERK_bonsai, 0, 281, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_stunt_man) == 0) and
+        (get_critter_stat(dude_obj, STAT_st) >= 6) and
+        (get_critter_stat(dude_obj, STAT_en) >= 6) and
+        (get_critter_stat(dude_obj, STAT_ag) >= 6) and
+        (dude_level >= 6)
+    ) then begin
+        set_selectable_perk(PERK_stunt_man, 1, 282, mstr_perk(1237));
+    end
+    else begin
+        set_selectable_perk(PERK_stunt_man, 0, 282, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_cancerous_growth) == 0) and
+        (get_critter_stat(dude_obj, STAT_st) <= 6) and
+        dude_is_ghoul and
+        (dude_level >= 6)
+    ) then begin
+        set_selectable_perk(PERK_cancerous_growth, 1, 283, mstr_perk(1238));
+    end
+    else begin
+        set_selectable_perk(PERK_cancerous_growth, 0, 283, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_way_of_the_fruit) == 0) and
+        (get_critter_stat(dude_obj, STAT_ch) >= 6) and
+        (dude_level >= 6)
+    ) then begin
+        set_selectable_perk(PERK_way_of_the_fruit, 1, 284, mstr_perk(1239));
+    end
+    else begin
+        set_selectable_perk(PERK_way_of_the_fruit, 0, 284, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_psychotic) == 0) and
+        (get_critter_stat(dude_obj, STAT_en) >= 5) and
+        dude_is_super_mutant and
+        (dude_level >= 8)
+    ) then begin
+        set_selectable_perk(PERK_psychotic, 1, 285, mstr_perk(1240));
+    end
+    else begin
+        set_selectable_perk(PERK_psychotic, 0, 285, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_deadly_accuracy_small_guns) == 0) and
+        (get_critter_stat(dude_obj, STAT_ag) >= 5) and
+        (has_skill(dude_obj, SKILL_SMALL_GUNS) >= 40)
+    ) then begin
+        set_selectable_perk(PERK_deadly_accuracy_small_guns, 1, 295, mstr_perk(1241));
+    end
+    else begin
+        set_selectable_perk(PERK_deadly_accuracy_small_guns, 0, 295, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_deadly_accuracy_big_guns) == 0) and
+        (get_critter_stat(dude_obj, STAT_ag) >= 5) and
+        (has_skill(dude_obj, SKILL_BIG_GUNS) >= 40)
+    ) then begin
+        set_selectable_perk(PERK_deadly_accuracy_big_guns, 1, 295, mstr_perk(1242));
+    end
+    else begin
+        set_selectable_perk(PERK_deadly_accuracy_big_guns, 0, 295, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_deadly_accuracy_energy_weapons) == 0) and
+        (get_critter_stat(dude_obj, STAT_ag) >= 5) and
+        (has_skill(dude_obj, SKILL_ENERGY_WEAPONS) >= 40)
+    ) then begin
+        set_selectable_perk(PERK_deadly_accuracy_energy_weapons, 1, 295, mstr_perk(1243));
+    end
+    else begin
+        set_selectable_perk(PERK_deadly_accuracy_energy_weapons, 0, 295, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_deadly_accuracy_throwing) == 0) and
+        (get_critter_stat(dude_obj, STAT_ag) >= 5) and
+        (has_skill(dude_obj, SKILL_THROWING) >= 40)
+    ) then begin
+        set_selectable_perk(PERK_deadly_accuracy_throwing, 1, 295, mstr_perk(1244));
+    end
+    else begin
+        set_selectable_perk(PERK_deadly_accuracy_throwing, 0, 295, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_pugilist) == 0) and
+        (dude_level >= 5) and
+        (has_skill(dude_obj, SKILL_UNARMED_COMBAT) >= 25)
+    ) then begin
+        set_selectable_perk(PERK_pugilist, 1, 296, mstr_perk(1245));
+    end
+    else begin
+        set_selectable_perk(PERK_pugilist, 0, 296, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_grace_under_fire) == 0) and
+        (dude_level >= 11) and
+        (get_critter_stat(dude_obj, STAT_pe) <= 9)
+    ) then begin
+        set_selectable_perk(PERK_grace_under_fire, 1, 297, mstr_perk(1246));
+    end
+    else begin
+        set_selectable_perk(PERK_grace_under_fire, 0, 297, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_observant) == 0) and
+        (has_skill(dude_obj, SKILL_TRAPS) >= 30) and
+        (get_critter_stat(dude_obj, STAT_pe) >= 5)
+    ) then begin
+        set_selectable_perk(PERK_observant, 1, 298, mstr_perk(1247));
+    end
+    else begin
+        set_selectable_perk(PERK_observant, 0, 298, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_superior_senses) == 0) and
+        (dude_level >= 14) and
+        (get_critter_stat(dude_obj, STAT_pe) >= 5)
+    ) then begin
+        set_selectable_perk(PERK_superior_senses, 1, 299, mstr_perk(1248));
+    end
+    else begin
+        set_selectable_perk(PERK_superior_senses, 0, 299, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_robosage) < 2) and
+        (has_skill(dude_obj, SKILL_REPAIR) >= 50) and
+        (get_critter_stat(dude_obj, STAT_iq) >= 6)
+    ) then begin
+        set_selectable_perk(PERK_robosage, 1, 300, mstr_perk(1249));
+    end
+    else begin
+        set_selectable_perk(PERK_robosage, 0, 300, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_weapon_finesse_unarmed) < 2) and
+        (has_skill(dude_obj, SKILL_UNARMED_COMBAT) >= 55) and
+        not(has_trait(TRAIT_TRAIT, dude_obj, TRAIT_heavy_handed))
+    ) then begin
+        set_selectable_perk(PERK_weapon_finesse_unarmed, 1, 301, mstr_perk(1250));
+    end
+    else begin
+        set_selectable_perk(PERK_weapon_finesse_unarmed, 0, 301, "");
+    end
+
+    if (
+        (has_fake_perk(PERK_weapon_finesse_melee_weapons) < 2) and
+        (has_skill(dude_obj, SKILL_MELEE) >= 55) and
+        not(has_trait(TRAIT_TRAIT, dude_obj, TRAIT_heavy_handed))
+    ) then begin
+        set_selectable_perk(PERK_weapon_finesse_melee_weapons, 1, 302, mstr_perk(1251));
+    end
+    else begin
+        set_selectable_perk(PERK_weapon_finesse_melee_weapons, 0, 302, "");
+    end
+
+    // apply perk effects, we call this on hook
+    call perk_apply;
+
+end
+
+procedure perk_apply begin
+
+    variable firewalker_levels;
+    firewalker_levels := has_fake_perk(PERK_firewalker);
+
+    if (firewalker_levels > 0) then begin
+        variable old_fw_levels;
+        old_fw_levels := get_sfall_global_int("fyp_fwbn");
+
+        if (old_fw_levels != firewalker_levels) then begin
+            set_pc_extra_stat(STAT_dmg_thresh_fire, (get_pc_extra_stat(STAT_dmg_thresh_fire) + (4 * firewalker_levels) - (4 * old_fw_levels)));
+            // update levels
+            set_sfall_global("fyp_fwbn", firewalker_levels);
+        end
+    end
+
+    if (has_fake_perk(PERK_team_player)) then begin
+
+        // apply for first time
+        if ((get_sfall_global_int("fyp_tpbn") == 0) and (true_party_size >= 1)) then begin
+            // bonus applied
+            set_sfall_global("fyp_tpbn", 1);
+            // remove reset
+            set_sfall_global("fyp_tprm", 0);
+            // apply 10% bonus to all skills
+            call modify_all_skills(10);
+        end
+        // TODO: this should go in a global script maybe?
+        // did we apply the bonus but player lost party members?
+        else if ((get_sfall_global_int("fyp_tpbn") == 1) and (true_party_size == 0) and (get_sfall_global_int("fyp_tprm") == 0)) then begin
+            // remove bonus applied
+            set_sfall_global("fyp_tpbn", 0);
+            // reset applied
+            set_sfall_global("fyp_tprm", 1);
+            // remove bonuses
+            call modify_all_skills(-10);
+        end
+    end
+
+    if (has_fake_perk(PERK_loner)) then begin
+
+        // apply for first time
+        if ((get_sfall_global_int("fyp_lobn") == 0) and (true_party_size == 0)) then begin
+            // bonus applied
+            set_sfall_global("fyp_lobn", 1);
+            // remove reset
+            set_sfall_global("fyp_lorm", 0);
+            // apply 10% bonus to all skills
+            call modify_all_skills(10);
+        end
+        // TODO: this should go in a global script maybe?
+        // did we apply the bonus but player gained party members?
+        else if ((get_sfall_global_int("fyp_lobn") == 1) and (true_party_size > 0) and (get_sfall_global_int("fyp_lorm") == 0)) then begin
+            // remove bonus applied
+            set_sfall_global("fyp_lobn", 0);
+            // reset applied
+            set_sfall_global("fyp_lorm", 1);
+            // remove bonuses
+            call modify_all_skills(-10);
+        end
+    end
+
+    if (has_fake_perk(PERK_hide_of_scars) and get_sfall_global_int("fyp_hsbn") == 0) then begin
+        set_pc_extra_stat(STAT_dmg_resist, (get_pc_extra_stat(STAT_dmg_resist) + 15));
+        set_pc_extra_stat(STAT_dmg_resist_laser, (get_pc_extra_stat(STAT_dmg_resist_laser) + 15));
+        set_pc_extra_stat(STAT_dmg_resist_plasma, (get_pc_extra_stat(STAT_dmg_resist_plasma) + 15));
+        set_pc_extra_stat(STAT_dmg_resist_electrical, (get_pc_extra_stat(STAT_dmg_resist_electrical) + 15));
+        set_pc_extra_stat(STAT_dmg_resist_emp, (get_pc_extra_stat(STAT_dmg_resist_emp) + 15));
+        set_pc_extra_stat(STAT_dmg_resist_explosion, (get_pc_extra_stat(STAT_dmg_resist_explosion) + 15));
+        set_sfall_global("fyp_hsbn", 1);
+    end
+
+    if (has_fake_perk(PERK_hit_the_deck) and get_sfall_global_int("fyp_hdbn") == 0) then begin
+        set_pc_extra_stat(STAT_dmg_resist_explosion, (get_pc_extra_stat(STAT_dmg_resist_explosion) + 50));
+        set_sfall_global("fyp_hdbn", 1);
+    end
+
+    if (has_fake_perk(PERK_tough_hide) and get_sfall_global_int("fyp_thbn") == 0) then begin
+        set_pc_extra_stat(STAT_dmg_resist, (get_pc_extra_stat(STAT_dmg_resist) + 10));
+        set_pc_extra_stat(STAT_dmg_resist_laser, (get_pc_extra_stat(STAT_dmg_resist_laser) + 10));
+        set_pc_extra_stat(STAT_dmg_resist_plasma, (get_pc_extra_stat(STAT_dmg_resist_plasma) + 10));
+        set_pc_extra_stat(STAT_dmg_resist_electrical, (get_pc_extra_stat(STAT_dmg_resist_electrical) + 10));
+        set_pc_extra_stat(STAT_dmg_resist_emp, (get_pc_extra_stat(STAT_dmg_resist_emp) + 10));
+        set_pc_extra_stat(STAT_dmg_resist_explosion, (get_pc_extra_stat(STAT_dmg_resist_explosion) + 10));
+        set_pc_extra_stat(STAT_dmg_resist_fire, (get_pc_extra_stat(STAT_dmg_resist_fire) + 10));
+        set_pc_extra_stat(STAT_ac, (get_pc_extra_stat(STAT_ac) + 15));
+        set_sfall_global("fyp_thbn", 1);
+    end
+
+    // TODO
+   if (has_fake_perk(PERK_esteemed_academic) and get_sfall_global_int("fyp_eabn") == 0) then begin
+        set_global_var(GVAR_CRAFT_FLOATING_EYE_BOT, 1);
+        set_sfall_global("fyp_eabn", 1);
+    end
+
+    if (has_fake_perk(PERK_advanced_research) and get_sfall_global_int("fyp_arbn") == 0) then begin
+        critter_mod_skill(dude_obj, SKILL_ENERGY_WEAPONS, 25);
+        critter_mod_skill(dude_obj, SKILL_REPAIR, 25);
+        set_sfall_global("fyp_arbn", 1);
+    end
+
+    if (has_fake_perk(PERK_divine_favor) and get_sfall_global_int("fyp_dfbn") == 0) then begin
+        variable k, v, maxv, maxk;
+        maxv := 0;
+        maxk := -1;
+        // The index order must match DEFINE.H
+        variable all_stats = [
+            get_critter_stat(dude_obj, STAT_st),
+            get_critter_stat(dude_obj, STAT_pe),
+            get_critter_stat(dude_obj, STAT_en),
+            get_critter_stat(dude_obj, STAT_ch),
+            get_critter_stat(dude_obj, STAT_iq),
+            get_critter_stat(dude_obj, STAT_ag),
+            get_critter_stat(dude_obj, STAT_lu)
+            ];
+
+        // Loop and find the highest value
+        foreach (k: v in all_stats) begin
+            if (maxv == 0 or v > maxv) then begin
+                maxv := v;
+                maxk := k;
+            end
+        end
+
+        if (maxk != -1) then begin
+            call set_dude_attr(maxk, get_pc_base_stat(maxk) + 1);
+            set_sfall_global("fyp_dfbn", 1);
+        end
+    end
+
+    if (has_fake_perk(PERK_stunt_man) and get_sfall_global_int("fyp_smbn") == 0) then begin
+        set_pc_extra_stat(STAT_dmg_resist_explosion, (get_pc_extra_stat(STAT_dmg_resist_explosion) + 25));
+        critter_mod_skill(dude_obj, SKILL_OUTDOORSMAN, 10);
+        set_sfall_global("fyp_smbn", 1);
+    end
+
+    if (has_fake_perk(PERK_cancerous_growth) and get_sfall_global_int("fyp_cgbn") == 0) then begin
+        set_pc_extra_stat(STAT_heal_rate, (get_pc_extra_stat(STAT_heal_rate) + 2));
+        set_sfall_global("fyp_cgbn", 1);
+    end
+
+    if (has_fake_perk(PERK_deadly_accuracy_small_guns) and get_sfall_global_int("fyp_dasg") == 0) then begin
+        critter_mod_skill(dude_obj, SKILL_SMALL_GUNS, 20);
+        set_sfall_global("fyp_dasg", 1);
+    end
+
+    if (has_fake_perk(PERK_deadly_accuracy_big_guns) and get_sfall_global_int("fyp_dabg") == 0) then begin
+        critter_mod_skill(dude_obj, SKILL_BIG_GUNS, 20);
+        set_sfall_global("fyp_dabg", 1);
+    end
+
+    if (has_fake_perk(PERK_deadly_accuracy_energy_weapons) and get_sfall_global_int("fyp_daew") == 0) then begin
+        critter_mod_skill(dude_obj, SKILL_ENERGY_WEAPONS, 20);
+        set_sfall_global("fyp_daew", 1);
+    end
+
+    if (has_fake_perk(PERK_deadly_accuracy_throwing) and get_sfall_global_int("fyp_dath") == 0) then begin
+        critter_mod_skill(dude_obj, SKILL_THROWING, 20);
+        set_sfall_global("fyp_dath", 1);
+    end
+
+    if (has_fake_perk(PERK_pugilist) and get_sfall_global_int("fyp_pugi") == 0) then begin
+        set_pc_extra_stat(STAT_melee_dmg, get_pc_extra_stat(STAT_melee_dmg) + 2);
+        set_sfall_global("fyp_pugi", 1);
+    end
+
+    if (has_fake_perk(PERK_observant) and get_sfall_global_int("fyp_obsr") == 0) then begin
+        critter_mod_skill(dude_obj, SKILL_TRAPS, 25);
+        critter_mod_skill(dude_obj, SKILL_LOCKPICK, 5);
+        set_sfall_global("fyp_obsr", 1);
+    end
+
+    if (has_fake_perk(PERK_superior_senses) and get_sfall_global_int("fyp_sups") == 0) then begin
+        critter_mod_skill(dude_obj, SKILL_TRAPS, 15);
+        call set_dude_attr(STAT_pe, get_pc_base_stat(STAT_pe) + 1);
+        set_sfall_global("fyp_sups", 1);
+    end
+
+    variable weapon_finesse_unarmed_levels;
+    weapon_finesse_unarmed_levels := has_fake_perk(PERK_weapon_finesse_unarmed);
+
+    if (weapon_finesse_unarmed_levels > 0) then begin
+        variable old_wfu_levels;
+        old_wfu_levels := get_sfall_global_int("fyp_wfun");
+
+        if (old_wfu_levels != weapon_finesse_unarmed_levels) then begin
+            critter_mod_skill(dude_obj, SKILL_UNARMED_COMBAT, (10 * weapon_finesse_unarmed_levels) - (10 * old_wfu_levels));
+            // update levels
+            set_sfall_global("fyp_wfun", weapon_finesse_unarmed_levels);
+        end
+    end
+
+    variable weapon_finesse_melee_levels;
+    weapon_finesse_melee_levels := has_fake_perk(PERK_weapon_finesse_melee_weapons);
+
+    if (weapon_finesse_melee_levels > 0) then begin
+        variable old_wfmw_levels;
+        old_wfmw_levels := get_sfall_global_int("fyp_wfmw");
+
+        if (old_wfmw_levels != weapon_finesse_melee_levels) then begin
+            critter_mod_skill(dude_obj, SKILL_MELEE, (10 * weapon_finesse_melee_levels) - (10 * old_wfmw_levels));
+            // update levels
+            set_sfall_global("fyp_wfmw", weapon_finesse_melee_levels);
+        end
+    end
+end
+
+procedure start begin
+    variable mode;
+    mode := get_sfall_global_int("fy_prk02");
+
+    if((mode != dude_level) and (dude_level > 1)) then begin
+        register_hook_proc(HOOK_GAMEMODECHANGE, perk_level_change);
+        call perk_level_change;
+        set_sfall_global("fy_prk02", dude_level);
+    end
+end
+
+procedure modify_all_skills(variable mod) begin
+    variable skill = SKILL_SMALL_GUNS;
+
+    // Loop through all 18 skills
+    while (skill <= SKILL_OUTDOORSMAN) do begin
+        critter_mod_skill(dude_obj, skill, mod);
+        skill ++;
+    end
+end

@@ -1,0 +1,22 @@
+/*
+
+   Footprint misc object
+
+*/
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_FOOTSTEP
+
+procedure start;
+procedure timed_event_p_proc;
+
+procedure start begin
+   add_timer_event(self_obj, game_ticks(random(3, 18)), 0);
+end
+
+procedure timed_event_p_proc begin
+   if (fixed_param == 0) then begin
+      destroy_object(self_obj);
+   end
+end

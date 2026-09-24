@@ -1,0 +1,299 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#include "..\headers\updatmap.h"
+#include "..\headers\party.h"
+
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\maxbunkr.h"
+
+
+/* Standard Script Procedures */
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_MAXBUNKR
+
+variable p1, p2, s1, s2, andrea, traci, glenn, reggie, jerry, ed, sarah, jon, tamara;
+
+export variable Reggie_Ptr;
+
+procedure map_enter_p_proc begin
+
+   if (map_first_run) then begin
+      display_mstr(100);
+   end
+
+   if(global_var(GVAR_WELCOME_BOS) == 1) then begin
+      if(not(is_loading_game)) then begin
+         override_map_start_hex(22270, 0, 2);
+      end
+      set_global_var(GVAR_WELCOME_BOS, 2);
+      game_ui_disable;
+   end
+
+   fadein(1);
+   Full_Light;
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_HIGH_TECH), 1);
+end
+
+procedure map_update_p_proc begin
+
+   if (map_var(MVAR_SENIOR_CUTSCENE) == 1) then begin
+
+      fadeout(1);
+
+      reggie = Reggie_Ptr;
+      move_to(reggie, 21897, 0);
+      critter_attempt_placement(reggie, 21897, 0);
+
+      move_to(dude_obj, 21501, 0);
+      critter_attempt_placement(dude_obj, 21501, 0);
+      reg_anim_clear(dude_obj);
+      reg_anim_begin();
+      anim(dude_obj, ANIMATE_ROTATION, 2);
+      reg_anim_end();
+
+      andrea = create_object_sid(PID_ANDREA_BRIXLEY, 21503, dude_elevation, -1);
+      reg_anim_clear(andrea);
+      reg_anim_begin();
+      anim(andrea, ANIMATE_ROTATION, 2);
+      reg_anim_end();
+
+      glenn = create_object_sid(PID_GLENN_DEERING, 21507, dude_elevation, -1);
+      reg_anim_clear(glenn);
+      reg_anim_begin();
+      anim(glenn, ANIMATE_ROTATION, 1);
+      reg_anim_end();
+
+      traci = create_object_sid(PID_TRACI_NIELS, 21708, dude_elevation, -1);
+
+      jerry = create_object_sid(PID_JERRY_CORSETTI, 21497, dude_elevation, -1);
+      reg_anim_clear(jerry);
+      reg_anim_begin();
+      anim(jerry, ANIMATE_ROTATION, 3);
+      reg_anim_end();
+
+      reg_anim_clear(reggie);
+      reg_anim_begin();
+      anim(reggie, ANIMATE_ROTATION, 4);
+      reg_anim_end();
+
+      p1 = create_object_sid(PID_SENIOR_PALADIN_MALE, 22298, dude_elevation, -1);
+      reg_anim_clear(p1);
+      reg_anim_begin();
+      anim(p1, ANIMATE_ROTATION, 4);
+      reg_anim_end();
+
+      p2 = create_object_sid(PID_SENIOR_PALADIN_FEMALE, 22698, dude_elevation, -1);
+      reg_anim_clear(p2);
+      reg_anim_begin();
+      anim(p2, ANIMATE_ROTATION, 4);
+      reg_anim_end();
+
+      s1 = create_object_sid(PID_SENIOR_SCRIBE_MALE, 22307, dude_elevation, -1);
+      s2 = create_object_sid(PID_SENIOR_SCRIBE_FEMALE, 22506, dude_elevation, -1);
+      ed = create_object_sid(PID_EDWARD_WHATLEY, 22908, dude_elevation, -1);
+      sarah = create_object_sid(PID_SARAH_WHATLEY, 23107, dude_elevation, -1);
+
+      jon = create_object_sid(PID_JON_YOUNG, 23098, dude_elevation, -1);
+      reg_anim_clear(jon);
+      reg_anim_begin();
+      anim(jon, ANIMATE_ROTATION, 4);
+      reg_anim_end();
+
+      tamara = create_object_sid(PID_TAMARA_YOUNG, 23297, dude_elevation, -1);
+      reg_anim_clear(tamara);
+      reg_anim_begin();
+      anim(tamara, ANIMATE_ROTATION, 4);
+      reg_anim_end();
+
+      tile_set_center(dude_tile);
+
+      set_map_var(MVAR_SENIOR_CUTSCENE, 2);
+
+      add_timer_event(self_obj, game_ticks(1), 1);
+      add_timer_event(self_obj, game_ticks(7), 2);
+      add_timer_event(self_obj, game_ticks(13), 3);
+      add_timer_event(self_obj, game_ticks(15), 4);
+      add_timer_event(self_obj, game_ticks(21), 5);
+      add_timer_event(self_obj, game_ticks(27), 6);
+      add_timer_event(self_obj, game_ticks(33), 7);
+      add_timer_event(self_obj, game_ticks(39), 8);
+      add_timer_event(self_obj, game_ticks(46), 9);
+      add_timer_event(self_obj, game_ticks(48), 10);
+      add_timer_event(self_obj, game_ticks(54), 11);
+      add_timer_event(self_obj, game_ticks(60), 12);
+      add_timer_event(self_obj, game_ticks(63), 13);
+      add_timer_event(self_obj, game_ticks(66), 14);
+      add_timer_event(self_obj, game_ticks(72), 15);
+      add_timer_event(self_obj, game_ticks(78), 16);
+
+      party_no_follow_on;
+
+      game_ui_disable;
+
+      fadein(1);
+
+   end
+
+    Full_Light;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end
+
+procedure timed_event_p_proc begin
+   if(fixed_param == 1) then begin
+      float_msg(andrea, mstr(200), FLOAT_COLOR_GOOD);
+   end
+   else if(fixed_param == 2) then begin
+      float_msg(andrea, mstr(201), FLOAT_COLOR_GOOD);
+   end
+   else if(fixed_param == 3) then begin
+      float_msg(traci, mstr(202), FLOAT_COLOR_BAD);
+   end
+   else if(fixed_param == 4) then begin
+      float_msg(andrea, mstr(203), FLOAT_COLOR_GOOD);
+   end
+   else if(fixed_param == 5) then begin
+      float_msg(andrea, mstr(204), FLOAT_COLOR_GOOD);
+   end
+   else if(fixed_param == 6) then begin
+      float_msg(p1, mstr(205), FLOAT_COLOR_SFX);
+      float_msg(s2, mstr(205), FLOAT_COLOR_SFX);
+
+      float_msg(jerry, mstr(207) + dude_name + mstr(208), FLOAT_COLOR_GOOD);
+
+      float_msg(p2, mstr(206), FLOAT_COLOR_GOOD);
+      float_msg(s1, mstr(206), FLOAT_COLOR_GOOD);
+
+      float_msg(ed, mstr(209), FLOAT_COLOR_SFX);
+   end
+   else if(fixed_param == 7) then begin
+      float_msg(andrea, mstr(210), FLOAT_COLOR_GOOD);
+   end
+   else if(fixed_param == 8) then begin
+      float_msg(andrea, mstr(211), FLOAT_COLOR_GOOD);
+   end
+   else if(fixed_param == 9) then begin
+
+      Face_Critter(andrea, dude_obj);
+      Face_Critter(dude_obj, andrea);
+
+      reg_anim_clear(dude_obj);
+      reg_anim_begin();
+      reg_anim_animate(dude_obj, ANIM_magic_hands_ground, -1);
+      reg_anim_end();
+
+      reg_anim_clear(andrea);
+      reg_anim_begin();
+      reg_anim_animate(andrea, ANIM_magic_hands_middle, -1);
+      reg_anim_end();
+
+   end
+   else if(fixed_param == 10) then begin
+      float_msg(andrea, mstr(212) + dude_name + mstr(213), FLOAT_COLOR_GOOD);
+
+      reg_anim_clear(dude_obj);
+      reg_anim_begin();
+      anim(dude_obj, ANIMATE_ROTATION, 2);
+      reg_anim_end();
+
+      reg_anim_clear(andrea);
+      reg_anim_begin();
+      anim(andrea, ANIMATE_ROTATION, 2);
+      reg_anim_end();
+   end
+   else if(fixed_param == 11) then begin
+      float_msg(andrea, mstr(214), FLOAT_COLOR_GOOD);
+   end
+   else if(fixed_param == 12) then begin
+      float_msg(andrea, mstr(215), FLOAT_COLOR_GOOD);
+   end
+   else if(fixed_param == 13) then begin
+      float_msg(andrea, " ", FLOAT_COLOR_GOOD);
+      float_msg(dude_obj, mstr(216), FLOAT_COLOR_GOOD);
+   end
+   else if(fixed_param == 14) then begin
+      float_msg(dude_obj, " ", FLOAT_COLOR_GOOD);
+      float_msg(andrea, mstr(217), FLOAT_COLOR_GOOD);
+   end
+   else if(fixed_param == 15) then begin
+      float_msg(s1, mstr(205), FLOAT_COLOR_SFX);
+      float_msg(p2, mstr(205), FLOAT_COLOR_SFX);
+
+      float_msg(ed, mstr(207) + dude_name + mstr(208), FLOAT_COLOR_GOOD);
+
+      float_msg(s2, mstr(206), FLOAT_COLOR_GOOD);
+      float_msg(p1, mstr(206), FLOAT_COLOR_GOOD);
+
+      float_msg(jerry, mstr(209), FLOAT_COLOR_SFX);
+      float_msg(traci, mstr(202), FLOAT_COLOR_BAD);
+
+      float_msg(reggie, mstr(206), FLOAT_COLOR_GOOD);
+      float_msg(glenn, mstr(205), FLOAT_COLOR_SFX);
+   end
+   else if(fixed_param == 16) then begin
+      fadeout(1);
+
+      game_time_advance_hour(1200);
+      move_to(dude_obj, 16514, 1);
+      critter_attempt_placement(dude_obj, 16514, 1);
+
+      set_obj_visibility(p1, 1);
+      set_obj_visibility(p2, 1);
+      set_obj_visibility(s1, 1);
+      set_obj_visibility(s2, 1);
+      set_obj_visibility(andrea, 1);
+      set_obj_visibility(traci, 1);
+      set_obj_visibility(glenn, 1);
+      set_obj_visibility(jerry, 1);
+      set_obj_visibility(ed, 1);
+      set_obj_visibility(sarah, 1);
+      set_obj_visibility(jon, 1);
+      set_obj_visibility(tamara, 1);
+
+      destroy_object(p1);
+      destroy_object(p2);
+      destroy_object(s1);
+      destroy_object(s2);
+      destroy_object(andrea);
+      destroy_object(traci);
+      destroy_object(glenn);
+      destroy_object(jerry);
+      destroy_object(ed);
+      destroy_object(sarah);
+      destroy_object(jon);
+      destroy_object(tamara);
+
+      move_to(reggie, 21501, 0);
+      critter_attempt_placement(reggie, 21501, 0);
+
+      reg_anim_clear(reggie);
+      reg_anim_begin();
+      anim(reggie, ANIMATE_ROTATION, 2);
+      reg_anim_end();
+
+      party_no_follow_off;
+      game_ui_enable;
+      fadein(1);
+   end
+end

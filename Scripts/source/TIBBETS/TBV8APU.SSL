@@ -1,0 +1,83 @@
+/*
+	Animate forever
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\vault8.h"
+
+#define NAME                    SCRIPT_TBV8APU
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+procedure use_skill_on_p_proc;
+procedure animfrvr;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   call animfrvr;
+   add_timer_event(self_obj, 1, 1);
+end
+
+procedure map_update_p_proc begin
+   if (
+      (combat_is_initialized == false) and
+      (elevation(self_obj) == elevation(dude_obj))
+   ) then
+   begin
+      call animfrvr;
+   end
+end
+
+procedure timed_event_p_proc begin
+  if (fixed_param == 1) then begin
+      if (
+         (anim_busy(self_obj) == false) and
+         (combat_is_initialized == false) and
+         (elevation(self_obj) == elevation(dude_obj))
+         ) then begin
+            call animfrvr;
+      end
+      add_timer_event(self_obj, 1, 1);
+  end
+end
+
+procedure animfrvr begin
+    if(map_var(MVAR_LIFE) == 1) then begin
+        reg_anim_begin();
+        reg_anim_animate_forever(self_obj, ANIM_stand);
+        reg_anim_end();
+    end
+end
+
+procedure use_skill_on_p_proc begin
+ if (action_being_used == SKILL_REPAIR) then begin
+    script_overrides;
+
+      if(map_var(MVAR_LIFE) == 1) then begin
+          display_mstr(100);
+      end
+      else begin
+         script_overrides;
+         if(map_var(MVAR_POWER) == 1) then begin
+               if(is_success(roll_vs_skill(source_obj, SKILL_REPAIR, 0))) then begin
+                  display_mstr(101);
+               end
+               else begin
+                  display_mstr(102);
+               end
+         end else begin
+               display_mstr(103);
+         end
+      end
+   end else if (action_being_used == SKILL_SCIENCE) then begin
+        if(is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, 0))) then begin
+            script_overrides;
+            display_mstr(104);
+        end
+   end
+end

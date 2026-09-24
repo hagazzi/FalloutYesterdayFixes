@@ -1,0 +1,12 @@
+
+{100}{}{You have entered Vault 8. The air is hot and the power seems to be running low.}
+
+{105}{}{Descending into the depths of Vault 8, the vault dweller is greeted by the familiar scent of metal. Home sweet home.}
+{106}{}{Lying on the ground, the eyebot twitches. It looks at the vault dweller with its large electro-optical sensor, as if pleading for assistance.}
+{107}{}{As the realization dawns that life support is offline, the vault dweller's face becomes a portrait of mild panic. Breathing is, after all, a feature most of us take for granted.}
+{108}{}{Flipping the final switch, the vault dweller restores life support to the Vault. A heroic moment, slightly ruined by the realization that the Overseer is not here to witness it.}
+{109}{}{Stepping into the private quarters, the vault dweller pauses, momentarily stunned by the view. The untouched bed, neatly folded sheets, perfectly aligned furniture, and an unsettling truth: only one type of jumpsuit hangs in the closet.}
+{110}{}{The generator lies in shambles, its exposed wires and flickering lights screaming, "Fix me!"}
+{111}{}{With a combination of ingenuity, duct tape, and probably a bit of swearing, the generator hums back to life.}
+{112}{}{With a few clanks, sparks, and a prayer to the god of machines, the eye bot whirs back to life.}
+{113}{}{With the press of a button, the jukebox might roar to life, filling the Vault with scratchy tunes. For a brief moment, the horrors of war could seem just a little less grim.}

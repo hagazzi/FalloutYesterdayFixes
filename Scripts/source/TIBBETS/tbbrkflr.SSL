@@ -1,0 +1,120 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\tibbets.h"
+
+#define NAME                    SCRIPT_TBBRKFLR
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_skill_on_p_proc;
+procedure use_obj_on_p_proc;
+procedure repaired_ok;
+procedure repaired_fail(variable o);
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_skill_on_p_proc begin
+   if (action_being_used == SKILL_REPAIR) then begin
+       script_overrides;
+
+      if(skill_success(source_obj, SKILL_REPAIR, 0)) then begin
+         display_msg(mstr_skill(606) + " " + obj_name(self_obj) + ".");
+		   give_xp(100);
+         call repaired_ok;
+      end else begin
+         display_msg(mstr_skill(607) + " " + obj_name(self_obj) + ".");
+         call repaired_fail(source_obj);
+      end
+   end else if (action_being_used == SKILL_SCIENCE) then begin
+      script_overrides;
+
+      if(skill_success(source_obj, SKILL_SCIENCE, 0)) then begin
+         display_mstr(100);
+      end else begin
+         display_msg(mstr_skill(611));
+      end
+   end else if (action_being_used == SKILL_TRAPS) then begin
+      script_overrides;
+
+      if(skill_success(source_obj, SKILL_TRAPS, 0)) then begin
+         display_mstr(101);
+      end else begin
+         display_msg(mstr_skill(611));
+      end
+   end
+end
+
+procedure use_obj_on_p_proc begin
+   variable tool := obj_pid(obj_being_used_with);
+
+   if (
+   tool == PID_WRENCH or
+   tool == PID_MULTI_TOOL or
+   tool == PID_SUPER_TOOL_KIT
+   ) then begin
+      script_overrides;
+      display_msg(mstr_skill(606) + " " + obj_name(self_obj) + ".");
+		give_xp(100);
+      call repaired_ok;
+   end
+end
+
+procedure repaired_ok begin
+    fadeout(1);
+    game_time_advance(ONE_GAME_HOUR);
+    set_obj_visibility(self_obj, 1);
+    fadein(1);
+    set_global_var(GVAR_FIXED_FLOOR, 1);
+    destroy_object(self_obj);
+end
+
+procedure repaired_fail(variable o) begin
+   fadeout(1);
+   game_time_advance(ONE_GAME_HOUR);
+   critter_dmg(o, random(1, 5), DMG_electrical);
+
+   if(random(0, 1) == 0) then begin
+      play_sfx("ZAPPER");
+   end
+   else begin
+      play_sfx("ZAPPER1");
+   end
+   fadein(1);
+end

@@ -1,0 +1,3 @@
+
+{100}{}{You have found an old gas station.}
+{101}{}{You have found an old gas station with rocket fuel depos.}

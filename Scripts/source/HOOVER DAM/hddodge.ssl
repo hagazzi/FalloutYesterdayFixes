@@ -1,0 +1,1051 @@
+/*
+
+        Name:
+        Location:
+        Description:
+
+           Created: 21.1.2024. 15:13:30
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_C /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_HDDODGE
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_HOOVER_DAM)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\hdam.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure use_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+procedure use_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+procedure Node012;
+procedure Node013;
+procedure Node014;
+procedure Node015;
+procedure Node016;
+procedure Node017;
+procedure Node018;
+procedure Node019;
+procedure Node020;
+procedure Node021;
+procedure Node022;
+procedure Node023;
+procedure Node024;
+procedure Node025;
+procedure Node026;
+procedure Node027;
+procedure Node028;
+procedure Node029;
+procedure Node030;
+procedure Node031;
+procedure Node032;
+procedure Node033;
+procedure Node034;
+procedure Node035;
+procedure Node036;
+procedure Node037;
+procedure Node038;
+procedure Node039;
+procedure Node040;
+procedure Node041;
+procedure Node042;
+procedure Node043;
+procedure Node044;
+procedure Node045;
+procedure Node046;
+procedure Node047;
+procedure Node048;
+procedure Node049;
+procedure Node050;
+procedure Node051;
+procedure Node052;
+procedure Node053;
+procedure Node054;
+procedure Node055;
+procedure Node056;
+procedure Node057;
+procedure Node058;
+procedure Node059;
+procedure Node060;
+procedure Node061;
+procedure Node062;
+procedure Node063;
+procedure Node064;
+procedure Node065;
+procedure Node066;
+procedure Node067;
+procedure Node068;
+procedure Node069;
+procedure Node070;
+procedure Node071;
+procedure Node072;
+procedure Node073;
+procedure Node074;
+procedure Node075;
+procedure Node076;
+procedure Node077;
+procedure Node078;
+procedure Node079;
+procedure Node079a;
+procedure Node079b;
+procedure Node080;
+procedure Node081;
+procedure assassinate_frag;
+procedure assassinate_plasma;
+procedure assassinate_mach_v;
+procedure assassinate_molotov;
+procedure assassinate_dynamite;
+procedure assassinate_plastic;
+procedure assassinate_dodge(variable assassination_type);
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Ledger_Once               (8)
+#define LVAR_Discussed_Pierre          (9)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+import variable Dodge_Ptr;
+
+procedure use_p_proc begin
+	if (source_obj == dude_obj) then begin
+      play_sfx("SLDOORSO");
+
+      if (
+         ((global_var(GVAR_QUEST_FRAME_ENZO) == QUEST_ACCEPTED) or (global_var(GVAR_QUEST_FRAME_ENZO) == QUEST_PAST_PART_1)) and
+        dude_item(PID_PLASTIC_EXPLOSIVES)
+   ) then begin
+
+         remove_pid_qty(dude_obj, PID_PLASTIC_EXPLOSIVES, 1)
+
+         if (is_success(roll_vs_skill(dude_obj, SKILL_TRAPS, -10))) then begin
+
+            if (global_var(GVAR_QUEST_FRAME_ENZO) == QUEST_ACCEPTED) then
+               set_global_var(GVAR_QUEST_FRAME_ENZO, QUEST_PAST_PART_1);
+            else if (global_var(GVAR_QUEST_FRAME_ENZO) == QUEST_PAST_PART_1) then
+               set_global_var(GVAR_QUEST_FRAME_ENZO, QUEST_PAST_PART_2);
+
+            give_xp(250);
+            display_mstr(152);
+         end else begin
+            display_mstr(153);
+            set_global_var(GVAR_ENEMY_HOOVER_DAM, 1);
+            create_object(PID_PLASTIC_EXPLOSIVES, dude_tile, dude_elevation);
+         end
+      end
+      else if (global_var(GVAR_QUEST_MEET_DODGE) == 2) then begin
+	   	dialogue_system_enter;
+      end
+      else begin
+         display_mstr(150);
+      end
+   end
+end
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and self_can_see_dude) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   call set_idiot_savant_int;
+
+   start_gdialog(NAME,self_obj,4,-1,-1);
+   gSay_Start;
+   if (global_var(GVAR_QUEST_ARREST_AILIS_PIP) == 0) and (global_var(GVAR_QUEST_ARREST_AILIS) != QUEST_NONE) then
+      call Node077;
+   else if (local_var(LVAR_Herebefore) == 0) then begin
+      call Node001;
+   end else begin
+      call Node064;
+   end
+   gSay_End;
+   end_dialogue;
+
+   call restore_idiot_savant_int;
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+   procedure description_p_proc begin
+      script_overrides;
+      display_mstr(102);
+   end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+set_dr_yuri_know_people_flag(DR_YURI_KNOW_GOVERNOR);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Node001
+begin
+if (dude_is_male) then Reply(200); else
+if (dude_is_female) then Reply(201);
+NOption(202,Node005,4);
+NOption(204,Node002,4);
+if (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_KNOWN) then
+NOption(205,Node068,4);
+NOption(206,Node999,4);
+end
+
+procedure Node002
+begin
+Reply(230);
+NOption(231,Node999,4);
+NOption(232,Node003,4);
+if ((global_var(GVAR_SHOW_LEDGER_TO_DODGE) == 1) and (dude_item_count(PID_WRITTEN_LEDGER) == 2) and local_var(LVAR_Ledger_Once) == 0) then
+NOption(233,Node065,4);
+end
+
+procedure Node003
+begin
+Reply(260);
+NOption(261,Node005,4);
+NOption(262,Node004,4);
+end
+
+procedure Node004
+begin
+Reply(290);
+NOption(291,Node005,4);
+NOption(292,Node999,4);
+end
+
+procedure Node005
+begin
+Reply(320);
+NOption(321,Node036,4);
+if (local_var(LVAR_Discussed_Pierre) == 0) then begin
+   NOption(322,Node013,4);
+end else begin
+   NOption(322,Node022,4);
+end
+NOption(323,Node009,4);
+NOption(324,Node008,4);
+NOption(325,Node006,4);
+NOption(326,Node076,4);
+NOption(327,Node999,4);
+end
+
+procedure Node006
+begin
+Reply(350);
+NOption(351,Node007,4);
+NOption(352,Node005,4);
+end
+
+procedure Node007
+begin
+Reply(380);
+NOption(381,Node005,4);
+NOption(382,Node999,4);
+end
+
+procedure Node008
+begin
+Reply(410);
+NOption(411,Node005,4);
+GOption(412,Node999,4);
+BOption(413,Node999,4);
+end
+
+procedure Node009
+begin
+Reply(440);
+NOption(441,Node016,4);
+NOption(442,Node011,4);
+NOption(443,Node010,4);
+NOption(444,Node005,4);
+NOption(445,Node999,4);
+end
+
+procedure Node010
+begin
+Reply(470);
+NOption(471,Node999,4);
+NOption(472,Node999,4);
+NOption(473,Node005,4);
+end
+
+procedure Node011
+begin
+Reply(500);
+NOption(441,Node016,4);
+NOption(501,Node012,4);
+NOption(502,Node012,4);
+NOption(503,Node005,4);
+NOption(504,Node999,4);
+end
+
+procedure Node012
+begin
+Reply(530);
+GOption(531,Node999,4);
+BOption(532,Node999,4);
+NOption(533,Node005,4);
+end
+
+procedure Node013
+begin
+   set_local_var(LVAR_Discussed_Pierre, 1);
+Reply(560);
+NOption(561,Node014,4);
+if (global_var(GVAR_KNOW_PIERRE_BOS) == 1) then begin
+   NOption(562,Node015,4);
+end
+NOption(563,Node005,4);
+NOption(564,Node999,4);
+end
+
+procedure Node014
+begin
+Reply(590);
+if (global_var(GVAR_KNOW_PIERRE_BOS) == 1) then begin
+   NOption(591,Node015,4);
+end
+NOption(592,Node005,4);
+NOption(593,Node999,4);
+end
+
+procedure Node015
+begin
+Reply(620);
+NOption(621,Node005,4);
+end
+
+procedure Node016
+begin
+Reply(650);
+NOption(651,Node018,4);
+NOption(652,Node017,4);
+NOption(653,Node026,4);
+NOption(654,Node999,4);
+end
+
+procedure Node017
+begin
+Reply(680);
+NOption(681,Node005,4);
+BOption(682,Node999,4);
+GOption(683,Node999,4);
+end
+
+procedure Node018
+begin
+Reply(710);
+NOption(711,Node021,4);
+NOption(712,Node005,4);
+end
+
+procedure Node019
+begin
+Reply(740);
+NOption(741,Node020,4);
+NOption(742,Node005,4);
+end
+
+procedure Node020
+begin
+Reply(770);
+NOption(771,Node062,4);
+NOption(772,Node005,4);
+NOption(773,Node999,4);
+end
+
+procedure Node021
+begin
+Reply(800);
+NOption(801,Node005,4);
+BOption(802,Node999,4);
+GOption(803,Node999,4);
+end
+
+procedure Node022
+begin
+Reply(830);
+NOption(441,Node016,4);
+NOption(831,Node025,4);
+NOption(832,Node024,4);
+BOption(833,Node023,4);
+NOption(834,Node999,4);
+NOption(835,Node005,4);
+NOption(836,Node999,4);
+end
+
+procedure Node023
+begin
+Reply(860);
+NOption(861,Node005,4);
+NOption(862,Node999,4);
+end
+
+procedure Node024
+begin
+Reply(890);
+NOption(891,Node005,4);
+NOption(892,Node999,4);
+end
+
+procedure Node025
+begin
+Reply(920);
+NOption(921,Node005,4);
+BOption(922,Node999,4);
+end
+
+procedure Node026
+begin
+Reply(950);
+NOption(951,Node016,4);
+NOption(952,Node999,4);
+NOption(953,Node027,4);
+NOption(954,Node005,4);
+end
+
+procedure Node027
+begin
+Reply(980);
+NOption(981,Node005,4);
+NOption(982,Node017,4);
+GOption(983,Node999,4);
+BOption(984,Node999,4);
+end
+
+procedure Node028
+begin
+if (dude_is_male) then Reply(1010); else
+if (dude_is_female) then Reply(1011);
+NOption(1012,Node029,-3);
+NOption(1013,Node032,-3);
+NOption(1014,Node030,-3);
+NOption(1015,Node035,-3);
+NOption(1016,Node999,-3);
+end
+
+procedure Node029
+begin
+Reply(1040);
+NOption(1041,Node999,-3);
+NOption(1042,Node999,-3);
+NOption(1043,Node030,-3);
+end
+
+procedure Node030
+begin
+Reply(1070);
+NOption(1071,Node031,-3);
+NOption(1072,Node032,-3);
+NOption(1073,Node999,-3);
+end
+
+procedure Node031
+begin
+Reply(1100);
+NOption(1101,Node999,-3);
+end
+
+procedure Node032
+begin
+Reply(1130);
+NOption(1131,Node033,-3);
+NOption(1132,Node034,-3);
+NOption(1133,Node999,-3);
+end
+
+procedure Node033
+begin
+Reply(1160);
+NOption(1161,Node999,-3);
+end
+
+procedure Node034
+begin
+Reply(1190);
+NOption(1191,Node999,-3);
+end
+
+procedure Node035
+begin
+if (dude_is_male) then Reply(1220); else
+if (dude_is_female) then Reply(1221);
+NOption(1222,Node999,-3);
+end
+
+procedure Node036
+begin
+Reply(1250);
+NOption(1251,Node999,4);
+NOption(1252,Node037,4);
+end
+
+procedure Node037
+begin
+Reply(1280);
+NOption(1281,Node038,4);
+NOption(1282,Node999,4);
+end
+
+procedure Node038
+begin
+Reply(1310);
+NOption(1311,Node039,4);
+end
+
+procedure Node039
+begin
+Reply(1340);
+NOption(1341,Node040,4);
+end
+
+procedure Node040
+begin
+Reply(1370);
+NOption(1371,Node041,4);
+end
+
+procedure Node041
+begin
+Reply(1400);
+NOption(1401,Node042,4);
+NOption(1402,Node999,4);
+end
+
+procedure Node042
+begin
+Reply(1430);
+NOption(1431,Node043,4);
+end
+
+procedure Node043
+begin
+Reply(1460);
+NOption(1461,Node044,-3);
+end
+
+procedure Node044
+begin
+Reply(1490);
+NOption(1491,Node045,4);
+end
+
+procedure Node045
+begin
+Reply(1520);
+NOption(1521,Node046,4);
+end
+
+procedure Node046
+begin
+Reply(1550);
+NOption(1551,Node047,4);
+NOption(1552,Node999,4);
+end
+
+procedure Node047
+begin
+Reply(1580);
+NOption(1581,Node048,4);
+end
+
+procedure Node048
+begin
+   set_global_var(GVAR_KNOW_3SOME_EX_PRISONERS, 1);
+Reply(1610);
+NOption(1461,Node049,4);
+end
+
+procedure Node049
+begin
+Reply(1640);
+NOption(1641,Node050,4);
+end
+
+procedure Node050
+begin
+Reply(1670);
+NOption(1671,Node051,4);
+end
+
+procedure Node051
+begin
+Reply(1700);
+NOption(1701,Node052,4);
+NOption(1702,Node999,4);
+end
+
+procedure Node052
+begin
+Reply(1730);
+NOption(1731,Node053,4);
+end
+
+procedure Node053
+begin
+Reply(1760);
+NOption(1581,Node054,4);
+end
+
+procedure Node054
+begin
+Reply(1790);
+NOption(1791,Node055,4);
+end
+
+procedure Node055
+begin
+Reply(1820);
+NOption(1821,Node056,4);
+end
+
+procedure Node056
+begin
+Reply(1850);
+NOption(1851,Node057,4);
+NOption(1402,Node999,4);
+end
+
+procedure Node057
+begin
+Reply(1880);
+NOption(1881,Node058,4);
+end
+
+procedure Node058
+begin
+Reply(1910);
+NOption(1911,Node059,4);
+end
+
+procedure Node059
+begin
+Reply(1940);
+NOption(1941,Node999,4);
+if (not(ncr_bos_war_ended)) then
+NOption(1942,Node060,4);
+end
+
+procedure Node060
+begin
+Reply(1970);
+NOption(1971,Node061,4);
+end
+
+procedure Node061
+begin
+Reply(2000);
+GOption(2001,Node078,4);
+BOption(2002,Node999,4);
+end
+
+procedure Node062
+begin
+Reply(2030);
+if (global_var(GVAR_QUEST_HOOVER_PEACE) != QUEST_COMPLETED) then
+   NOption(2031,Node063,4);
+NOption(2032,Node063,4);
+end
+
+procedure Node063
+begin
+   set_global_var(GVAR_QUEST_CITY_COUNCIL, 1);
+Reply(2060);
+NOption(2061,Node999,4);
+end
+
+procedure Node064
+begin
+Reply(mstr(2090)+dude_name+mstr(2091));
+if (global_var(GVAR_QUEST_CITY_COUNCIL) >= 6) then
+NOption(2092,Node067,4);
+if (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_KNOWN) then
+NOption(205,Node068,4);
+NOption(202,Node005,4);
+if ((global_var(GVAR_QUEST_HOOVER_PEACE) == QUEST_COMPLETED) and (global_var(GVAR_QUEST_CITY_COUNCIL) == 0)) then
+   NOption(203,Node019,4);
+else if ((global_var(GVAR_QUEST_HOOVER_PEACE) == QUEST_ACCEPTED) and (global_var(GVAR_QUEST_CITY_COUNCIL) == 0)) then
+   NOption(210,Node019,4);
+
+NOption(204,Node002,4);
+NOption(206,Node999,4);
+if (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_PAST_PART_2) then
+GOption(2093,Node071,4);
+if (global_var(GVAR_QUEST_EXTINGUISH_BURHAM) == 111) then
+NOption(2094,Node075,4);
+if ((global_var(GVAR_QUEST_HOOVER_PEACE) == QUEST_ACCEPTED) and (global_var(GVAR_BROTHERHOOD_DEAD) == 1)) then
+GOption(207,Node079,4);
+if ((global_var(GVAR_QUEST_DISCOVER_SL1C) == QUEST_COMPLETED) and (global_var(GVAR_QUEST_CLEAR_SL1C) != 99) and (global_var(GVAR_QUEST_CLEAR_SL1C) != 14)) then
+GOption(208,Node080,4);
+if (global_var(GVAR_QUEST_CLEAR_SL1C) == 14) then
+GOption(209,Node081,4);
+end
+
+procedure Node065
+begin
+Reply(2120);
+NOption(2121,Node066,4);
+if (dude_item_count(PID_FRAG_GRENADE) > 0) then
+NOption(2122,assassinate_frag,4);
+if (dude_item_count(PID_PLASMA_GRENADE) > 0) then
+NOption(2123,assassinate_plasma,4);
+if (dude_item_count(PID_MOLOTOV_COCKTAIL) > 0) then
+NOption(2124,assassinate_molotov,4);
+if (dude_item_count(PID_MACH_V_MINE) > 0) then
+NOption(2125,assassinate_mach_v,4);
+if (dude_item_count(PID_ACTIVE_DYNAMITE) > 0) then
+NOption(2126,assassinate_dynamite,4);
+if (dude_item_count(PID_ACTIVE_PLASTIC_EXPLOSIVE) > 0) then
+NOption(2127,assassinate_plastic,4);
+end
+
+procedure Node066
+begin
+   set_local_var(LVAR_Ledger_Once, 1);
+   set_global_var(GVAR_SHOW_LEDGER_TO_DODGE, 2);
+   remove_pid_qty(dude_obj, PID_WRITTEN_LEDGER, 2)
+Reply(2150);
+NOption(2061,Node999,4);
+end
+
+procedure Node067
+begin
+
+   if (global_var(GVAR_QUEST_CITY_COUNCIL) == 9) then begin
+      give_xp(800);
+   end
+   else begin
+      give_xp(400);
+   end
+
+   set_global_var(GVAR_QUEST_CITY_COUNCIL, 99);
+
+Reply(2180);
+NOption(2181,Node999,4);
+end
+
+procedure Node068
+begin
+Reply(2210);
+NOption(2211,Node069,4);
+end
+
+procedure Node069
+begin
+Reply(2240);
+NOption(2241,Node070,4);
+end
+
+procedure Node070
+begin
+   set_global_var(GVAR_QUEST_RECALIBRATE_GENERATORS, QUEST_ACCEPTED);
+Reply(2270);
+NOption(2271,Node999,4);
+end
+
+procedure Node071
+begin
+
+set_global_var(GVAR_QUEST_RECALIBRATE_GENERATORS, QUEST_COMPLETED);
+give_xp(500);
+inc_hoover_dam_rep(10);
+display_mstr(155);
+
+Reply(2300);
+NOption(2301,Node999,4);
+end
+
+procedure Node072
+begin
+Reply(2330);
+NOption(2331,Node073,4);
+end
+
+procedure Node073
+begin
+Reply(2360);
+NOption(2361,Node074,4);
+NOption(2362,Node999,4);
+end
+
+procedure Node074
+begin
+Reply(2390);
+NOption(2391,Node999,4);
+end
+
+procedure Node075
+begin
+Reply(2420);
+NOption(2421,Node999,4);
+end
+
+procedure Node076
+begin
+Reply(2450);
+NOption(2451,Node005,4);
+NOption(2452,Node008,4);
+NOption(2453,Node999,4);
+end
+
+procedure Node077
+begin
+
+variable str, xp;
+xp = 3000;
+str = mstr(2480);
+
+if (major_dead) then begin
+   str = str + " " + mstr(2481);
+   xp -= 1000;
+end
+
+if (ailis_dead) then begin
+   str = str + " " + mstr(2483);
+   xp -= 1000;
+end
+else
+   str = str + " " + mstr(2482);
+
+str = str + " " + mstr(2484);
+
+set_global_var(GVAR_QUEST_ARREST_AILIS_PIP, QUEST_COMPLETED);
+
+give_xp(xp);
+display_mstr(151);
+inc_hoover_dam_rep(20);
+
+// We busted both Devon and Ailis
+if (
+   (global_var(GVAR_QUEST_FIND_POISONER) == 3) and
+   (global_var(GVAR_QUEST_HOOVER_PEACE) == QUEST_ACCEPTED)
+   ) then
+   set_global_var(GVAR_QUEST_HOOVER_PEACE, QUEST_COMPLETED);
+
+Reply(str);
+NOption(2181,Node999,4);
+end
+
+procedure Node078
+begin
+   set_global_var(GVAR_QUEST_HOOVER_PEACE, QUEST_ACCEPTED);
+
+   Reply(2510);
+   NOption(2061,Node999,4);
+end
+
+procedure Node079
+begin
+   set_global_var(GVAR_QUEST_HOOVER_PEACE, QUEST_COMPLETED);
+   set_global_var(GVAR_DUDE_OWNS_FANCY_PAD, 1);
+   give_xp(3000);
+   display_msg(g_mstr(1000));
+   inc_hoover_dam_rep(50);
+
+   Reply(2540);
+   if (dude_has_ncr_connection) then
+     NOption(mstr(2541) + " " + mstr(2542),Node079a,4);
+     NOption(mstr(2541) + " " + mstr(2543),Node079b,4);
+   NOption(2544,Node079b,1);
+end
+
+procedure Node079a
+begin
+   give_pid_qty(dude_obj, PID_BOZAR, 1)
+   call Node999;
+end
+
+procedure Node079b
+begin
+   give_pid_qty(dude_obj, PID_M72_GAUSS_RIFLE, 1)
+   call Node999;
+end
+
+procedure Node080
+begin
+Reply(dude_name + mstr(2570));
+NOption(2571,Node999,4);
+end
+
+procedure Node081
+begin
+   give_xp(3000);
+   display_mstr(154);
+   inc_hoover_dam_rep(20);
+
+set_global_var(GVAR_QUEST_CLEAR_SL1C, 99);
+Reply(2600);
+NOption(2601,Node999,4);
+end
+
+procedure assassinate_frag begin
+   call assassinate_dodge(DMG_explosion);
+   remove_pid_qty(dude_obj, PID_FRAG_GRENADE, 1)
+end
+
+procedure assassinate_plasma begin
+   call assassinate_dodge(DMG_plasma);
+   remove_pid_qty(dude_obj, PID_PLASMA_GRENADE, 1)
+end
+
+procedure assassinate_mach_v begin
+   call assassinate_dodge(DMG_explosion);
+   remove_pid_qty(dude_obj, PID_MACH_V_MINE, 1)
+end
+
+procedure assassinate_molotov begin
+   call assassinate_dodge(DMG_fire);
+   remove_pid_qty(dude_obj, PID_MOLOTOV_COCKTAIL, 1)
+end
+
+procedure assassinate_dynamite begin
+   call assassinate_dodge(DMG_explosion);
+   remove_pid_qty(dude_obj, PID_ACTIVE_DYNAMITE, 1)
+end
+
+procedure assassinate_plastic begin
+   call assassinate_dodge(DMG_explosion);
+   remove_pid_qty(dude_obj, PID_ACTIVE_PLASTIC_EXPLOSIVE, 1)
+end
+
+procedure assassinate_dodge(variable assassination_type) begin
+   explosion(tile_num(Dodge_Ptr), elevation(Dodge_Ptr), 10);
+   critter_dmg(Dodge_Ptr, random(150, 300), assassination_type);
+   inc_good_critter
+   set_global_var(GVAR_ENEMY_HOOVER_DAM, 1);
+   set_global_var(GVAR_DODGE_ASSASSINATED, 1);
+end
+
+//xxxxxxxxxxxxxxxxxxxx

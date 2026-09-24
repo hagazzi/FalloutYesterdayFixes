@@ -1,0 +1,117 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_MBBRKPA
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_skill_on_p_proc;
+procedure use_obj_on_p_proc;
+procedure repair_time;
+procedure use_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+
+   // Isaac gave us his PA in exchange for the GECK disk
+   if ((global_var(GVAR_QUEST_ISAAC_GECK) == QUEST_COMPLETED) and (cur_town == AREA_MESA_VERDE)) then begin
+      fadeout(1);
+      set_obj_visibility(self_obj, 1);
+      fadein(1);
+      create_object(PID_POWERED_ARMOR, dude_tile, dude_elevation);
+      destroy_object(self_obj);
+   end
+   else begin
+      display_mstr(100);
+   end
+
+end
+
+procedure use_skill_on_p_proc begin
+
+   if (action_being_used == SKILL_REPAIR) then begin
+       script_overrides;
+       display_mstr(101);
+   end else if (action_being_used == SKILL_SCIENCE) then begin
+      script_overrides;
+
+      game_time_advance(ONE_GAME_HOUR * 8);
+
+      if(skill_success(source_obj, SKILL_SCIENCE, -99)) then begin
+         fadeout(1);
+         set_obj_visibility(self_obj, 1);
+         fadein(1);
+         give_xp(500);
+         display_mstr(102);
+         create_object(PID_POWERED_ARMOR, dude_tile, dude_elevation);
+
+         if ((global_var(GVAR_GVAR_ISAAC_PA) == 0) and (cur_town == AREA_MESA_VERDE)) then begin
+            set_global_var(GVAR_GVAR_ISAAC_PA, 1);
+         end
+
+         destroy_object(self_obj);
+      end else begin
+         display_mstr(103);
+      end
+   end
+end
+
+procedure use_obj_on_p_proc begin
+
+   if (
+      obj_pid(obj_being_used_with) == PID_ISAACS_DECRYPTION_ALGORITHM
+   ) then begin
+      script_overrides;
+      display_msg(mstr(104) + " " + obj_name(self_obj) + ".");
+      fadeout(1);
+      set_obj_visibility(self_obj, 1);
+      fadein(1);
+      give_xp(500);
+      create_object(PID_POWERED_ARMOR, dude_tile, dude_elevation);
+
+      if ((global_var(GVAR_GVAR_ISAAC_PA) == 0) and (cur_town == AREA_MESA_VERDE)) then begin
+         set_global_var(GVAR_GVAR_ISAAC_PA, 1);
+      end
+
+      destroy_object(self_obj);
+
+   end
+end

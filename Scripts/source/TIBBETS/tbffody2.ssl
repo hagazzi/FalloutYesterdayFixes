@@ -1,0 +1,132 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\tibbets.h"
+
+#define NAME                    SCRIPT_TBFFODY2
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+procedure description_p_proc;
+procedure stop_ff;
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+   if (script_action == description_proc) then begin
+      call description_p_proc();
+   end
+   else begin
+      if (script_action == use_proc) then begin
+         call use_p_proc();
+      end
+      else if (script_action == use_skill_on_proc) then begin
+          call use_skill_on_p_proc();
+      end
+   end
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_p_proc begin
+   script_overrides;
+
+   if (global_var(GVAR_TIBBETS_COUNTDOWN) == 0) then begin
+      display_mstr(100);
+   end
+   else if(map_var(MVAR_OdySecField1_down) == 1) then begin
+      display_msg(mstr_item(10));
+   end
+   else begin
+      if(get_critter_stat(source_obj, STAT_lu) >= 6) then begin
+         set_map_var(MVAR_OdySecField1_down, 1);
+         display_msg(mstr_stat(700));
+         call stop_ff;
+      end
+      else begin
+         display_msg(mstr_stat(701));
+      end
+   end
+end
+
+procedure use_obj_on_p_proc begin
+   if (global_var(GVAR_TIBBETS_COUNTDOWN) == 0) then begin
+      display_mstr(100);
+   end
+   else begin
+      if (obj_pid(obj_being_used_with) == PID_WCD_KEYCARD) then begin
+         script_overrides;
+         play_sfx("SWDKEYX1");
+         set_map_var(MVAR_OdySecField1_down, 1);
+         call stop_ff;
+      end
+   end
+end
+
+procedure use_skill_on_p_proc begin
+
+   if(map_var(MVAR_OdySecField1_down) == 0) then begin
+      if (
+         (action_being_used == SKILL_SCIENCE) and
+         is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, -50))
+      ) then begin
+         script_overrides;
+         set_map_var(MVAR_OdySecField1_down, 1);
+         display_mstr(101);
+         give_xp(100);
+         call stop_ff;
+      end else if (
+         ((action_being_used == SKILL_REPAIR) and
+         is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -50))) or
+         ((action_being_used == SKILL_TRAPS) and
+            is_success(roll_vs_skill(source_obj, SKILL_TRAPS, -50)))
+      ) then begin
+         script_overrides;
+         set_map_var(MVAR_OdySecField1_down, 1);
+         display_mstr(102);
+         give_xp(100);
+         call stop_ff;
+      end
+   end
+end
+
+procedure stop_ff begin
+   destroy_object(obj_blocking_tile(16676, dude_elevation, BLOCKING_TYPE_BLOCK));
+   destroy_object(obj_blocking_tile(16876, dude_elevation, BLOCKING_TYPE_BLOCK));
+end

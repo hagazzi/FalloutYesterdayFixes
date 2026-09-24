@@ -1,0 +1,440 @@
+/*
+
+        Name:           SimTek 5000
+        Location:
+        Description:
+
+           Created: 03/09/2020 17:29:38
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBSIMTEK
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\TBSRVC03.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure use_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+procedure Node012;
+procedure Node013;
+procedure Node014;
+procedure Node015;
+procedure Node016;
+procedure Node017;
+procedure Node018;
+procedure Node019;
+procedure Node020;
+procedure Node021;
+procedure Node022;
+procedure Node023;
+procedure Node019download;
+procedure Node020download;
+procedure Node021download;
+procedure Node022download;
+procedure HolodiskDuplicate;
+procedure VaultBoyDownload;
+procedure VaultBoyRepair;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+
+procedure use_p_proc begin
+if (source_obj == dude_obj) then
+dialogue_system_enter;
+end
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       call Node001;
+       gSay_End;
+       end_dialogue;
+call restore_idiot_savant_int;
+
+   if (Only_Once == 1) then begin
+      load_map("scrpheap", 0);
+   end
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+procedure StartSimTek5000 begin
+   call Node999;
+   move_obj_inven_to_obj(dude_obj, tile_contains_pid_obj(22172, 0, PID_FOOTLOCKER_RUSTY_LEFT));
+   Only_Once = 1;
+end
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Node001
+begin
+Reply(200);
+NOption(201,Node002,1);
+if (get_critter_stat(dude_obj,STAT_iq)>=7) or (has_skill(dude_obj,SKILL_SCIENCE)>=50) then
+NOption(202,Node007,6);
+if (get_critter_stat(dude_obj,STAT_iq)>=7) or (has_skill(dude_obj,SKILL_REPAIR)>=50) then
+NOption(203,Node007,6);
+if (has_skill(dude_obj,SKILL_REPAIR)>=50) or (has_skill(dude_obj,SKILL_SCIENCE)>=50) then
+NOption(204,Node007,-3);
+NOption(205,Node999,1);
+end
+
+procedure Node002
+begin
+Reply(230);
+NOption(201,Node003,1);
+NOption(231,Node999,1);
+end
+
+procedure Node003
+begin
+Reply(260);
+NOption(201,Node004,1);
+NOption(261,Node001,1);
+NOption(231,Node999,1);
+end
+
+procedure Node004
+begin
+Reply(290);
+NOption(291,Node005,1);
+NOption(261,Node001,1);
+NOption(231,Node999,1);
+end
+
+procedure Node005
+begin
+Reply(320);
+NOption(321,Node006,1);
+NOption(261,Node001,1);
+NOption(231,Node999,1);
+end
+
+procedure Node006
+begin
+Reply(320);
+NOption(350,Node007,1);
+NOption(351,Node001,1);
+NOption(231,Node999,1);
+end
+
+procedure Node007
+begin
+Reply(380);
+NOption(381,Node008,1);
+NOption(382,Node008,4);
+NOption(383,Node008,-3);
+end
+
+procedure Node008
+begin
+Reply(410);
+if(global_var(GVAR_VT_HOLOGRAM) == 2) then begin
+   NOption(411,Node018,4);
+   NOption(413,Node018,-3);
+end else begin
+   NOption(411,StartSimTek5000,4);
+   NOption(413,StartSimTek5000,-3);
+end
+
+if(map_var(MVAR_KNOW_CODES) == 1) then
+NOption(412,Node009,1);
+if(global_var(GVAR_QUEST_VAULT_BOY) == 1 and global_var(GVAR_HOLODISK_VAULT_BOY) == 0 and (obj_is_carrying_obj_pid(dude_obj,PID_LIL_PIP_3000)>0)) then begin
+   if (has_skill(dude_obj,SKILL_SCIENCE)>=75) then begin
+      NOption(416,VaultBoyDownload,1);
+   end else begin
+      NOption(416,Node018,1);
+   end
+
+   if (has_skill(dude_obj,SKILL_REPAIR)>=75) then begin
+      NOption(417,VaultBoyRepair,1);
+   end else begin
+      NOption(417,Node023,1);
+   end
+
+end
+NOption(414,Node999,4);
+NOption(415,Node999,-3);
+end
+
+procedure Node009
+begin
+Reply(440);
+NOption(441,Node012,1);
+NOption(442,Node010,1);
+NOption(444,Node019,1);
+NOption(445,Node020,1);
+NOption(446,Node021,1);
+NOption(447,Node022,1);
+NOption(443,Node999,1);
+end
+
+procedure Node010
+begin
+   set_global_var(GVAR_KNOW_OVERSEER_CHIP, 1);
+Reply(470);
+if (has_skill(dude_obj,SKILL_SCIENCE)>=50) then
+NOption(471,Node011,1);
+NOption(472,Node009,1);
+end
+
+procedure Node011
+begin
+Reply(500);
+NOption(472,Node009,1);
+end
+
+procedure Node012
+begin
+Reply(530);
+if(global_var(GVAR_HOLODISK_VAULT_LOCATIONS_V34) == 0) then
+NOption(531,Node013,1);
+NOption(532,Node014,1);
+NOption(472,Node009,1);
+end
+
+procedure Node013
+begin
+   set_global_var(GVAR_HOLODISK_VAULT_LOCATIONS_V34, 1);
+Reply(560);
+NOption(472,Node009,1);
+end
+
+procedure Node014
+begin
+Reply(590);
+NOption(591,Node015,1);
+NOption(592,Node016,1);
+NOption(593,Node017,1);
+NOption(472,Node009,1);
+end
+
+procedure Node015
+begin
+Reply(620);
+NOption(472,Node014,1);
+end
+
+procedure Node016
+begin
+Reply(650);
+NOption(472,Node014,1);
+end
+
+procedure Node017
+begin
+Reply(680);
+NOption(472,Node014,1);
+end
+
+procedure Node018 begin
+Reply(710);
+NOption(711,Node999,1);
+if(map_var(MVAR_KNOW_CODES) == 1) then
+NOption(412,Node009,1);
+end
+
+procedure Node019 begin
+   Reply(740);
+   if(global_var(GVAR_HOLODISK_SURIVAL_RECIPES) == 0) then begin
+      NOption(531,Node019download,1);
+   end else begin
+      NOption(531,HolodiskDuplicate,1);
+   end
+   NOption(472,Node009,1);
+end
+
+procedure Node019download begin
+   set_global_var(GVAR_HOLODISK_SURIVAL_RECIPES, 1);
+   set_global_var(GVAR_CRAFT_MUSHROOM_CLOUDS, 1);
+   set_global_var(GVAR_CRAFT_DESERT_SALAD, 1);
+   Reply(560);
+   NOption(472,Node009,1);
+end
+
+procedure Node020 begin
+   Reply(770);
+   if(global_var(GVAR_HOLODISK_IMPORTANT_VAULT_STATS) == 0) then begin
+      NOption(531,Node020download,1);
+   end else begin
+      NOption(531,HolodiskDuplicate,1);
+   end
+   NOption(472,Node009,1);
+end
+
+procedure Node020download begin
+   set_global_var(GVAR_HOLODISK_IMPORTANT_VAULT_STATS, 1);
+   Reply(560);
+   NOption(472,Node009,1);
+end
+
+procedure Node021 begin
+   Reply(800);
+   if(global_var(GVAR_HOLODISK_NUCLEAR_BLAST_EFFECTS) == 0) then begin
+      NOption(531,Node021download,1);
+   end else begin
+      NOption(531,HolodiskDuplicate,1);
+   end
+   NOption(472,Node009,1);
+end
+
+procedure Node021download begin
+   set_global_var(GVAR_HOLODISK_NUCLEAR_BLAST_EFFECTS, 1);
+   Reply(560);
+   NOption(472,Node009,1);
+end
+
+procedure Node022 begin
+   Reply(830);
+   if(global_var(GVAR_HOLODISK_ADDITIONAL_PUBLICATIONS) == 0) then begin
+      NOption(531,Node022download,1);
+   end else begin
+      NOption(531,HolodiskDuplicate,1);
+   end
+   NOption(472,Node009,1);
+end
+
+procedure Node022download begin
+   set_global_var(GVAR_HOLODISK_ADDITIONAL_PUBLICATIONS, 1);
+   Reply(560);
+   NOption(472,Node009,1);
+end
+
+procedure Node023 begin
+Reply(890);
+NOption(711,Node999,1);
+if(map_var(MVAR_KNOW_CODES) == 1) then
+NOption(412,Node009,1);
+end
+
+procedure HolodiskDuplicate begin
+   Reply(860);
+   NOption(472,Node009,1);
+end
+
+procedure VaultBoyDownload begin
+   give_xp(500);
+   set_global_var(GVAR_HOLODISK_VAULT_BOY, 1);
+   Reply(560);
+   NOption(472,Node009,1);
+end
+
+procedure VaultBoyRepair begin
+   give_xp(500);
+   set_global_var(GVAR_HOLODISK_VAULT_BOY, 1);
+   Reply(920);
+   NOption(472,Node009,1);
+end
+
+//xxxxxxxxxxxxxxxxxxxx

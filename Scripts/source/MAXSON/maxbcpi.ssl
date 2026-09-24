@@ -1,0 +1,72 @@
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MAXBCPI
+
+#include "..\headers\command.h"
+#include "..\headers\maxbdoor.h"
+
+
+procedure start;
+procedure description_p_proc;
+procedure use_p_proc;
+procedure use_skill_on_p_proc;
+procedure opendoor;
+
+procedure start begin
+end
+
+procedure description_p_proc begin
+   display_mstr(107);
+end
+
+procedure use_p_proc begin
+   script_overrides;
+   //if (source_obj == dude_obj) then begin
+      play_sfx("SLDOORSO");
+      display_mstr(108);
+
+      if(not(dude_is_human) and (global_var(GVAR_DESTROYED_MAXSON_TURRET) == 0)) then
+         floater_bad(100);
+      else if(not(dude_is_human) and (global_var(GVAR_DESTROYED_MAXSON_TURRET) == 1)) then begin
+         floater_bad(106);
+         call opendoor;
+      end else if(global_var(GVAR_WELCOME_BOS) == -1) then begin
+         floater_bad(100);
+      end else if((global_var(GVAR_WELCOME_BOS) > 0) and dude_is_male) then begin
+         floater_good(104);
+         call opendoor;
+      end else if((global_var(GVAR_WELCOME_BOS) > 0) and dude_is_female) then begin
+         floater_good(105);
+         call opendoor;
+      end else if(global_var(GVAR_DESTROYED_MAXSON_TURRET) == 1) then begin
+         floater_bad(101);
+         call opendoor;
+      end else if(dude_wearing_armor and dude_wearing_power_armor) then begin
+         floater_good(102);
+         call opendoor;
+      end else
+         floater_bad(100);
+   //end
+end
+
+procedure use_skill_on_p_proc begin
+   if ((action_being_used == SKILL_REPAIR) or (action_being_used == SKILL_SCIENCE)) then begin
+      display_mstr(108);
+      floater_bad(103);
+   end
+end
+
+procedure opendoor begin
+   variable blast_door;
+   blast_door = obj_blocking_tile(16290, 0, BLOCKING_TYPE_BLOCK);
+
+    if (not(obj_is_open(blast_door)) and map_var(MVAR_GREET_PLAYER) == 0) then begin
+         fadeout(1);
+         use_obj(blast_door);
+         destroy_object(tile_contains_pid_obj(16490, 0, PID_BLOCKING_HEX));
+         if(global_var(GVAR_WELCOME_BOS) == 0) then begin
+            set_map_var(MVAR_GREET_PLAYER, 1);
+         end
+         fadein(1);
+      end
+end

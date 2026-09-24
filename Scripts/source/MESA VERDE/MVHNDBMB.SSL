@@ -1,0 +1,134 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_MVHNDBMB
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+procedure pickup_p_proc;
+procedure map_exit_p_proc;
+procedure damage_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_obj_on_p_proc begin
+
+   variable pid = obj_pid(obj_being_used_with);
+
+   if (
+      (pid == PID_ACTIVE_DYNAMITE) or
+      (pid == PID_ACTIVE_PLASTIC_EXPLOSIVE) or
+      (pid == PID_MACH_V_MINE)
+   ) then begin
+      script_overrides;
+      display_mstr(102);
+      remove_pid_qty(dude_obj, pid, 1)
+   end
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   if (action_being_used == SKILL_TRAPS) then begin
+      script_overrides;
+
+      if(skill_success(source_obj, SKILL_TRAPS, dude_luck)) then begin
+         variable pid = 0;
+         display_mstr(100);
+
+         if (obj_is_carrying_obj_pid(source_obj, PID_ACTIVE_DYNAMITE) > 0) then begin
+            pid = PID_ACTIVE_DYNAMITE;
+         end
+         else if (obj_is_carrying_obj_pid(source_obj, PID_ACTIVE_PLASTIC_EXPLOSIVE) > 0) then begin
+            pid = PID_ACTIVE_PLASTIC_EXPLOSIVE;
+         end
+         else if (obj_is_carrying_obj_pid(source_obj, PID_DYNAMITE) > 0) then begin
+            pid = PID_DYNAMITE;
+         end
+         else if (obj_is_carrying_obj_pid(source_obj, PID_PLASTIC_EXPLOSIVES) > 0) then begin
+            pid = PID_PLASTIC_EXPLOSIVES;
+         end
+         else if (obj_is_carrying_obj_pid(source_obj, PID_MACH_V_MINE) > 0) then begin
+            pid = PID_MACH_V_MINE;
+         end
+
+         if (pid > 0) then begin
+            remove_pid_qty(source_obj, pid, 1)
+            display_mstr(102);
+            set_global_var(GVAR_MESA_HOUNDS_RESOLUTION, DEAL_WITH_HOUNDS_CRUSHED);
+            set_global_var(GVAR_QUEST_DEAL_WITH_HOUNDS, DEAL_WITH_HOUNDS_CRUSHED);
+         end
+      end else begin
+         display_mstr(101);
+      end
+   end
+end
+
+procedure map_exit_p_proc begin
+   if (
+      (self_item_count(PID_ACTIVE_DYNAMITE) > 0) or
+      (self_item_count(PID_ACTIVE_PLASTIC_EXPLOSIVE) > 0) or
+      (self_item_count(PID_MACH_V_MINE) > 0)
+   ) then begin
+      display_mstr(103);
+      set_global_var(GVAR_MESA_HOUNDS_RESOLUTION, DEAL_WITH_HOUNDS_CRUSHED);
+      set_global_var(GVAR_QUEST_DEAL_WITH_HOUNDS, DEAL_WITH_HOUNDS_CRUSHED);
+      give_xp(300);
+      set_obj_visibility(self_obj, 1);
+      destroy_object(self_obj);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (
+      (self_item_count(PID_ACTIVE_DYNAMITE) > 0) or
+      (self_item_count(PID_ACTIVE_PLASTIC_EXPLOSIVE) > 0) or
+      (self_item_count(PID_MACH_V_MINE) > 0)
+   ) then begin
+      display_mstr(102);
+   end
+end
+
+procedure damage_p_proc begin
+   display_mstr(103);
+   set_global_var(GVAR_MESA_HOUNDS_RESOLUTION, DEAL_WITH_HOUNDS_CRUSHED);
+   set_global_var(GVAR_QUEST_DEAL_WITH_HOUNDS, DEAL_WITH_HOUNDS_CRUSHED);
+end

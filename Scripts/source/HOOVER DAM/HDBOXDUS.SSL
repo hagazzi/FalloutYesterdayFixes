@@ -1,0 +1,51 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name:
+        Location: Den
+        Description:
+
+        Log:
+
+           Created: August 22, 1998
+
+           Updated:
+*/
+
+/* Include Files */
+#include "..\headers\define.h"
+#define NAME                    SCRIPT_HDBOXDUS
+#define TOWN_REP_VAR         GVAR_TOWN_REP_HOOVER_DAM
+#include "..\headers\command.h"
+#include "..\headers\hdam.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure destroy_p_proc;
+procedure map_update_p_proc;
+
+#define LVAR_Flags                        (0)
+
+import variable dusty_obj;
+
+procedure start begin
+   dusty_obj := self_obj;
+end
+
+procedure map_enter_p_proc begin
+   dusty_obj := self_obj;
+   if (is_loading_game == false) then begin
+      check_set_obj_visibility(self_obj, true);
+   end
+end
+
+procedure map_update_p_proc begin
+   dusty_obj := self_obj;
+end
+
+procedure destroy_p_proc begin
+   dusty_obj := 0;
+end

@@ -1,0 +1,10 @@
+{100}{}{This specialized computer requires a skill-based approach.}
+{101}{}{This computer is connected to Generator}
+{102}{}{You managed to partially improve Generator}
+{103}{}{'s power output using Science skill.}
+{104}{}{You failed to improve Generator}
+{105}{}{'s power output.}
+{106}{}{You managed to partially improve Generator}
+{107}{}{'s power output using Repair skill.}
+{108}{}{You successfully finished recalibrating Generator}
+{109}{}{It appears that all advanced recalibration functions can only be executed under Governor Dodge's remotely granted bio-permissions.}

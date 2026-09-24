@@ -1,0 +1,945 @@
+/*
+
+        Name:
+        Location:
+        Description:
+
+           Created: 07/10/2020 19:28:10
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBTAZ
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Taz_1a;
+procedure Taz_1b;
+procedure Taz_1b_B1;
+procedure Taz_1b_B2;
+procedure Taz_1b_D1;
+procedure Taz_2B_1;
+procedure Taz_2B_2a_1;
+procedure Taz_2B_2a_2a;
+procedure Taz_2B_2a_2b;
+procedure Taz_2B_2b;
+procedure Taz_2D_1;
+procedure Taz_2D_2;
+procedure Taz_2D_3;
+procedure Taz_2G;
+procedure Taz_2N_1;
+procedure Taz_2N_2;
+procedure Taz_3_1;
+procedure Taz_3_2a;
+procedure Taz_3_2b;
+procedure Taz_4_1;
+procedure Taz_4_2;
+procedure Taz_4_3;
+procedure Taz_5_1;
+procedure Taz_5_2;
+procedure Taz_5_3a_1;
+procedure Taz_5_3a_2;
+procedure Taz_5_3b_1;
+procedure Taz_5_3b_2a;
+procedure Taz_5_3b_2b;
+procedure Taz_5_3b_3;
+procedure Taz_5_3b_4;
+procedure Taz_5_3b_5;
+procedure Taz_5_3c_1;
+procedure Taz_5_3c_2;
+procedure Taz_5_3c_3a;
+procedure Taz_5_3c_3b_a;
+procedure Taz_5_3c_3b_b;
+procedure Taz_5_3c_3c_a1;
+procedure Taz_5_3c_3c_a2;
+procedure Taz_5_3c_3c_b;
+procedure Taz_5_3d_1;
+procedure Taz_5_3d_2;
+procedure Taz_5_3d_3;
+procedure Taz_5_3d_4;
+procedure Taz_5_3d_5;
+procedure Taz_5_3d_6;
+procedure Taz_6_1;
+procedure Taz_6_2a;
+procedure Taz_6_2b;
+procedure Taz_6_2c_1;
+procedure Taz_6_2c_2;
+procedure Taz_6_2d_1;
+procedure Taz_6_2d_2;
+procedure Taz_6_2d_3;
+procedure Taz_7_1;
+procedure Taz_7_2a_1;
+procedure Taz_7_2a_2;
+procedure Taz_7_2b_1;
+procedure Taz_7_2b_2;
+procedure Taz_7_2b_3;
+procedure Taz_7_2b_4a;
+procedure Taz_7_2b_4b;
+procedure Taz_7_2b_4c;
+procedure Taz_7_2b_5;
+procedure Taz_7_2b_6;
+procedure Taz_7_2b_7a;
+procedure Taz_7_2b_7b_1;
+procedure Taz_7_2b_7b_2;
+procedure Taz_7_2b_7b_3;
+procedure Taz_9;
+procedure Pissed;
+procedure Skill_Check_000_Speech;
+procedure Stat_Check_000_ST_LU;
+procedure Skill_Check_001_Speech;
+procedure Taz_7_2b_4a_10;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Pissed                     (8)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TAZ);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+call new_plague_check(self_obj, LVAR_Herebefore);
+
+   // TODO Cafe
+   if (cur_map_index == MAP_TIBBETS_SERVICE_AND_VEHICLE_DEPOT_AREAS_CAFE) then begin
+      set_obj_visibility(self_obj, 1);
+   end
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude) and obj_is_visible_flag(self_obj)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if(local_var(LVAR_Pissed) == 1) then begin
+      floater_bad(200);
+      return;
+   end
+
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+
+
+if (local_var(LVAR_Herebefore)==0) then begin
+       call Taz_1a;
+end else if (local_var(LVAR_Herebefore)==1) then begin
+       call Taz_1b;
+end
+
+       gSay_End;
+       end_dialogue;
+
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+ inc_neutral_critter
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+procedure Skill_Check_000_Speech begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -10);
+if is_success(roll_temp) then
+begin
+call Taz_5_3c_3c_a1;
+end
+else begin
+call Taz_5_3c_3c_b;
+ end
+end
+
+procedure Stat_Check_000_ST_LU begin
+if(round((get_dude_attr(STAT_st) + get_dude_attr(STAT_lu)) / 2) >= 7) then
+begin
+call Taz_5_3c_3b_a;
+end
+else begin
+call Taz_5_3c_3b_b;
+ end
+end
+
+procedure Skill_Check_001_Speech begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -40);
+if is_success(roll_temp) then
+begin
+   if(dude_caps >= 5) then begin
+      item_caps_adjust(dude_obj, -5);
+      call Taz_7_2b_4a;
+   end else begin
+      call Taz_7_2b_4c;
+   end
+end
+else begin
+call Taz_7_2b_4b;
+ end
+end
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Taz_1a
+begin
+Reply(230);
+NOption(231,Taz_2G,4);
+NOption(232,Taz_2N_1,4);
+NOption(233,Taz_2D_1,-3);
+NOption(234,Taz_2B_1,4);
+NOption(235,Node999,4);
+end
+
+// Node Taz_1b
+//
+// Notes:
+//
+// This node begins the conversation IF the player has spoken to Taz before.
+
+procedure Taz_1b
+begin
+Reply(260);
+NOption(261,Taz_9,4);
+NOption(262,Taz_1b_D1,-3);
+NOption(263,Node999,4);
+end
+
+procedure Taz_1b_B1
+begin
+Reply(290);
+NOption(291,Taz_1b_B2,4);
+NOption(292,Taz_2B_2b,4);
+end
+
+procedure Taz_1b_B2
+begin
+Reply(320);
+NOption(321,Node999,4);
+end
+
+procedure Taz_1b_D1
+begin
+Reply(350);
+NOption(351,Node999,4);
+end
+
+procedure Taz_2B_1
+begin
+if (dude_is_male) then Reply(380); else
+if (dude_is_female) then Reply(381);
+NOption(382,Taz_2B_2a_1,4);
+NOption(383,Taz_2B_2b,4);
+// NOTE: If the PC chooses this option, Taz will no longer talk to the PC, but will float as normal.
+NOption(384,Pissed,4);
+end
+
+procedure Taz_2B_2a_1
+begin
+Reply(410);
+// NOTE: If the player cannot afford to pay, go to Taz_2B_2a_2b instead.
+if(dude_caps >= 2) then
+   NOption(411,Taz_2B_2a_2a,4);
+else
+   NOption(411,Taz_2B_2a_2b,4);
+NOption(412,Node999,4);
+end
+
+// Node Taz_2B_2a_2a
+//
+// Notes:
+//
+// Deduct 2 caps from the PC's inventory.
+
+procedure Taz_2B_2a_2a
+begin
+   item_caps_adjust(dude_obj, -2);
+Reply(440);
+NOption(441,Taz_2N_1,4);
+end
+
+// Node Taz_2B_2a_2b
+//
+// Notes:
+//
+// Taz will no longer talk to the PC, but will float as normal.
+
+procedure Taz_2B_2a_2b
+begin
+Reply(470);
+NOption(351,Pissed,4);
+end
+
+// Node Taz_2B_2b
+//
+// Notes:
+//
+// Taz will no longer talk to the PC, but will float as normal.
+
+procedure Taz_2B_2b
+begin
+Reply(500);
+NOption(351,Pissed,4);
+end
+
+procedure Taz_2D_1
+begin
+if (dude_is_male) then Reply(530); else
+if (dude_is_female) then Reply(531);
+NOption(532,Taz_2D_2,-3);
+end
+
+procedure Taz_2D_2
+begin
+Reply(560);
+NOption(561,Taz_2D_3,-3);
+end
+
+procedure Taz_2D_3
+begin
+Reply(590);
+NOption(591,Node999,4);
+end
+
+procedure Taz_2G
+begin
+Reply(620);
+NOption(621,Taz_3_1,4);
+NOption(622,Taz_4_1,4);
+NOption(623,Node999,4);
+end
+
+procedure Taz_2N_1
+begin
+Reply(650);
+NOption(651,Taz_3_1,4);
+NOption(652,Taz_2N_2,4);
+end
+
+procedure Taz_2N_2
+begin
+Reply(680);
+NOption(681,Taz_4_1,4);
+end
+
+procedure Taz_3_1
+begin
+Reply(710);
+NOption(711,Taz_3_2a,4);
+NOption(712,Taz_3_2b,4);
+end
+
+procedure Taz_3_2a
+begin
+Reply(740);
+NOption(741,Taz_5_1,4);
+NOption(742,Taz_9,4);
+NOption(743,Node999,4);
+end
+
+procedure Taz_3_2b
+begin
+Reply(770);
+NOption(771,Taz_3_2a,4);
+end
+
+procedure Taz_4_1
+begin
+Reply(800);
+NOption(801,Taz_4_2,4);
+end
+
+procedure Taz_4_2
+begin
+Reply(830);
+NOption(831,Taz_4_3,4);
+NOption(832,Taz_9,4);
+end
+
+procedure Taz_4_3
+begin
+Reply(860);
+NOption(861,Taz_9,4);
+end
+
+procedure Taz_5_1
+begin
+Reply(890);
+NOption(891,Taz_5_2,4);
+NOption(892,Taz_9,4);
+NOption(893,Node999,4);
+end
+
+procedure Taz_5_2
+begin
+Reply(920);
+NOption(921,Taz_5_3a_1,4);
+NOption(922,Taz_5_3b_1,4);
+NOption(923,Taz_5_3c_1,4);
+NOption(924,Taz_5_3d_1,4);
+NOption(925,Taz_9,4);
+end
+
+procedure Taz_5_3a_1
+begin
+Reply(950);
+NOption(951,Taz_5_3a_2,4);
+NOption(922,Taz_5_3b_1,4);
+NOption(923,Taz_5_3c_1,4);
+NOption(952,Taz_5_3d_2,4);
+NOption(742,Taz_9,4);
+end
+
+procedure Taz_5_3a_2
+begin
+Reply(980);
+NOption(922,Taz_5_3b_1,4);
+NOption(923,Taz_5_3c_1,4);
+NOption(952,Taz_5_3d_2,4);
+NOption(981,Taz_9,4);
+NOption(982,Node999,4);
+end
+
+procedure Taz_5_3b_1
+begin
+Reply(1010);
+NOption(1011,Taz_5_3b_2a,4);
+// NOTE: This node only appears if the PC has a high (60+?) Outdoorsman skill.
+if(has_skill(dude_obj, SKILL_OUTDOORSMAN) >= 60) then
+NOption(1012,Taz_5_3b_2b,4);
+end
+
+procedure Taz_5_3b_2a
+begin
+Reply(1040);
+NOption(1041,Taz_5_3b_3,4);
+end
+
+procedure Taz_5_3b_2b
+begin
+Reply(1070);
+NOption(1041,Taz_5_3b_3,4);
+end
+
+procedure Taz_5_3b_3
+begin
+Reply(1100);
+NOption(1101,Taz_5_3b_4,4);
+NOption(921,Taz_5_3a_1,4);
+NOption(923,Taz_5_3c_1,4);
+NOption(952,Taz_5_3d_2,4);
+NOption(742,Taz_9,4);
+end
+
+procedure Taz_5_3b_4
+begin
+Reply(1130);
+NOption(1131,Taz_5_3b_5,4);
+NOption(921,Taz_5_3a_1,4);
+NOption(923,Taz_5_3c_1,4);
+NOption(952,Taz_5_3d_2,4);
+NOption(742,Taz_9,4);
+end
+
+procedure Taz_5_3b_5
+begin
+Reply(1160);
+NOption(921,Taz_5_3a_1,4);
+NOption(923,Taz_5_3c_1,4);
+NOption(952,Taz_5_3d_2,4);
+NOption(742,Taz_9,4);
+end
+
+procedure Taz_5_3c_1
+begin
+Reply(1190);
+NOption(951,Taz_5_3c_2,4);
+NOption(921,Taz_5_3a_1,4);
+NOption(952,Taz_5_3d_2,4);
+NOption(922,Taz_5_3b_1,4);
+NOption(742,Taz_9,4);
+end
+
+procedure Taz_5_3c_2
+begin
+Reply(1220);
+NOption(1221,Taz_5_3c_3a,4);
+// NOTE: Take an average of the PC's Strength and Luck, rounded up. IF the number is less than 7, then go to Taz_5_3c_3b_b, instead.
+NOption(1222,Stat_Check_000_ST_LU,4);
+// NOTE: Speech check. If failed, go to Taz_5_3c_3c_b instead.
+NOption(1223,Skill_Check_000_Speech,4);
+NOption(1224,Taz_9,4);
+end
+
+procedure Taz_5_3c_3a
+begin
+Reply(1250);
+// NOTE: Take an average of the PC's Strength and Luck, rounded up. IF the number is less than 7, then go to Taz_5_3c_3b_b, instead.
+NOption(1222,Stat_Check_000_ST_LU,4);
+// NOTE: Speech check. If failed, go to Taz_5_3c_3c_b instead.
+NOption(1223,Skill_Check_000_Speech,4);
+NOption(1224,Taz_9,4);
+end
+
+// Node Taz_5_3c_3b_a
+
+procedure Taz_5_3c_3b_a
+begin
+Reply(1280);
+NOption(1281,Taz_9,4);
+NOption(1282,Node999,4);
+end
+
+// Node Taz_5_3c_3b_b
+//
+// Notes:
+//
+// Taz will no longer talk to the PC, but will float as normal.
+
+procedure Taz_5_3c_3b_b
+begin
+Reply(1310);
+NOption(1311,Pissed,4);
+end
+
+procedure Taz_5_3c_3c_a1
+begin
+Reply(1340);
+NOption(1341,Taz_5_3c_3c_a2,4);
+end
+
+// Node Taz_5_3c_3c_a2
+
+procedure Taz_5_3c_3c_a2
+begin
+Reply(1370);
+NOption(1371,Taz_5_3a_1,4);
+NOption(1372,Taz_5_3b_1,4);
+NOption(1373,Taz_5_3d_2,4);
+NOption(1374,Taz_9,4);
+end
+
+procedure Taz_5_3c_3c_b
+begin
+Reply(1400);
+NOption(1221,Taz_5_3c_3a,4);
+// NOTE: Take an average of the PC's Strength and Luck, rounded up. IF the number is less than 7, then go to Taz_5_3c_3b_b, instead.
+NOption(1222,Stat_Check_000_ST_LU,4);
+NOption(1224,Taz_9,4);
+end
+
+procedure Taz_5_3d_1
+begin
+Reply(1430);
+NOption(1431,Taz_5_3d_2,4);
+end
+
+procedure Taz_5_3d_2
+begin
+Reply(1460);
+NOption(1461,Taz_5_3d_3,4);
+end
+
+procedure Taz_5_3d_3
+begin
+Reply(1490);
+NOption(1491,Taz_5_3d_4,4);
+end
+
+procedure Taz_5_3d_4
+begin
+Reply(1520);
+NOption(1521,Taz_5_3d_5,4);
+NOption(1522,Taz_9,4);
+end
+
+procedure Taz_5_3d_5
+begin
+Reply(1550);
+NOption(1551,Taz_5_3d_6,4);
+NOption(921,Taz_5_3a_1,4);
+NOption(922,Taz_5_3b_1,4);
+NOption(923,Taz_5_3c_1,4);
+NOption(742,Taz_9,4);
+end
+
+procedure Taz_5_3d_6
+begin
+Reply(1580);
+NOption(921,Taz_5_3a_1,4);
+NOption(922,Taz_5_3b_1,4);
+NOption(923,Taz_5_3c_1,4);
+NOption(1224,Taz_9,4);
+end
+
+procedure Taz_6_1
+begin
+Reply(1610);
+NOption(1611,Taz_6_2a,4);
+NOption(1612,Taz_6_2d_1,4);
+end
+
+procedure Taz_6_2a
+begin
+Reply(1640);
+NOption(1641,Taz_6_2b,4);
+NOption(1642,Taz_6_2c_1,4);
+end
+
+procedure Taz_6_2b
+begin
+Reply(1670);
+NOption(1671,Taz_6_2d_1,4);
+NOption(1642,Taz_6_2c_1,4);
+end
+
+procedure Taz_6_2c_1
+begin
+Reply(1700);
+NOption(1701,Taz_6_2c_2,4);
+NOption(1702,Taz_6_2d_1,4);
+end
+
+procedure Taz_6_2c_2
+begin
+Reply(1730);
+NOption(1702,Taz_6_2d_1,4);
+NOption(1731,Taz_9,4);
+end
+
+procedure Taz_6_2d_1
+begin
+Reply(1760);
+NOption(1761,Taz_6_2d_2,4);
+NOption(1762,Taz_6_2c_2,4);
+end
+
+procedure Taz_6_2d_2
+begin
+Reply(1790);
+NOption(1791,Taz_6_2d_3,4);
+NOption(1792,Taz_6_2c_2,4);
+NOption(1793,Taz_9,4);
+end
+
+procedure Taz_6_2d_3
+begin
+Reply(1820);
+NOption(832,Taz_9,4);
+end
+
+procedure Taz_7_1
+begin
+Reply(1850);
+NOption(1851,Taz_5_2,4);
+// NOTE: If the player's perception is under 7, go to Taz_7_2a instead.
+if(get_dude_attr(STAT_pe) >= 7) then
+NOption(1852,Taz_7_2b_1,4);
+else
+NOption(1852,Taz_7_2a_1,4);
+
+NOption(742,Taz_9,4);
+end
+
+procedure Taz_7_2a_1
+begin
+Reply(1880);
+NOption(1881,Taz_7_2a_2,4);
+end
+
+procedure Taz_7_2a_2
+begin
+Reply(1910);
+NOption(1911,Taz_9,4);
+NOption(1912,Node999,4);
+end
+
+procedure Taz_7_2b_1
+begin
+Reply(1940);
+NOption(1881,Taz_7_2a_2,4);
+NOption(1941,Taz_7_2b_2,4);
+end
+
+procedure Taz_7_2b_2
+begin
+Reply(1970);
+NOption(1971,Taz_7_2b_3,4);
+NOption(1972,Taz_9,4);
+end
+
+procedure Taz_7_2b_3
+begin
+Reply(2000);
+// NOTE: Difficult speech test. IF failed, go to Taz_7_2b_4b instead.
+//IF the PC passes the test AND cannot afford the money, go to Taz_7_2b_4c instead.
+//IF the PC passes the test AND can afford the money, deduct five caps from the PC's inventory.
+NOption(2001,Skill_Check_001_Speech,4);
+NOption(2002,Taz_9,4);
+end
+
+procedure Taz_7_2b_4a
+begin
+Reply(2030);
+NOption(2031,Taz_7_2b_5,4);
+NOption(2032,Taz_7_2b_5,4);
+end
+
+procedure Taz_7_2b_4b
+begin
+Reply(2060);
+// NOTE: IF the PC cannot afford the money, go to Taz_7_2b_4c instead.
+//IF the PC can afford the money, deduct ten caps from the PC's inventory.
+if(dude_caps >= 10) then
+   NOption(2061,Taz_7_2b_4a_10,4);
+else
+   NOption(2061,Taz_7_2b_4c,4);
+
+NOption(2062,Taz_9,4);
+end
+
+procedure Taz_7_2b_4a_10 begin
+   item_caps_adjust(dude_obj, -10);
+   call Taz_7_2b_4a;
+end
+
+procedure Taz_7_2b_4c
+begin
+Reply(2090);
+NOption(2091,Taz_9,4);
+NOption(2092,Node999,4);
+end
+
+procedure Taz_7_2b_5
+begin
+Reply(2120);
+NOption(2121,Taz_7_2b_6,4);
+end
+
+procedure Taz_7_2b_6
+begin
+Reply(2150);
+NOption(2151,Taz_7_2b_7a,4);
+NOption(2152,Taz_7_2b_7b_1,4);
+end
+
+procedure Taz_7_2b_7a
+begin
+Reply(2180);
+NOption(2181,Taz_7_2b_7b_1,4);
+NOption(2182,Taz_9,4);
+end
+
+procedure Taz_7_2b_7b_1
+begin
+Reply(2210);
+NOption(2211,Taz_7_2b_7b_2,4);
+end
+
+procedure Taz_7_2b_7b_2
+begin
+Reply(2240);
+NOption(2241,Taz_7_2b_7b_3,4);
+NOption(2242,Taz_7_2b_7a,4);
+end
+
+procedure Taz_7_2b_7b_3
+begin
+Reply(2270);
+NOption(2271,Taz_7_2b_7a,4);
+NOption(2272,Taz_9,4);
+NOption(2273,Node999,4);
+end
+
+procedure Taz_9
+begin
+Reply(2300);
+NOption(2301,Taz_3_1,4);
+NOption(2302,Taz_5_1,4);
+NOption(2303,Taz_5_2,4);
+NOption(2304,Taz_6_1,4);
+NOption(2305,Taz_7_1,4);
+NOption(2306,Node999,4);
+end
+
+procedure Pissed begin
+   set_local_var(LVAR_Pissed, 1);
+   call Node999;
+end
+
+//xxxxxxxxxxxxxxxxxxxx

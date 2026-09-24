@@ -1,0 +1,117 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+//#include "..\tibbets\tbretscn.ssl"
+
+#define NAME                    SCRIPT_TBRETSCN
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure look_at_p_proc;
+procedure use_p_proc;
+procedure description_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if(global_var(GVAR_KNOW_WASTE_DISPOSAL) > 0) then begin
+      display_mstr(109);
+   end
+   else begin
+      display_mstr(150);
+   end
+end
+
+//ZZZ Block elevator use until known
+procedure description_p_proc begin
+    script_overrides;
+    display_mstr(200);
+end
+
+procedure use_p_proc begin
+   script_overrides;
+   if(global_var(GVAR_KNOW_WASTE_DISPOSAL) == 1) then begin
+      floater_good(303);
+      set_global_var(GVAR_KNOW_WASTE_DISPOSAL, 2);
+   end
+   else if(get_critter_stat(source_obj, STAT_lu) >= 8) then begin
+      floater_good(303);
+      set_global_var(GVAR_KNOW_WASTE_DISPOSAL, 2);
+      display_msg(mstr_skill(702));
+   end
+   else begin
+      floater_bad(302);
+   end
+end
+
+procedure use_obj_on_p_proc begin
+   if (obj_pid(obj_being_used_with) == PID_WCD_KEYCARD) then begin
+      script_overrides;
+      play_sfx("SWDKEYX1");
+      set_global_var(GVAR_KNOW_WASTE_DISPOSAL, 2);
+      display_mstr(204);
+   end
+end
+
+procedure use_skill_on_p_proc begin
+   if(global_var(GVAR_KNOW_WASTE_DISPOSAL) < 2) then begin
+      if (
+         (action_being_used == SKILL_SCIENCE) and
+         is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, -20))
+      ) then begin
+         script_overrides;
+         set_global_var(GVAR_KNOW_WASTE_DISPOSAL, 2);
+         display_mstr(205);
+         give_xp(10);
+      end else if (
+         (action_being_used == SKILL_REPAIR) and
+         is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -20))
+      ) then begin
+         script_overrides;
+         set_global_var(GVAR_KNOW_WASTE_DISPOSAL, 2);
+         display_mstr(206);
+         give_xp(10);
+      end
+   end
+end

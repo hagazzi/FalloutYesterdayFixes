@@ -1,0 +1,43 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+HD Baseline
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_HDBASELN
+
+#include "..\headers\command.h"
+
+variable bgsfx;
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   fadein(1);
+
+   if (map_first_run and (not is_loading_game)) then
+      display_mstr(100);
+
+      ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_POWER_CORE), 1);
+
+end
+
+procedure map_update_p_proc begin
+   Basement_Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

@@ -1,0 +1,115 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_MBBRKCMP
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_skill_on_p_proc;
+procedure use_obj_on_p_proc;
+procedure repair_time(variable ok);
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_skill_on_p_proc begin
+
+   if (action_being_used == SKILL_REPAIR and global_var(GVAR_QUEST_REPAIR_BROKEN_COMPUTER) < 2) then begin
+       script_overrides;
+
+      if(skill_success(source_obj, SKILL_REPAIR, -60)) then begin
+          set_global_var(GVAR_QUEST_REPAIR_BROKEN_COMPUTER, 2);
+         display_msg(mstr_skill(606) + " " + obj_name(self_obj) + ".");
+         give_xp(600);
+         call repair_time(1);
+
+      end else begin
+         display_msg(mstr_skill(607) + " " + obj_name(self_obj) + ".");
+         call repair_time(0);
+      end
+
+   end else if (action_being_used == SKILL_SCIENCE) then begin
+      script_overrides;
+
+      if(skill_success(source_obj, SKILL_SCIENCE, -60)) then begin
+         display_mstr(100);
+      end else begin
+         display_msg(mstr_skill(611));
+      end
+
+   end
+
+end
+
+procedure use_obj_on_p_proc begin
+   variable tool := obj_pid(obj_being_used_with);
+
+   if (
+   tool == PID_WRENCH or
+   tool == PID_MULTI_TOOL or
+   tool == PID_SUPER_TOOL_KIT
+   ) and (global_var(GVAR_QUEST_REPAIR_BROKEN_COMPUTER) < 2) then begin
+       script_overrides;
+       if(skill_success(source_obj, SKILL_REPAIR, -40)) then begin
+         display_msg(mstr_skill(606) + " " + obj_name(self_obj) + ".");
+         give_xp(600);
+         set_global_var(GVAR_QUEST_REPAIR_BROKEN_COMPUTER, 2);
+
+       call repair_time(1);
+       end else begin
+         display_msg(mstr_skill(607) + " " + obj_name(self_obj) + ".");
+         call repair_time(0);
+       end
+
+   end
+end
+
+
+procedure repair_time(variable ok) begin
+    fadeout(1);
+      if(ok == 1) then  begin
+         set_obj_visibility(self_obj, 1);
+      end
+    game_time_advance(ONE_GAME_HOUR * 6);
+    fadein(1);
+
+    if(ok == 1) then
+      destroy_object(self_obj);
+end
+

@@ -1,0 +1,98 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\setntclt.h"
+
+#define NAME                    SCRIPT_TMPLCHAS
+
+/* Standard Script Procedures */
+procedure start;
+procedure spatial_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node001;
+procedure Node002;
+procedure Node999;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure spatial_p_proc begin
+
+   if(map_var(MVAR_BRIDGE_BUILT) == 1) then begin
+      destroy_object(self_obj);
+   end
+
+   if(
+      (source_obj == dude_obj) and
+      (map_var(MVAR_BRIDGE_BUILT) == 0) and
+      (obj_is_carrying_obj_pid(dude_obj, PID_WOODEN_PLANKS) >= 4) and
+      (map_var(MVAR_BRIDGE_ASKED) == 0)
+      ) then begin
+         start_gdialog(NAME,self_obj,4,-1,-1);
+         gSay_Start;
+         call Node001;
+         gSay_End;
+         end_dialogue;
+      end
+end
+
+procedure Node999 begin
+   set_map_var(MVAR_BRIDGE_ASKED, 1);
+   add_timer_event(self_obj, game_ticks(15), 1);
+end
+
+procedure Node001 begin
+Reply(200);
+NOption(201,Node002,1);
+NOption(202,Node999,1);
+
+end
+
+procedure Node002 begin
+   display_mstr(300);
+   give_xp(300);
+   fadeout(1);
+   set_map_var(MVAR_BRIDGE_BUILT, 1);
+   fadein(1);
+   remove_pid_qty(dude_obj, PID_WOODEN_PLANKS, 4)
+end
+
+procedure timed_event_p_proc begin
+   set_map_var(MVAR_BRIDGE_ASKED, 0);
+end

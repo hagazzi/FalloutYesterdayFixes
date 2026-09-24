@@ -1,0 +1,415 @@
+/*
+
+        Name:
+        Location:
+        Description:
+
+           Created: 23.10.2024. 19:41:35
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_MVCOMP
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure talk_p_proc;
+procedure use_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+procedure Node012;
+procedure Node013;
+procedure Node014;
+procedure Node015;
+procedure Node017;
+procedure Node018;
+procedure learn_craft_apollo;
+procedure learn_craft_artemis;
+procedure learn_craft_herakles;
+procedure learn_craft_hermes;
+procedure learn_craft_ares;
+procedure learn_craft_athena;
+procedure learn_craft_gauss;
+procedure learn_craft_solar;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Repaired                   (8)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+
+procedure use_p_proc begin
+	if (source_obj == dude_obj) then begin
+		dialogue_system_enter;
+   end
+end
+
+procedure start begin
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+   start_gdialog(NAME,self_obj,4,-1,-1);
+   gSay_Start;
+   if (local_var(LVAR_Repaired) == 1) then begin
+      call Node001;
+   end
+   else begin
+      call Node015;
+   end
+   gSay_End;
+   end_dialogue;
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   display_mstr(100);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   variable str = 102;
+   if (local_var(LVAR_Repaired) == 1) then begin
+      str = 103;
+   end
+   display_mstr(str);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+
+   if (action_being_used == SKILL_REPAIR) then begin
+       script_overrides;
+
+       game_time_advance(ONE_GAME_HOUR * 2);
+       fadeout(1);
+       fadein(1);
+
+       if(skill_success(source_obj, SKILL_REPAIR, -33)) then begin
+         if (dude_item(PID_V15_COMPUTER_PART)) then begin
+            set_local_var(LVAR_Repaired, 1);
+            remove_pid_qty(dude_obj, PID_V15_COMPUTER_PART, 1)
+            give_xp(300);
+            set_global_var(GVAR_QUEST_REPAIR_CIPHERS_COMPUTER, QUEST_PAST_PART_1);
+            display_mstr(105);
+         end
+         else begin
+            display_msg(mstr(107) + " " + mstr(109));
+         end
+       end
+       else begin
+         display_mstr(106);
+       end
+
+   end else if (action_being_used == SKILL_SCIENCE) then begin
+      script_overrides;
+
+      game_time_advance(ONE_GAME_HOUR);
+      fadeout(1);
+      fadein(1);
+
+      if(skill_success(source_obj, SKILL_SCIENCE, 0)) then begin
+         display_mstr(107);
+      end else begin
+         display_mstr(108);
+      end
+   end
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Node001
+begin
+Reply(200);
+NOption(201,Node002,1);
+NOption(202,Node006,1);
+NOption(204,Node018,1);
+NOption(203,Node999,1);
+end
+
+procedure Node002
+begin
+Reply(230);
+NOption(231,Node003,1);
+end
+
+procedure Node003
+begin
+
+if (global_var(GVAR_QUEST_CIPHERS_URANIUM) == QUEST_NONE) then begin
+   set_global_var(GVAR_QUEST_CIPHERS_URANIUM, QUEST_KNOWN);
+end
+
+Reply(260);
+NOption(231,Node004,1);
+end
+
+procedure Node004
+begin
+Reply(290);
+NOption(231,Node001,1);
+end
+
+procedure Node005
+begin
+Reply(320);
+NOption(321,Node001,1);
+NOption(322,Node999,1);
+NOption(203,Node999,1);
+end
+
+procedure Node006
+begin
+Reply(350);
+NOption(351,Node007,1);
+NOption(352,Node012,1);
+NOption(353,Node008,1);
+NOption(354,Node009,1);
+NOption(355,Node010,1);
+NOption(356,Node011,1);
+NOption(357,Node013,1);
+NOption(358,Node014,1);
+NOption(321,Node001,1);
+end
+
+procedure Node007
+begin
+Reply(mstr_pro_item(72501));
+NOption(381,learn_craft_apollo,1);
+NOption(382,Node006,1);
+end
+
+procedure Node008
+begin
+Reply(mstr_pro_item(71901));
+NOption(381,learn_craft_artemis,1);
+NOption(382,Node006,1);
+end
+
+procedure Node009
+begin
+Reply(mstr_pro_item(65301));
+NOption(381,learn_craft_athena,1);
+NOption(382,Node006,1);
+end
+
+procedure Node010
+begin
+Reply(mstr_pro_item(39400) + ", " + mstr_pro_item(39200) + ", " + mstr_pro_item(69600) + ".");
+NOption(381,learn_craft_gauss,1);
+NOption(382,Node006,1);
+end
+
+procedure Node011
+begin
+Reply(mstr_pro_item(74101));
+NOption(381,learn_craft_herakles,1);
+NOption(382,Node006,1);
+end
+
+procedure Node012
+begin
+Reply(mstr_pro_item(74301));
+NOption(381,learn_craft_ares,1);
+NOption(382,Node006,1);
+end
+
+procedure Node013
+begin
+Reply(mstr_pro_item(74001));
+NOption(381,learn_craft_hermes,1);
+NOption(382,Node006,1);
+end
+
+procedure Node014
+begin
+Reply(mstr_pro_item(39001));
+NOption(381,learn_craft_solar,1);
+NOption(382,Node006,1);
+end
+
+procedure Node015
+begin
+
+   if (global_var(GVAR_QUEST_REPAIR_CIPHERS_COMPUTER) == QUEST_NONE) then begin
+      set_global_var(GVAR_QUEST_REPAIR_CIPHERS_COMPUTER, QUEST_KNOWN);
+   end
+
+Reply(620);
+NOption(621,Node999,1);
+end
+
+procedure Node017
+begin
+Reply(680);
+NOption(321,Node001,1);
+NOption(203,Node999,1);
+end
+
+procedure Node018 begin
+   play_gmovie(MESA_VERDE_MOVIE);
+   call Node001;
+end
+
+procedure learn_craft_apollo begin
+   set_global_var(GVAR_CRAFT_APOLLO_LASER_PISTOL, 1);
+
+   Reply(mstr(650) + mstr(351) + mstr(651));
+   NOption(382,Node006,1);
+   NOption(203,Node999,1);
+
+end
+
+procedure learn_craft_artemis begin
+   set_global_var(GVAR_CRAFT_ARTEMIS_RAIL_GUN, 1);
+
+   Reply(mstr(650) + mstr(353) + mstr(651));
+   NOption(382,Node006,1);
+   NOption(203,Node999,1);
+
+end
+
+procedure learn_craft_herakles begin
+   set_global_var(GVAR_CRAFT_HERAKLES_POWER_FIST, 1);
+
+   Reply(mstr(650) + mstr(356) + mstr(651));
+   NOption(382,Node006,1);
+   NOption(203,Node999,1);
+
+end
+
+procedure learn_craft_hermes begin
+   set_global_var(GVAR_CRAFT_HERMES_ARMOR, 1);
+
+   Reply(mstr(650) + mstr(357) + mstr(651));
+   NOption(382,Node006,1);
+   NOption(203,Node999,1);
+
+end
+
+procedure learn_craft_ares begin
+   set_global_var(GVAR_CRAFT_ARES, 1);
+
+   Reply(mstr(650) + mstr(352) + mstr(651));
+   NOption(382,Node006,1);
+   NOption(203,Node999,1);
+
+end
+
+procedure learn_craft_athena begin
+   set_global_var(GVAR_CRAFT_ATHENA_POWER_ARMOR, 1);
+
+   Reply(mstr(650) + mstr(354) + mstr(651));
+   NOption(382,Node006,1);
+   NOption(203,Node999,1);
+
+end
+
+procedure learn_craft_gauss begin
+   set_global_var(GVAR_CRAFT_GAUSS_PISTOL, 1);
+   set_global_var(GVAR_CRAFT_GAUSS_RIFLE, 1);
+   set_global_var(GVAR_CRAFT_GAUSS_MINIGUN, 1);
+
+   Reply(mstr(650) + mstr(355) + mstr(651));
+   NOption(382,Node006,1);
+   NOption(203,Node999,1);
+
+end
+
+procedure learn_craft_solar begin
+   set_global_var(GVAR_CRAFT_SOLAR_SCORCHER, 1);
+
+   Reply(mstr(650) + mstr(358) + mstr(651));
+   NOption(382,Node006,1);
+   NOption(203,Node999,1);
+
+end
+
+//xxxxxxxxxxxxxxxxxxxx

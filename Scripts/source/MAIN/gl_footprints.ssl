@@ -1,0 +1,245 @@
+/*
+
+   Footprints prototype script
+
+*/
+
+/* Include Files */
+#include "..\HEADERS\define.h"
+#include "..\HEADERS\command.h"
+
+#include "..\HEADERS\party.h"
+#include "..\HEADERS\footsteps.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+
+procedure create_critter_list;
+procedure create_prints;
+
+procedure StdProcedure_handler;
+procedure MoveCost_handler;
+procedure footsteps(variable step_crit);
+procedure footsteps2(variable i, variable step_crit, variable last_step, variable step_fid);
+
+#define FID_FOOT_RIGHT     (83886141)
+#define FID_FOOT_LEFT      (83886142)
+
+#define PID_FOOT_RIGHT     (83886136)
+#define PID_FOOT_LEFT      (83886137)
+
+#define valid_critter_ptr  (read_int(critter - 4) == -17958194)
+
+#define CHECK_PRINTS_ALLOWED \
+   if ((prints_allowed == 0) and (step_crit != 0) and (step_crit != dude_obj)) then return; /* Only dude can leave prints */ \
+   if ((prints_allowed == 1) and ((step_crit != 0) and (step_crit != dude_obj) and not(obj_in_party(step_crit)))) then return; /* Only player party can leave prints */ \
+   if dude_is_sneaking and ((step_crit != 0) and (step_crit == dude_obj) or obj_in_party(step_crit)) then return /* Sneaking party will not leave prints */
+
+variable last_step := 0, new_step := 0, step_fid;
+variable critter_List, critter, tile_List, step_List;
+variable prints_allowed, footprintr, footprintl, combat_prints_allowed;
+
+procedure start begin
+   if (game_loaded) then begin
+      set_global_script_type(0);
+      set_global_script_repeat(1);
+
+      register_hook_proc(HOOK_STDPROCEDURE, StdProcedure_handler);
+      register_hook_proc(HOOK_MOVECOST, MoveCost_handler);
+
+      prints_allowed := GetFYConfig("footprints", 2);
+      combat_prints_allowed := GetFYConfig("footprints_combat", 0);
+   end
+
+   call create_prints;
+end
+
+procedure map_enter_p_proc begin
+   variable misc_List, misc, pid;
+
+   // Cleanup footprints
+   misc_List := list_as_array(LIST_MISC);
+   foreach misc in misc_List begin
+      pid = obj_pid(misc);
+      if ((pid == PID_FOOT_RIGHT) or (pid == PID_FOOT_LEFT)) then begin
+         destroy_object(misc);
+      end
+   end
+
+   // Regenerate critter list
+   call create_critter_list;
+end
+
+procedure create_critter_list begin
+variable critter, i := 0;
+
+   critter_List := list_as_array(LIST_CRITTERS);
+   tile_List := [];
+   step_List := [];
+
+   resize_array(tile_List, len_array(critter_List));
+   resize_array(step_List, len_array(critter_List));
+
+   foreach critter in critter_List begin
+      if (critter != 0) then begin
+         tile_List[i] := tile_num(critter);
+         step_List[i] := 0;
+         i++;
+      end
+   end
+
+   save_array("critters", critter_List);
+   save_array("tilenum", tile_List);
+   save_array("stepcount", step_List);
+end
+
+procedure create_prints begin
+variable regen_critlist;
+
+   if (critter_List == 0) then call create_critter_list;
+
+   if not(combat_is_initialized) then begin
+      variable i := 0;
+      foreach (critter in critter_List) begin
+         if (critter != 0) and valid_critter_ptr then begin
+            if (obj_type(critter) == OBJ_TYPE_CRITTER) then begin // in case corpse deleting happens
+               if (proto_data(obj_pid(critter), cr_body_type) == CR_BODY_BIPED) and not(is_critter_dead(critter)) and obj_is_visible_flag(critter) then begin
+                  call footsteps2(i, critter, tile_List[i], step_List[i]);
+               end
+            end
+         end
+         else begin
+            // Critter pointer invalid!
+            regen_critlist := 1;
+         end
+         i++;
+      end
+
+      if regen_critlist then begin
+         regen_critlist := 0;
+         call create_critter_list;
+      end
+   end
+end
+
+procedure StdProcedure_handler begin
+   variable
+      proc := get_sfall_arg,
+      critter := get_sfall_arg;
+
+   if (proc != destroy_proc and proc != map_enter_proc) then return;
+
+   // Regenerate critter list when someone dies
+   if (obj_type(critter) == OBJ_TYPE_CRITTER) then call create_critter_list;
+end
+
+// Creates footsteps while in combat mode
+procedure MoveCost_handler begin
+   variable
+      critter := get_sfall_arg;
+
+   // Only create footprints for 2-leggers for now
+   if (
+      (combat_prints_allowed == 1) and
+      ((critter != 0) and proto_data(obj_pid(critter), cr_body_type) == CR_BODY_BIPED) and
+      not(is_critter_dead(critter)) and
+      obj_is_visible_flag(critter)
+   ) then begin
+      call footsteps(critter);
+   end
+   // TODO change dude_footsteps_sfx so we play appropriate SFX
+   call play_footsteps_sfx(dude_footsteps_sfx, tile_num(critter));
+end
+
+// TODO: Rewrite this into a single procedure
+procedure footsteps(variable step_crit) begin
+   CHECK_PRINTS_ALLOWED;
+
+   if (step_crit != 0) then begin
+      new_step := tile_num(step_crit);
+      if (last_step != new_step) then begin
+         last_step := new_step;
+         variable tile_fid = get_tile_ground_fid(new_step,dude_elevation);
+         variable create, is_snow = 0;
+
+         if (tile_sfx_is_sand(tile_fid)) then begin
+            create = 1;
+         end
+         else if (tile_sfx_is_snow(tile_fid)) then begin
+            create = 1;
+            is_snow = 1;
+         end
+
+         if (create) then begin
+            if (step_fid == 0) then begin
+               step_fid := 1;
+               footprintr := create_object_sid(PID_FOOT_RIGHT, new_step, dude_elevation, SCRIPT_FOOTSTEP);
+               if (is_snow) then begin
+                  set_flags(footprintr, get_flags(footprintr) - FLAG_TRANSNONE);
+                  set_flags(footprintr, get_flags(footprintr) BWOR FLAG_TRANSGLASS);
+               end
+               anim(footprintr, ANIMATE_ROTATION, get_cur_rot(step_crit));
+            end
+            else begin
+               step_fid := 0;
+               footprintl := create_object_sid(PID_FOOT_LEFT, new_step, dude_elevation, SCRIPT_FOOTSTEP);
+               if (is_snow) then begin
+                  set_flags(footprintl, get_flags(footprintl) - FLAG_TRANSNONE);
+                  set_flags(footprintl, get_flags(footprintl) BWOR FLAG_TRANSGLASS);
+               end
+               anim(footprintl, ANIMATE_ROTATION, get_cur_rot(step_crit));
+            end
+         end
+      end
+   end
+end
+
+procedure footsteps2(variable i, variable step_crit, variable last_step, variable step_fid) begin
+   load_array("tilenum");
+   load_array("stepcount");
+
+   CHECK_PRINTS_ALLOWED;
+
+   if (step_crit != 0) then begin
+      new_step := tile_num(step_crit);
+      if (tile_List[i] != new_step) then begin
+         tile_List[i] := new_step;
+         variable tile_fid = get_tile_ground_fid(new_step,dude_elevation);
+         variable create, is_snow = 0;
+
+         if (tile_sfx_is_sand(tile_fid)) then begin
+            create = 1;
+         end
+         else if (tile_sfx_is_snow(tile_fid)) then begin
+            create = 1;
+            is_snow = 1;
+         end
+
+         if (create) then begin
+            if (step_fid == 0) then begin
+               step_fid := 1;
+               footprintr := create_object_sid(PID_FOOT_RIGHT, new_step, dude_elevation, SCRIPT_FOOTSTEP);
+               if (is_snow) then begin
+                  set_flags(footprintr, get_flags(footprintr) - FLAG_TRANSNONE);
+                  set_flags(footprintr, get_flags(footprintr) BWOR FLAG_TRANSGLASS);
+               end
+               anim(footprintr, ANIMATE_ROTATION, get_cur_rot(step_crit));
+            end
+            else begin
+               step_fid := 0;
+               footprintl := create_object_sid(PID_FOOT_LEFT, new_step, dude_elevation, SCRIPT_FOOTSTEP);
+               if (is_snow) then begin
+                  set_flags(footprintl, get_flags(footprintl) - FLAG_TRANSNONE);
+                  set_flags(footprintl, get_flags(footprintl) BWOR FLAG_TRANSGLASS);
+               end
+               anim(footprintl, ANIMATE_ROTATION, get_cur_rot(step_crit));
+            end
+            step_List[i] := step_fid;
+
+            save_array("tilenum", tile_List);
+            save_array("stepcount", step_List);
+         end
+      end
+   end
+end

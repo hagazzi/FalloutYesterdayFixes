@@ -1,0 +1,374 @@
+# Message file for hdmajor.ssl
+# Number of nodes: 61
+# Grammar pass done
+
+{100}{}{You see a middle-aged man, wearied by the scars of war, exuding an imposing presence.}
+{101}{}{You see Major Jack Fleming, the seasoned commander of the Hoover Dam NCR troops and the Governor's right-hand man.}
+{102}{}{You see a veteran of the NCR-Brotherhood War.}
+
+{150}{}{Having assisted Major Jack with dog grooming, you realize a more substantial reward might have been possible if not for your perceived lack of intelligence.}
+{151}{}{Show the ledger to Dodge.}
+{152}{}{You've betrayed Pierre and the former Brotherhood engineers to Major Fleming.}
+{153}{}{Let's do this!}
+{154}{}{Thanks for savin' my skin. We failed to arrest Ailis but good riddance to her! Go talk to Dodge. I'll see you around, hero.}
+{155}{}{Thanks for helpin' me arrest Ailis. Go talk to Dodge. I'll see you around, hero.}
+{156}{}{Thanks for helpin' me bust Fearsome Threesome. I'll see you around, hero.}
+
+# Node001
+{200}{}{Halt! Identify yourself.}
+{201}{}{I'm }
+{202}{}{. Here in peace.}
+{203}{}{It's me, }
+{204}{}{. Who are you?}
+{205}{}{Your executioner, old man!}
+{206}{}{No one. Just passing through.}
+
+# Node028
+{230}{}{Impressive stature you've got there. Enjoy boxin'? The army can help. Haha! Just kiddin'. So, who might you be, mutie?}
+{231}{}{I'm }
+{232}{}{. I had a question...}
+{233}{}{Nothing important, old man. Farewell.}
+
+# Node002
+{260}{}{You seem like a fellow who appreciates a good whiskey. Care for a drink with an old fart?}
+{261}{}{Sure.}
+{262}{}{No! Drinking is a sin!}
+{263}{}{Perhaps another time.}
+
+# Node003
+{290}{}{Greetin's, }
+{291}{}{. What brings you here? Care to join Major Jack for a drink and war stories?}
+{292}{}{Regarding my meeting with Governor Dodge...}
+{293}{}{Certainly. A drink sounds good.}
+{294}{}{A war story?}
+{295}{}{I have some questions.}
+
+# Node004
+{320}{}{So there we were, just our platoon and the tincans swarmin' all around us. They tore Blair to shreds with gatlin' laser fire at close quarters. We thought we should pick them off with sniper fire. We were in the middle of a dust storm, so we made camouflage capes from old sheets... [The war tale continues...]}
+{321}{}{[CONTINUE]}
+
+# Node005
+{350}{}{Now that you've heard my story, how about sharin' yours with an old wardog like me?}
+{351}{}{Sure. It all began when I was born in a prison...}
+{352}{}{I don't have a story, but I do have questions.}
+{353}{}{I'm short on time. Sorry!}
+
+# Node006
+{380}{}{Pleased to meet you. I'm Jack. Some call me "Major."}
+{381}{}{A major of the NCR Army?}
+{382}{}{What brings you here? Waging a war?}
+{383}{}{Could you share more about yourself, Jack?}
+{384}{}{Where do you come from, Jack?}
+{385}{}{Pleased to meet you, too. Farewell.}
+
+# Node007
+{410}{}{So, what brin's you here, }
+{411}{}{?}
+{412}{}{Who are you, exactly?}
+{413}{}{Where do you hail from?}
+{414}{}{Perhaps another time.}
+
+# Node008
+{440}{}{The Brotherhood of Steel. Came from the mountains to the east. Tough and mean as a storm, those bastards.}
+{441}{}{How did they get there?}
+{442}{}{You've fought them, you said?}
+{443}{}{What did they look like?}
+{444}{}{I'm sure I've seen some of them out there.}
+{445}{}{I think I've encountered them. They're at a place called Maxson Bunker now...}
+{446}{}{Interesting, but I must go.}
+
+# Node009
+{470}{}{My brothers in arms. We lost good people...}
+{471}{}{I mourn their loss. Can you tell me *who* they were exactly?}
+{472}{}{Who were the tincans?}
+{473}{}{The wages of war. Farewell.}
+
+# Node010
+{500}{}{A small survivalist NCR community near the Dam. The name won't rin' a bell.}
+{501}{}{The Dam?}
+{502}{}{What role did you play there?}
+{503}{}{What happened to it?}
+{504}{}{Whatever. Until next time.}
+
+# Node011
+{530}{}{I used to belong to a group known as the Desert Rangers, similar to the NCR Rangers. We protected our town from bandits, ensurin' everyone's safety, until the tincans came...}
+{531}{}{The tincans?}
+{532}{}{What happened to the town?}
+{533}{}{And what are you doing here now? Are you still haunted by the war?}
+{534}{}{I'll be on my way.}
+
+# Node012
+{560}{}{War? Not really. It's been a stalemate. I'm just restin' my old bones, tendin' to brahmin and dogs, and indulgin' in the finer, "spiritual" aspects of life.}
+{561}{}{Spiritual?}
+{562}{}{Who were you back then?}
+{563}{}{Would you consider traveling with me?}
+{564}{}{Heh heh. Well, enjoy. I'll be back later.}
+
+# Node013
+{590}{}{Major Jack Flemin' of the NCR, at your service. Once a sharpshooter for the Desert Rangers, now commandin' the Hoover Dam NCR troops.}
+{591}{}{Desert Rangers?}
+{592}{}{So why are you here? Waging a new war?}
+{593}{}{Would you be interested in joining me?}
+{594}{}{Major my ass. Buffoon.}
+{595}{}{It's a genuine honor to meet you. Perhaps we'll talk another time.}
+
+# Node014
+{620}{}{They murdered our President. Or maybe it was for personal reasons. Beats me. Accordin' to tincan POWs and their battlecries, their leader was ill or even killed. They sought vengeance against outsider settlements, decidin' to lay waste to our town when they found it.}
+{621}{}{Did you fight back?}
+{622}{}{Wars were supposed to be over. What happened?}
+{623}{}{What was the town's name?}
+{624}{}{I'll gather more information elsewhere.}
+
+# Node015
+{650}{}{Like hell, yes, we fought back. Kept the tincans busy for months, showerin' them with bullets and sniper fire. Decimated them, but their weapons were too advanced, and the town was left in ruins.}
+{651}{}{What was the town called?}
+{652}{}{You did all that for your town? You're a hero!}
+{653}{}{So you came to Hoover Dam. What brings you here now?}
+{654}{}{Sorry to hear that. Farewell.}
+
+# Node016
+{680}{}{The town was burned down. A few survivors scattered across the wasteland, seekin' a new life in settlements. I ended up here.}
+{681}{}{What do you do now?}
+{682}{}{Would you consider joining me?}
+{683}{}{Who were the tincans, and where did they come from?}
+{684}{}{I'll leave you to your new beginning, then.}
+
+# Node017
+{710}{}{Big, heavily armored, with an unhealthy look in their eyes. Fanatics. Carryin' excellent military equipment.}
+{711}{}{Despite that, you put up a fight?}
+{712}{}{Sounds tough. Where did they come from?}
+{713}{}{Sounds like the Brotherhood of Steel from the West Coast. Or perhaps the Enclave. I'll have to do some research on that. Farewell.}
+
+# Node018
+{740}{}{If you do, send them my regards. Preferably in .233 caliber.}
+{741}{}{Aren't you being too harsh? I've seen them resocialize and build a peaceful community, even here in Hoover Dam.}
+{742}{}{Maybe I will. Depends on whether they start shooting me. See you.}
+
+# Node019
+{770}{}{Yup. The biggest concrete structure I've ever seen. We tried to make it run and supply power, but it didn't work. Otto, however, managed it. Good old Otto. Surprised it survived the Great War; I guess the Reds were too busy nukin' our atomic power plants to blow it up.}
+
+# Node020
+{800}{}{A shame, indeed. If we had researched such power sources more, tis' cataclysm might never have happened. Our ancestors became desperate.}
+{801}{}{That's debatable. Tell me, who were you back then?}
+{802}{}{What happened to your hometown?}
+{803}{}{Well, if it didn't happen, we wouldn't be here. Goodbye.}
+
+# Node021
+{830}{}{Perhaps some have changed their ways. It's possible there are rogue Brotherhood members.}
+{831}{}{Tell me about the place you come from.}
+{832}{}{Indeed. Farewell.}
+
+# Node022
+{860}{}{Not in my town it wasn't. Them tincans must not have heard the good news. Maybe they needed a good beatin' to get it into their skulls.}
+{861}{}{You did fight back, though.}
+{862}{}{Ugh. Violence. I've got to go.}
+
+# Node023
+{890}{}{[Raises eyebrows.] What? You think I'm here for that explicit purpose?}
+{891}{}{Well...}
+{892}{}{Forget it.}
+
+# Node024
+{920}{}{[Reflects.] No, thanks. It might be fun, but look: I've got my own war to fight, to destroy the Brotherhood. And then I will retire for good.}
+{921}{}{Damn. Wish I had found you earlier. Where were you, goddammit?}
+{922}{}{I guess you're better off that way. Dangers lie in the desert. Goodbye.}
+
+# Node025
+{950}{}{Good liquor, sheesh. Nothin' like a glass of good whisky to enjoy on the porch.}
+{951}{}{Where do you get that? Do you buy it in town?}
+{952}{}{I'll have to take your word on that. I've got to go.}
+
+# Node026
+{980}{}{Nope. I make my brandy myself. But if you want to buy, I will sell.}
+{981}{}{Yeah, but at the same time, we're missing out on taxes. See you.}
+
+# Node027
+{1010}{}{Just because you're the last man standin' doesn't make you a hero. We've lost a lot of good men there, and I'm far from nostalgic. But I thank you for the words of recognition.}
+{1011}{}{You said "your men," who were they?}
+{1012}{}{Would you like to join a *real* hero - ME - and look for adventure?}
+{1013}{}{But... Oh... I understand. I'm sorry if I upset you. Goodbye.}
+
+# Node029
+{1040}{}{Yes? What is it you want to ask?}
+{1041}{}{Who's Blair?}
+{1042}{}{Nothing really. Bye.}
+
+# Node030
+{1070}{}{Where was that?}
+{1071}{}{Oh my, look at the time. I've got to go, bye!}
+
+# Node031
+{1100}{}{That's some story you tell. I like how you got yourself past your trials; that was some really brave thin's you did. Say...}
+{1101}{}{Yes?}
+
+# Node032
+{1130}{}{I'll let you in on a little secret. Have you seen the crucifixion cross near the south gate?}
+{1131}{}{Yes. Who was crucified there?}
+{1132}{}{No. Who was crucified there?}
+
+# Node033
+{1160}{}{No one. Tis' where we crucify traitors.}
+{1161}{}{Uh... OK, grandpa. I've had some questions about your story, only I didn't want to interrupt...}
+{1162}{}{Umm.. good to know. Thanks.}
+
+# Node034
+{1190}{}{That's a mighty fine story. Say, your glass is empty. Let me pour you a special drink...}
+{1191}{}{Special? I don't like the sound of it. I think I'll pass. Pour me a regular whisky, though, and let me ask you something...}
+
+# Node035
+{1220}{}{There you go. Uh... It's pretty strong; are you sure you want to drink that?}
+{1221}{}{Aw, what the hell...}
+{1222}{}{Let's settle for a standard shot. I wanted to ask you something, and I don't want my tongue to tie in knots...}
+{1223}{}{No way, it smells like plasma with a hydroxyl group. Thanks, but I'll pass. Bye.}
+{1224}{}{You're right. I'd likely get myself poisoned, not that it killed anyone. Bye.}
+
+# Node036
+{1250}{}{That's brave of you, hahaha!}
+{1251}{}{[You down the drink. After a short while, everything turns grey and blurry - and the drink gets the best of you!]}
+
+# Node037
+{1280}{}{[Grins.] Ready for another special drink?}
+{1281}{}{Sure. Maybe I'll develop an immunity.}
+{1282}{}{No thanks. I wanted to ask you something...}
+{1283}{}{Very funny. I'm outta here.}
+
+# Node038
+{1310}{}{Hello there. What have you come to ask of ol' Jack? Want to have a drink with him, eh?}
+{1311}{}{E-eee-h!}
+{1312}{}{Ba-ye!}
+
+# Node039
+{1340}{}{Oh my. Well, I can't give you booze with a clear conscience, not with the trouble your head is in already. But if you *can* put a question into words, fire away!}
+{1341}{}{Faya-weh? Me no want shoot you!}
+{1342}{}{Wer you frum?}
+{1343}{}{What you do?}
+{1344}{}{U like carrot?}
+{1345}{}{Me go.}
+
+# Node040
+{1370}{}{Bloody hell, tis' ain't goin' nowhere! Farewell, and don't stay in the sun too long...}
+{1371}{}{Sun is fun! Bye!}
+
+# Node041
+{1400}{}{As a matter of fact, I do, though it's beyond me why you would ask me that question. Oh well. Goodbye.}
+{1401}{}{Uh... Me dunno either. Bye.}
+
+# Node042
+{1430}{}{The... whatever. A small settlement near the Dam.}
+{1431}{}{Dam dam-dam?}
+{1432}{}{Me like caps! Me collect!}
+{1433}{}{Tell else...}
+
+# Node043
+{1460}{}{A large construction used to impound water. Not that you'll ever see one and understand. Just look over my shoulder.}
+{1461}{}{Me go see dam! Me go swim!}
+
+# Node044
+{1490}{}{Just tend to my brahmin and dogs when I'm not busy leadin' the troops. Say, you look able, would you like to help an old man?}
+{1491}{}{Sure. Me help.}
+{1492}{}{No. Me lazy!}
+
+# Node045
+{1520}{}{Just groom my dogs. I've got a lot of work to do, so if you'd excuse me... And watch where you step. Don't want to collect you all over Downtown.}
+{1521}{}{OOO-kay! Me go!}
+
+# Node046
+{1550}{}{You do? Show me on the map. If you are tellin' the truth, that will help you a lot in meetin' the Governor.}
+{1551}{}{Uhh.. sure.}
+{1552}{}{I'm not a snitch. There must be some other way to prove myself.}
+
+# Node047
+{1580}{}{Buffoon? I didn't have a stellar military career with the NCR, that's true. I'm a person who likes to question authority, and the military does not look kindly on such individuals, at least not in the NCR. So it really came as no surprise when I was put in charge of the troops that would be sent to Hoover Dam, under the guidance and leadership of Councilman Joseph Dodge.}
+
+# Node048
+{1610}{}{At first, I thought the assignment was a death sentence for insubordinate officers and the like. But after arrivin' at Hoover Dam and seein' Dodge diplomatically convince the settlers there that with cooperation they could build a powerful and prosperous community, I found hope. I thought, maybe tis' Dodge character isn't so bad, after all.}
+{1611}{}{So you're Dodge's right-hand man?}
+
+# Node049
+{1640}{}{That's right, I am. For the brief time before the war, when Hoover was very prosperous, I grew to respect Governor Dodge more and more. I vowed to protect him through thick and thin, and when the war with the Brotherhood started, I reaffirmed my loyalty by suggestin' Dodge stay in seclusion and only meet with people when absolutely necessary.}
+{1641}{}{Why would you do that?}
+
+# Node050
+{1670}{}{I thought Dodge was one of the wasteland's last hopes for civilized community and government, and I wanted to make certain that all of Dodge's hard work in the past would not be in vain.}
+{1671}{}{Dodge sounds like someone I'd like to meet. Can you arrange that?}
+{1672}{}{Thanks for the information on local politics. I will see you around. Goodbye.}
+
+# Node051
+{1700}{}{Governor Dodge won't see every Tom, Dick, or Hairy Mutant who staggers in from the wastes and asks to see him. I believe actions speak louder than words. I'll only let you see Dodge after you prove yourself safe, sane, and willin' to help Hoover Dam.}
+{1701}{}{How do I prove myself then?}
+{1702}{}{I don't need anyone's approval. This is crap; I'm out of here.}
+
+# Node052
+{1730}{}{Bein' safe and sane can be camouflaged, but helpin' us will require actual action. I give you three offers - work for the Crimson Caravan Company and earn a good workin' reputation from the company's head, Ailis McLafferty. Doin' a couple of caravan missions and earnin' her trust will get you her recommendation to see Governor Dodge.}
+{1731}{}{What's the second offer?}
+{1732}{}{Work? I'm too lazy for that. Goodbye.}
+
+# Node053
+{1760}{}{Another way is to work for 3-Some Caravan Company, Crimson Caravan's competitor, and help them with their business.}
+{1761}{}{And the last option?}
+{1762}{}{More work as an alternative? So long.}
+
+# Node054
+{1790}{}{Finally, doin' some old-fashioned science can help us as well. If you are a science or mechanical wiz, they can apply your skills in helpin' the engineers create a better filtration system to make the irrigation water drinkable. If you do the upgrades yourself instead of just helpin' the engineers, we will consider you a hero, and then you'll earn the right to see Dodge.}
+{1791}{}{That's fair; I can do that. Tell Dodge he's gonna meet a hero soon.}
+{1792}{}{I'll have to think about this. Goodbye, Major. }
+
+# Node055
+{1820}{}{That's the spirit! Hoover Dam needs heroes. Good luck, }
+{1821}{}{.}
+{1822}{}{[END]}
+
+# Node056
+{1850}{}{You're kiddin', right? Tis' will not only please Dodge and our troops to no end, but it is a huge step towards peace with the Brotherhood!}
+{1851}{}{Wow! I better talk to Dodge immediately to get things into motion.}
+{1852}{}{Happy to hear it, Major. I hope the NCR will be generous when it comes to rewarding me, its hero.}
+
+# Node057
+{1880}{}{I am sure Governor Dodge will be happy to provide you with anythin' you need. Please proceed inside the buildin' to meet him.}
+
+# Node058
+{1910}{}{Of course, }
+{1911}{}{. Please proceed inside the buildin' to meet him.}
+
+# Node059
+{1940}{}{Ah, I see. Thanks for helpin' our engineers, but we would require even more effort from you besides that.}
+{1941}{}{Umm... I also know the location of the Brotherhood's base.}
+{1942}{}{I can reveal the true identity of your engineers. They claim to be from the Followers of the Apocalypse but they are actually ex-Scribes from the Brotherhood. Spies!}
+{1943}{}{You know what, asshole? I'll just blast my way through, you ungrateful piece of steaming brahmin dung.}
+{1944}{}{Great. I'll be going now. Later.}
+
+# Node060
+{1970}{}{You're kiddin' right? Me and the troops will round them up and get to the bottom of it. If you are right, the Governor will see you, no doubt about it.}
+
+# Node061
+{2000}{}{Yes, you have news?}
+{2001}{}{I did a couple of caravan missions for Crimson Caravan and earned Ailis' trust. She gave me her recommendation to see Governor Dodge.}
+{2002}{}{I accepted 3-Some Caravan's offer to find evidence of misconduct with Crimson Caravan, and then exposed Crimson for the two-faced shits they are. Can I see Governor now?}
+{2003}{}{I improved the town's filtration system and made the irrigation water drinkable.}
+{2004}{}{I gave engineers schematics from Jericho, which they used to improve the filtration system.}
+{2005}{}{Nothing yet really.}
+{2006}{}{I got my hands on these written ledgers. Ailis McLafferty, her dealings with Devon Hill, the Brotherhood's quartermaster... it's all here, in black and white. Here, take a look.}
+
+# Node062
+{2030}{}{Tis' ledgers... they're damnin' evidence. Dodge needs to see this; he has the authority to issue an arrest warrant. Show them to him.}
+
+# Node063
+{2060}{}{Good. Stay close to me; I'll guide you.}
+{2061}{}{Keep that as a last resort. We don't know how they might react.}
+{2062}{}{Excellent. A tactical advantage could be crucial.}
+
+# Node064
+{2090}{}{It got rough, but we handled it.}
+{2091}{}{Well done on defusin' the situation without bloodshed. Sometimes words can be more powerful than weapons. I'm glad it didn't escalate further.}
+{2092}{}{We caught them by surprise. They didn't know what hit them.}
+{2093}{}{You've shown your worth in this matter. You have the gratitude of the New California Republic. Here's your reward, as promised.}
+
+# Node065
+{2120}{}{Dodge informed me of his decision. We need to prepare to make the arrest. Can I count on you? You've been instrumental in uncoverin' tis' scheme.}
+{2121}{}{Sure, I'm ready for some action.}
+{2122}{}{I can try to talk things out if it gets too heated.}
+{2123}{}{I can help take them by surprise.}
+{2124}{}{I don't know. Best to leave that to you professionals.}
+{2125}{}{Dodge informed me of his decision. We need to prepare to make the arrest. However, news of your earlier "antics" at the Crimson Caravan's office has reached me, and it's your hide that should be facing incarceration. Consider yourself fortunate this time, but do not repeat such vigilantism. Respect the laws of the NCR.}
+{2126}{}{I'll do better next time, Major.}
+{2127}{}{Whatever.}

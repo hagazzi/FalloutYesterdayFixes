@@ -1,0 +1,6 @@
+#define LOCKED_STATUS                STATE_ACTIVE
+#define DOOR_STATUS                  STATE_NON_DESTROY
+#define LOCK_STATUS                  STATE_ELECTRIC_LOCK
+#define Lock_Bonus                   (-60)
+
+#include "..\generic\zimtldor.ssl"

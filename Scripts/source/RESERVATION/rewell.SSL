@@ -1,0 +1,85 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_GOO
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+variable mutate:=0;
+
+procedure start begin
+end
+
+
+procedure use_p_proc begin
+
+   display_mstr(200);
+
+   if ( (source_obj == dude_obj) and (global_var(GVAR_MUTATE_STAGE) < 1) ) then begin
+    mutate:=global_var(GVAR_MUTATE);
+    mutate:=mutate+2;
+    set_global_var(GVAR_MUTATE,mutate);
+    if (mutate > 29) then begin
+       //set_global_var(GVAR_MUTATE, 1); //set state of character to mutate
+       set_global_var(GVAR_MUTATE_WHEN, GAME_TIME_IN_DAYS); //store the time
+       set_global_var(GVAR_MUTATE_STAGE,1);
+       display_msg(mstr(150));
+    end
+    else if (mutate > 14) then
+       display_msg(mstr(140));
+    else
+       display_msg(mstr(110));
+ end
+
+
+end
+
+procedure use_obj_on_p_proc begin
+    variable tool := obj_pid(obj_being_used_with);
+
+    if (tool == PID_BOTTLE_CAPS) then begin
+        item_caps_adjust(dude_obj, -1);
+        display_mstr(201);
+    end
+    else if(tool == PID_ROPE) then begin
+        display_mstr(202);
+    end
+end

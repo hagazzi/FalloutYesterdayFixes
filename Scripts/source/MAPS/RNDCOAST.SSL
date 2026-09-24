@@ -1,0 +1,95 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: modMain
+        Location: Modoc
+        Description: Modoc main area
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created: December 04, 1997
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+//#include "..\headers\modMain.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_RNDCOAST
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+#include "..\headers\vehicles.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure start begin
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+
+   if(
+       cur_map_index == MAP_RND_COAST1 or
+       cur_map_index == MAP_RND_COAST2 or
+       cur_map_index == MAP_RND_COAST3 or
+       cur_map_index == MAP_RND_COAST4 or
+       cur_map_index == MAP_RND_COAST5 or
+       cur_map_index == MAP_RND_COAST6 or
+       cur_map_index == MAP_RND_COAST7 or
+       cur_map_index == MAP_RND_COAST8 or
+       cur_map_index == MAP_RND_COAST9 or
+       cur_map_index == MAP_RND_COAST_10 or
+       cur_map_index == MAP_RND_COAST_11 or
+       cur_map_index == MAP_RND_COAST_12
+    ) then begin
+        set_map_music(cur_map_index, "28coast");
+        set_global_var(GVAR_ARGOS_LEAVE, 0);
+        set_global_var(GVAR_ARGOS_TALKER, 0);
+        set_global_var(GVAR_ROBOHUNTER_TALKER, 0);
+    end
+end
+
+procedure map_enter_p_proc begin
+
+   call Check_Create_Vehicle;
+
+    fadein(1);
+   wm_area_set_pos(AREA_RND_COAST, metarule(44, 0), metarule(45, 0));   //added by killap
+
+   //added by killap
+   if( dude_elevation == 1 ) then
+      Cavern_Lighting;
+   else
+      Lighting;
+
+   call MysteriousStranger;
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_MUTANT_WATERS), 1);
+
+end
+
+procedure map_update_p_proc begin
+   if( dude_elevation == 1) then
+      Cavern_Lighting;
+   else
+      Lighting;
+end

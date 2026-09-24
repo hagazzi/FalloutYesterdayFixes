@@ -1,0 +1,1424 @@
+/*
+
+        Name:           Angela
+        Location:
+        Description:
+
+           Created: 04/10/2020 21:38:32
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_C /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBANGELA
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+procedure Skill_Check_000_Speech;
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+
+procedure Angela_1a_1;
+procedure Angela_1a_2F_1a;
+procedure Angela_1a_2F_1b;
+procedure Angela_1a_2F_2;
+procedure Angela_1a_2Ma_1;
+procedure Angela_1a_2Ma_2;
+procedure Angela_1a_2Mb_1;
+procedure Angela_1a_2Mb_2B_1;
+procedure Angela_1a_2Mb_2B_2;
+procedure Angela_1a_2Mb_2B_3;
+procedure Angela_1a_2Mc_1;
+procedure Angela_1a_2Mc_2;
+procedure Angela_1b_F;
+procedure Angela_1b_M;
+procedure Angela_1c_1;
+procedure Angela_1c_2;
+procedure Angela_1c_3;
+procedure Angela_1c_4;
+procedure Angela_1c_5a;
+procedure Angela_1c_5b_1;
+procedure Angela_1c_5b_2a;
+procedure Angela_1c_5b_2b;
+procedure Angela_1c_5b_2B_1;
+procedure Angela_1c_5b_2B_2;
+procedure Angela_1c_6;
+procedure Angela_1c_7a_1;
+procedure Angela_1c_7a_2;
+procedure Angela_1c_7b_1;
+procedure Angela_1c_7b_2F_1;
+procedure Angela_1c_7b_2F_2;
+procedure Angela_1c_7b_2F_3a;
+procedure Angela_1c_7b_2F_3b_1;
+procedure Angela_1c_7b_2F_3b_2;
+procedure Angela_1c_7b_2N_1;
+procedure Angela_1c_7b_2N_2;
+procedure Angela_2a_1;
+procedure Angela_2a_2a_1;
+procedure Angela_2a_2a_2;
+procedure Angela_2a_2b_1;
+procedure Angela_2a_2b_2;
+procedure Angela_2a_2b_3;
+procedure Angela_2a_2c_1;
+procedure Angela_2a_2c_2;
+procedure Angela_2a_2d_1;
+procedure Angela_2a_2d_2;
+procedure Angela_2a_2M_1;
+procedure Angela_2a_2M_2a;
+procedure Angela_2a_2M_2b_1;
+procedure Angela_2a_2M_2b_2;
+procedure Angela_2a_2M_2b_3;
+procedure Angela_2a_3;
+procedure Angela_2a_4;
+procedure Angela_2a_5;
+procedure Angela_2a_6;
+procedure Angela_2a_7a_1;
+procedure Angela_2a_7a_2;
+procedure Angela_2a_7a_3;
+procedure Angela_2a_7a_4a;
+procedure Angela_2a_7a_4b;
+procedure Angela_2a_7a_5a_1;
+procedure Angela_2a_7a_5a_2;
+procedure Angela_2a_7a_5a_3;
+procedure Angela_2a_7a_5B_1;
+procedure Angela_2a_7a_5B_2;
+procedure Angela_2a_7a_5B_3;
+procedure Angela_2a_7b_1;
+procedure Angela_2a_7b_2;
+procedure Angela_2b_1;
+procedure Angela_2b_2;
+procedure Angela_3_1;
+procedure Angela_3_2a;
+procedure Angela_3_2b;
+procedure Angela_3_3a_1;
+procedure Angela_3_3a_2a_1a;
+procedure Angela_3_3a_2a_1B;
+procedure Angela_3_3a_2a_2;
+procedure Angela_3_3a_2a_3;
+procedure Angela_3_3b_1;
+procedure Angela_3_3b_2a;
+procedure Angela_3_3b_2b_1;
+procedure Angela_3_3b_2b_2;
+procedure Angela_3_3b_2b_3;
+procedure Angela_9F_1;
+procedure Angela_9F_2;
+procedure Angela_9F_3;
+procedure Angela_9F_4;
+procedure Angela_9M;
+procedure Node089;
+procedure push_p_proc;
+procedure Angela_3_3b_2b_2g;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+#define LVAR_Angela_Temper (8)
+#define LVAR_Angela_Grace_Dead (9)
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+
+   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+
+if(local_var(LVAR_Herebefore) == 1) then begin
+   inc_global_var(GVAR_KNOW_ANGELA);
+end
+
+if(global_var(GVAR_KNOW_ANGELA) >= 5 and global_var(GVAR_ANGELA_ROBOSLUT) > 0) then begin
+   set_global_var(GVAR_ANGELA_DEAD, 1);
+   destroy_object(self_obj);
+end
+
+call new_plague_check(self_obj, LVAR_Herebefore);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure push_p_proc begin
+   floater_rand(440,445);
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,HEAD_ANGELA,BACKGROUND_TIBBETS);
+       gSay_Start;
+
+if(local_var(LVAR_Herebefore) == 0) then begin
+   call Angela_1a_1;
+end else begin
+   if (dude_is_female) then begin
+      call Angela_1b_M;
+   end else begin
+      if(get_critter_stat(dude_obj, STAT_ch) <= 6) then
+      call Angela_1b_M;
+      if(get_critter_stat(dude_obj, STAT_ch) >= 7) then
+      call Angela_1b_F;
+   end
+
+//{625}{}{The rumor that Angela is a robo-lover is out; the PC has not spoken to Angela since.}
+//{626}{}{The rumor that Angela is a robo-lover is out; the PC has spoken to Angela since.}
+
+//   NOption(625,Angela_1c_1,4);
+ //  NOption(626,Angela_1c_6,4);
+
+end
+
+       gSay_End;
+       end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+
+   add_timer_event(self_obj,game_ticks(random(3, 5)),0);
+
+    if (random(0, 30) == 1) then begin
+       if(local_var(LVAR_Angela_Temper) <= -3) then
+          floater_rand(260, 265);
+       else
+          floater_rand(200, 208);
+   end
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+   set_global_var(GVAR_ANGELA_DEAD, 1);
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+/* inc_evil_critter */
+/* inc_neutral_critter */
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure Skill_Check_000_Speech begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -15);
+if is_success(roll_temp) then
+begin
+call Angela_2a_7a_1;
+end
+else begin
+call Angela_2a_7b_2;
+ end
+end
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+// Node Angela_1a_1
+//
+// Notes:
+//
+// The Angela_1a_* path is the default greeting Angela uses when she speaks to the PC for the first time. It branches after this node depending on whether she finds the PC attractive.
+
+procedure Angela_1a_1
+begin
+Reply(650);
+if (get_critter_stat(dude_obj,STAT_ch)<7) then
+NOption(mstr(651)+dude_name+mstr(652),Angela_1a_2Ma_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) then
+GOption(mstr(651)+dude_name+mstr(652),Angela_1a_2F_1a,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) then
+NOption(653,Angela_1a_2Mb_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) then
+NOption(653,Angela_1a_2F_1b,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) then
+NOption(mstr(654)+dude_name+mstr(655),Angela_1a_2Ma_1,-3);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) then
+GOption(mstr(654)+dude_name+mstr(655),Angela_1a_2F_1a,-3);
+if (get_critter_stat(dude_obj,STAT_ch)<7) then
+NOption(656,Angela_1a_2Mb_1,-3);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) then
+NOption(656,Angela_1a_2F_1b,-3);
+end
+
+procedure Angela_1a_2F_1a
+begin
+Reply(mstr(680)+dude_name+mstr(681));
+NOption(653,Angela_1a_2F_1b,4);
+NOption(682,Angela_1a_2F_2,4);
+NOption(683,Angela_9F_1,4);
+NOption(656,Angela_1a_2F_1b,-3);
+NOption(mstr(684)+dude_name+mstr(685)+dude_name+mstr(686),Angela_1a_2F_2,-3);
+NOption(687,Angela_9F_1,-3);
+end
+
+procedure Angela_1a_2F_1b
+begin
+Reply(710);
+NOption(711,Angela_1a_2F_2,4);
+NOption(683,Angela_9F_1,4);
+end
+
+// Node Angela_1a_2F_2
+//
+// Notes:
+//
+// This node increments the variable which keeps track of how many people the PC has told that (s)he comes from a vault from the north. It regulates whether or not Bruce, the Wasteland Explorer will be at Vault 31 when the PC returns.
+
+procedure Angela_1a_2F_2
+begin
+Reply(740);
+NOption(741,Angela_9F_1,4);
+end
+
+procedure Angela_1a_2Ma_1
+begin
+Reply(770);
+NOption(653,Angela_1a_2Mb_1,4);
+NOption(771,Angela_1a_2Ma_2,4);
+NOption(656,Angela_1a_2Mb_1,-3);
+NOption(772,Angela_1a_2Ma_2,-3);
+end
+
+procedure Angela_1a_2Ma_2
+begin
+Reply(800);
+NOption(801,Angela_3_3a_1,4);
+NOption(802,Angela_3_3b_1,4);
+NOption(653,Angela_1a_2Mb_1,4);
+NOption(803,Node999,4);
+NOption(804,Angela_3_3a_1,-3);
+NOption(805,Angela_3_3b_1,-3);
+NOption(656,Angela_1a_2Mb_1,-3);
+NOption(806,Node999,-3);
+end
+
+procedure Angela_1a_2Mb_1
+begin
+Reply(830);
+NOption(831,Angela_1a_2Mc_1,4);
+NOption(832,Angela_1a_2Ma_1,4);
+if (dude_is_male) then
+BOption(833,Angela_1a_2Mb_2B_1,4);
+NOption(834,Node999,4);
+NOption(835,Angela_1a_2Ma_1,-3);
+if (dude_is_male) then
+NOption(836,Angela_1a_2Mb_2B_1,-3);
+NOption(806,Node999,-3);
+end
+
+procedure Angela_1a_2Mb_2B_1
+begin
+Reply(860);
+if (dude_is_male) then
+NOption(861,Angela_1a_2Mb_2B_2,4);
+NOption(862,Node999,4);
+NOption(863,Angela_1a_2Mb_2B_2,-3);
+NOption(864,Node999,-3);
+end
+
+// Node Angela_1a_2Mb_2B_2
+//
+// Notes:
+//
+// Decrement the local variable Angela_Temper by 1.
+
+procedure Angela_1a_2Mb_2B_2
+begin
+Reply(890);
+if (dude_is_male) then
+BOption(891,Angela_1a_2Mb_2B_3,4);
+NOption(862,Node999,4);
+NOption(mstr(892)+dude_name+mstr(893),Angela_1a_2Mb_2B_3,-3);
+NOption(894,Node999,-3);
+end
+
+procedure Angela_1a_2Mb_2B_3
+begin
+Reply(920);
+BOption(921,Node998,1);
+end
+
+procedure Angela_1a_2Mc_1
+begin
+Reply(950);
+NOption(951,Angela_1a_2Mc_2,4);
+if (dude_is_male) then
+BOption(833,Angela_1a_2Mb_2B_1,4);
+NOption(952,Node999,4);
+end
+
+procedure Angela_1a_2Mc_2
+begin
+Reply(980);
+if (dude_is_male) then
+BOption(833,Angela_1a_2Mb_2B_1,4);
+NOption(952,Node999,4);
+end
+
+procedure Angela_1b_F
+begin
+Reply(mstr(1010)+dude_name+mstr(1011));
+NOption(1012,Angela_9F_2,4);
+// NOTE: This option only appears if the PC has the 'Find a date for Angela' quest.
+NOption(1013,Angela_2a_1,4);
+if (dude_is_female and global_var(GVAR_ANGELA_TIPS) == 1) then
+NOption(1014,Angela_2b_1,4);
+NOption(1015,Angela_3_1,4);
+NOption(1016,Node999,4);
+end
+
+procedure Angela_1b_M
+begin
+Reply(1040);
+// NOTE: This option only appears if the PC has the 'Find a date for Angela' quest.
+NOption(1013,Angela_2a_1,4);
+if (dude_is_female and global_var(GVAR_ANGELA_TIPS) == 1) then
+NOption(1014,Angela_2b_1,4);
+NOption(1015,Angela_3_1,4);
+NOption(1016,Node999,4);
+end
+
+procedure Angela_1c_1
+begin
+Reply(1070);
+NOption(1071,Angela_1c_2,4);
+end
+
+procedure Angela_1c_2
+begin
+Reply(1100);
+NOption(1101,Angela_1c_3,4);
+NOption(1102,Angela_1c_3,4);
+end
+
+procedure Angela_1c_3
+begin
+Reply(1130);
+NOption(1131,Angela_1c_4,4);
+end
+
+procedure Angela_1c_4
+begin
+Reply(1160);
+NOption(1161,Angela_1c_5a,4);
+NOption(1162,Angela_1c_5b_1,4);
+end
+
+procedure Angela_1c_5a
+begin
+Reply(1190);
+NOption(1162,Angela_1c_5b_1,4);
+end
+
+procedure Angela_1c_5b_1
+begin
+Reply(1220);
+NOption(1221,Angela_1c_5b_2a,4);
+NOption(1222,Angela_1c_5b_2b,4);
+BOption(1223,Angela_1c_5b_2B_1,4);
+end
+
+procedure Angela_1c_5b_2a
+begin
+Reply(1250);
+NOption(1251,Angela_1c_6,4);
+NOption(1222,Angela_1c_5b_2b,4);
+end
+
+procedure Angela_1c_5b_2b
+begin
+if (dude_is_male) then Reply(1280); else
+if (dude_is_female) then Reply(1281);
+NOption(1251,Angela_1c_6,4);
+NOption(1282,Angela_1c_5b_2a,4);
+end
+
+procedure Angela_1c_5b_2B_1
+begin
+Reply(1310);
+BOption(1311,Angela_1c_5b_2B_2,4);
+BOption(1312,Angela_1c_5b_2B_2,4);
+end
+
+// Node Angela_1c_5b_2B_2
+//
+// Notes:
+//
+// Decrement the local variable Angela_Temper by 3.
+
+procedure Angela_1c_5b_2B_2
+begin
+Reply(1340);
+BOption(1341,Node998,4);
+NOption(806,Node999,4);
+end
+
+procedure Angela_1c_6
+begin
+Reply(1370);
+NOption(1371,Angela_1c_7a_1,4);
+if (dude_is_male) then
+NOption(1372,Angela_1c_7b_1,4);
+end
+
+procedure Angela_1c_7a_1
+begin
+Reply(1400);
+NOption(1401,Angela_1c_7a_2,4);
+end
+
+procedure Angela_1c_7a_2
+begin
+Reply(1430);
+NOption(1372,Angela_1c_7b_1,4);
+end
+
+procedure Angela_1c_7b_1
+begin
+Reply(1460);
+NOption(1461,Angela_1c_7b_2N_1,4);
+if (dude_is_male) then
+GOption(1462,Angela_1c_7b_2F_1,4);
+end
+
+procedure Angela_1c_7b_2F_1
+begin
+Reply(1490);
+GOption(1491,Angela_1c_7b_2F_2,4);
+NOption(1492,Angela_1c_7b_2N_1,4);
+end
+
+procedure Angela_1c_7b_2F_2
+begin
+Reply(1520);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) then
+NOption(1401,Angela_1c_7b_2F_3b_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) then
+NOption(1401,Angela_1c_7b_2F_3a,4);
+end
+
+procedure Angela_1c_7b_2F_3a
+begin
+Reply(1550);
+NOption(1492,Angela_1c_7b_2N_1,4);
+NOption(1551,Node999,4);
+end
+
+procedure Angela_1c_7b_2F_3b_1
+begin
+Reply(1580);
+// NOTE: This option triggers a tasteful FtBaB which glosses over the female PC's sex scene in bed with Angela. And stop thinking about it, you dirty bastard.
+GOption(1581,Angela_1c_7b_2F_3b_2,4);
+NOption(1492,Angela_1c_7b_2N_1,4);
+end
+
+procedure Angela_1c_7b_2F_3b_2
+begin
+
+fadeout(1);
+do_default_sex;
+game_time_advance(ONE_GAME_HOUR);
+fadein(1);
+
+Reply(1610);
+NOption(1611,Node089,4);
+end
+
+procedure Angela_1c_7b_2N_1
+begin
+Reply(1640);
+NOption(1641,Angela_1c_7b_2N_2,4);
+NOption(1642,Angela_1c_7b_2N_2,4);
+end
+
+procedure Angela_1c_7b_2N_2
+begin
+Reply(1670);
+NOption(1671,Node999,4);
+end
+
+// Node Angela_2a_1
+//
+// Notes:
+//
+// The Angela_2a_* path is where the PC can try to get Angela to date any one of several CotC NPC's. Any attempt to do this is doomed to fail, but in taking this path, the PC can find out that Angela is a lezza.
+
+procedure Angela_2a_1
+begin
+Reply(1700);
+if(global_var(GVAR_KNOW_MAGIK) == 1) then
+NOption(1701,Angela_2a_2a_1,4);
+if(global_var(GVAR_KNOW_CROZ) == 1) then
+NOption(1702,Angela_2a_2b_1,4);
+if(global_var(GVAR_ANGELA_GABRIELLE) == 1) then
+NOption(1703,Angela_2a_2c_1,4);
+if(global_var(GVAR_KNOW_ALDO) == 1) then
+NOption(1704,Angela_2a_2d_1,4);
+if (dude_is_male) then
+NOption(1705,Angela_2a_2M_1,4);
+NOption(1706,Node999,4);
+end
+
+procedure Angela_2a_2a_1
+begin
+set_global_var(GVAR_ANGELA_MAGIK_DATE, 1);
+Reply(1730);
+NOption(1731,Angela_2a_2a_2,4);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2a_2
+begin
+Reply(1760);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2b_1
+begin
+Reply(1790);
+NOption(1791,Angela_2a_2b_2,4);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2b_2
+begin
+Reply(1820);
+NOption(1821,Angela_2a_2b_3,4);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2b_3
+begin
+Reply(1850);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2c_1
+begin
+Reply(1880);
+NOption(1881,Angela_2a_2c_2,4);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2c_2
+begin
+set_global_var(GVAR_ANGELA_GABRIELLE, 2);
+Reply(1910);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2d_1
+begin
+Reply(1940);
+NOption(1941,Angela_2a_2d_2,4);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2d_2
+begin
+Reply(1970);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2M_1
+begin
+Reply(2000);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) then
+NOption(2001,Angela_2a_2M_2a,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) then
+NOption(2001,Angela_2a_2M_2b_1,4);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2M_2a
+begin
+Reply(2030);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2M_2b_1
+begin
+Reply(2060);
+BOption(2061,Angela_2a_2M_2b_2,4);
+NOption(1732,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2M_2b_2
+begin
+Reply(2090);
+BOption(2091,Angela_1a_2Mb_2B_3,4);
+NOption(1733,Angela_2a_2M_2b_3,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_2M_2b_3
+begin
+Reply(2120);
+BOption(2121,Angela_1a_2Mb_2B_3,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2a_3
+begin
+Reply(2150);
+NOption(2151,Angela_2a_4,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_2a_4
+begin
+Reply(2180);
+NOption(2181,Angela_2a_5,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_2a_5
+begin
+Reply(2210);
+NOption(2211,Angela_2a_6,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+// Node Angela_2a_6
+//
+// Notes:
+//
+// We need to decide what level we're going to set the karma level, x, mentioned in the player options, which decides if Angela will let the PC in on her secret.
+
+procedure Angela_2a_6
+begin
+Reply(2240);
+// NOTE: This option appears if the PC's karma is above a certain level, x, AND the local variable Angela_Temper is at 0 or above.
+if (local_var(LVAR_Angela_Temper)>=0) then
+NOption(1401,Angela_2a_7a_1,4);
+// NOTE: This option appears if the PC's karma is above a certain level, x, but the local variable Angela_Temper is below 0.
+if (local_var(LVAR_Angela_Temper)<0) then
+NOption(1401,Angela_2a_7b_1,4);
+end
+
+procedure Angela_2a_7a_1
+begin
+Reply(2270);
+NOption(2271,Angela_2a_7a_2,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_2a_7a_2
+begin
+Reply(2300);
+NOption(2301,Angela_2a_7a_3,4);
+NOption(2302,Angela_2a_7a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_2a_7a_3
+begin
+Reply(2330);
+NOption(2331,Angela_2a_7a_4a,4);
+NOption(2332,Angela_2a_7a_4b,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_2a_7a_4a
+begin
+   if(global_var(GVAR_ANGELA_ROBOSLUT) == 0) then begin
+      set_global_var(GVAR_ANGELA_ROBOSLUT, 1);
+   end
+Reply(2360);
+NOption(2332,Angela_2a_7a_4b,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+NOption(2361,Angela_2a_7a_4b,-3);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(2362,Angela_9M,-3);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(2362,Angela_9F_1,-3);
+NOption(806,Node999,-3);
+end
+
+procedure Angela_2a_7a_4b
+begin
+
+if(global_var(GVAR_ANGELA_ROBOSLUT) == 0) then begin
+   set_global_var(GVAR_ANGELA_ROBOSLUT, 1);
+end
+
+Reply(2390);
+NOption(2391,Angela_2a_7a_5a_1,4);
+BOption(2392,Angela_2a_7a_5B_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+NOption(2393,Angela_2a_7a_5a_1,-3);
+NOption(2394,Angela_2a_7a_5B_1,-3);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(2362,Angela_9M,-3);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(2362,Angela_9F_1,-3);
+NOption(806,Node999,-3);
+end
+
+procedure Angela_2a_7a_5a_1
+begin
+Reply(2420);
+NOption(2421,Angela_2a_7a_5a_2,4);
+NOption(2422,Angela_2a_7a_5a_2,4);
+BOption(2392,Angela_2a_7a_5B_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+NOption(2423,Angela_2a_7a_5a_2,-3);
+NOption(mstr(2424)+dude_name+mstr(2425),Angela_2a_7a_5a_2,-3);
+NOption(2394,Angela_2a_7a_5B_1,-3);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(2362,Angela_9M,-3);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(2362,Angela_9F_1,-3);
+NOption(806,Node999,-3);
+end
+
+procedure Angela_2a_7a_5a_2
+begin
+Reply(2450);
+NOption(2451,Angela_2a_7a_5a_3,4);
+BOption(2392,Angela_2a_7a_5B_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+NOption(2452,Angela_2a_7a_5a_3,-3);
+NOption(2394,Angela_2a_7a_5B_1,-3);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(2362,Angela_9M,-3);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(2362,Angela_9F_1,-3);
+NOption(806,Node999,-3);
+end
+
+procedure Angela_2a_7a_5a_3
+begin
+Reply(2480);
+BOption(2392,Angela_2a_7a_5B_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+NOption(2394,Angela_2a_7a_5B_1,-3);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(2362,Angela_9M,-3);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(2362,Angela_9F_1,-3);
+NOption(806,Node999,-3);
+end
+
+// Node Angela_2a_7a_5B_1
+//
+// Notes:
+//
+// Decrement the local variable Angela_Temper by 1.
+
+procedure Angela_2a_7a_5B_1
+begin
+Reply(2510);
+BOption(2511,Angela_2a_7a_5B_2,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+NOption(2512,Angela_2a_7a_5B_2,-3);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(2362,Angela_9M,-3);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(2362,Angela_9F_1,-3);
+NOption(806,Node999,-3);
+end
+
+// Node Angela_2a_7a_5B_2
+//
+// Notes:
+//
+// Decrement the local variable Angela_Temper by 1.
+
+procedure Angela_2a_7a_5B_2
+begin
+Reply(2540);
+NOption(1733,Angela_2a_7a_5B_3,4);
+NOption(2152,Node999,4);
+NOption(2541,Angela_2a_7a_5B_3,-3);
+NOption(2362,Angela_2a_7a_5B_3,-3);
+NOption(806,Node999,-3);
+end
+
+procedure Angela_2a_7a_5B_3
+begin
+Reply(2570);
+NOption(2571,Node999,4);
+NOption(806,Node999,-3);
+end
+
+procedure Angela_2a_7b_1
+begin
+Reply(2600);
+NOption(2601,Skill_Check_000_Speech,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2571,Node999,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(2362,Angela_9M,-3);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(2362,Angela_9F_1,-3);
+NOption(806,Node999,-3);
+end
+
+procedure Angela_2a_7b_2
+begin
+Reply(2630);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2571,Node999,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(2362,Angela_9M,-3);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(2362,Angela_9F_1,-3);
+NOption(806,Node999,-3);
+end
+
+// Node Angela_2b_1
+//
+// Notes:
+//
+// The Angela_2b_* path is where a female PC can offer to give Angela advice on finding 'the right man', after having been prompted to do so by her father, Robb. This is doomed to failure, but can also lead to the path where Angela reveals that she is a robo-lover.
+
+procedure Angela_2b_1
+begin
+Reply(2660);
+NOption(2661,Angela_2a_3,4);
+NOption(2662,Angela_2b_2,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+procedure Angela_2b_2
+begin
+Reply(2690);
+NOption(2661,Angela_2a_3,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(1734,Node999,4);
+end
+
+// Node Angela_3_1
+//
+// Notes:
+//
+// The Angela_3_* path is where the PC can find out about her mother and father. Noteworthy information: Robb carries a large knife (relevant to 'Who killed Angela?'); Grace, Angela's mother, died some time ago.
+
+procedure Angela_3_1
+begin
+if (dude_is_female) then Reply(2720); else
+if (dude_is_male) then Reply(2721);
+NOption(2722,Angela_3_2a,4);
+NOption(2723,Angela_3_2b,4);
+end
+
+procedure Angela_3_2a
+begin
+Reply(2750);
+NOption(2271,Angela_3_2b,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_2b
+begin
+Reply(2780);
+NOption(2781,Angela_3_3a_1,4);
+NOption(2782,Angela_3_3b_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_3a_1
+begin
+Reply(2810);
+NOption(2811,Angela_3_3a_2a_1a,4);
+// NOTE: Decrement the local variable Angela_Temper by 1.
+BOption(2812,Angela_3_3a_2a_1B,4);
+NOption(2782,Angela_3_3b_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_3a_2a_1a
+begin
+Reply(2840);
+NOption(2841,Angela_3_3a_2a_2,4);
+NOption(2782,Angela_3_3b_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_3a_2a_1B
+begin
+   dec_local_var_amt(LVAR_Angela_Temper, 1);
+Reply(2870);
+NOption(2871,Angela_3_3a_2a_2,4);
+NOption(2782,Angela_3_3b_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_3a_2a_2
+begin
+Reply(2900);
+NOption(2901,Angela_3_3a_2a_3,4);
+NOption(2782,Angela_3_3b_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_3a_2a_3
+begin
+Reply(2930);
+NOption(2782,Angela_3_3b_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_3b_1
+begin
+Reply(2960);
+NOption(2961,Angela_3_3b_2a,4);
+NOption(2962,Angela_3_3b_2b_1,4);
+NOption(2781,Angela_3_3a_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_3b_2a
+begin
+Reply(2990);
+NOption(2962,Angela_3_3b_2b_1,4);
+NOption(2781,Angela_3_3a_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_3b_2b_1
+begin
+Reply(3020);
+NOption(3021,Angela_3_3b_2b_2,4);
+// NOTE: Increment both local variables Angela_Grace_Dead and Angela_Temper by 1.
+if (local_var(LVAR_Angela_Grace_Dead)==0) then
+GOption(3022,Angela_3_3b_2b_2g,4);
+NOption(2781,Angela_3_3a_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_3b_2b_2g begin
+
+   inc_local_var_amt(LVAR_Angela_Grace_Dead, 1);
+   inc_local_var_amt(LVAR_Angela_Temper, 1);
+
+   call Angela_3_3b_2b_2;
+end
+
+
+procedure Angela_3_3b_2b_2
+begin
+Reply(3050);
+NOption(3051,Angela_3_3b_2b_3,4);
+NOption(2781,Angela_3_3a_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_3_3b_2b_3
+begin
+Reply(3080);
+NOption(2781,Angela_3_3a_1,4);
+if (get_critter_stat(dude_obj,STAT_ch)<7) or (dude_is_female) then
+NOption(1733,Angela_9M,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(1733,Angela_9F_1,4);
+NOption(2152,Node999,4);
+end
+
+procedure Angela_9F_1
+begin
+Reply(3110);
+NOption(1012,Angela_9F_2,4);
+// NOTE: This option only appears if the PC has the 'Find a date for Angela' quest.
+NOption(1013,Angela_2a_1,4);
+if (dude_is_female) then
+NOption(1014,Angela_2b_1,4);
+NOption(1015,Angela_3_1,4);
+NOption(1016,Node999,4);
+end
+
+procedure Angela_9F_2
+begin
+Reply(3140);
+NOption(3141,Angela_9F_3,4);
+// NOTE: This option only appears if the PC has the 'Find a date for Angela' quest.
+NOption(1013,Angela_2a_1,4);
+if (dude_is_female and global_var(GVAR_ANGELA_TIPS) == 1) then
+NOption(1014,Angela_2b_1,4);
+NOption(1015,Angela_3_1,4);
+NOption(1016,Node999,4);
+end
+
+// Node Angela_9F_3
+//
+// Notes:
+//
+// We need to decide what level we're going to set the karma level, x, mentioned in the player options, which decides if Angela will let the PC in on her secret.
+
+procedure Angela_9F_3
+begin
+Reply(2240);
+// NOTE: This option appears if the PC's karma is above a certain level, x, AND the local variable Angela_Temper is at 0 or above.
+if (local_var(LVAR_Angela_Temper)>=0) then
+NOption(1401,Angela_2a_7a_4a,4);
+// NOTE: This option appears if the PC's karma is above a certain level, x, but the local variable Angela_Temper is below 0.
+if (local_var(LVAR_Angela_Temper)<0) then
+NOption(1401,Angela_9F_4,4);
+end
+
+procedure Angela_9F_4
+begin
+Reply(3200);
+// NOTE: This option only appears if the PC has the 'Find a date for Angela' quest.
+NOption(1013,Angela_2a_1,4);
+if (dude_is_female) then
+NOption(1014,Angela_2b_1,4);
+NOption(1015,Angela_3_1,4);
+NOption(1016,Node999,4);
+end
+
+procedure Angela_9M
+begin
+Reply(3230);
+// NOTE: This option only appears if the PC has the 'Find a date for Angela' quest.
+NOption(1013,Angela_2a_1,4);
+if (dude_is_female and global_var(GVAR_ANGELA_TIPS) == 1) then
+NOption(1014,Angela_2b_1,4);
+NOption(1015,Angela_3_1,4);
+NOption(1016,Node999,4);
+end
+
+procedure Node089
+begin
+Reply(1550);
+NOption(1551,Node999,4);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

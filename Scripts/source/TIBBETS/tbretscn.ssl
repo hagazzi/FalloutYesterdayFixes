@@ -1,0 +1,76 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_TBRETSCN
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+   if (script_action == use_skill_on_proc) then begin
+          call use_skill_on_p_proc();
+   end
+end
+
+procedure use_obj_on_p_proc begin
+   // ZZZ implement eye
+   if (obj_pid(obj_being_used_with) == PID_DIXON_EYE) then begin
+   end
+end
+
+procedure use_skill_on_p_proc begin
+
+   /*if (
+      (action_being_used == SKILL_SCIENCE) and
+      is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, 0))
+   ) then begin
+      script_overrides;
+      display_msg("You manage to get a grasp of how this scanner functions.");
+      give_xp(10);
+   end else if (
+      (action_being_used == SKILL_REPAIR) and
+      is_success(roll_vs_skill(source_obj, SKILL_REPAIR, 0))
+   ) then begin
+      script_overrides;
+      display_msg("You manage to rewire the interface and disable the scanner.");
+      give_xp(10);
+   end*/
+end

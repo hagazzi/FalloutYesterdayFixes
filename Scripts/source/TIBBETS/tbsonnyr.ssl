@@ -1,0 +1,1317 @@
+/*
+
+        Name:           Sonny Red
+        Location:
+        Description:
+
+           Created: 07/10/2020 19:54:03
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBSONNYR
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+procedure killcheckhard;
+procedure killcheck;
+procedure share1;
+procedure share2;
+procedure provesharecheck;
+procedure toofarsharecheck;
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure FirstMeeting;
+procedure BackAgain;
+procedure WantNews;
+procedure GreetingGood;
+procedure GreetingBad;
+procedure GreetingGreedy;
+procedure SonnyBlackWillBeCharge;
+procedure SonnyBlackInCharge;
+procedure SonnyBlackIdiot;
+procedure Sabotaged;
+procedure Sabotaged2;
+procedure Sabotaged3;
+procedure NoBeatUp;
+procedure SalesmanComplete;
+procedure SonnyRedChargeSonnyBlackDead;
+procedure SonnyRedChargeSonnyBlackAlive;
+procedure SharedCompany;
+procedure Blackmail;
+procedure Blackmail2;
+procedure Blackmail3;
+procedure SellFish;
+procedure HardSell;
+procedure HardSell2;
+procedure WrapFish;
+procedure WrapFish6;
+procedure WrapFish8;
+procedure WrapFishNo;
+procedure GoodMood;
+procedure Story1;
+procedure Story2;
+procedure Story3;
+procedure GreatestHaul;
+procedure Sure;
+procedure Upstage;
+procedure Violent;
+procedure Murder;
+procedure Sentimental;
+procedure KeepOn;
+procedure WillBeSalesman;
+procedure WillSabotage;
+procedure KillDubious;
+procedure WillKill;
+procedure WillKill2;
+procedure KillPlan;
+procedure WillBeat;
+procedure SonnyBlackSabotage;
+procedure SonnyBlackKill;
+procedure Caught1;
+procedure Caught2;
+procedure CaughtBuy;
+procedure Reward1;
+procedure Reward2;
+procedure Reward3;
+procedure Reward4;
+procedure NoGreatDeal;
+procedure ShareSuggest;
+procedure ShareSuggest2;
+procedure WillShare;
+procedure SonnyBlacksBackSuccessful;
+procedure SonnyBlacksBackUnsuccessful;
+procedure SonnyBlacksBackBeatup;
+procedure ProvedSelfShare;
+procedure TooFar;
+procedure TooFarShare;
+procedure NoShare;
+procedure SabotagedSonnyBlack;
+procedure KilledSonnyBlack;
+procedure SonnyBlackOutTown;
+procedure NoAfford;
+procedure NoKill;
+procedure StartGreatHaul;
+procedure StartSabotage;
+procedure StartKill;
+procedure Stupid;
+procedure Stupid2;
+procedure Stu_Screw1;
+procedure Stu_Screw2;
+procedure Stu_Screw3;
+procedure Stupid3;
+procedure Stupid4;
+procedure Stupid5;
+procedure Stu_Return;
+procedure Stu_MoreMag;
+procedure Stu_Deal;
+procedure Stu_hardsell;
+procedure Stu_NotEnough;
+procedure Achieve;
+procedure Suggest;
+procedure SabKill;
+procedure Node999_kill_both;
+procedure Node999_100caps;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Reward (8)
+#define LVAR_Greedy (9)
+#define LVAR_News (10)
+#define LVAR_Know_Greatest_Haul (11)
+#define LVAR_BeatUp (12)
+#define LVAR_Blackmailed (13)
+#define LVAR_SonnyB_Threat (14)
+#define LVAR_SuperDuper (14)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+call new_plague_check(self_obj, LVAR_Herebefore);
+
+if(global_var(GVAR_SONNY_RED_DEAD) == 1) then
+   destroy_object(self_obj);
+
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude) and obj_is_visible_flag(self_obj)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=1;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+
+      if(local_var(LVAR_Herebefore) == 0) then
+         //First meeting
+         call FirstMeeting;
+       else if(global_var(GVAR_QUEST_SABOTAGE_SONNYR) == 2) then
+         //Sonny Red has been sabotaged
+         call Sabotaged;
+      else if(global_var(GVAR_QUEST_SALESMAN) == 2) then
+         //Sonny Red is "Salesman of the Year"
+         call SalesmanComplete;
+      else if(global_var(GVAR_SHERIFF_SHARE_SPOT) == 1) or (global_var(GVAR_SONNY_RED_SHERIFF) == 1) then
+         //Sonny Red got control, or Sonny Black and Sonny Red are sharing the company.
+         call GreetingGood;
+      else if(global_var(GVAR_SHERIFF_SHARE_SPOT) == 0) and (global_var(GVAR_SONNY_BLACK_SHERIFF) == 1) then
+         //Sonny Black got sole control, or Sonny Black is going to assume the company when Joe dies
+         call GreetingBad;
+      else if(global_var(GVAR_QUEST_GREATEST_HAUL) == 1) then
+         //Sonny Red knows of 'greatest haul' - believes threat but player has not suggested a solution
+         call StartGreatHaul;
+      else if(global_var(GVAR_QUEST_SABOTAGE_SONNYR) == 1) then
+         //Sonny Red knows of sabotage plan but player has not suggested a solution
+         call StartSabotage;
+      else if(global_var(GVAR_QUEST_MURDER_SONNYR) == 1) then
+         //Sonny Red knows of murder plan but player has not suggested a solution
+         call StartKill;
+      else if(local_var(LVAR_Greedy) == 1) then
+         //The player got greedy when blackmailing Sonny Red
+         call GreetingGreedy;
+      else if(local_var(LVAR_News) == 1) then
+         //Sonny Red is waiting for news about Sonny Black's status - during quest
+         call WantNews;
+     else if(local_var(LVAR_Herebefore) == 1) then
+         //Meeting subsequent times - no feud quest has not started, or Sonny Red got company
+         call BackAgain;
+
+
+       gSay_End;
+       end_dialogue;
+
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+ inc_evil_critter
+set_global_var(GVAR_SONNY_RED_DEAD, 1);
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure killcheckhard begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -30);
+if is_success(roll_temp) then
+begin
+call WillKill;
+end
+else begin
+call NoKill;
+ end
+end
+
+procedure killcheck begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -20);
+if is_success(roll_temp) then
+begin
+call WillKill;
+end
+else begin
+call NoKill;
+ end
+end
+
+procedure share1 begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -10);
+if is_success(roll_temp) then
+begin
+call ShareSuggest2;
+end
+else begin
+call NoShare;
+ end
+end
+
+procedure share2 begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -30);
+if is_success(roll_temp) then
+begin
+call WillShare;
+end
+else begin
+call NoShare;
+ end
+end
+
+procedure provesharecheck begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -10);
+if is_success(roll_temp) then
+begin
+call WillShare;
+end
+else begin
+call NoShare;
+ end
+end
+
+procedure toofarsharecheck begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -20);
+if is_success(roll_temp) then
+begin
+call WillShare;
+end
+else begin
+call NoShare;
+ end
+end
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+// Node FirstMeeting
+//
+// Notes:
+//
+// 3) if 'greatest haul ever' triggered
+
+procedure FirstMeeting
+begin
+if (dude_is_male) then Reply(230); else
+if (dude_is_female) then Reply(231);
+NOption(232,SellFish,4);
+NOption(233,GoodMood,4);
+if(global_var(GVAR_QUEST_GREATEST_HAUL) > 0) then
+NOption(234,GreatestHaul,4);
+NOption(235,HardSell,4);
+NOption(236,Stupid,-3);
+NOption(237,Stu_hardsell,-3);
+end
+
+// Node BackAgain
+//
+// Notes:
+//
+// 3) available if 'greatest haul ever' is triggered 4) if has been told about greatest haul but doesnt take it seriously\
+
+procedure BackAgain
+begin
+Reply(260);
+NOption(261,SellFish,4);
+NOption(233,GoodMood,4);
+if(global_var(GVAR_QUEST_GREATEST_HAUL) > 0) then
+NOption(262,GreatestHaul,4);
+if(local_var(LVAR_Know_Greatest_Haul) == 1) then
+NOption(263,StartGreatHaul,4);
+NOption(264,Node999,4);
+NOption(265,Stupid,-3);
+NOption(266,Stu_MoreMag,-3);
+NOption(267,Stu_Return,-3);
+NOption(268,Stu_hardsell,-3);
+end
+
+// Node WantNews
+//
+// Notes:
+//
+// 2)if both murder plots triggered 3)if Sonny Black's haul was successful, Sonny Red was not sabotaged 4)if Sonny Black's haul was successful, Sonny Red wants to beat him up 5) if Sonny Black's haul was unsuccessful, Sonny Red was not sabotaged 6)if Sonny Black's haul was unsuccessful, Sonny Red wants to beat him up 7)if player has sabotaged Sonny Black 8)if player has planted dynamite 9)if player has been asked to sabotage Sonny Red 10)if player has been asked to kill Sonny Red
+
+procedure WantNews
+begin
+Reply(290);
+NOption(291,ShareSuggest,4);
+if(global_var(GVAR_QUEST_MURDER_SONNYB) == 1) and (global_var(GVAR_QUEST_MURDER_SONNYR) == 1) then
+NOption(292,TooFar,4);
+if(global_var(GVAR_QUEST_GREATEST_HAUL) == 2) and (global_var(GVAR_QUEST_SABOTAGE_SONNYR) < 2) then
+NOption(293,SonnyBlacksBackSuccessful,4);
+if(global_var(GVAR_QUEST_GREATEST_HAUL) == 2) and (local_var(LVAR_BeatUp) == 1) then
+NOption(293,SonnyBlacksBackBeatup,4);
+if(global_var(GVAR_QUEST_GREATEST_HAUL) == 3) and (global_var(GVAR_QUEST_SABOTAGE_SONNYR) < 2) then
+NOption(294,SonnyBlacksBackUnsuccessful,4);
+if(global_var(GVAR_QUEST_GREATEST_HAUL) == 3) and (local_var(LVAR_BeatUp) == 1) then
+NOption(294,SonnyBlacksBackBeatup,4);
+if(global_var(GVAR_QUEST_SABOTAGE_SONNYB) == 2) then
+NOption(295,SabotagedSonnyBlack,4);
+if(global_var(GVAR_SONNY_BLACK_DEAD) == 1) then
+NOption(296,KilledSonnyBlack,4);
+if(global_var(GVAR_QUEST_SABOTAGE_SONNYR) == 1) then
+NOption(297,SonnyBlackSabotage,4);
+if(global_var(GVAR_QUEST_MURDER_SONNYR) == 1) then
+NOption(298,SonnyBlackKill,4);
+NOption(299,Node999,4);
+end
+
+// Node GreetingGood
+//
+// Notes:
+//
+// 1) if Sonny Black was killed 2) if Sonny Red got company through other means 3) if Sonny Red and Sonny Black share company
+
+procedure GreetingGood
+begin
+Reply(320);
+if(global_var(GVAR_SONNY_BLACK_DEAD) == 1) then
+NOption(321,SonnyRedChargeSonnyBlackDead,4);
+if(global_var(GVAR_SONNY_RED_SHERIFF) == 1) then
+NOption(321,SonnyRedChargeSonnyBlackAlive,4);
+if(global_var(GVAR_SHERIFF_SHARE_SPOT) == 1) then
+NOption(321,SharedCompany,4);
+NOption(322,SellFish,4);
+NOption(323,Node999,4);
+end
+
+// Node GreetingBad
+//
+// Notes:
+//
+// 1) if Joe is alive but Sonny Black will be in charged 2) if Sonny Black got company
+
+procedure GreetingBad
+begin
+Reply(350);
+if(global_var(GVAR_CARMICHAEL_DEAD) == 0) and (global_var(GVAR_SONNY_BLACK_SHERIFF) == 2) then
+NOption(351,SonnyBlackWillBeCharge,4);
+if(global_var(GVAR_CARMICHAEL_DEAD) == 0) and (global_var(GVAR_SONNY_BLACK_SHERIFF) == 1) then
+NOption(351,SonnyBlackInCharge,4);
+NOption(352,NoGreatDeal,4);
+NOption(353,Node999,4);
+NOption(354,Node999,4);
+end
+
+procedure GreetingGreedy
+begin
+Reply(380);
+NOption(381,Node999,4);
+NOption(382,Node999,4);
+end
+
+procedure SonnyBlackWillBeCharge
+begin
+Reply(410);
+NOption(411,SonnyBlackIdiot,4);
+NOption(412,Node999,4);
+end
+
+procedure SonnyBlackInCharge
+begin
+Reply(440);
+NOption(411,SonnyBlackIdiot,4);
+NOption(441,Node999,4);
+end
+
+procedure SonnyBlackIdiot
+begin
+Reply(470);
+NOption(471,Node999,4);
+NOption(472,Node999,4);
+end
+
+procedure Sabotaged
+begin
+Reply(500);
+NOption(501,Sabotaged2,4);
+NOption(502,Node999,4);
+end
+
+procedure Sabotaged2
+begin
+Reply(530);
+NOption(531,Sabotaged3,4);
+NOption(532,Node999,4);
+end
+
+// Node Sabotaged3
+//
+// Notes:
+//
+// 2) if Sonny Black has left town - sets Sonny Red to want to beat him when he returns 3) if Sonny Black is still in town - triggers fight script
+
+procedure Sabotaged3
+begin
+Reply(560);
+NOption(561,NoBeatUp,4);
+if(global_var(GVAR_QUEST_GREATEST_HAUL) == 1) then
+NOption(562,SonnyBlackOutTown,4);
+NOption(563,Node999_kill_both,4);
+end
+
+procedure Node999_kill_both begin
+   fadeout(1);
+   set_obj_visibility(self_obj, 1);
+   fadein(1);
+   set_global_var(GVAR_SONNY_BLACK_DEAD, 1);
+   set_global_var(GVAR_SONNY_RED_DEAD, 1);
+   call Node999;
+end
+
+
+procedure NoBeatUp
+begin
+Reply(590);
+NOption(591,Node999,4);
+end
+
+procedure SalesmanComplete
+begin
+Reply(620);
+NOption(621,Node999,4);
+NOption(622,Node999,4);
+end
+
+// Node SonnyRedChargeSonnyBlackDead
+//
+// Notes:
+//
+// 1) if player has not received reward 2) if player has not blackmailed Sonny Red for some time 3) if player has blackmailed Sonny Red recently
+
+procedure SonnyRedChargeSonnyBlackDead
+begin
+Reply(650);
+if(global_var(GVAR_SONNY_RED_SHERIFF) == 1) and (local_var(LVAR_Reward) == 0) then
+NOption(651,Reward2,4);
+NOption(652,Blackmail,4);
+NOption(652,Blackmail3,4);
+NOption(653,Node999,4);
+end
+
+// Node SonnyRedChargeSonnyBlackAlive
+//
+// Notes:
+//
+// 1) if player has not received reward, and helped Sonny Red in some way
+
+procedure SonnyRedChargeSonnyBlackAlive
+begin
+Reply(680);
+if(global_var(GVAR_SONNY_RED_SHERIFF) == 1) and (local_var(LVAR_Reward) == 0) then
+NOption(681,Reward1,4);
+NOption(653,Node999,4);
+end
+
+// Node SharedCompany
+//
+// Notes:
+//
+// 1) if sharing was achieved by means other than proving themselves 2) if both brothers proved themselves
+
+procedure SharedCompany
+begin
+Reply(710);
+if((global_var(GVAR_QUEST_GREATEST_HAUL) < 2) or (global_var(GVAR_QUEST_SALESMAN) < 2)) and (global_var(GVAR_SHERIFF_SHARE_SPOT) == 1) then
+NOption(711,Reward3,4);
+if(global_var(GVAR_QUEST_GREATEST_HAUL) == 2) and (global_var(GVAR_QUEST_SALESMAN) == 2) and (global_var(GVAR_SHERIFF_SHARE_SPOT) == 1) then
+NOption(711,Reward4,4);
+NOption(653,Node999,4);
+end
+
+// Node Blackmail
+//
+// Notes:
+//
+// 1) if player has not blackmailed Sonny Red recently 2) if player has blackmailed Sonny Red recently
+
+procedure Blackmail
+begin
+Reply(740);
+if(local_var(LVAR_Blackmailed) == 0) then
+NOption(741,Blackmail2,4);
+if(local_var(LVAR_Blackmailed) == 1) then
+NOption(741,Blackmail3,4);
+NOption(742,Node999,4);
+end
+
+// Node Blackmail2
+//
+// Notes:
+//
+// Player receives 100 caps for either option
+
+procedure Blackmail2
+begin
+if (dude_is_male) then Reply(770); else
+if (dude_is_female) then Reply(771);
+NOption(772,Node999_100caps,4);
+NOption(773,Node999_100caps,4);
+end
+
+procedure Node999_100caps begin
+   item_caps_adjust(dude_obj, 100);
+   call Node999;
+end
+
+procedure Blackmail3
+begin
+Reply(800);
+NOption(381,Node999,4);
+NOption(382,Node999,4);
+end
+
+// Node SellFish
+//
+// Notes:
+//
+// 1) if player has >= 8 caps 2) if player has < 8 caps
+
+procedure SellFish
+begin
+if (dude_is_male) then Reply(830); else
+if (dude_is_female) then Reply(831);
+if(dude_caps >= 8) then
+NOption(832,WrapFish8,4);
+if(dude_caps < 8) then
+NOption(832,WrapFishNo,4);
+NOption(833,HardSell,4);
+end
+
+// Node HardSell
+//
+// Notes:
+//
+// 1) if player has >= 8 caps 2) if player has < 8 caps
+
+procedure HardSell
+begin
+Reply(860);
+if(dude_caps >= 8) then
+NOption(861,WrapFish8,4);
+if(dude_caps < 8) then
+NOption(861,WrapFishNo,4);
+NOption(862,HardSell2,4);
+end
+
+// Node HardSell2
+//
+// Notes:
+//
+// 1) if player has >= 8 caps 2) if player has < 8 caps
+
+procedure HardSell2
+begin
+Reply(890);
+NOption(891,Node999,4);
+if(dude_caps >= 8) then
+NOption(892,WrapFish8,4);
+if(dude_caps < 8) then
+NOption(892,WrapFishNo,4);
+end
+
+procedure WrapFish8 begin
+   item_caps_adjust(dude_obj, -8);
+   call WrapFish;
+end
+
+procedure WrapFish6 begin
+   item_caps_adjust(dude_obj, -6);
+   call WrapFish;
+end
+
+
+procedure WrapFish
+begin
+
+gdialog_barter;
+
+Reply(920);
+NOption(921,Node999,4);
+end
+
+procedure WrapFishNo
+begin
+Reply(950);
+NOption(951,NoAfford,4);
+NOption(952,NoAfford,4);
+end
+
+procedure GoodMood
+begin
+if (dude_is_male) then Reply(980); else
+if (dude_is_female) then Reply(981);
+NOption(982,Story1,4);
+NOption(983,Node999,4);
+end
+
+procedure Story1
+begin
+Reply(1010);
+NOption(1011,Story2,4);
+NOption(1012,Node999,4);
+end
+
+procedure Story2
+begin
+Reply(1040);
+NOption(1041,Story3,4);
+NOption(1042,Node999,4);
+end
+
+// Node Story3
+//
+// Notes:
+//
+// 1) if 'greatest haul ever ' triggered
+
+procedure Story3
+begin
+Reply(1070);
+if(global_var(GVAR_QUEST_GREATEST_HAUL) > 0) then
+NOption(1071,GreatestHaul,4);
+NOption(1072,Node999,4);
+NOption(1073,Node999,4);
+end
+
+procedure GreatestHaul
+begin
+   set_local_var(LVAR_Know_Greatest_Haul, 1);
+Reply(1100);
+NOption(1101,Sure,4);
+NOption(1102,Node999,4);
+end
+
+procedure Sure
+begin
+Reply(1130);
+NOption(1131,Sentimental,4);
+NOption(1132,Upstage,4);
+NOption(1133,Node999,4);
+end
+
+// Node Upstage
+//
+// Notes:
+//
+// Sonny Red now believes Sonny Black is a threat
+
+procedure Upstage
+begin
+   set_local_var(LVAR_SonnyB_Threat, 1);
+Reply(1160);
+NOption(1161,WillBeSalesman,4);
+NOption(1162,Violent,4);
+NOption(1163,WillSabotage,4);
+NOption(1164,KeepOn,4);
+end
+
+procedure Violent
+begin
+Reply(1190);
+NOption(1191,Murder,4);
+NOption(1192,WillBeSalesman,4);
+NOption(1193,WillSabotage,4);
+end
+
+procedure Murder
+begin
+Reply(1220);
+NOption(1221,KillDubious,4);
+NOption(1222,WillBeSalesman,4);
+NOption(1223,WillSabotage,4);
+end
+
+procedure Sentimental
+begin
+if (dude_is_male) then Reply(1250); else
+if (dude_is_female) then Reply(1251);
+NOption(1252,Upstage,4);
+NOption(1253,Node999,4);
+end
+
+procedure KeepOn
+begin
+if (dude_is_male) then Reply(1280); else
+if (dude_is_female) then Reply(1281);
+NOption(1282,WillBeSalesman,4);
+NOption(1283,Node999,4);
+end
+
+procedure WillBeSalesman
+begin
+Reply(1310);
+NOption(1311,Node999,4);
+NOption(1312,Node999,4);
+end
+
+// Node WillSabotage
+//
+// Notes:
+//
+// 1) adds knife to inventory, instigates sabotage Sonny Black plot
+
+procedure WillSabotage
+begin
+   set_global_var(GVAR_QUEST_SABOTAGE_SONNYB, 1);
+   give_pid_qty(dude_obj, PID_HAMMER, 1)
+Reply(1340);
+NOption(1341,Node999,4);
+NOption(1342,Node999,4);
+end
+
+procedure KillDubious
+begin
+Reply(1370);
+NOption(1371,killcheck,4);
+NOption(1372,killcheckhard,4);
+NOption(1373,Node999,4);
+end
+
+procedure WillKill
+begin
+Reply(1400);
+NOption(1401,KillPlan,4);
+NOption(1402,Node999,4);
+end
+
+procedure WillKill2
+begin
+Reply(1430);
+NOption(1431,KillPlan,4);
+NOption(1432,Node999,4);
+end
+
+// Node KillPlan
+//
+// Notes:
+//
+// 1) adds dynamite to inventory, triggers kill plot
+
+procedure KillPlan
+begin
+
+   set_global_var(GVAR_QUEST_MURDER_SONNYB, 1);
+   give_pid_qty(dude_obj, PID_DYNAMITE, 1)
+
+Reply(1460);
+NOption(1461,Node999,4);
+NOption(1462,Node999,4);
+end
+
+// Node WillBeat
+//
+// Notes:
+//
+// 1) starts fight script
+
+procedure WillBeat
+begin
+Reply(1490);
+NOption(1491,Node999_kill_both,4);
+NOption(1492,Node999,4);
+end
+
+procedure SonnyBlackSabotage
+begin
+Reply(1520);
+NOption(1521,WillBeat,4);
+NOption(1522,WillSabotage,4);
+NOption(1523,WillKill,4);
+end
+
+procedure SonnyBlackKill
+begin
+Reply(1550);
+NOption(1551,WillBeat,4);
+NOption(1552,WillKill2,4);
+end
+
+procedure Caught1
+begin
+Reply(1580);
+NOption(1581,CaughtBuy,4);
+NOption(1582,Caught2,4);
+end
+
+procedure Caught2
+begin
+Reply(1610);
+NOption(381,Node999,4);
+end
+
+// Node CaughtBuy
+//
+// Notes:
+//
+// 1) if player has >= 6 caps 2) if player has < 6 caps
+
+procedure CaughtBuy
+begin
+Reply(1640);
+if(dude_caps >= 6) then
+NOption(832,WrapFish6,4);
+if(dude_caps < 6) then
+NOption(832,WrapFishNo,4);
+NOption(1641,Node999,4);
+end
+
+procedure Reward1
+begin
+Reply(1670);
+NOption(1671,Node999,4);
+end
+
+procedure Reward2
+begin
+Reply(1700);
+NOption(1671,Node999,4);
+end
+
+procedure Reward3
+begin
+Reply(1730);
+NOption(1671,Node999,4);
+end
+
+procedure Reward4
+begin
+Reply(1760);
+NOption(1671,Node999,4);
+end
+
+procedure NoGreatDeal
+begin
+Reply(1790);
+NOption(381,Node999,4);
+NOption(1791,Node999,4);
+end
+
+procedure ShareSuggest
+begin
+Reply(1820);
+NOption(1821,share1,4);
+NOption(1822,Node999,4);
+end
+
+procedure ShareSuggest2
+begin
+Reply(1850);
+NOption(1851,share2,4);
+NOption(1852,Node999,4);
+end
+
+procedure WillShare
+begin
+Reply(1880);
+NOption(1881,Node999,4);
+end
+
+procedure SonnyBlacksBackSuccessful
+begin
+Reply(1910);
+NOption(1911,Node999,4);
+NOption(1912,Node999,4);
+end
+
+procedure SonnyBlacksBackUnsuccessful
+begin
+Reply(1940);
+NOption(1941,Node999,4);
+NOption(1942,Node999,4);
+end
+
+// Node SonnyBlacksBackBeatup
+//
+// Notes:
+//
+// 1) triggers fight script
+
+procedure SonnyBlacksBackBeatup
+begin
+Reply(1970);
+NOption(1971,Node999_kill_both,4);
+NOption(1972,NoBeatUp,4);
+end
+
+procedure ProvedSelfShare
+begin
+Reply(2000);
+NOption(2001,provesharecheck,4);
+NOption(2002,Node999,4);
+end
+
+procedure TooFar
+begin
+Reply(2030);
+NOption(2031,TooFarShare,4);
+NOption(2032,Node999,4);
+end
+
+procedure TooFarShare
+begin
+Reply(2060);
+NOption(2061,toofarsharecheck,4);
+NOption(2062,Node999,4);
+end
+
+procedure NoShare
+begin
+Reply(2090);
+NOption(2091,Node999,4);
+NOption(2092,Node999,4);
+end
+
+procedure SabotagedSonnyBlack
+begin
+Reply(2120);
+NOption(2121,Node999,4);
+end
+
+procedure KilledSonnyBlack
+begin
+Reply(2150);
+NOption(2151,Node999,4);
+end
+
+procedure SonnyBlackOutTown
+begin
+   set_local_var(LVAR_BeatUp, 1);
+Reply(2180);
+NOption(2181,Node999,4);
+end
+
+procedure NoAfford
+begin
+Reply(2210);
+NOption(381,Node999,4);
+end
+
+procedure NoKill
+begin
+Reply(2240);
+NOption(2241,WillBeSalesman,4);
+NOption(2242,WillSabotage,4);
+NOption(2243,Node999,4);
+end
+
+procedure StartGreatHaul
+begin
+Reply(2270);
+NOption(2271,WillBeSalesman,4);
+NOption(2272,WillSabotage,4);
+NOption(2273,Murder,4);
+NOption(2274,Node999,4);
+end
+
+procedure StartSabotage
+begin
+Reply(2300);
+NOption(2301,WillSabotage,4);
+NOption(2302,WillBeat,4);
+NOption(2303,SabKill,4);
+end
+
+procedure StartKill
+begin
+Reply(2330);
+NOption(2331,WillBeat,4);
+NOption(2332,WillKill2,4);
+end
+
+procedure Stupid
+begin
+Reply(2360);
+NOption(2361,Stu_Screw1,-3);
+NOption(2362,Stupid2,-3);
+end
+
+procedure Stupid2
+begin
+Reply(2390);
+NOption(2391,Stu_Screw2,-3);
+NOption(2392,Stupid3,-3);
+end
+
+procedure Stu_Screw1
+begin
+if (dude_is_male) then Reply(2420); else
+if (dude_is_female) then Reply(2421);
+NOption(2422,Stu_Deal,-3);
+NOption(2422,Stu_NotEnough,-3);
+NOption(2423,Node999,-3);
+end
+
+procedure Stu_Screw2
+begin
+if (dude_is_male) then Reply(2450); else
+if (dude_is_female) then Reply(2451);
+NOption(2422,Stu_Deal,-3);
+NOption(2422,Stu_NotEnough,-3);
+NOption(2423,Node999,-3);
+end
+
+procedure Stu_Screw3
+begin
+Reply(2480);
+NOption(2481,Stu_Deal,-3);
+NOption(2481,Stu_NotEnough,-3);
+NOption(2482,Node999,-3);
+end
+
+procedure Stupid3
+begin
+if (dude_is_male) then Reply(2510); else
+if (dude_is_female) then Reply(2511);
+NOption(2512,Stupid4,-3);
+NOption(2513,Stupid4,-3);
+end
+
+procedure Stupid4
+begin
+Reply(2540);
+NOption(2541,Stupid5,-3);
+end
+
+// Node Stupid5
+//
+// Notes:
+//
+// player can now ask for magic fish at start node
+
+procedure Stupid5
+begin
+   set_local_var(LVAR_SuperDuper, 1);
+Reply(2570);
+NOption(2571,Stu_Screw3,-3);
+NOption(2572,Node999,-3);
+NOption(2573,Node999,-3);
+end
+
+procedure Stu_Return
+begin
+Reply(2600);
+NOption(2601,Node999,-3);
+NOption(2602,Node999,-3);
+end
+
+procedure Stu_MoreMag
+begin
+Reply(2630);
+NOption(2361,Stu_Deal,-3);
+NOption(2361,Stu_NotEnough,-3);
+NOption(2631,Node999,-3);
+end
+
+procedure Stu_Deal
+begin
+   item_caps_adjust(dude_obj, -20);
+   gdialog_barter;
+Reply(2660);
+NOption(2661,Node999,-3);
+end
+
+procedure Stu_hardsell
+begin
+if (dude_is_male) then Reply(2690); else
+if (dude_is_female) then Reply(2691);
+NOption(2692,Stu_Screw1,-3);
+NOption(237,Stupid2,-3);
+end
+
+procedure Stu_NotEnough
+begin
+Reply(2720);
+NOption(2721,Node999,-3);
+end
+
+// Node Achieve
+//
+// Notes:
+//
+// 1) triggers fight
+
+procedure Achieve
+begin
+Reply(2750);
+NOption(2751,Node999_kill_both,4);
+NOption(2752,Suggest,4);
+NOption(2753,SabKill,4);
+end
+
+procedure Suggest
+begin
+Reply(2780);
+NOption(2781,WillSabotage,4);
+NOption(2782,WillBeat,4);
+NOption(2783,Node999,4);
+end
+
+procedure SabKill
+begin
+Reply(2810);
+NOption(2811,killcheck,4);
+NOption(2812,WillBeat,4);
+NOption(2813,Node999,4);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

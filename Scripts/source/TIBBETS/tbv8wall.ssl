@@ -1,0 +1,31 @@
+procedure start;
+procedure timed_event_p_proc;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+
+import variable vault_door_ptr;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   add_timer_event(self_obj, 1, 1);
+end
+
+
+procedure map_update_p_proc begin
+    if (obj_is_open(vault_door_ptr)) then begin
+        destroy_object(self_obj);
+        return;
+    end
+end
+
+procedure timed_event_p_proc begin
+    if (fixed_param == 1) then begin
+          if (obj_is_open(vault_door_ptr)) then begin
+            destroy_object(self_obj);
+            return;
+        end
+    end
+    add_timer_event(self_obj, 1, 1);
+end

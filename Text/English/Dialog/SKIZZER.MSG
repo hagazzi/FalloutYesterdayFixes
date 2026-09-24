@@ -1,0 +1,39 @@
+# Grammar pass done
+
+{100}{}{You see a man.}
+{101}{}{You see Skizzer.}
+{102}{}{Fellow Crypter, you doing fine.}
+{103}{}{You some dumb Fool.}
+{104}{}{Welcome to Scrapheap. Keep your hands to yourself.}
+{105}{}{Ok.}
+{106}{}{You be good, and Rock won't have to come down on you.}
+{107}{}{Ok.}
+{108}{}{[END]}
+{109}{}{He refuses to talk to you.}
+{110}{}{You going to get buried, Fool!}
+{111}{}{I am going to kick some serious ass! I am ready to ruuummmblllle!}
+{112}{}{Crypts rule! And Fools drool!}
+{113}{}{We are the bringers of death!}
+
+# Combat floats
+{200}{}{Run, Fools, while you still have a chance to live.}
+{201}{}{Hey, Rayze, hunting season just opened, and Fools are on the list of dumb animals.}
+{202}{}{Hey guys, leave a Fool for me to kill.}
+{203}{}{The Crypts will bury you!}
+{204}{}{Fools got no reason to live.}
+{205}{}{The Foolish shall perish.}
+{206}{}{Look who got hit with the ugly stick.}
+{207}{}{You going to get buried, Fool!}
+{208}{}{I am going to kick some serious ass! I am ready to ruuummmblllle!}
+{209}{}{Crypts rule! And Fools drool!}
+{210}{}{We are the bringers of death!}
+{211}{}{Don't worry, it'll be quick and painful!}
+{212}{}{PURPLE BABOONS!}
+{213}{}{The Brahmin have more sense than a Fool.}
+{214}{}{The Fools are so weak, even Lex could beat them all up.}
+{215}{}{Haha! More fools to kill!!}
+{216}{}{The only thing you Fools will rule is a tombstone.}
+{217}{}{It's about time.  I've been waiting for this.}
+{218}{}{Even Lenny has better aim than you.}
+{219}{}{Eat lead, fools.}
+{220}{}{I'll mount your head on a spike.}

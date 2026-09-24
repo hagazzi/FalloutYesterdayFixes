@@ -1,0 +1,1410 @@
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+procedure start;
+procedure use_p_proc;
+procedure Do_Nothing;
+procedure Place_Bet;
+procedure Deal;
+procedure Hit;
+procedure Stand;
+procedure Draw_To_16;
+procedure Quit;
+procedure RandomCard;
+procedure GetCardValue(variable Temp);
+
+variable Card;
+variable CardValue;
+variable Temp;
+variable PlayerHandSlot0;
+variable PlayerHandSlot1;
+variable PlayerHandSlot2;
+variable PlayerHandSlot3;
+variable PlayerHandSlot4;
+variable PlayerHandSlot5;
+variable PlayerHandSlot6;
+variable PlayerHandSlot7;
+variable PlayerHandSlot8;
+variable PlayerHandSlot9;
+variable PlayerHand;
+variable PlayerHandCardCounter;
+variable PlayerAceValueCheckFlag;
+variable DealerHandSlot0;
+variable DealerHandSlot1;
+variable DealerHandSlot2;
+variable DealerHandSlot3;
+variable DealerHandSlot4;
+variable DealerHandSlot5;
+variable DealerHandSlot6;
+variable DealerHandSlot7;
+variable DealerHandSlot8;
+variable DealerHandSlot9;
+variable DealerHand;
+variable DealerHandCardCounter;
+variable DealerAceValueCheckFlag;
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+   create_win_flag("BlackjackWin", (get_screen_width - 640) / 2, (get_screen_height - 480) / 2, 640, 480, WIN_FLAG_EXCLUSIVE);
+   selectWin("BlackjackWin");
+   display("pcx/blackjack/TABLE.PCX");
+   displayGfx("pcx/blackjack/DUMMY.PCX", 0, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 48, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 96, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 144, 0, 48, 36);
+   addButton("DealBtn", 0, 0, 48, 36);
+   addButtonGfx("DealBtn", "pcx/blackjack/DEAL.PCX", "pcx/blackjack/DEAL.PCX", "pcx/blackjack/DEAL.PCX");
+   addButtonProc("DealBtn", Do_Nothing, Do_Nothing, Do_Nothing, Deal);
+   addButton("QuitBtn", 144, 0, 48, 36);
+   addButtonGfx("QuitBtn", "pcx/blackjack/QUIT.PCX", "pcx/blackjack/QUIT.PCX", "pcx/blackjack/QUIT.PCX");
+   addButtonProc("QuitBtn", Do_Nothing, Do_Nothing, Do_Nothing, Quit);
+   showWin;
+   mouseShape("pcx/blackjack/CUR.PCX", 0, 0);
+end
+
+procedure Do_Nothing begin
+end
+
+procedure Place_Bet begin
+end
+
+procedure Deal begin
+   display("pcx/blackjack/TABLE.PCX");
+   displayGfx("pcx/blackjack/DUMMY.PCX", 0, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 48, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 96, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 144, 0, 48, 36);
+   PlayerHand := 0;
+   PlayerHandCardCounter := 0;
+   PlayerHandSlot0 := 0;
+   PlayerHandSlot1 := 0;
+   PlayerHandSlot2 := 0;
+   PlayerHandSlot3 := 0;
+   PlayerHandSlot4 := 0;
+   PlayerHandSlot5 := 0;
+   PlayerHandSlot6 := 0;
+   PlayerHandSlot7 := 0;
+   PlayerHandSlot8 := 0;
+   PlayerHandSlot9 := 0;
+   DealerHand := 0;
+   DealerHandCardCounter := 0;
+   DealerHandSlot0 := 0;
+   DealerHandSlot1 := 0;
+   DealerHandSlot2 := 0;
+   DealerHandSlot3 := 0;
+   DealerHandSlot4 := 0;
+   DealerHandSlot5 := 0;
+   DealerHandSlot6 := 0;
+   DealerHandSlot7 := 0;
+   DealerHandSlot8 := 0;
+   DealerHandSlot9 := 0;
+
+   Card = RandomCard();
+
+   displayGfx(Card, (15 * PlayerHandCardCounter) + 0, 200, 71, 96);
+
+   PlayerHandSlot0 := Card;
+   PlayerHandCardCounter := PlayerHandCardCounter + 1;
+
+   Card = RandomCard();
+   displayGfx(Card, (15 * PlayerHandCardCounter) + 0, 200, 71, 96);
+   PlayerHandSlot1 := Card;
+   PlayerHandCardCounter := PlayerHandCardCounter + 1;
+   setFont(5);
+   setTextColor(0.00000, 1.00000, 0.00000);
+   gotoXY(320, 200);
+
+   PlayerAceValueCheckFlag := 0;
+   PlayerHand := 0;
+   if (PlayerHandSlot0 != 0) then begin
+      Temp := PlayerHandSlot0;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot1 != 0) then begin
+      Temp := PlayerHandSlot1;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot2 != 0) then begin
+      Temp := PlayerHandSlot2;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot3 != 0) then begin
+      Temp := PlayerHandSlot3;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot4 != 0) then begin
+      Temp := PlayerHandSlot4;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot5 != 0) then begin
+      Temp := PlayerHandSlot5;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot6 != 0) then begin
+      Temp := PlayerHandSlot6;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot7 != 0) then begin
+      Temp := PlayerHandSlot7;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot8 != 0) then begin
+      Temp := PlayerHandSlot8;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot9 != 0) then begin
+      Temp := PlayerHandSlot9;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   printRect("PlayerHand = " + PlayerHand + " PlayerHandCardCounter = " + PlayerHandCardCounter, 240, 0);
+
+   Card = RandomCard();
+   displayGfx(Card, (15 * DealerHandCardCounter) + 0, 100, 71, 96);
+   DealerHandSlot0 := Card;
+   DealerHandCardCounter := DealerHandCardCounter + 1;
+
+   Card = RandomCard();
+   displayGfx("pcx/blackjack/BACK.PCX", (15 * 1) + 0, 100, 71, 96);
+   DealerHandSlot1 := Card;
+   DealerHandCardCounter := DealerHandCardCounter + 1;
+   setFont(5);
+   setTextColor(0.00000, 1.00000, 0.00000);
+   gotoXY(320, 100);
+   DealerAceValueCheckFlag := 0;
+   DealerHand := 0;
+   if (DealerHandSlot0 != 0) then begin
+      Temp := DealerHandSlot0;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot1 != 0) then begin
+      Temp := DealerHandSlot1;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot2 != 0) then begin
+      Temp := DealerHandSlot2;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot3 != 0) then begin
+      Temp := DealerHandSlot3;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot4 != 0) then begin
+      Temp := DealerHandSlot4;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot5 != 0) then begin
+      Temp := DealerHandSlot5;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot6 != 0) then begin
+      Temp := DealerHandSlot6;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot7 != 0) then begin
+      Temp := DealerHandSlot7;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot8 != 0) then begin
+      Temp := DealerHandSlot8;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot9 != 0) then begin
+      Temp := DealerHandSlot9;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   printRect("DealerHand = " + DealerHand + " DealerHandCardCounter = " + DealerHandCardCounter, 240, 0);
+   deleteButton("DealBtn");
+   displayGfx("pcx/blackjack/DUMMY.PCX", 0, 0, 48, 36);
+   addButton("HitBtn", 48, 0, 48, 36);
+   addButtonGfx("HitBtn", "pcx/blackjack/HIT.PCX", "pcx/blackjack/HIT.PCX", "pcx/blackjack/HIT.PCX");
+   addButtonProc("HitBtn", Do_Nothing, Do_Nothing, Do_Nothing, Hit);
+   addButton("StandBtn", 96, 0, 48, 36);
+   addButtonGfx("StandBtn", "pcx/blackjack/STAND.PCX", "pcx/blackjack/STAND.PCX", "pcx/blackjack/STAND.PCX");
+   addButtonProc("StandBtn", Do_Nothing, Do_Nothing, Do_Nothing, Stand);
+   showWin;
+end
+
+procedure Hit begin
+   display("pcx/blackjack/TABLE.PCX");
+   displayGfx("pcx/blackjack/DUMMY.PCX", 0, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 48, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 96, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 144, 0, 48, 36);
+   displayGfx(PlayerHandSlot0, (15 * 0) + 0, 200, 71, 96);
+   displayGfx(PlayerHandSlot1, (15 * 1) + 0, 200, 71, 96);
+   if (PlayerHandSlot2 != 0) then begin
+      displayGfx(PlayerHandSlot2, (15 * 2) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot3 != 0) then begin
+      displayGfx(PlayerHandSlot3, (15 * 3) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot4 != 0) then begin
+      displayGfx(PlayerHandSlot4, (15 * 4) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot5 != 0) then begin
+      displayGfx(PlayerHandSlot5, (15 * 5) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot6 != 0) then begin
+      displayGfx(PlayerHandSlot6, (15 * 6) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot7 != 0) then begin
+      displayGfx(PlayerHandSlot7, (15 * 7) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot8 != 0) then begin
+      displayGfx(PlayerHandSlot8, (15 * 8) + 0, 200, 71, 96);
+   end
+   Card = RandomCard();
+   displayGfx(Card, (15 * PlayerHandCardCounter) + 0, 200, 71, 96);
+   if (PlayerHandSlot2 == 0) then begin
+      PlayerHandSlot2 := Card;
+   end
+   else begin
+      if (PlayerHandSlot3 == 0) then begin
+         PlayerHandSlot3 := Card;
+      end
+      else begin
+         if (PlayerHandSlot4 == 0) then begin
+            PlayerHandSlot4 := Card;
+         end
+         else begin
+            if (PlayerHandSlot5 == 0) then begin
+               PlayerHandSlot5 := Card;
+            end
+            else begin
+               if (PlayerHandSlot6 == 0) then begin
+                  PlayerHandSlot6 := Card;
+               end
+               else begin
+                  if (PlayerHandSlot7 == 0) then begin
+                     PlayerHandSlot7 := Card;
+                  end
+                  else begin
+                     if (PlayerHandSlot8 == 0) then begin
+                        PlayerHandSlot8 := Card;
+                     end
+                     else begin
+                        if (PlayerHandSlot9 == 0) then begin
+                           PlayerHandSlot9 := Card;
+                        end
+                     end
+                  end
+               end
+            end
+         end
+      end
+   end
+   PlayerHandCardCounter := PlayerHandCardCounter + 1;
+   PlayerAceValueCheckFlag := 0;
+   PlayerHand := 0;
+   if (PlayerHandSlot0 != 0) then begin
+      Temp := PlayerHandSlot0;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot1 != 0) then begin
+      Temp := PlayerHandSlot1;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot2 != 0) then begin
+      Temp := PlayerHandSlot2;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot3 != 0) then begin
+      Temp := PlayerHandSlot3;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot4 != 0) then begin
+      Temp := PlayerHandSlot4;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot5 != 0) then begin
+      Temp := PlayerHandSlot5;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot6 != 0) then begin
+      Temp := PlayerHandSlot6;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot7 != 0) then begin
+      Temp := PlayerHandSlot7;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot8 != 0) then begin
+      Temp := PlayerHandSlot8;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot9 != 0) then begin
+      Temp := PlayerHandSlot9;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if (PlayerHand > 21) then begin
+      setFont(5);
+      setTextColor(0.00000, 1.00000, 0.00000);
+      gotoXY(320, 200);
+      printRect("PlayerHand = " + PlayerHand + " PlayerHandCardCounter = " + PlayerHandCardCounter, 240, 0);
+      deleteButton("HitBtn");
+      displayGfx("pcx/blackjack/DUMMY.PCX", 48, 0, 48, 36);
+      deleteButton("StandBtn");
+      displayGfx("pcx/blackjack/DUMMY.PCX", 96, 0, 48, 36);
+      addButton("DealBtn", 0, 0, 48, 36);
+      addButtonGfx("DealBtn", "pcx/blackjack/DEAL.PCX", "pcx/blackjack/DEAL.PCX", "pcx/blackjack/DEAL.PCX");
+      addButtonProc("DealBtn", Do_Nothing, Do_Nothing, Do_Nothing, Deal);
+   end
+   else begin
+      setFont(5);
+      setTextColor(0.00000, 1.00000, 0.00000);
+      gotoXY(320, 200);
+      printRect("PlayerHand = " + PlayerHand + " PlayerHandCardCounter = " + PlayerHandCardCounter, 240, 0);
+   end
+   displayGfx(DealerHandSlot0, (15 * 0) + 0, 100, 71, 96);
+   displayGfx(DealerHandSlot1, (15 * 1) + 0, 100, 71, 96);
+   if (DealerHandSlot2 != 0) then begin
+      displayGfx(DealerHandSlot2, (15 * 2) + 0, 100, 71, 96);
+   end
+   if (DealerHandSlot3 != 0) then begin
+      displayGfx(DealerHandSlot3, (15 * 3) + 0, 100, 71, 96);
+   end
+   if (DealerHandSlot4 != 0) then begin
+      displayGfx(DealerHandSlot4, (15 * 4) + 0, 100, 71, 96);
+   end
+   if (DealerHandSlot5 != 0) then begin
+      displayGfx(DealerHandSlot5, (15 * 5) + 0, 100, 71, 96);
+   end
+   if (DealerHandSlot6 != 0) then begin
+      displayGfx(DealerHandSlot6, (15 * 6) + 0, 100, 71, 96);
+   end
+   if (DealerHandSlot7 != 0) then begin
+      displayGfx(DealerHandSlot7, (15 * 7) + 0, 100, 71, 96);
+   end
+   if (DealerHandSlot8 != 0) then begin
+      displayGfx(DealerHandSlot8, (15 * 8) + 0, 100, 71, 96);
+   end
+   if (DealerHandSlot9 != 0) then begin
+      displayGfx(DealerHandSlot9, (15 * 9) + 0, 100, 71, 96);
+   end
+   DealerAceValueCheckFlag := 0;
+   DealerHand := 0;
+   if (DealerHandSlot0 != 0) then begin
+      Temp := DealerHandSlot0;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot1 != 0) then begin
+      Temp := DealerHandSlot1;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot2 != 0) then begin
+      Temp := DealerHandSlot2;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot3 != 0) then begin
+      Temp := DealerHandSlot3;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot4 != 0) then begin
+      Temp := DealerHandSlot4;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot5 != 0) then begin
+      Temp := DealerHandSlot5;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot6 != 0) then begin
+      Temp := DealerHandSlot6;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot7 != 0) then begin
+      Temp := DealerHandSlot7;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot8 != 0) then begin
+      Temp := DealerHandSlot8;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot9 != 0) then begin
+      Temp := DealerHandSlot9;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if (DealerHand > 21) then begin
+      setFont(5);
+      setTextColor(0.00000, 1.00000, 0.00000);
+      gotoXY(320, 100);
+      printRect("DealerHand = " + DealerHand + " DealerHandCardCounter = " + DealerHandCardCounter, 240, 0);
+   end
+   else begin
+      setFont(5);
+      setTextColor(0.00000, 1.00000, 0.00000);
+      gotoXY(320, 100);
+      printRect("DealerHand = " + DealerHand + " DealerHandCardCounter = " + DealerHandCardCounter, 240, 0);
+   end
+   showWin;
+end
+
+procedure Stand begin
+   display("pcx/blackjack/TABLE.PCX");
+   displayGfx("pcx/blackjack/DUMMY.PCX", 0, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 48, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 96, 0, 48, 36);
+   displayGfx("pcx/blackjack/DUMMY.PCX", 144, 0, 48, 36);
+   displayGfx(PlayerHandSlot0, (15 * 0) + 0, 200, 71, 96);
+   displayGfx(PlayerHandSlot1, (15 * 1) + 0, 200, 71, 96);
+   if (PlayerHandSlot2 != 0) then begin
+      displayGfx(PlayerHandSlot2, (15 * 2) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot3 != 0) then begin
+      displayGfx(PlayerHandSlot3, (15 * 3) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot4 != 0) then begin
+      displayGfx(PlayerHandSlot4, (15 * 4) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot5 != 0) then begin
+      displayGfx(PlayerHandSlot5, (15 * 5) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot6 != 0) then begin
+      displayGfx(PlayerHandSlot6, (15 * 6) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot7 != 0) then begin
+      displayGfx(PlayerHandSlot7, (15 * 7) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot8 != 0) then begin
+      displayGfx(PlayerHandSlot8, (15 * 8) + 0, 200, 71, 96);
+   end
+   if (PlayerHandSlot9 != 0) then begin
+      displayGfx(PlayerHandSlot9, (15 * 9) + 0, 200, 71, 96);
+   end
+   PlayerAceValueCheckFlag := 0;
+   PlayerHand := 0;
+   if (PlayerHandSlot0 != 0) then begin
+      Temp := PlayerHandSlot0;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot1 != 0) then begin
+      Temp := PlayerHandSlot1;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot2 != 0) then begin
+      Temp := PlayerHandSlot2;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot3 != 0) then begin
+      Temp := PlayerHandSlot3;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot4 != 0) then begin
+      Temp := PlayerHandSlot4;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot5 != 0) then begin
+      Temp := PlayerHandSlot5;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot6 != 0) then begin
+      Temp := PlayerHandSlot6;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot7 != 0) then begin
+      Temp := PlayerHandSlot7;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot8 != 0) then begin
+      Temp := PlayerHandSlot8;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if (PlayerHandSlot9 != 0) then begin
+      Temp := PlayerHandSlot9;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         PlayerAceValueCheckFlag := PlayerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      PlayerHand := PlayerHand + Temp;
+   end
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((PlayerHand > 21) and (PlayerAceValueCheckFlag > 0)) then begin
+      PlayerHand := PlayerHand - 10;
+      PlayerAceValueCheckFlag := PlayerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if (PlayerHand > 21) then begin
+      setFont(5);
+      setTextColor(0.00000, 1.00000, 0.00000);
+      gotoXY(320, 200);
+      printRect("PlayerHand = " + PlayerHand + " PlayerHandCardCounter = " + PlayerHandCardCounter, 240, 0);
+   end
+   else begin
+      setFont(5);
+      setTextColor(0.00000, 1.00000, 0.00000);
+      gotoXY(320, 200);
+      printRect("PlayerHand = " + PlayerHand + " PlayerHandCardCounter = " + PlayerHandCardCounter, 240, 0);
+   end
+   displayGfx(DealerHandSlot0, (15 * 0) + 0, 100, 71, 96);
+   displayGfx(DealerHandSlot1, (15 * 1) + 0, 100, 71, 96);
+   DealerAceValueCheckFlag := 0;
+   DealerHand := 0;
+   if (DealerHandSlot0 != 0) then begin
+      Temp := DealerHandSlot0;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot1 != 0) then begin
+      Temp := DealerHandSlot1;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot2 != 0) then begin
+      Temp := DealerHandSlot2;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot3 != 0) then begin
+      Temp := DealerHandSlot3;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot4 != 0) then begin
+      Temp := DealerHandSlot4;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot5 != 0) then begin
+      Temp := DealerHandSlot5;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot6 != 0) then begin
+      Temp := DealerHandSlot6;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot7 != 0) then begin
+      Temp := DealerHandSlot7;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot8 != 0) then begin
+      Temp := DealerHandSlot8;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot9 != 0) then begin
+      Temp := DealerHandSlot9;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if (DealerHand < 16) then begin
+      call Draw_To_16();
+   end
+   if (DealerHand > 21) then begin
+      setFont(5);
+      setTextColor(0.00000, 1.00000, 0.00000);
+      gotoXY(320, 100);
+      printRect("DealerHand = " + DealerHand + " DealerHandCardCounter = " + DealerHandCardCounter, 240, 0);
+   end
+   else begin
+      setFont(5);
+      setTextColor(0.00000, 1.00000, 0.00000);
+      gotoXY(320, 100);
+      printRect("DealerHand = " + DealerHand + " DealerHandCardCounter = " + DealerHandCardCounter, 240, 0);
+   end
+   deleteButton("HitBtn");
+   displayGfx("pcx/blackjack/DUMMY.PCX", 48, 0, 48, 36);
+   deleteButton("StandBtn");
+   displayGfx("pcx/blackjack/DUMMY.PCX", 96, 0, 48, 36);
+   addButton("DealBtn", 0, 0, 48, 36);
+   addButtonGfx("DealBtn", "pcx/blackjack/DEAL.PCX", "pcx/blackjack/DEAL.PCX", "pcx/blackjack/DEAL.PCX");
+   addButtonProc("DealBtn", Do_Nothing, Do_Nothing, Do_Nothing, Deal);
+   showWin;
+end
+
+procedure Draw_To_16 begin
+   Card := RandomCard();
+   displayGfx(Card, (15 * DealerHandCardCounter) + 0, 100, 71, 96);
+   if (DealerHandSlot2 == 0) then begin
+      DealerHandSlot2 := Card;
+   end
+   else begin
+      if (DealerHandSlot3 == 0) then begin
+         DealerHandSlot3 := Card;
+      end
+      else begin
+         if (DealerHandSlot4 == 0) then begin
+            DealerHandSlot4 := Card;
+         end
+         else begin
+            if (DealerHandSlot5 == 0) then begin
+               DealerHandSlot5 := Card;
+            end
+            else begin
+               if (DealerHandSlot6 == 0) then begin
+                  DealerHandSlot6 := Card;
+               end
+               else begin
+                  if (DealerHandSlot7 == 0) then begin
+                     DealerHandSlot7 := Card;
+                  end
+                  else begin
+                     if (DealerHandSlot8 == 0) then begin
+                        DealerHandSlot8 := Card;
+                     end
+                     else begin
+                        if (DealerHandSlot9 == 0) then begin
+                           DealerHandSlot9 := Card;
+                        end
+                     end
+                  end
+               end
+            end
+         end
+      end
+   end
+   DealerHandCardCounter := DealerHandCardCounter + 1;
+   DealerAceValueCheckFlag := 0;
+   DealerHand := 0;
+   if (DealerHandSlot0 != 0) then begin
+      Temp := DealerHandSlot0;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot1 != 0) then begin
+      Temp := DealerHandSlot1;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot2 != 0) then begin
+      Temp := DealerHandSlot2;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot3 != 0) then begin
+      Temp := DealerHandSlot3;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot4 != 0) then begin
+      Temp := DealerHandSlot4;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot5 != 0) then begin
+      Temp := DealerHandSlot5;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot6 != 0) then begin
+      Temp := DealerHandSlot6;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot7 != 0) then begin
+      Temp := DealerHandSlot7;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot8 != 0) then begin
+      Temp := DealerHandSlot8;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if (DealerHandSlot9 != 0) then begin
+      Temp := DealerHandSlot9;
+      if (Temp == "pcx/blackjack/CA.PCX") then begin
+         DealerAceValueCheckFlag := DealerAceValueCheckFlag + 1;
+      end
+      Temp = GetCardValue(Temp);
+      DealerHand := DealerHand + Temp;
+   end
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if ((DealerHand > 21) and (DealerAceValueCheckFlag > 0)) then begin
+      DealerHand := DealerHand - 10;
+      DealerAceValueCheckFlag := DealerAceValueCheckFlag - 1;
+   end
+   Temp := 0;
+   if (DealerHand < 16) then begin
+      call Draw_To_16();
+   end
+end
+
+procedure Quit begin
+   deleteWin("BlackjackWin");
+end
+
+procedure RandomCard begin
+   Card := random(1, 13);
+
+   if (Card == 1) then begin
+      Card := "pcx/blackjack/CA.PCX";
+   end
+   else if (Card == 2) then begin
+      Card := "pcx/blackjack/C2.PCX";
+   end
+   else if (Card == 3) then begin
+      Card := "pcx/blackjack/C3.PCX";
+   end
+   else if (Card == 4) then begin
+      Card := "pcx/blackjack/C4.PCX";
+   end
+   else if (Card == 5) then begin
+      Card := "pcx/blackjack/C5.PCX";
+   end
+   else if (Card == 6) then begin
+      Card := "pcx/blackjack/C6.PCX";
+   end
+   else if (Card == 7) then begin
+      Card := "pcx/blackjack/C7.PCX";
+   end
+   else if (Card == 8) then begin
+      Card := "pcx/blackjack/C8.PCX";
+   end
+   else if (Card == 9) then begin
+      Card := "pcx/blackjack/C9.PCX";
+   end
+   else if (Card == 10) then begin
+      Card := "pcx/blackjack/CT.PCX";
+   end
+   else if (Card == 11) then begin
+      Card := "pcx/blackjack/CJ.PCX";
+   end
+   else if (Card == 12) then begin
+      Card := "pcx/blackjack/CQ.PCX";
+   end
+   else if (Card == 13) then begin
+      Card := "pcx/blackjack/CK.PCX";
+   end
+
+   return Card;
+end
+
+procedure GetCardValue(variable Temp) begin
+   if (Temp == "pcx/blackjack/CA.PCX") then begin
+      Temp := 11;
+   end
+   else if (Temp == "pcx/blackjack/C2.PCX") then begin
+      Temp := 2;
+   end
+   else if (Temp == "pcx/blackjack/C3.PCX") then begin
+      Temp := 3;
+   end
+   else if (Temp == "pcx/blackjack/C4.PCX") then begin
+      Temp := 4;
+   end
+   else if (Temp == "pcx/blackjack/C5.PCX") then begin
+      Temp := 5;
+   end
+   else if (Temp == "pcx/blackjack/C6.PCX") then begin
+      Temp := 6;
+   end
+   else if (Temp == "pcx/blackjack/C7.PCX") then begin
+      Temp := 7;
+   end
+   else if (Temp == "pcx/blackjack/C8.PCX") then begin
+      Temp := 8;
+   end
+   else if (Temp == "pcx/blackjack/C9.PCX") then begin
+      Temp := 9;
+   end
+   else if (Temp == "pcx/blackjack/CT.PCX") then begin
+      Temp := 10;
+   end
+   else if (Temp == "pcx/blackjack/CJ.PCX") then begin
+      Temp := 10;
+   end
+   else if (Temp == "pcx/blackjack/CQ.PCX") then begin
+      Temp := 10;
+   end
+   else if (Temp == "pcx/blackjack/CK.PCX") then begin
+      Temp := 10;
+   end
+
+   return Temp;
+end

@@ -1,0 +1,59 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+   Map for Vault13 Fake entrance
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_HDSCMPIT
+
+#include "..\headers\command.h"
+
+#define MVAR_Made_Car                          (0)
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure start begin
+   add_timer_event(self_obj, game_ticks(10), 1);
+end
+
+
+procedure map_enter_p_proc begin
+   fadein(1);
+
+   if (
+      not(is_loading_game) and
+      map_first_run )
+      then begin
+      display_mstr(100);
+   end
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_SLUDGE), 1);
+
+end
+
+procedure map_update_p_proc begin
+   Scum_Pits_Lighting;
+end
+
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end
+
+procedure timed_event_p_proc begin
+   if(not(dude_wearing_environmental_armor) and not(dude_wearing_power_armor) and not(dude_wearing_space_suit)) then begin
+      display_mstr(101);
+      critter_dmg(dude_obj, random(1, 4), DMG_plasma);
+      add_timer_event(self_obj, game_ticks(10), 1);
+      // TODO ZZZ HARM PARTY TOO
+   end
+end

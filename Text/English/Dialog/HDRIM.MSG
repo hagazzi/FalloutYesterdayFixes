@@ -1,0 +1,3 @@
+# Grammar pass done
+
+{100}{}{The view from the Rim is stunning, with the mutant-infested lake stretching out on one side and the rugged river canyon on the other. It's a testament to nature's untamed beauty and the engineering feat of the dam.}

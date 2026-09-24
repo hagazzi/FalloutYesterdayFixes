@@ -1,0 +1,2 @@
+
+{100}{}{This is an ancient, pre-war robot. It is a unit inside Tibbets' firewall but seems to have broken.}

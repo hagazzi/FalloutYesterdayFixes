@@ -1,0 +1,28 @@
+#include "..\HEADERS\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_HDCORPSE
+
+procedure start;
+procedure use_skill_on_p_proc;
+procedure description_p_proc;
+
+procedure start begin
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+    if (
+        (action_being_used == SKILL_SCIENCE) and
+        (is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, 0)))
+    ) then begin
+        script_overrides;
+        display_mstr(100);
+    end
+end
+
+procedure description_p_proc begin
+    script_overrides;
+    display_mstr(101);
+end

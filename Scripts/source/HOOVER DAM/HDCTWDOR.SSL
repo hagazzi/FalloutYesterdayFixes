@@ -1,0 +1,4 @@
+#define LOCKED_STATUS                STATE_ACTIVE
+#define DOOR_KEY_PID                 PID_BASELINE_KEY
+
+#include "..\generic\zimtldor.ssl"

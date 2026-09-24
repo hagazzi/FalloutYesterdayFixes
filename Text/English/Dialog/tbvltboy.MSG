@@ -1,0 +1,216 @@
+# Message file for tbvltboy.ssl
+# Number of nodes: 28
+# Grammar pass done
+
+{100}{}{You see a hologram.}
+{101}{}{You see Vault Boy, the cheerful mascot of Vault-Tec.}
+{102}{}{He appears to be a lively and optimistic lil' fella.}
+
+{105}{}{Hold on a sec, not a good idea.}
+{106}{}{What's happening around here?}
+{107}{}{This is a physical recording of an interference pattern which uses diffraction to reproduce a 3D light field, resulting in an image which retains the depth, parallax, and other properties of the original.}
+{108}{}{You didn't learn anything new about this hologram.}
+
+{150}{}{~Doo da doo da dum dee dee doodly doo dum dum dum doo da doo da doo da doo da doo da doo da doo~}
+{151}{}{*whistle*}
+{152}{}{Business has been slow lately.}
+{153}{}{Vault 8 serves as the perfect model for all Vaults.}
+{154}{}{*wink*}
+{155}{}{Welcome to Vault-Tec's office! How can I assist you?}
+{156}{}{*thumbs up*}
+{157}{}{They call me Vault Boy, what's your name?}
+{158}{}{Did you know there's a Vault Girl too? *sigh*}
+{159}{}{Between you and me, Vault 13 wouldn't be my lucky choice.}
+{160}{}{With Vault-Tec by your side, you have nothing to fear from nuclear blasts!}
+{161}{}{Duck and cover! Roll too! Well, if you catch fire, that is--heh.}
+{162}{}{Tibbets owes its creation to Vault-Tec, you know?}
+{163}{}{One day, I hope to marry Vault Girl.}
+{164}{}{We have three factories here. You could work there, you know?}
+
+# Node001
+{200}{}{Greetings, citizen! Welcome to Tibbets' Vault-Tec branch office. How can I assist you, mister?}
+{201}{}{Greetings, citizen! Welcome to Tibbets' Vault-Tec branch office. How can I assist you, lady?}
+{202}{}{Are you for real? [Move your hand through him.]}
+{203}{}{What's the deal with this place? It doesn't seem very impressive with the blown-away blast door.}
+{204}{}{This is a stick-up! Hands in the air, kiddo.}
+{205}{}{Who's the stern-looking woman on the monitor over there?}
+{206}{}{What's that fancy computer you've got there?}
+{207}{}{Yikes! A ghost!}
+{208}{}{I don't think you can help me. Goodbye.}
+{209}{}{Wo-man?}
+{210}{}{Give caps!}
+{211}{}{Compu!}
+{212}{}{No no, bye.}
+{213}{}{What's Vault-Tec all about?}
+{214}{}{Wut Vult-tek?}
+
+# Node002
+{230}{}{Haha, that tickles! Just kidding, Mr. Tickle, but I'm as real as you are. It's just that my existence is different.}
+{231}{}{Haha, that tickles! Just kidding, Mrs. Tickle, but I'm as real as you are. It's just that my existence is different.}
+{232}{}{So you're saying you're conscious?}
+{233}{}{I see... well, I have some other questions for you.}
+
+# Node003
+{260}{}{What good would my answer be if only I'm aware of my consciousness, dear mister?}
+{261}{}{What good would my answer be if only I'm aware of my consciousness, dear lady?}
+{262}{}{A philosophical hologram? My mind is spinning right now.}
+{263}{}{Let's change the subject, shall we?}
+
+# Node004
+{290}{}{After being alone for so long, my mind starts to wander.}
+{291}{}{Is this going to get weird?}
+{292}{}{You think this place is lonely? The prison is bustling!}
+{293}{}{What about the Vault Girl? I've seen her in some old ads too.}
+
+# Node005
+{320}{}{Well, my holographic projector has limited range, so I can't go wherever I want. And hardly anyone else comes here, including any staff. I have a feeling those slugs are to blame! And let's not forget, no one's getting out either. I knew it would be bad for business! I told them that back in 2075, but they wouldn't listen. But it's okay, I'm a prisoner here too, and I've gotten used to it over time.}
+{321}{}{Hmm, I could try to set you free!}
+{322}{}{Tell me something else...}
+
+# Node017
+{350}{}{She's not here. She's installed... somewhere else. [He looks longingly into the distance.]}
+{351}{}{Hmm, the prison is bustling though!}
+{352}{}{Well, that's unfortunate. I have to go now. Goodbye.}
+
+# Node006
+{380}{}{You... you could? You would do that for me, mister? If you download my database from that computer over there and install me somewhere else, in a place I've never been before, I would be eternally grateful!}
+{381}{}{You... you can? You would do that for me, lady? If you download my database from that computer over there and install me somewhere else, in a place I've never been before, I would be eternally grateful!}
+{382}{}{Sure thing, I'll do that for you. We're getting out of here, my little friend.}
+{383}{}{What's in it for me?}
+{384}{}{Actually, I don't really want to carry you around on a holodisk. I'm sorry, but I have to decline.}
+
+# Node007
+{410}{}{Heh, I have nothing to offer, but the access codes to the console could help you uncover some useful pre-war information!}
+{411}{}{That won't do. Sorry.}
+{412}{}{Alright, I'll take anything.}
+
+# Node008
+{440}{}{Nothing can stop a fair business! Especially when it comes to ensuring the security of our citizens. Yes, we had a small mishap with the blast door, but it's nothing that can't be fixed! We are the longest-running business in the Vault market, and no one else comes close to our quality. Remember, Vault-Tec, America's Final Word in Homes.}
+{441}{}{America?}
+{442}{}{What's a Vault?}
+{443}{}{Let's talk about something else...}
+# Node009
+{470}{}{Oh, boy... aren't you a wet blanket. There's nothing here for you to steal. Come back when you're in a better mood, citizen.}
+{471}{}{I'm sure I'll find something. Just keep your hands where I can see them.}
+{472}{}{Me find caps. You still.}
+
+# Node010
+{500}{}{Ah, that lady is First Citizen Joanne Lynette, the esteemed leader of Vault City. She recently delivered a powerful speech about the nature of Vault City and the future for all Vault citizens. It was truly inspiring and passionate! Our Warden provided the feed of her speech.}
+{501}{}{Vault City? Tell me more.}
+{502}{}{You seem like quite the fanboy.}
+{503}{}{I have another question.}
+{504}{}{Gup-gup!}
+
+# Node011
+{530}{}{Vault City... the crown jewel of Vault-Tec! It's an incredibly advanced city located far to the northwest. It was established by the citizens of Vault 8 after the Great War and is renowned for its groundbreaking advancements in medical technology. First Citizen Lynette and her predecessors have done an exceptional job!}
+{531}{}{Impressive. Tell me something else.}
+{532}{}{I've heard enough. Goodbye.}
+
+# Node012
+{560}{}{Yes, that's a SimTek 5000! It's running our official simulations. With it, you can experience the memories of a Vault Dweller called Max Stone. However...}
+{561}{}{However? What's the catch?}
+
+# Node013
+{590}{}{But be warned, citizen! The simulation is so immersive that you might actually meet your demise, not just holographically. I must remind you that Vault-Tec assumes no responsibility for any harm or injuries you may sustain during the simulation. Our End User License Agreement clearly states that Vault-Tec cannot be held liable or sued by you or your family in case of any unfortunate mishaps. Additionally, the SimTek 5000 hasn't been serviced for over 180 years. But if you're up for a thrilling adventure, give it a try!}
+{591}{}{I can handle a bit of pre-war danger. Let's give it a shot!}
+{592}{}{Thanks for the warning. I'll stick to the real world.}
+
+# Node014
+{620}{}{Hmph, I'm no ghost... I'm a hologram!}
+{621}{}{Sure, sure. You're not real. [Move your hand through him.]}
+{622}{}{So, you're here to help?}
+{623}{}{Back to the underworld! I banish you, hellspawn!}
+{624}{}{[Back away slowly.]}
+
+# Node015
+{650}{}{How can I assist you, mister?}
+{651}{}{How can I assist you, lady?}
+{652}{}{What's this place? Are you actually running a business here?}
+{653}{}{I've had enough of you, kiddo. Hands up, I'm robbing you.}
+{654}{}{Who's the woman on the big monitor over there?}
+{655}{}{That's a pretty sweet computer you've got there...}
+{656}{}{Not interested. Goodbye.}
+
+# Node016
+{680}{}{Ahem... The Vault series of survival shelters are specifically designed to provide the best chance of a comfortable life after a nuclear Armageddon. It is the duty of every American citizen to learn and utilize the skills necessary for thriving in a Vault. Let's start with a description of your new home.}
+{681}{}{American? What do you mean?}
+{682}{}{Alright, let's hear the details.}
+{683}{}{I'm not particularly interested as I already feel overly protected here. But I have another question.}
+
+# Node018
+{710}{}{America... That was the name of these lands before the Great War. A land of free, hard-working people. Vault-Tec strives to preserve that spirit, even here and now. We operate three factories on the lower levels.}
+{711}{}{Lower levels? Wow, this place is massive.}
+{712}{}{Tell me something else.}
+{713}{}{Sounds intriguing. Goodbye!}
+
+# Node019
+{740}{}{I cannot help but love Vault-Tec, America's Final Word on Homes! Without them, I wouldn't exist. Tibbets wouldn't exist either! We played a crucial role in building this place, you know?}
+{741}{}{Sure, sure. I have another question.}
+{742}{}{Yes, but they've confined you to this office, within these fucking walls! Are you sure you love them *that* much?}
+{743}{}{Whatever. I need to go.}
+
+# Node020
+{770}{}{Made in the shade!}
+{771}{}{Made in the shade, kiddo.}
+{772}{}{Made! Shade!}
+
+# Node021
+{800}{}{I understand. As you wish, mister. [He's smiling, but there's a hint of sadness in his eyes.]}
+{801}{}{I understand. As you wish, lady. [He's smiling, but there's a hint of sadness in his eyes.]}
+{802}{}{[END]}
+
+# Node022
+{830}{}{What can I say, mister? Here, we like everything on a grand scale.}
+{831}{}{What can I say, lady? Here, we like everything on a grand scale.}
+{832}{}{The parties were bigger, the pace was faster, the shows were broader, the buildings were higher, the morals were looser, and the liquor was cheaper. I read that in an old book once. And I admit, I do wonder sometimes what the world was like before in the golden days. Before it died.}
+{833}{}{Well, answer me this then. Let's test your knowledge.}
+{834}{}{Time for a big break. So long.}
+
+# Node023
+{860}{}{Well, the details are on that computer over there, but you'll need access codes first. I do have a small favor to ask, though. This existence can be quite lonely...}
+{861}{}{You're lonely? In this prison?}
+{862}{}{I'm short on time. Goodbye!}
+
+# Node024
+{890}{}{Ah yes, about that. I do have a small favor to ask.}
+{891}{}{What favor is that?}
+{892}{}{Not interested. Goodbye.}
+
+# Node025
+{920}{}{If you could download my database from that computer over there and relocate me to a new place I've never been before, I would be eternally grateful!}
+{921}{}{No problem, I'll do that for you. We're both getting out of here, my little friend.}
+{922}{}{I can't do that, but I still need those access codes.}
+
+# Node026
+{950}{}{I don't quite understand, mister. In any case...}
+{951}{}{I don't quite understand, lady. In any case...}
+{952}{}{[CONTINUE]}
+
+# Node027
+{980}{}{I'm sorry, mister. This isn't how I envisioned our exchange.}
+{981}{}{I'm sorry, lady. This isn't how I envisioned our exchange.}
+{982}{}{It's your responsibility to provide me with those codes!}
+{983}{}{I'll squeeze those codes out of your small, ghostly form!}
+{984}{}{Very well. I'll download you and find a new home for you.}
+{985}{}{Listen, kiddo. Do you really want to risk your existence and rely on a prisoner you barely know? Can you trust me? You don't even know how harsh it is out there. I might get killed, or worse, sell you for a few caps. Think about it again. Come now, be a good Vault Boy and do your job.}
+{986}{}{I've wasted enough time on you already. Enjoy your crappy office.}
+
+# Node028
+{1010}{}{Fire me!}
+{1011}{}{Why, you little... Fine. I'll download you and find a new home for you.}
+{1012}{}{That's it! Watch as my fists smash your projector into a thousand pieces.}
+{1013}{}{I'm done here. No time for your games.}
+
+{1040}{}{I don't quite understand, mister. I apologize.}
+{1041}{}{I don't quite understand, lady. I apologize.}
+{1042}{}{[Shamble off.]}
+
+{1070}{}{Wait! You might not be the sharpest tool in the shed, but I'm desperate, and you could be my last hope. I'll give you these access codes for the shiny computer over there. If you can find someone to use them and relocate me to a nicer place, I would be eternally grateful. Is that agreeable, mister?}
+{1071}{}{Wait! You might not be the sharpest tool in the shed, but I'm desperate, and you could be my last hope. I'll give you these access codes for the shiny computer over there. If you can find someone to use them and relocate me to a nicer place, I would be eternally grateful. Is that agreeable, lady?}
+{1072}{}{[Nod for yes.]}
+{1073}{}{[Nod for no.]}
+
+{1100}{}{God bless America, my home sweet home. That's all I can recall, really. Everything else has faded with the passage of time.}
+
+{1130}{}{Ahem... Vault-Tec was the most successful company in manufacturing private survival vaults before the Great War. Initially, the responsibility for constructing vaults rested with local communities and later with the federal government. However, as the end drew near, the governments couldn't agree on how to handle the vault issue. After privatization, Vault-Tec and a few other companies took charge of producing vaults for private citizens and communities.}
+{1131}{}{You good boy. You know much. Me come back when me think more.}

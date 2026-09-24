@@ -1,0 +1,2 @@
+
+{100}{}{You see someone electrocuted inside their Power Armor.}

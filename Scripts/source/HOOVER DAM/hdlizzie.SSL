@@ -1,0 +1,88 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/* Random Encounter scripts. These will be filled in more once they
+   have been designed.
+*/
+
+procedure start;
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_HDLIZZIE
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+
+procedure start;
+procedure destroy_p_proc;
+procedure critter_p_proc;
+procedure map_enter_p_proc;
+procedure combat_p_proc;
+procedure map_exit_p_proc;
+procedure description_p_proc;
+procedure talk_p_proc;
+procedure push_p_proc;
+procedure use_skill_on_p_proc;
+
+variable starttile := 10306;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   switch_team(self_obj,TEAM_HOOVER_DAM)
+end
+
+procedure talk_p_proc begin
+   display_mstr(100);
+end
+
+procedure push_p_proc begin
+end
+
+procedure critter_p_proc begin
+   variable tile;
+
+   if (not anim_busy(self_obj)) then begin
+      reg_anim_clear(self_obj);
+      reg_anim_begin();
+      if (tile_distance(self_tile, starttile) > 15) then
+         tile = starttile;
+      else
+         tile = tile_num_in_direction(starttile, Random(0, 5), Random(3, 10));
+      animate_move_to_tile(tile);
+      reg_anim_end();
+   end
+end
+
+procedure combat_p_proc begin
+   if (fixed_param == COMBAT_SUBTYPE_HIT_SUCCEEDED) then begin
+      if ((target_obj == dude_obj) and not(dude_immune_to_radiation)) then begin
+         if (not(is_success(do_check(target_obj,STAT_lu,-1)))) then begin
+            radiation_inc(target_obj,random(5,10));
+         end
+      end
+   end
+end
+
+procedure description_p_proc begin
+   call BeastlordPossess;
+end
+
+procedure map_exit_p_proc begin
+   call BeastlordUnpossess(TEAM_HOOVER_DAM);
+end
+
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_neutral_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end

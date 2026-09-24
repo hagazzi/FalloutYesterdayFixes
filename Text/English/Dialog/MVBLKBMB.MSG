@@ -1,0 +1,4 @@
+{100}{}{An activated explosive buried at this spot could destabilize the cave.}
+{101}{}{You didn't get any new ideas regarding this spot.}
+{102}{}{The explosive has been planted. Time to make a quick exit.}
+{103}{}{The explosion has destabilized the cave.}

@@ -1,0 +1,621 @@
+/*
+
+        Name:           Gabrielle
+        Location:
+        Description:
+
+           Created: 07/10/2020 14:20:15
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_C /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBGABRIE
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+procedure Skill_Check_000_Speech;
+procedure Skill_Check_001_Speech;
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node01f;
+procedure Node02f;
+procedure General;
+procedure Node01;
+procedure Node02;
+procedure Node03;
+procedure Questions;
+procedure Node04;
+procedure Node05;
+procedure Node06;
+procedure Node07;
+procedure Node08;
+procedure Node09;
+procedure Node10;
+procedure Node11;
+procedure Node12;
+procedure Node13;
+procedure Node14;
+procedure Node15;
+procedure Node16;
+procedure Node17;
+procedure Node18;
+procedure Node19;
+procedure Node20;
+procedure Node21;
+procedure Node22;
+procedure Stupid1;
+procedure Stupid2;
+procedure Stupid3;
+procedure Stupid4;
+procedure Stupid5;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+   call new_plague_check(self_obj, LVAR_Herebefore);
+
+   if(global_var(GVAR_TIPOFF_GABRIELLE) == 2) then begin
+      destroy_object(self_obj);
+   end
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+       start_gdialog(NAME,self_obj,4,HEAD_GABRIELLE,BACKGROUND_TIBBETS);
+       gSay_Start;
+
+if (local_var(LVAR_Herebefore)==0) then begin
+       call Node01;
+end else if (local_var(LVAR_Herebefore)==1) then begin
+       call Node03;
+end
+       gSay_End;
+       end_dialogue;
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+
+add_timer_event(self_obj,game_ticks(random(3, 5)),0);
+
+    if (random(0, 30) == 1) then begin
+       if(global_var(GVAR_TIPOFF_GABRIELLE) == 2) then
+          floater_rand(200, 202);
+       else if(global_var(GVAR_TIPOFF_CROZ) == 2) or (global_var(GVAR_TIPOFF_ROBB) == 2) then
+          floater_rand(230, 232);
+       else
+          floater_rand(260, 262);
+   end
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+/* inc_evil_critter */
+/* inc_neutral_critter */
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure Skill_Check_000_Speech begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -5);
+if is_success(roll_temp) then
+begin
+call Node18;
+end
+else begin
+call Node19;
+ end
+end
+
+procedure Skill_Check_001_Speech begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -10);
+if is_success(roll_temp) then
+begin
+call Node18;
+end
+else begin
+call Node19;
+ end
+end
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+// Node Node01f
+//
+// Notes:
+//
+// Gabrielle has been accused of the murder of Angela by the PC.
+
+procedure Node01f
+begin
+floater_rand(200,202);
+end
+
+// Node Node02f
+//
+// Notes:
+//
+// The PC has not accused Gabrielle.
+
+procedure Node02f
+begin
+floater_rand(230,232);
+end
+
+// Node General
+//
+// Notes:
+//
+// General floats
+
+procedure General
+begin
+floater_rand(260,262);
+end
+
+
+// Node Node01
+//
+// Notes:
+//
+// This node is no longer available after your first encounter with Gabrielle.
+
+procedure Node01
+begin
+Reply(320);
+BOption(321,Node02,4);
+NOption(322,Node02,-3);
+end
+
+// Node Node02
+//
+// Notes:
+//
+// This node is no longer available after your first encounter with Gabrielle.
+
+procedure Node02
+begin
+Reply(350);
+NOption(mstr(351)+dude_name+mstr(352),Node04,4);
+NOption(353,Node05,4);
+NOption(354,Node06,4);
+NOption(355,Node999,4);
+if(global_var(GVAR_ANGELA_DEAD) == 1) then
+NOption(356,Stupid4,-3);
+NOption(357,Stupid1,-3);
+NOption(358,Node999,-3);
+end
+
+// Node Node03
+//
+// Notes:
+//
+// 1) available if Angela's secret is revealed, and she isn't dead\
+
+procedure Node03
+begin
+Reply(380);
+if(global_var(GVAR_ANGELA_GABRIELLE) == 2 and global_var(GVAR_ANGELA_DEAD) == 0) then
+NOption(381,Node17,4);
+if(global_var(GVAR_ANGELA_DEAD) == 1) then
+BOption(382,Node21,4);
+NOption(383,Node04,4);
+NOption(353,Node05,4);
+NOption(354,Node06,4);
+NOption(384,Node999,-3);
+if(global_var(GVAR_ANGELA_DEAD) == 1) then
+NOption(356,Stupid4,-3);
+NOption(357,Stupid1,-3);
+NOption(385,Node999,-3);
+end
+
+// Node Questions
+//
+// Notes:
+//
+// 1) available if Angela's secret is revealed, and she isn't dead\
+
+procedure Questions
+begin
+Reply(410);
+if(global_var(GVAR_ANGELA_GABRIELLE) == 2 and global_var(GVAR_ANGELA_DEAD) == 0) then
+NOption(381,Node17,4);
+if(global_var(GVAR_ANGELA_DEAD) == 1) then
+BOption(382,Node21,4);
+NOption(383,Node04,4);
+NOption(353,Node05,4);
+NOption(354,Node06,4);
+NOption(384,Node999,4);
+end
+
+procedure Node04
+begin
+Reply(440);
+BOption(441,Node07,4);
+NOption(442,Questions,4);
+NOption(443,Node999,4);
+end
+
+procedure Node05
+begin
+Reply(470);
+NOption(471,Node08,4);
+NOption(472,Node09,4);
+NOption(473,Node10,4);
+NOption(474,Questions,4);
+end
+
+procedure Node06
+begin
+Reply(500);
+NOption(501,Node14,4);
+NOption(502,Node999,4);
+end
+
+procedure Node07
+begin
+Reply(530);
+NOption(531,Questions,4);
+NOption(532,Node999,4);
+end
+
+procedure Node08
+begin
+Reply(560);
+NOption(561,Node11,4);
+NOption(474,Questions,4);
+NOption(562,Node999,4);
+end
+
+procedure Node09
+begin
+Reply(590);
+NOption(591,Node12,4);
+end
+
+procedure Node10
+begin
+Reply(620);
+NOption(621,Questions,4);
+NOption(622,Node999,4);
+end
+
+procedure Node11
+begin
+Reply(650);
+NOption(651,Node13,4);
+NOption(652,Node999,4);
+end
+
+procedure Node12
+begin
+Reply(680);
+NOption(681,Questions,4);
+NOption(682,Node999,4);
+end
+
+procedure Node13
+begin
+Reply(710);
+NOption(711,Questions,4);
+NOption(712,Node999,4);
+end
+
+// Node Node14
+//
+// Notes:
+//
+// 1) available if Angela's secret has already been revealed
+
+procedure Node14
+begin
+Reply(740);
+NOption(741,Node20,4);
+GOption(742,Node15,4);
+NOption(743,Node03,4);
+NOption(744,Node999,4);
+end
+
+// Node Node15
+//
+// Notes:
+//
+
+procedure Node15
+begin
+Reply(770);
+GOption(771,Node16,4);
+NOption(772,Node03,4);
+NOption(773,Node999,4);
+end
+
+procedure Node16
+begin
+   set_global_var(GVAR_ANGELA_GABRIELLE, 1);
+if (dude_is_male) then Reply(800); else
+if (dude_is_female) then Reply(801);
+NOption(802,Node03,4);
+NOption(803,Node999,4);
+end
+
+procedure Node17
+begin
+Reply(830);
+NOption(831,Skill_Check_000_Speech,4);
+NOption(832,Skill_Check_001_Speech,4);
+if(global_var(GVAR_ANGELA_ROBOSLUT) == 1) then
+NOption(833,Node20,4);
+NOption(834,Questions,4);
+end
+
+// Node Node18
+//
+// Notes:
+//
+// If the PC succeeds a speech check, this node appears. As a result, the rumour does not spread.
+
+procedure Node18
+begin
+Reply(860);
+NOption(861,Node999,4);
+end
+
+// Node Node19
+//
+// Notes:
+//
+// If the PC fails a speech check, this node will appear. Once this is said, the rumour spreads.
+
+procedure Node19
+begin
+Reply(890);
+NOption(891,Node20,4);
+NOption(892,Node999,4);
+end
+
+procedure Node20
+begin
+Reply(920);
+NOption(921,Node999,4);
+NOption(922,Node999,4);
+end
+
+procedure Node21
+begin
+Reply(950);
+NOption(951,Node22,4);
+NOption(952,Node999,4);
+end
+
+procedure Node22
+begin
+   set_global_var(GVAR_TIPOFF_GABRIELLE, 1);
+Reply(980);
+NOption(981,Node999,4);
+NOption(982,Node999,4);
+end
+
+procedure Stupid1
+begin
+Reply(1010);
+NOption(1011,Stupid2,-3);
+NOption(1012,Node999,-3);
+end
+
+procedure Stupid2
+begin
+Reply(1040);
+NOption(1041,Stupid3,-3);
+NOption(1042,Node999,-3);
+end
+
+procedure Stupid3
+begin
+   if (global_var(GVAR_KNOW_WASTE_DISPOSAL) == 0) then
+      set_global_var(GVAR_KNOW_WASTE_DISPOSAL, 1);
+Reply(1070);
+NOption(1071,Node999,-3);
+NOption(1072,Node999,-3);
+end
+
+procedure Stupid4
+begin
+Reply(1100);
+BOption(1101,Stupid5,-3);
+NOption(1102,Node999,-3);
+end
+
+procedure Stupid5
+begin
+Reply(1130);
+NOption(1131,Node999,-3);
+NOption(1132,Node999,-3);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

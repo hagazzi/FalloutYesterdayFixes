@@ -1,0 +1,5 @@
+
+{100}{}{You moron! You buried us on the wrong side of the cave!}
+{101}{}{I'm sorry, I got confused. It was dark and the tunnels all looked the same.}
+{102}{}{Well, Chief-of-Ten specifically instructed us to move those eggs somewhere safe and far away before they hatch. You handle that while I search for an exit. And don't fuck up again!}
+{103}{}{'K}

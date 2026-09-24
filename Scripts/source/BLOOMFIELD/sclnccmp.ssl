@@ -1,0 +1,320 @@
+/*
+
+        Name:           Mission Control Launch Codes Workstation
+        Location:
+        Description:
+
+           Created: 14.12.2023. 20:05:58
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_SCLNCCMP
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure talk_p_proc;
+procedure use_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node_002;
+procedure Node_003;
+procedure Node_004;
+procedure Node_004a;
+procedure Node_005;
+procedure Node_006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node_011;
+
+procedure EnterLaunchCodes;
+procedure HackCodes;
+procedure HackLogin;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_LoggedIn               (8)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+
+procedure use_p_proc begin
+   if (source_obj == dude_obj) then begin
+      dialogue_system_enter;
+   end
+end
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+end
+
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       if (global_var(GVAR_QUEST_15_RESTORE_OC_POWER) == 2) then begin
+         if (local_var(LVAR_LoggedIn) == 1) then
+          call Node_005;
+          else
+           call Node_002;
+       end
+       else begin
+         call Node_003;
+       end
+
+       gSay_End;
+       end_dialogue;
+
+       if (Only_Once == 1) then begin
+         load_map("bomb001", 0);
+       end
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure HackLogin begin
+   if(skill_success(dude_obj, SKILL_SCIENCE, -99)) then begin
+      call Node_005;
+   end else begin
+      call Node007;
+   end
+end
+
+procedure HackCodes begin
+   if(skill_success(dude_obj, SKILL_SCIENCE, -99)) then begin
+      call EnterLaunchCodes;
+   end else begin
+      call Node007;
+   end
+end
+
+procedure EnterLaunchCodes begin
+   if (dude_item_count(PID_SPACE_SUIT) < 1) then begin
+      display_mstr(103);
+      call Node999;
+   end
+   else if (global_var(GVAR_DOCKING_CLAMP_CHIP) != QUEST_COMPLETED) then begin
+      display_mstr(104);
+      call Node999;
+   end
+   else if (
+      (global_var(GVAR_HERMES13_FLIGHT_DATA) == 2) and
+      (global_var(GVAR_HERMES13_REPAIR_BOTS) == 2) and
+      (global_var(GVAR_QUEST_15_HERMES13_FUEL) == 3) and
+      (global_var(GVAR_DOCKING_CLAMP_CHIP) == QUEST_COMPLETED) and
+      (global_var(GVAR_ACT) == 2)
+   ) then begin
+      set_global_var(GVAR_QUEST_15_HERMES_LAUNCH, 4);
+      set_global_var(GVAR_QUEST_FLY_TO_BOMB001, 2);
+      set_global_var(GVAR_ACT, 3);
+      give_xp(5000);
+      display_mstr(105);
+      Only_Once = 1;
+   end else begin
+      call Node010;
+   end
+
+end
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+procedure Node_002
+begin
+Reply(230);
+NOption(231,Node_004,1);
+NOption(232,Node999,1);
+end
+
+procedure Node_003
+begin
+Reply(260);
+NOption(261,Node999,1);
+end
+
+procedure Node_004
+begin
+Reply(290);
+if (global_var(GVAR_QUEST_GET_HXIII_LAUNCH_CODES) == 3) then
+NOption(291,Node_005,1);
+NOption(292,Node007,1);
+NOption(293,Node_011,1);
+if (global_var(GVAR_QUEST_GET_HXIII_LAUNCH_CODES) < 3) then
+NOption(294,HackLogin,1);
+NOption(295,Node999,1);
+end
+
+procedure Node_004a
+begin
+Reply(320);
+if (global_var(GVAR_QUEST_GET_HXIII_LAUNCH_CODES) == 3) then
+NOption(291,Node_005,1);
+NOption(321,Node007,1);
+NOption(293,Node_011,1);
+if (global_var(GVAR_QUEST_GET_HXIII_LAUNCH_CODES) < 3) then
+NOption(294,HackLogin,1);
+NOption(295,Node999,1);
+end
+
+procedure Node_005
+begin
+
+   set_local_var(LVAR_LoggedIn, 1);
+
+Reply(350);
+NOption(351,Node_006,1);
+if ((global_var(GVAR_QUEST_GET_HXIII_LAUNCH_CODES) == 3) and (global_var(GVAR_QUEST_15_HERMES_LAUNCH) < 4)) then
+NOption(352,EnterLaunchCodes,1);
+if ((global_var(GVAR_QUEST_GET_HXIII_LAUNCH_CODES) < 3) and (global_var(GVAR_QUEST_15_HERMES_LAUNCH) < 4)) then
+NOption(354,HackCodes,1);
+if (global_var(GVAR_ACT) == 1) then
+NOption(355,Node008,1);
+if (global_var(GVAR_ACT) == 2) then
+NOption(355,Node009,1);
+NOption(353,Node999,1);
+end
+
+procedure Node_006
+begin
+Reply(380);
+NOption(381,Node_005,1);
+end
+
+procedure Node007
+begin
+Reply(440);
+if (local_var(LVAR_LoggedIn) == 1) then
+NOption(381,Node_005,1);
+else
+NOption(381,Node_004a,1);
+end
+
+procedure Node008
+begin
+Reply(470);
+NOption(381,Node_005,1);
+end
+
+procedure Node009
+begin
+
+set_global_var(GVAR_QUEST_FLY_TO_BOMB001, 1);
+
+Reply(500);
+NOption(381,Node_005,1);
+end
+
+procedure Node010
+begin
+Reply(530);
+NOption(381,Node_005,1);
+end
+
+procedure Node_011
+begin
+Reply(410);
+NOption(381,Node_004a,1);
+end
+
+
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

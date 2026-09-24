@@ -1,0 +1,29 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Generic Elevator #2
+*/
+
+/* Include Files */
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_TBSVDELV
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure spatial_p_proc;
+
+procedure start begin
+end
+
+procedure spatial_p_proc begin
+   if(source_obj == dude_obj) then begin
+      // Unless we are allowed to access Service and Vehicle Depot Areas, we cannot travel using this elevator
+      if ((cur_map_index == MAP_TIBBETS_SECURITY_HUB) and (global_var(GVAR_KNOW_VEHICLE_DEPOT) == 1)) then
+         elevator(-1);
+   end
+end

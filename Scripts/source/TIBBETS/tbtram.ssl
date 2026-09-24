@@ -1,0 +1,36 @@
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+procedure start;
+procedure use_p_proc;
+procedure timed_event_p_proc;
+
+#define NAME                    SCRIPT_TBTRAM
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+    variable sfx;
+
+    fadeout(1);
+
+    if(cur_map_index == MAP_TIBBETS_MEDICAL_TREATMENT_AREA_TRAM_STATION) then
+        tile_set_center(16522);
+
+    sfx := play_sfall_sound("data\\sound\\SFX\\tram.wav", 0);
+    add_timer_event(self_obj, game_ticks(5), 1);
+end
+
+procedure timed_event_p_proc begin
+    variable map;
+
+    if(cur_map_index == MAP_TIBBETS_MEDICAL_TREATMENT_AREA_TRAM_STATION) then begin
+        map := "tbmedtr2";
+    end else if(cur_map_index == MAP_ASYLUM_TRAM_STATION) then begin
+        map := "tbmedtr1";
+    end
+
+    game_time_advance(ONE_GAME_MINUTE * 30);
+    load_map(map, 0);
+end

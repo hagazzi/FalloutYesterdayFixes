@@ -1,0 +1,23 @@
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_TBSHLITE
+
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+import variable broken_gen;
+
+procedure map_enter_p_proc begin
+   add_timer_event(self_obj, game_ticks(1), 1);
+end
+
+procedure timed_event_p_proc begin
+
+    if (broken_gen) then begin
+        destroy_object(self_obj);
+    end
+
+    add_timer_event(self_obj, game_ticks(1), 0);
+
+end

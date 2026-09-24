@@ -1,0 +1,15 @@
+# Grammar pass done
+
+{100}{}{You see a barfly.}
+{101}{}{You see someone savoring their drink.}
+{102}{}{You see an intoxicated individual.}
+
+{200}{}{Hey there, buddy. Any spare change to share? Not that I'm desperate or anything.}
+{201}{}{Can't you see I'm tryin' to enjoy my drink here?}
+{202}{}{I don't feel so great. Might've had a bit too much of Maurice's "holy" water.}
+{203}{}{Man, I need to find some work around here.}
+{204}{}{Mind passing the peanuts?}
+{205}{}{I'm not quite drunk enough yet...}
+{206}{}{Jaeger... jaeger...}
+{207}{}{*hic*}
+{208}{}{You're lookin' pretty hot!}

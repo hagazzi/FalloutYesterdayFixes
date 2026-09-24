@@ -1,0 +1,6 @@
+
+{100}{}{This suit of power armor needs to be unlocked.}
+{101}{}{There is nothing to repair. You need security codes to unlock the suit.}
+{102}{}{It took some time, but you manage to crack the polymorphic encryption technique used to lock down the suit.}
+{103}{}{You fail to crack the security codes.}
+{104}{}{You successfully unlock}

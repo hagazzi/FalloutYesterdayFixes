@@ -1,0 +1,54 @@
+// Fallout Yesterday Animated Grass Subsystem by PJ Hexer
+
+/* Include Files */
+#include "..\HEADERS\define.h"
+#include "..\HEADERS\command.h"
+
+procedure start;
+procedure animate_grass;
+
+procedure start begin
+   if (game_loaded) then begin
+      set_global_script_type(0);
+      set_global_script_repeat(120);
+   end
+
+   if (global_var(GVAR_ANIMATE_GRASS) == 1) then begin
+      call animate_grass;
+   end
+end
+
+procedure animate_grass begin
+   variable scenery, pid, script, total, cmi;
+   total = 60;
+   cmi = cur_map_index;
+
+   if ((cmi == MAP_BOS_CLIFF) or (cmi == MAP_CIRCLE_OF_STEEL)) then begin
+      total = 20;
+   end
+
+   foreach scenery in list_as_array(LIST_SCENERY) begin
+      pid = obj_pid(scenery);
+      if (
+         (pid == PID_WEED01) or
+         (pid == PID_WEED02) or
+         (pid == PID_WEED03) or
+         (pid == PID_WEED04) or
+         (pid == PID_WEED24) or
+         (pid == PID_WEED25) or
+         (pid == PID_WEED26)
+      ) then begin
+         if (obj_on_screen(scenery)) then begin
+            rm_timer_event(scenery);
+            // For performance reasons, let's animate about 60% of grass at once, and 20% on maps with lots of grass
+            if (random(1, 100) <= total) then begin
+               set_script(scenery, SCRIPT_ANIMWEED);
+            end
+         end
+         else begin
+            rm_timer_event(scenery);
+            remove_script(scenery);
+         end
+      end
+   end
+end

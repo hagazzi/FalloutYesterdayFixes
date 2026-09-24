@@ -1,0 +1,215 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\maxbunkr.h"
+
+#define NAME                    SCRIPT_MBCS
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+procedure use_p_proc;
+procedure animfrvr;
+procedure use_skill_on_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+variable CS1, CS2;
+
+#define LVAR_DudeTile (7)
+#define LVAR_hacked              (8)
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+    if(source_obj == dude_obj) then begin
+
+      if(map_var(MVAR_VIDEO_ACCESS) == 0) then begin
+         display_mstr(100);
+         return;
+      end
+
+      set_local_var(LVAR_DudeTile, dude_tile);
+      fadeout(1);
+      CS1 := create_object(16777522, 14056, dude_elevation);
+      CS2 := create_object(16777522, 24898, dude_elevation);
+      anim(CS1, ANIMATE_ROTATION, 5);
+      anim(CS2, ANIMATE_ROTATION, 1);
+      add_timer_event(self_obj, game_ticks(1), 2);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      add_timer_event(self_obj, game_ticks(7), 4);
+      add_timer_event(self_obj, game_ticks(9), 5);
+      add_timer_event(self_obj, game_ticks(12), 6);
+   end
+end
+
+procedure timed_event_p_proc begin
+    variable id;
+
+    if (fixed_param == 1) then begin
+        if (
+           (not(anim_busy(self_obj))) and
+           (not(combat_is_initialized)) and
+           (self_elevation == dude_elevation)
+           ) then begin
+              call animfrvr;
+        end
+        add_timer_event(self_obj, 1, 1);
+    end
+
+    if(fixed_param == 2) then begin
+        set_map_var(MVAR_KNOW_POISONER_VIDEO, 1);
+        id := load_shader("SimTek.fx");
+        set_global_var(GVAR_SHADER_ID, id);
+        activate_shader(id);
+        set_obj_visibility(dude_obj, 1);
+        move_to(dude_obj, 14055, dude_elevation);
+        tile_set_center(14055);
+
+        fadein(1);
+        game_ui_disable;
+
+        reg_anim_clear(CS1);
+        reg_anim_begin();
+        reg_anim_animate(CS1, ANIM_magic_hands_middle, -1);
+        reg_anim_end();
+    end
+    else if(fixed_param == 3) then begin
+      reg_anim_clear(CS1);
+      reg_anim_begin();
+      animate_move_obj_to_tile(CS1, 14067, ANIMATE_WALK);
+      reg_anim_end();
+    end
+    else if(fixed_param == 4) then begin
+        fadeout(1);
+        destroy_object(CS1);
+        move_to(dude_obj, 24897, dude_elevation);
+        tile_set_center(24897);
+        fadein(1);
+        reg_anim_clear(CS2);
+        reg_anim_begin();
+        reg_anim_animate(CS2, ANIM_magic_hands_middle, -1);
+        reg_anim_end();
+    end
+    else if(fixed_param == 5) then begin
+      reg_anim_clear(CS2);
+      reg_anim_begin();
+      animate_move_obj_to_tile(CS2, 20904, ANIMATE_WALK);
+      reg_anim_end();
+    end
+    else if(fixed_param == 6) then begin
+        fadeout(1);
+        destroy_object(CS2);
+        set_obj_visibility(dude_obj, 0);
+        move_to(dude_obj, local_var(LVAR_DudeTile), dude_elevation);
+        tile_set_center(local_var(LVAR_DudeTile));
+        deactivate_shader(global_var(GVAR_SHADER_ID));
+        fadein(1);
+        game_ui_enable;
+    end
+end
+
+procedure map_enter_p_proc begin
+   call animfrvr;
+   add_timer_event(self_obj, 1, 1);
+end
+
+procedure map_update_p_proc begin
+   if (
+      (not(combat_is_initialized)) and
+      (self_elevation == dude_elevation)
+   ) then
+   begin
+      call animfrvr;
+      floater_sfx(101);
+   end
+
+end
+
+procedure animfrvr begin
+   reg_anim_begin();
+   reg_anim_animate_forever(self_obj, ANIM_stand);
+   reg_anim_end();
+end
+
+procedure use_skill_on_p_proc begin
+
+   if(local_var(LVAR_hacked) == 1) then begin
+       return;
+   end
+
+   if (
+     (action_being_used == SKILL_REPAIR)) then begin
+
+      if(is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -75))) then begin
+         script_overrides;
+         fadeout(1);
+         game_time_advance(ONE_GAME_HOUR);
+         fadein(1);
+         display_mstr(102);
+         set_local_var(LVAR_hacked, 1);
+         give_xp(100);
+         set_map_var(MVAR_VIDEO_ACCESS, 1);
+      end else begin
+       fadeout(1);
+       game_time_advance(ONE_GAME_HOUR);
+       fadein(1);
+  end
+end
+
+if (
+   (action_being_used == SKILL_SCIENCE)) then begin
+
+    if(is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, -75))) then begin
+      script_overrides;
+      fadeout(1);
+      game_time_advance(ONE_GAME_HOUR * 2);
+      fadein(1);
+      display_mstr(103);
+      set_local_var(LVAR_hacked, 1);
+      give_xp(100);
+      set_map_var(MVAR_VIDEO_ACCESS, 1);
+   end else begin
+      fadeout(1);
+      game_time_advance(ONE_GAME_HOUR * 2);
+      fadein(1);
+   end
+end
+
+
+end

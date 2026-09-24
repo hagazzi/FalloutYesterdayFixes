@@ -1,0 +1,731 @@
+/*
+
+        Name:           Nora
+        Location:       Crossroads House
+        Description:    Nora will initiate dialogue when the player enters his room. He has three well-armed guards and carries a .223 Pistol. The player won't get far with him until Warren recommends you for the job; this happens when the Brahmin are cured, the well problem is solved and/or the slaver operation has been destroyed.
+
+           Created: 07/10/2020 20:28:51
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBNORA
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#define nest_destroyed          (not(tile_contains_obj_pid(23966, 0, 33556284)))
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Nora_unmet;
+procedure Nora_impatient;
+procedure Nora_stupid;
+procedure Nora_crossroadsno;
+procedure Nora_job;
+procedure Nora_job2;
+procedure Nora_job3;
+procedure Nora_job4;
+procedure Nora_job5;
+procedure Nora_radscorpions;
+procedure Nora_radscorpions2;
+procedure Nora_radscorpions3;
+procedure Nora_radscorpions4;
+procedure Nora_radscorpions5;
+procedure Nora_radscorpions6;
+procedure Nora_met;
+procedure Nora_townhall;
+procedure Nora_townhall1;
+procedure Nora_townhall1b;
+procedure Nora_townhall1c;
+procedure Nora_townhall1d;
+procedure Nora_townhall1e;
+procedure Nora_townhall2;
+procedure Nora_townhall2b;
+procedure Nora_townhall2c;
+procedure Nora_townhall2d;
+procedure Nora_townhall2e;
+procedure Nora_townhall3;
+procedure Nora_townhall3b;
+procedure Nora_townhall3c;
+procedure Nora_townhall3d;
+procedure Nora_townhall3e;
+procedure Nora_townhall4;
+procedure Nora_townhall5;
+procedure Nora_happy;
+procedure Nora_happy2;
+procedure Nora_history;
+procedure Nora_crossroadsyes;
+procedure Nora_history2;
+procedure Nora_family;
+procedure Nora_travels;
+procedure Nora_wife;
+procedure Nora_wife2;
+procedure Nora_lawrence;
+procedure Nora_warren;
+procedure Nora_deathclaw;
+procedure Nora_BW;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Pissed               (8)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   switch_team(self_obj,TEAM_TIBBETS_PRISONERS)
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+call new_plague_check(self_obj, LVAR_Herebefore);
+
+   // TODO Cafe
+   if (cur_map_index == MAP_TIBBETS_SERVICE_AND_VEHICLE_DEPOT_AREAS_CAFE) then begin
+      set_obj_visibility(self_obj, 1);
+   end
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude) and obj_is_visible_flag(self_obj)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if(local_var(LVAR_Pissed) == 1) then begin
+      floater_bad(200);
+      return;
+   end
+
+   if(global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS) == 1) then begin
+      if(nest_destroyed) then begin
+         call Nora_radscorpions5;
+      end else begin
+         floater_bad(200);
+      end
+         return;
+   end
+
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+
+
+if (local_var(LVAR_Herebefore)==0) then begin
+       call Nora_unmet;
+end else if (local_var(LVAR_Herebefore)==1) then begin
+
+      if(global_var(GVAR_QUEST_KILL_PATIENTS) == 20) then begin
+         call Nora_townhall5;
+      end else if(global_var(GVAR_QUEST_KILL_PATIENTS) == 100) then begin
+         call Nora_happy;
+      end else begin
+          call Nora_met;
+      end
+end
+       gSay_End;
+       end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+ inc_evil_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+
+
+if(global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS) == 1) then begin
+
+   fadeout(1);
+
+   switch_team(self_obj,TEAM_PLAYER)
+
+   move_to(self_obj, 23966, 0);
+   critter_attempt_placement(self_obj, 23966, 0);
+   move_to(dude_obj, 23966, 0);
+   critter_attempt_placement(dude_obj, 23966, 0);
+
+   fadein(1);
+
+end
+
+else if(global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS) == 499) then begin
+
+set_global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS, 500);
+
+   fadeout(1);
+   switch_team(self_obj,TEAM_TIBBETS_PRISONERS)
+
+   move_to(self_obj, 26749, 0);
+   critter_attempt_placement(self_obj, 26749, 0);
+
+   fadein(1);
+
+end
+
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+// Node Nora_start
+//
+// Notes:
+//
+// Nora will initiate dialogue when the player enters his room.
+
+
+procedure Nora_unmet
+begin
+Reply(230);
+BOption(231,Nora_impatient,4);
+if (has_skill(dude_obj,SKILL_CONVERSANT)>=50) then
+BOption(232,Nora_impatient,4);
+if(global_var(GVAR_ASYLUM_WORK) == 1) then
+NOption(mstr(233)+dude_name+mstr(234),Nora_job,4);
+if(not(nest_destroyed)) then
+NOption(235,Nora_radscorpions,4);
+BOption(236,Nora_stupid,-3);
+BOption(237,Node998,4);
+NOption(238,Node999,4);
+end
+
+procedure Nora_impatient
+begin
+Reply(260);
+if(global_var(GVAR_ASYLUM_WORK) == 1) then
+NOption(261,Nora_job,4);
+if(not(nest_destroyed)) then
+NOption(262,Nora_radscorpions,4);
+BOption(263,Nora_crossroadsno,4);
+NOption(264,Node999,4);
+BOption(265,Node998,4);
+end
+
+procedure Nora_stupid
+begin
+Reply(290);
+NOption(291,Node999,-3);
+BOption(292,Node998,-3);
+end
+
+procedure Nora_crossroadsno
+begin
+Reply(320);
+NOption(321,Node999,4);
+end
+
+procedure Nora_job
+begin
+Reply(350);
+NOption(351,Nora_job2,4);
+BOption(352,Nora_job3,4);
+NOption(353,Node999,4);
+end
+
+procedure Nora_job2
+begin
+Reply(380);
+NOption(381,Nora_job4,4);
+NOption(382,Nora_job5,4);
+NOption(383,Node999,4);
+NOption(384,Node999,4);
+end
+
+procedure Nora_job3
+begin
+Reply(410);
+NOption(411,Nora_job2,4);
+NOption(412,Node999,4);
+end
+
+procedure Nora_job4
+begin
+Reply(440);
+NOption(441,Node999,4);
+end
+
+procedure Nora_job5
+begin
+Reply(470);
+NOption(471,Nora_job4,4);
+NOption(472,Node999,4);
+end
+
+procedure Nora_radscorpions
+begin
+if (dude_is_male) then Reply(500); else
+if (dude_is_female) then Reply(501);
+if(nest_destroyed) then
+   GOption(502,Nora_radscorpions2,4);
+else
+   NOption(503,Nora_radscorpions3,4);
+end
+
+procedure Nora_radscorpions2
+begin
+   set_global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS, 1000);
+Reply(530);
+NOption(531,Node999,4);
+end
+
+procedure Nora_radscorpions3
+begin
+Reply(560);
+NOption(561,Node999,4);
+NOption(562,Nora_radscorpions4,4);
+end
+
+procedure Nora_radscorpions4
+begin
+Reply(590);
+   set_global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS, 1);
+
+NOption(591,Node999,4);
+end
+
+// Node Nora_radscorpions5
+//
+// Notes:
+//
+// This is following the battle with the slavers. Nora and his guards will go back to his room when the PC leaves the slaver map.
+
+procedure Nora_radscorpions5
+begin
+   set_global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS, 499);
+   give_xp(250);
+
+Reply(620);
+NOption(621,Node999,4);
+end
+
+procedure Nora_radscorpions6
+begin
+Reply(650);
+NOption(531,Node999,4);
+end
+
+procedure Nora_met
+begin
+Reply(680);
+if(global_var(GVAR_ASYLUM_WORK) == 1) then
+NOption(261,Nora_job,4);
+if(nest_destroyed) then
+NOption(681,Nora_radscorpions6,4);
+if(not(nest_destroyed)) then
+NOption(262,Nora_radscorpions,4);
+if(global_var(GVAR_TAZ_DEAD) == 1) then
+NOption(682,Nora_townhall,4);
+BOption(683,Nora_crossroadsno,4);
+NOption(684,Node999,4);
+end
+
+procedure Nora_townhall
+begin
+Reply(710);
+NOption(711,Nora_townhall1,4);
+NOption(712,Nora_townhall2,4);
+NOption(713,Nora_townhall3,4);
+NOption(714,Node999,4);
+BOption(715,Node998,4);
+end
+
+procedure Nora_townhall1
+begin
+Reply(740);
+NOption(741,Nora_townhall1b,4);
+NOption(742,Nora_townhall1c,4);
+end
+
+procedure Nora_townhall1b
+begin
+Reply(770);
+NOption(771,Nora_townhall1e,4);
+end
+
+procedure Nora_townhall1c
+begin
+Reply(800);
+NOption(801,Nora_townhall1d,4);
+end
+
+procedure Nora_townhall1d
+begin
+Reply(770);
+NOption(830,Nora_townhall4,4);
+end
+
+procedure Nora_townhall1e
+begin
+Reply(860);
+NOption(830,Nora_townhall4,4);
+end
+
+procedure Nora_townhall2
+begin
+Reply(890);
+NOption(891,Nora_townhall2b,4);
+NOption(892,Nora_townhall2c,4);
+end
+
+procedure Nora_townhall2b
+begin
+Reply(740);
+NOption(920,Nora_townhall2d,4);
+end
+
+procedure Nora_townhall2c
+begin
+Reply(800);
+NOption(950,Nora_townhall2e,4);
+end
+
+procedure Nora_townhall2d
+begin
+Reply(800);
+NOption(830,Nora_townhall4,4);
+end
+
+procedure Nora_townhall2e
+begin
+Reply(740);
+NOption(830,Nora_townhall4,4);
+end
+
+procedure Nora_townhall3
+begin
+Reply(800);
+NOption(950,Nora_townhall3b,4);
+NOption(1040,Nora_townhall3c,4);
+end
+
+procedure Nora_townhall3b
+begin
+Reply(740);
+NOption(1070,Nora_townhall3e,4);
+end
+
+procedure Nora_townhall3c
+begin
+Reply(770);
+NOption(1100,Nora_townhall3d,4);
+end
+
+procedure Nora_townhall3d
+begin
+Reply(740);
+NOption(830,Nora_townhall4,4);
+end
+
+procedure Nora_townhall3e
+begin
+Reply(770);
+NOption(830,Nora_townhall4,4);
+end
+
+procedure Nora_townhall4
+begin
+Reply(1190);
+NOption(1191,Node999,4);
+NOption(1192,Nora_townhall5,4);
+end
+
+// Node Nora_townhall5
+//
+// Notes:
+//
+// After the meeting (assuming success)...
+
+procedure Nora_townhall5
+begin
+
+set_global_var(GVAR_QUEST_KILL_PATIENTS, 100);
+give_xp(500);
+dec_general_rep(50);
+
+Reply(mstr(1220)+dude_name+mstr(1221));
+NOption(1222,Nora_BW,4);
+end
+
+procedure Nora_happy
+begin
+Reply(mstr(1250)+dude_name+mstr(1251));
+NOption(1252,Nora_happy2,4);
+NOption(1253,Nora_history,4);
+NOption(1254,Nora_crossroadsyes,4);
+NOption(1255,Node999,4);
+end
+
+procedure Nora_happy2
+begin
+Reply(1280);
+NOption(1281,Nora_history,4);
+NOption(1282,Nora_crossroadsyes,4);
+NOption(1283,Node999,4);
+end
+
+procedure Nora_history
+begin
+Reply(1310);
+NOption(1311,Nora_crossroadsyes,4);
+NOption(1312,Nora_history2,4);
+NOption(1313,Nora_family,4);
+NOption(1314,Nora_travels,4);
+end
+
+procedure Nora_crossroadsyes
+begin
+Reply(1340);
+NOption(1341,Node999,4);
+NOption(1342,Nora_family,4);
+NOption(1343,Nora_travels,4);
+end
+
+procedure Nora_history2
+begin
+Reply(1370);
+NOption(1371,Nora_deathclaw,4);
+NOption(1372,Nora_wife,4);
+NOption(1373,Nora_crossroadsyes,4);
+NOption(1374,Node999,4);
+end
+
+procedure Nora_family
+begin
+Reply(1400);
+NOption(1401,Nora_wife,4);
+NOption(1402,Nora_lawrence,4);
+NOption(1403,Nora_warren,4);
+NOption(1404,Node999,4);
+end
+
+procedure Nora_travels
+begin
+Reply(1430);
+NOption(1342,Nora_family,4);
+NOption(263,Nora_crossroadsyes,4);
+NOption(1341,Node999,4);
+end
+
+procedure Nora_wife
+begin
+Reply(1460);
+NOption(1461,Nora_wife2,4);
+NOption(1462,Nora_lawrence,4);
+NOption(1463,Nora_warren,4);
+NOption(1464,Node999,4);
+end
+
+procedure Nora_wife2
+begin
+if (dude_is_male) then Reply(1490); else
+if (dude_is_female) then Reply(1491);
+NOption(1492,Nora_lawrence,4);
+NOption(1493,Nora_warren,4);
+NOption(1494,Node999,4);
+end
+
+procedure Nora_lawrence
+begin
+Reply(1520);
+NOption(1522,Nora_warren,4);
+NOption(1521,Node999,4);
+end
+
+procedure Nora_warren
+begin
+Reply(1550);
+NOption(1552,Nora_lawrence,4);
+NOption(1551,Node999,4);
+end
+
+procedure Nora_deathclaw
+begin
+Reply(1580);
+NOption(1342,Nora_family,4);
+NOption(263,Nora_crossroadsyes,4);
+NOption(1581,Node999,4);
+end
+
+
+procedure Nora_BW
+begin
+Reply(1640);
+NOption(1641,Node999,4);
+end
+
+
+//xxxxxxxxxxxxxxxxxxxx

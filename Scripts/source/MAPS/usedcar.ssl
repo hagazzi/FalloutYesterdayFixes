@@ -1,0 +1,99 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\vehicles.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+
+/* Defines */
+#define NAME                  SCRIPT_USEDCAR
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+export variable SE_Bob_Ptr;
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if (not(is_loading_game)) then begin
+        override_map_start(107, 118, 0, 5);
+   end
+
+   if (map_first_run) then begin
+      variable tile, elev;
+      tile = 24106;
+      elev = 0;
+      display_mstr(100);
+
+      if (not (tile_contains_pid_obj(tile, elev, PID_BUSTED_HIGHWAYMAN) != 0)) then begin
+         Scenery_Creation:=create_object_sid(PID_BUSTED_HIGHWAYMAN, tile, elev, SCRIPT_COCAR);
+         Scenery_Creation_Hex:=tile;
+         Blocking_Cycle(2,1,elev)
+         Blocking_Cycle(1,1,elev)
+         Blocking_Cycle(0,3,elev)
+         Blocking_Cycle(1,1,elev)
+         Blocking_Cycle(0,4,elev)
+         Blocking_Cycle(5,1,elev)
+         Blocking_Cycle(4,1,elev)
+         Blocking_Cycle(5,1,elev)
+         Blocking_Cycle(3,3,elev)
+         Blocking_Cycle(4,1,elev)
+         Blocking_Cycle(3,4,elev)
+     end
+   end
+
+   set_global_var(GVAR_SPECIAL_ENCOUNTER_USED_CARS, 1);
+
+   call Check_Create_Vehicle;
+
+   fadein(1);
+   Lighting;
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_WASTELAND), 1);
+end
+
+procedure map_update_p_proc begin
+   Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

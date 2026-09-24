@@ -1,0 +1,35 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Generic Elevator
+        Location: Various Places (Sierra Base, etc.)
+        Description:
+
+        Log:
+
+            Created: April 1, 1998
+
+            Updated:
+*/
+
+/* Include Files */
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_ZSELEV01
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure spatial_p_proc;
+
+procedure start begin
+end
+
+procedure spatial_p_proc begin
+   if (source_obj == dude_obj) then begin
+      elevator(-1);
+   end
+end

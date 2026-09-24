@@ -1,0 +1,15 @@
+#include "..\headers\define.h"
+
+import variable scouted_fools;
+
+procedure start;
+
+procedure start begin
+   if (script_action == spatial_proc) then begin
+      if (scouted_fools == 1) then begin
+         scouted_fools := 2;
+         set_global_var(GVAR_FSCOUT_1, 2);
+         display_msg(message_str(SCRIPT_SCRPHEAP, 405));
+      end
+   end
+end

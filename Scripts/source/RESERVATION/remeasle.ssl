@@ -1,0 +1,1633 @@
+/*
+
+        Name:           Measles
+        Location:       Wasteland Explorers' tent, Crossroads.
+        Description:    If the PC has completed the bones quest, or, if the PC is female and has slept with Ferdinand, the PC can convince the Mexican Explorer to join him/her as a follower.
+
+           Created: 14/02/2021 06:34:28
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_REMEASLE
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Ferd_Hurt;
+procedure Ferd_Bad_Hurt;
+procedure Ferd_Wait;
+procedure Ferd_Place_Hate;
+procedure Ferd_Move;
+procedure Ferd_Crossroads;
+procedure Ferd_Rusty;
+procedure Ferd_0;
+procedure Ferd_1a_1;
+procedure Ferd_1a_2a;
+procedure Ferd_1a_2b_1;
+procedure Ferd_1a_2b_2;
+procedure Ferd_1a_2b_2B_1;
+procedure Ferd_1a_2b_2B_2a;
+procedure Ferd_1a_2b_2B_2b_1;
+procedure Ferd_1a_2b_2B_2b_2;
+procedure Ferd_1a_2b_2B_2b_9;
+procedure Ferd_1b;
+procedure Ferd_2_1;
+procedure Ferd_2_2a_1;
+procedure Ferd_2_2a_2;
+procedure Ferd_2_2a_3a_1;
+procedure Ferd_2_2a_3a_2;
+procedure Ferd_2_2a_3a_2B_1;
+procedure Ferd_2_2a_3a_2B_2;
+procedure Ferd_2_2a_3b_1;
+procedure Ferd_2_2a_3b_2;
+procedure Ferd_2_2a_3b_3;
+procedure Ferd_2_2a_3b_4;
+procedure Ferd_2_2a_3c_1;
+procedure Ferd_2_2a_3c_2;
+procedure Ferd_2_2b_1;
+procedure Ferd_2_2b_2;
+procedure Ferd_3_1a;
+procedure Ferd_3_1b_1;
+procedure Ferd_3_1b_2;
+procedure Ferd_3_2a_1;
+procedure Ferd_3_2a_2;
+procedure Ferd_3_2a_3a_1;
+procedure Ferd_3_2a_3a_2;
+procedure Ferd_3_2a_3b_1;
+procedure Ferd_3_2a_3b_2;
+procedure Ferd_3_2b_1;
+procedure Ferd_3_2b_2;
+procedure Ferd_3_2b_3;
+procedure Ferd_4_1;
+procedure Ferd_4_2a_1;
+procedure Ferd_4_2a_2;
+procedure Ferd_4_2a_3;
+procedure Ferd_4_2b_1;
+procedure Ferd_4_2b_2;
+procedure Ferd_4_2b_3a;
+procedure Ferd_4_2b_3b;
+procedure Ferd_4_2F_1;
+procedure Ferd_4_2F_2;
+procedure Ferd_4_2F_3;
+procedure Ferd_4_2F_4a_1;
+procedure Ferd_4_2F_4a_2;
+procedure Ferd_4_2F_4b;
+procedure Ferd_5_1;
+procedure Ferd_5_2;
+procedure Ferd_5_3;
+procedure Ferd_5_4_1;
+procedure Ferd_5_4_2;
+procedure Ferd_5_5;
+procedure Ferd_5_6;
+procedure Ferd_5_7a_1;
+procedure Ferd_5_7a_2;
+procedure Ferd_5_7a_3;
+procedure Ferd_5_7a_4;
+procedure Ferd_5_7a_5a;
+procedure Ferd_5_7a_5b;
+procedure Ferd_5_7b_01;
+procedure Ferd_5_7b_02;
+procedure Ferd_5_7b_03;
+procedure Ferd_5_7b_04;
+procedure Ferd_5_7b_05;
+procedure Ferd_5_7b_06;
+procedure Ferd_5_7b_07;
+procedure Ferd_5_7b_08;
+procedure Ferd_5_7b_09;
+procedure Ferd_5_7b_10;
+procedure Ferd_5_7b_11;
+procedure Ferd_5_7b_12;
+procedure Ferd_5_7b_13;
+procedure Ferd_5_7b_8;
+procedure Ferd_5_7b_9_1;
+procedure Ferd_5_7b_9_2;
+procedure Ferd_5_7b_9_3;
+procedure Ferd_5_7b_9_4;
+procedure Ferd_5_7b_9_5;
+procedure Ferd_5_7b_9_6;
+procedure Ferd_5_7c_1a;
+procedure Ferd_5_7c_1b;
+procedure Ferd_5_7c_2;
+procedure Ferd_5_7c_3a_1;
+procedure Ferd_5_7c_3a_2;
+procedure Ferd_5_7c_3b_1;
+procedure Ferd_5_7c_3b_2;
+procedure Ferd_5_7c_3b_3;
+procedure Ferd_5_7c_3b_4;
+procedure Ferd_5_7c_3b_5;
+procedure Ferd_6_01;
+procedure Ferd_6_02;
+procedure Ferd_6_03a;
+procedure Ferd_6_03b;
+procedure Ferd_6_04;
+procedure Ferd_6_05;
+procedure Ferd_6_06;
+procedure Ferd_6_07;
+procedure Ferd_6_08;
+procedure Ferd_6_09a;
+procedure Ferd_6_09b_1;
+procedure Ferd_6_09b_2a;
+procedure Ferd_6_09b_2b;
+procedure Ferd_6_10a_1;
+procedure Ferd_6_10a_2a;
+procedure Ferd_6_10a_2b;
+procedure Ferd_9;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+variable Ferd_Date_Arrange := 0;
+variable Ferd_Date_Blown := 0;
+variable Ferd_Date_Sex := 0;
+variable Ferd_Dates := 0;
+variable Ferd_Join := 0;
+variable Ferd_Join_Ask := 0;
+variable Ferd_Rude := 0;
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+if (local_var(LVAR_Herebefore)==0) then begin
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       call Ferd_1a_1;
+       gSay_End;
+       end_dialogue;
+end else if (local_var(LVAR_Herebefore)==1) then begin
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       call Ferd_1b;
+       gSay_End;
+       end_dialogue;
+end
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+/* inc_evil_critter */
+/* inc_neutral_critter */
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+// Node Ferd_Hurt
+//
+// Notes:
+//
+// Ferdinand floats these strings if he is mildly hurt.
+
+procedure Ferd_Hurt
+begin
+floater_rand(200,203);
+end
+
+// Node Ferd_Bad_Hurt
+//
+// Notes:
+//
+// Ferdinand floats these strings if he is seriously hurt.
+
+procedure Ferd_Bad_Hurt
+begin
+floater_rand(230,233);
+end
+
+// Node Ferd_Wait
+//
+// Notes:
+//
+// Ferdinand floats these strings if he has been part of the PC's group, but has been asked to wait behind.
+
+procedure Ferd_Wait
+begin
+floater_rand(260,263);
+end
+
+// Node Ferd_Place_Hate
+//
+// Notes:
+//
+// Ferdinand floats these strings if he doesn't like the area the party is in.
+
+procedure Ferd_Place_Hate
+begin
+floater_rand(290,295);
+end
+
+// Node Ferd_Move
+//
+// Notes:
+//
+// Ferdinand floats these strings if the PC tells him to get out of the way.
+
+procedure Ferd_Move
+begin
+floater_rand(320,325);
+end
+
+// Node Ferd_Crossroads
+//
+// Notes:
+//
+// Ferdinand floats these strings if the party is in Crossroads.
+
+procedure Ferd_Crossroads
+begin
+floater_rand(350,351);
+end
+
+// Node Ferd_Rusty
+//
+// Notes:
+//
+// Ferdinand floats these strings if the party is in Rusty Springs.
+
+procedure Ferd_Rusty
+begin
+floater_rand(380,380);
+end
+
+procedure Ferd_0
+begin
+Reply(410);
+NOption(411,Ferd_1a_1,1);
+NOption(412,Ferd_1b,1);
+if (dude_is_female) then
+NOption(413,Node999,1);
+NOption(414,Node999,1);
+end
+
+procedure Ferd_1a_1
+begin
+if (dude_is_male) then Reply(440); else
+if (dude_is_female) then Reply(441);
+NOption(442,Ferd_1a_2a,4);
+NOption(443,Ferd_1a_2b_1,4);
+NOption(444,Node999,4);
+end
+
+procedure Ferd_1a_2a
+begin
+Reply(470);
+NOption(471,Ferd_3_1a,4);
+NOption(472,Ferd_3_1b_1,4);
+NOption(443,Ferd_1a_2b_1,4);
+NOption(473,Node999,4);
+end
+
+procedure Ferd_1a_2b_1
+begin
+Reply(500);
+NOption(501,Ferd_1a_2b_2,4);
+// NOTE: If the variable Ferd_Rude>3 then enter combat instead.
+NOption(502,Ferd_1a_2b_2B_1,4);
+NOption(503,Ferd_1a_2a,4);
+NOption(504,Node999,4);
+end
+
+procedure Ferd_1a_2b_2
+begin
+if (dude_is_male) then Reply(530); else
+if (dude_is_female) then Reply(531);
+// NOTE: Note mild intelligence check.
+if (get_critter_stat(dude_obj,STAT_iq)>=6) then
+NOption(532,Ferd_2_2a_1,6);
+NOption(533,Ferd_2_2b_1,4);
+NOption(502,Ferd_1a_2b_2B_1,4);
+NOption(534,Ferd_1a_2a,4);
+NOption(504,Node999,4);
+end
+
+// Node Ferd_1a_2b_2B_1
+//
+// Notes:
+//
+// Increment the variable Ferd_Rude by 1.
+
+procedure Ferd_1a_2b_2B_1
+begin
+Reply(560);
+// NOTE: If the variable Ferd_Rude>3 then enter combat instead.
+NOption(561,Ferd_1a_2b_2B_2b_1,4);
+NOption(562,Ferd_1a_2b_2B_2a,4);
+NOption(563,Ferd_1a_2a,4);
+NOption(564,Node999,4);
+end
+
+procedure Ferd_1a_2b_2B_2a
+begin
+Reply(590);
+// NOTE: If the variable Ferd_Rude>3 then enter combat instead.
+NOption(591,Ferd_1a_2b_2B_2b_1,4);
+// NOTE: Note mild intelligence check.
+if (get_critter_stat(dude_obj,STAT_iq)>=6) then
+NOption(532,Ferd_2_2a_1,6);
+NOption(533,Ferd_2_2b_1,4);
+NOption(534,Ferd_1a_2a,4);
+NOption(564,Node999,4);
+end
+
+// Node Ferd_1a_2b_2B_2b_1
+//
+// Notes:
+//
+// Increment the variable Ferd_Rude by 1.
+
+procedure Ferd_1a_2b_2B_2b_1
+begin
+if (dude_is_male) then Reply(620); else
+if (dude_is_female) then Reply(621);
+// NOTE: If the variable Ferd_Rude>3 then enter combat instead.
+NOption(622,Ferd_1a_2b_2B_2b_2,4);
+NOption(562,Ferd_1a_2b_2B_2a,4);
+NOption(623,Ferd_1a_2b_2B_2b_9,4);
+NOption(564,Node999,4);
+end
+
+// Node Ferd_1a_2b_2B_2b_2
+//
+// Notes:
+//
+// Increment the variable Ferd_Rude by 1.
+
+procedure Ferd_1a_2b_2B_2b_2
+begin
+if (dude_is_male) then Reply(650); else
+if (dude_is_female) then Reply(651);
+NOption(623,Ferd_1a_2b_2B_2b_9,4);
+BOption(652,Node998,4);
+NOption(564,Node999,4);
+end
+
+procedure Ferd_1a_2b_2B_2b_9
+begin
+Reply(680);
+NOption(472,Ferd_3_1b_1,4);
+NOption(471,Ferd_3_1a,4);
+NOption(681,Ferd_2_1,4);
+NOption(682,Node999,4);
+end
+
+procedure Ferd_1b
+begin
+if (dude_is_male) then Reply(710); else
+if (dude_is_female) then Reply(711);
+// NOTE: This node only appears if the variable Ferd_Join_Ask>0.
+NOption(712,Ferd_4_1,4);
+NOption(472,Ferd_3_1b_1,4);
+NOption(471,Ferd_3_1a,4);
+NOption(681,Ferd_2_1,4);
+NOption(713,Node999,4);
+end
+
+// Node Ferd_2_1
+//
+// Notes:
+//
+// The Ferd_2_* path is where the PC can find out about Ferdinand's roots in Mexico.
+
+procedure Ferd_2_1
+begin
+if (dude_is_male) then Reply(740); else
+if (dude_is_female) then Reply(741);
+// NOTE: Note mild intelligence check.
+if (get_critter_stat(dude_obj,STAT_iq)>=6) then
+NOption(532,Ferd_2_2a_1,6);
+NOption(533,Ferd_2_2b_1,4);
+NOption(742,Ferd_1a_2b_2B_2b_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(504,Node999,4);
+end
+
+procedure Ferd_2_2a_1
+begin
+Reply(770);
+NOption(771,Ferd_2_2a_2,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+procedure Ferd_2_2a_2
+begin
+Reply(800);
+NOption(801,Ferd_2_2a_3a_1,4);
+NOption(802,Ferd_2_2a_3b_1,4);
+NOption(803,Ferd_2_2a_3c_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+procedure Ferd_2_2a_3a_1
+begin
+Reply(830);
+NOption(831,Ferd_2_2a_3a_2,4);
+NOption(802,Ferd_2_2a_3b_1,4);
+NOption(803,Ferd_2_2a_3c_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+procedure Ferd_2_2a_3a_2
+begin
+Reply(860);
+NOption(861,Ferd_2_2a_3b_2,4);
+NOption(862,Ferd_2_2a_3a_2B_1,4);
+NOption(802,Ferd_2_2a_3b_1,4);
+NOption(803,Ferd_2_2a_3c_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+procedure Ferd_2_2a_3a_2B_1
+begin
+Reply(890);
+// NOTE: If the variable Ferd_Rude>3 then enter combat instead.
+NOption(891,Ferd_2_2a_3a_2B_2,4);
+NOption(861,Ferd_2_2a_3b_2,4);
+NOption(802,Ferd_2_2a_3b_1,4);
+NOption(803,Ferd_2_2a_3c_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+// Node Ferd_2_2a_3a_2B_2
+//
+// Notes:
+//
+// Increment the variable Ferd_Rude by 1.
+
+procedure Ferd_2_2a_3a_2B_2
+begin
+Reply(920);
+// NOTE: If the variable Ferd_Rude>3 then enter combat instead.
+NOption(921,Ferd_1a_2b_2B_2b_2,4);
+NOption(861,Ferd_2_2a_3b_2,4);
+NOption(802,Ferd_2_2a_3b_1,4);
+NOption(803,Ferd_2_2a_3c_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+procedure Ferd_2_2a_3b_1
+begin
+Reply(950);
+NOption(861,Ferd_2_2a_3b_2,4);
+NOption(801,Ferd_2_2a_3a_1,4);
+NOption(803,Ferd_2_2a_3c_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+procedure Ferd_2_2a_3b_2
+begin
+Reply(980);
+NOption(981,Ferd_2_2a_3b_3,4);
+end
+
+procedure Ferd_2_2a_3b_3
+begin
+Reply(1010);
+NOption(1011,Ferd_2_2a_3b_4,4);
+NOption(801,Ferd_2_2a_3a_1,4);
+NOption(803,Ferd_2_2a_3c_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+procedure Ferd_2_2a_3b_4
+begin
+Reply(1040);
+NOption(801,Ferd_2_2a_3a_1,4);
+NOption(803,Ferd_2_2a_3c_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+procedure Ferd_2_2a_3c_1
+begin
+Reply(1070);
+NOption(1071,Ferd_2_2a_3c_2,4);
+NOption(801,Ferd_2_2a_3a_1,4);
+NOption(802,Ferd_2_2a_3b_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+procedure Ferd_2_2a_3c_2
+begin
+Reply(1100);
+NOption(801,Ferd_2_2a_3a_1,4);
+NOption(802,Ferd_2_2a_3b_1,4);
+NOption(743,Ferd_3_1b_1,4);
+NOption(772,Node999,4);
+end
+
+procedure Ferd_2_2b_1
+begin
+if (dude_is_male) then Reply(1130); else
+if (dude_is_female) then Reply(1131);
+NOption(1132,Ferd_2_2b_2,4);
+NOption(534,Ferd_3_1b_1,4);
+// NOTE: If the variable Ferd_Rude>3 then enter combat instead.
+NOption(1133,Ferd_1a_2b_2B_2b_1,4);
+NOption(504,Node999,4);
+end
+
+procedure Ferd_2_2b_2
+begin
+if (dude_is_male) then Reply(1160); else
+if (dude_is_female) then Reply(1161);
+NOption(1162,Ferd_2_2a_1,4);
+NOption(534,Ferd_3_1b_1,4);
+NOption(504,Node999,4);
+end
+
+// Node Ferd_3_1a
+//
+// Notes:
+//
+// The Ferd_3_* path is where the PC can find out about Ferdinand's role in the Explorers.
+
+procedure Ferd_3_1a
+begin
+Reply(1190);
+NOption(1191,Ferd_3_2b_1,4);
+NOption(472,Ferd_3_1b_1,4);
+NOption(1192,Node999,4);
+end
+
+// Node Ferd_3_1b_1
+//
+// Notes:
+//
+// The Ferd_3_* path is where the PC can find out about Ferdinand's role in the Explorers.
+
+procedure Ferd_3_1b_1
+begin
+Reply(1220);
+NOption(1221,Ferd_3_2a_3a_1,4);
+NOption(1222,Ferd_3_2a_1,4);
+NOption(1223,Ferd_3_1b_2,4);
+NOption(1224,Ferd_9,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_3_1b_2
+begin
+if (dude_is_male) then Reply(1250); else
+if (dude_is_female) then Reply(1251);
+NOption(1222,Ferd_3_2a_1,4);
+NOption(1252,Ferd_3_2b_1,4);
+NOption(1224,Ferd_9,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_3_2a_1
+begin
+Reply(1280);
+NOption(981,Ferd_3_2a_2,4);
+end
+
+procedure Ferd_3_2a_2
+begin
+Reply(1310);
+NOption(1221,Ferd_3_2a_3a_1,4);
+NOption(1311,Ferd_3_2a_3b_1,4);
+NOption(1223,Ferd_3_1b_2,4);
+NOption(1224,Ferd_9,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_3_2a_3a_1
+begin
+Reply(1340);
+NOption(1341,Ferd_3_2a_3a_2,4);
+NOption(1311,Ferd_3_2a_3b_1,4);
+NOption(1342,Ferd_3_2a_2,4);
+NOption(1224,Ferd_9,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_3_2a_3a_2
+begin
+Reply(1370);
+NOption(1311,Ferd_3_2a_3b_1,4);
+NOption(1342,Ferd_3_2a_2,4);
+NOption(1224,Ferd_9,4);
+NOption(1371,Node999,4);
+end
+
+procedure Ferd_3_2a_3b_1
+begin
+if (dude_is_male) then Reply(1400); else
+if (dude_is_female) then Reply(1401);
+if (dude_is_female) then
+NOption(1402,Ferd_3_2a_3b_2,4);
+if (dude_is_male) then
+NOption(1403,Ferd_3_2a_3b_2,4);
+NOption(1221,Ferd_3_2a_3a_1,4);
+NOption(1404,Ferd_3_2a_2,4);
+NOption(1224,Ferd_9,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_3_2a_3b_2
+begin
+Reply(1430);
+NOption(1221,Ferd_3_2a_3a_1,4);
+NOption(1404,Ferd_3_2a_2,4);
+NOption(1224,Ferd_9,4);
+NOption(1431,Node999,4);
+end
+
+procedure Ferd_3_2b_1
+begin
+Reply(1460);
+NOption(981,Ferd_3_2b_2,4);
+end
+
+procedure Ferd_3_2b_2
+begin
+Reply(1490);
+NOption(1491,Ferd_3_2b_3,4);
+NOption(472,Ferd_3_1b_1,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_3_2b_3
+begin
+Reply(1520);
+NOption(1521,Ferd_4_1,4);
+NOption(1224,Ferd_9,4);
+NOption(1192,Node999,4);
+end
+
+// Node Ferd_4_1
+//
+// Notes:
+//
+// Increment the variable Ferd_Join_Ask by 1. The Ferd_4_* path is where the PC tries to convince Ferdinand to join him.
+
+procedure Ferd_4_1
+begin
+if (dude_is_male) then Reply(1550); else
+if (dude_is_female) then Reply(1551);
+// NOTE: Version for the male PC. If the variable Ferd_Join>0, go to Ferd_4_2b_1 instead.
+if (dude_is_male) then
+NOption(1552,Ferd_4_2a_1,4);
+// NOTE: Version for the female PC.  IF the variable Ferd_Join>0, go to Ferd_4_2b_1 instead. IF the PC's STR>4 AND IF the PC's END>4 AND IF the PC's CHR>5 go to Ferd_4_2F_1 instead.
+if (dude_is_female) then
+NOption(1552,Ferd_4_2a_1,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_4_2a_1
+begin
+if (dude_is_male) then Reply(1580); else
+if (dude_is_female) then Reply(1581);
+NOption(1582,Ferd_4_2a_2,4);
+NOption(1583,Ferd_9,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_4_2a_2
+begin
+Reply(1610);
+NOption(1611,Ferd_4_2a_3,4);
+NOption(1612,Ferd_9,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_4_2a_3
+begin
+Reply(1640);
+NOption(1641,Ferd_3_2a_3a_2,4);
+NOption(1642,Ferd_3_2a_3b_2,4);
+NOption(1583,Ferd_9,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_4_2b_1
+begin
+Reply(1670);
+NOption(981,Ferd_4_2b_2,4);
+end
+
+procedure Ferd_4_2b_2
+begin
+Reply(1700);
+NOption(1701,Ferd_4_2b_3a,4);
+NOption(1702,Ferd_4_2b_3b,4);
+NOption(1192,Node999,4);
+end
+
+procedure Ferd_4_2b_3a
+begin
+if (dude_is_male) then Reply(1730); else
+if (dude_is_female) then Reply(1731);
+NOption(1732,Node999,4);
+NOption(1733,Node999,4);
+end
+
+// Node Ferd_4_2b_3b
+//
+// Notes:
+//
+// Treat Ferdinand as having joined the PC's group, but having had been left to wait behind by the PC.
+
+procedure Ferd_4_2b_3b
+begin
+Reply(1760);
+NOption(1761,Node999,4);
+end
+
+// Node Ferd_4_2F_1
+//
+// Notes:
+//
+// The Ferd_4_2F_* path is where Ferdinand asks the female to go on a date for the first time.
+
+procedure Ferd_4_2F_1
+begin
+Reply(1790);
+NOption(981,Ferd_4_2F_2,4);
+NOption(1791,Ferd_9,4);
+NOption(1792,Node999,4);
+end
+
+procedure Ferd_4_2F_2
+begin
+Reply(1820);
+NOption(1821,Ferd_4_2F_3,4);
+NOption(1822,Ferd_9,4);
+NOption(1823,Node999,4);
+end
+
+procedure Ferd_4_2F_3
+begin
+Reply(1850);
+NOption(1851,Ferd_4_2F_4a_1,4);
+NOption(1852,Ferd_4_2F_4b,4);
+NOption(1822,Ferd_9,4);
+NOption(1823,Node999,4);
+end
+
+procedure Ferd_4_2F_4a_1
+begin
+Reply(1880);
+NOption(1881,Ferd_4_2F_4a_2,4);
+NOption(1822,Ferd_9,4);
+NOption(1823,Node999,4);
+end
+
+procedure Ferd_4_2F_4a_2
+begin
+Reply(1910);
+NOption(1911,Ferd_9,4);
+NOption(473,Node999,4);
+end
+
+procedure Ferd_4_2F_4b
+begin
+Reply(1940);
+NOption(1941,Ferd_4_2F_4a_1,4);
+NOption(1822,Ferd_9,4);
+NOption(1823,Node999,4);
+end
+
+// Node Ferd_5_1
+//
+// Notes:
+//
+// The Ferd_5_* path is the first date between Ferdinand and the female PC in Sara's place. Naturally, a script will need to be written where Ferdinand walks from the Wasteland Explorers' tent to Sara's Place (maybe slightly early, say 8:50 in the evening) in order for this to work. He should walk back to the Wasteland Explorers' tent an hour or so later, if the PC does not meet up with him.
+
+procedure Ferd_5_1
+begin
+Reply(1970);
+NOption(1971,Ferd_5_2,4);
+NOption(1972,Node999,4);
+end
+
+procedure Ferd_5_2
+begin
+Reply(2000);
+NOption(2001,Ferd_5_3,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+// Node Ferd_5_3
+//
+// Notes:
+//
+// Add a flower to the PC's inventory.
+
+procedure Ferd_5_3
+begin
+Reply(2030);
+NOption(mstr(2031)+dude_name+mstr(2032),Ferd_5_4_1,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_4_1
+begin
+Reply(dude_name+mstr(2060));
+NOption(2061,Ferd_5_5,4);
+NOption(mstr(2062)+dude_name+mstr(2063),Ferd_5_4_2,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_4_2
+begin
+Reply(mstr(2090)+dude_name+mstr(2091));
+NOption(2061,Ferd_5_5,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_5
+begin
+Reply(mstr(2120)+dude_name+mstr(2121));
+NOption(2122,Ferd_5_6,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_6
+begin
+Reply(2150);
+NOption(2151,Ferd_5_7a_1,4);
+// NOTE: Add a bottle of Nuka Cola to the PC's inventory.
+NOption(2152,Ferd_5_7a_1,4);
+// NOTE: Add a bottle of beer to the PC's inventory.
+NOption(2153,Ferd_5_7a_1,4);
+NOption(2154,Ferd_5_7b_01,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+// Node Ferd_5_7a_1
+//
+// Notes:
+//
+// The Ferd_5_7a_* path is where the PC can get to sleep with Ferdinand. Depending on which date this is, she may then convince Ferdinand to join her as an NPC follower.
+
+procedure Ferd_5_7a_1
+begin
+Reply(2180);
+NOption(2181,Ferd_5_7a_2,4);
+end
+
+procedure Ferd_5_7a_2
+begin
+Reply(mstr(2210)+dude_name+mstr(2032));
+// NOTE: This counts towards the condition where the PC finds Bruce and his gang of Explorers at Vault 31, no matter what happens between the PC and Ferdinand from here on in.
+NOption(2211,Ferd_5_7a_3,4);
+NOption(2212,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7a_3
+begin
+Reply(2240);
+// NOTE: This counts towards the condition where the PC finds Bruce and his gang of Explorers at Vault 31, no matter what happens between the PC and Ferdinand from here on in.
+NOption(2241,Ferd_5_7a_4,4);
+NOption(2212,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7a_4
+begin
+Reply(mstr(2270)+dude_name+mstr(2032));
+NOption(2271,Ferd_5_7a_5a,4);
+NOption(2272,Ferd_5_7a_5b,4);
+NOption(2212,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7a_5a
+begin
+Reply(2300);
+NOption(2212,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7a_5b
+begin
+Reply(2330);
+NOption(2271,Ferd_5_7a_5a,4);
+NOption(2212,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+// Node Ferd_5_7b_01
+//
+// Notes:
+//
+// The Ferd_5_7b_* path is where the PC can get Ferdinand blind drunk and trick him into joining her as a follower PC. If it backfires, though, the PC ends up drunk and loses the chance to form a relationship with Ferdinand. She must then complete the bones quest if she is going to convince Ferdinand to become an NPC follower. This path is accessable on both the first and second dates, although the get-out option will take the player back to the correct dialogue depending on how many dates she has been on.
+
+procedure Ferd_5_7b_01
+begin
+Reply(2360);
+NOption(2361,Ferd_5_7b_02,4);
+NOption(2362,Ferd_5_7a_1,4);
+// NOTE: Add a bottle of Nuka Cola to the PC's inventory.
+NOption(2363,Ferd_5_7a_1,4);
+// NOTE: Add a bottle of beer to the PC's inventory.
+NOption(2364,Ferd_5_7a_1,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7b_02
+begin
+Reply(2390);
+NOption(2391,Ferd_5_7b_03,4);
+NOption(2392,Ferd_5_7b_8,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7b_03
+begin
+Reply(2420);
+NOption(2421,Ferd_5_7b_04,4);
+NOption(2422,Ferd_5_7b_8,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7b_04
+begin
+Reply(2450);
+// NOTE: For PCs who can handle their drink.
+if (get_critter_stat(dude_obj,STAT_en)>=3) then
+NOption(2451,Ferd_5_7b_05,4);
+// NOTE: For PCs who cannot handle their drink.
+if (get_critter_stat(dude_obj,STAT_en)<3) then
+NOption(2451,Ferd_5_7b_9_1,4);
+NOption(2452,Ferd_5_7b_8,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+// Node Ferd_5_7b_05
+//
+// Notes:
+//
+// -2 Perception and -1 Endurance for the PC for thirty minutes, after which time, the stats will reset.
+
+procedure Ferd_5_7b_05
+begin
+Reply(mstr(2480)+dude_name+mstr(2481));
+// NOTE: For PCs who can handle their drink.
+if (get_critter_stat(dude_obj,STAT_en)>=3) then
+NOption(2482,Ferd_5_7b_06,4);
+// NOTE: For PCs who cannot handle their drink.
+if (get_critter_stat(dude_obj,STAT_en)<3) then
+NOption(2482,Ferd_5_7b_9_1,4);
+NOption(2452,Ferd_5_7b_8,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+// Node Ferd_5_7b_06
+//
+// Notes:
+//
+// -2 Perception and -1 Endurance for the PC for thirty minutes, after which time, the stats will reset.
+
+procedure Ferd_5_7b_06
+begin
+Reply(2510);
+// NOTE: For PCs who can handle their drink.
+if (get_critter_stat(dude_obj,STAT_en)>=3) then
+NOption(2511,Ferd_5_7b_07,4);
+// NOTE: For PCs who cannot handle their drink.
+if (get_critter_stat(dude_obj,STAT_en)<3) then
+NOption(2511,Ferd_5_7b_9_1,4);
+NOption(2452,Ferd_5_7b_8,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+// Node Ferd_5_7b_07
+//
+// Notes:
+//
+// -2 Perception and -1 Endurance for the PC for thirty minutes, after which time, the stats will reset.
+
+procedure Ferd_5_7b_07
+begin
+Reply(mstr(2540)+dude_name+mstr(2032));
+NOption(2541,Ferd_5_7b_08,4);
+NOption(2452,Ferd_5_7b_8,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7b_08
+begin
+Reply(2570);
+// NOTE: For PCs who can handle their drink.
+if (get_critter_stat(dude_obj,STAT_en)>=3) then
+NOption(2571,Ferd_5_7b_09,4);
+// NOTE: For PCs who cannot handle their drink.
+if (get_critter_stat(dude_obj,STAT_en)<3) then
+NOption(2571,Ferd_5_7b_9_1,4);
+NOption(2452,Ferd_5_7b_8,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+// Node Ferd_5_7b_09
+//
+// Notes:
+//
+// -2 Perception and -1 Endurance for the PC for thirty minutes, after which time, the stats will reset.
+
+procedure Ferd_5_7b_09
+begin
+Reply(2600);
+NOption(981,Ferd_5_7b_10,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7b_10
+begin
+Reply(mstr(2630)+dude_name+mstr(2631));
+NOption(981,Ferd_5_7b_11,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7b_11
+begin
+Reply(2660);
+NOption(2661,Ferd_5_7b_12,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7b_12
+begin
+Reply(mstr(2690)+dude_name+mstr(2691));
+NOption(2692,Ferd_5_7b_13,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7b_13
+begin
+Reply(2720);
+NOption(2721,Ferd_0,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7b_8
+begin
+Reply(2750);
+NOption(2151,Ferd_5_7a_1,4);
+// NOTE: Add a bottle of Nuka Cola to the PC's inventory.
+NOption(2152,Ferd_5_7a_1,4);
+// NOTE: Add a bottle of beer to the PC's inventory.
+NOption(2153,Ferd_5_7a_1,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+// Node Ferd_5_7b_9_1
+//
+// Notes:
+//
+// Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest.
+
+procedure Ferd_5_7b_9_1
+begin
+Reply(2780);
+NOption(981,Ferd_5_7b_9_2,4);
+end
+
+procedure Ferd_5_7b_9_2
+begin
+Reply(2810);
+NOption(981,Ferd_5_7b_9_3,4);
+end
+
+procedure Ferd_5_7b_9_3
+begin
+Reply(2840);
+NOption(981,Ferd_5_7b_9_4,4);
+end
+
+procedure Ferd_5_7b_9_4
+begin
+Reply(2870);
+NOption(981,Ferd_5_7b_9_5,4);
+end
+
+// Node Ferd_5_7b_9_5
+//
+// Notes:
+//
+// Fade the screen to black. Can get it to stay black for this node?
+
+procedure Ferd_5_7b_9_5
+begin
+Reply(2900);
+NOption(981,Ferd_5_7b_9_6,4);
+end
+
+// Node Ferd_5_7b_9_6
+//
+// Notes:
+//
+// Wind the clock forward to 8:00 AM the next morning and put the PC outside of the Wasteland Explorers' tent. The PC should have crippling hangover effects: I suggest -2 PER, -1 END, -1 INT for a minimum of four hours. It would be cool if the effects of the hangover could be dulled if the PC drinks a Nuka Cola (cola being my top hangover cure).
+
+procedure Ferd_5_7b_9_6
+begin
+Reply(2930);
+NOption(2931,Node999,4);
+end
+
+// Node Ferd_5_7c_1a
+//
+// Notes:
+//
+// This node is used if Ferdinand thinks the female PC is too eager to have sex. This means Ferdinand will sleep with her, but not go on any more dates with her and she can only convince him to join her as an NPC follower if she completes the bones quest. Make the variable Ferd_Date_Blown=1.
+
+procedure Ferd_5_7c_1a
+begin
+Reply(2960);
+NOption(1701,Ferd_5_7c_2,4);
+NOption(2961,Ferd_5_7c_2,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+// Node Ferd_5_7c_1b
+//
+// Notes:
+//
+// This node is used if Ferdinand thinks the time is right for him and the female PC to have sex. He does not mind her being so forward at this point.
+
+procedure Ferd_5_7c_1b
+begin
+Reply(2960);
+NOption(1701,Ferd_5_7c_2,4);
+NOption(2961,Ferd_5_7c_2,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7c_2
+begin
+Reply(3020);
+NOption(3021,Ferd_5_7c_3a_1,4);
+NOption(3022,Ferd_5_7c_3b_1,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7c_3a_1
+begin
+Reply(3050);
+NOption(3051,Ferd_5_7c_3a_2,4);
+NOption(3022,Ferd_5_7c_3b_1,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7c_3a_2
+begin
+Reply(3080);
+NOption(3081,Ferd_5_7c_3b_1,4);
+NOption(3082,Node999,4);
+end
+
+procedure Ferd_5_7c_3b_1
+begin
+Reply(3110);
+NOption(3111,Ferd_5_7c_3b_2,4);
+NOption(3112,Ferd_5_7c_3b_4,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7c_3b_2
+begin
+Reply(3140);
+NOption(2151,Ferd_5_7c_3b_3,4);
+NOption(2152,Ferd_5_7c_3b_3,4);
+// NOTE: Administer the effects of a beer to the PC (-1 PER for half an hour, if I'm not mistaken).
+NOption(2153,Ferd_5_7c_3b_3,4);
+// NOTE: Administer the effects of a beer to the PC (-2 PER for half an hour, if I'm not mistaken).
+NOption(2154,Ferd_5_7c_3b_3,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7c_3b_3
+begin
+Reply(3170);
+NOption(3171,Ferd_5_7c_3b_4,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_5_7c_3b_4
+begin
+Reply(3200);
+NOption(3201,Ferd_5_7c_3b_5,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+// Node Ferd_5_7c_3b_5
+//
+// Notes:
+//
+// Wind the clock forward to 8:00 AM the next morning and put the player outside of the Wasteland Explorers' tent (or somewhere more appropriate.)
+
+procedure Ferd_5_7c_3b_5
+begin
+Reply(3230);
+NOption(3231,Node999,4);
+end
+
+// Node Ferd_6_01
+//
+// Notes:
+//
+// The Ferd_5_* path is the second date between Ferdinand and the female PC in Sara's place. Naturally, a script will need to be written where Ferdinand walks from the Wasteland Explorers' tent to Sara's Place (maybe slightly early, say 8:50 in the evening) in order for this to work.  He should walk back to the Wasteland Explorers' tent an hour or so later, if the PC does not meet up with him.
+
+procedure Ferd_6_01
+begin
+Reply(3260);
+NOption(3261,Ferd_6_02,4);
+NOption(1972,Node999,4);
+end
+
+procedure Ferd_6_02
+begin
+Reply(mstr(3290)+dude_name+mstr(3291));
+NOption(3292,Ferd_6_03a,4);
+NOption(3293,Ferd_6_03b,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_03a
+begin
+Reply(3320);
+NOption(3321,Ferd_6_05,4);
+NOption(3322,Ferd_6_04,4);
+NOption(3323,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_03b
+begin
+Reply(3350);
+NOption(3321,Ferd_6_05,4);
+NOption(3322,Ferd_6_04,4);
+NOption(3323,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_04
+begin
+Reply(3380);
+NOption(3381,Ferd_6_05,4);
+NOption(3323,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_05
+begin
+Reply(3410);
+NOption(2151,Ferd_6_06,4);
+// NOTE: Add a bottle of Nuka Cola to the PC's inventory.
+NOption(2152,Ferd_6_06,4);
+// NOTE: Add a bottle of beer to the PC's inventory.
+NOption(2153,Ferd_6_06,4);
+NOption(2154,Ferd_5_7b_01,4);
+NOption(3411,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_06
+begin
+Reply(3440);
+NOption(3441,Ferd_6_07,4);
+NOption(3442,Ferd_6_07,4);
+NOption(3323,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_07
+begin
+Reply(dude_name+mstr(3470));
+NOption(3471,Ferd_6_08,4);
+NOption(981,Ferd_6_08,4);
+NOption(3323,Ferd_5_7c_1a,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_08
+begin
+Reply(3500);
+NOption(3501,Ferd_6_09a,4);
+NOption(3502,Ferd_6_09b_1,4);
+NOption(3323,Ferd_5_7c_1b,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_09a
+begin
+Reply(mstr(3530)+dude_name+mstr(3531));
+NOption(3532,Ferd_0,4);
+NOption(3533,Ferd_6_10a_1,4);
+NOption(3323,Ferd_5_7c_1b,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_09b_1
+begin
+Reply(mstr(3560)+dude_name+mstr(3561));
+NOption(3562,Ferd_6_09b_2a,4);
+NOption(3563,Ferd_6_09b_2b,4);
+NOption(3323,Ferd_5_7c_1b,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_09b_2a
+begin
+Reply(3590);
+NOption(3532,Ferd_0,4);
+NOption(3533,Ferd_6_10a_1,4);
+NOption(3323,Ferd_5_7c_1b,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_09b_2b
+begin
+Reply(3620);
+NOption(3621,Ferd_0,4);
+NOption(3622,Ferd_6_10a_1,4);
+NOption(3323,Ferd_5_7c_1b,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_10a_1
+begin
+Reply(mstr(3650)+dude_name+mstr(3651));
+NOption(3652,Ferd_6_10a_2a,4);
+NOption(3653,Ferd_6_10a_2b,4);
+NOption(3323,Ferd_5_7c_1b,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_10a_2a
+begin
+Reply(3680);
+NOption(3681,Ferd_5_7c_3b_4,4);
+NOption(3682,Ferd_5_7c_3b_2,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_6_10a_2b
+begin
+Reply(3710);
+NOption(3681,Ferd_5_7c_3b_4,4);
+NOption(3682,Ferd_5_7c_3b_2,4);
+// NOTE: Make the variable Ferd_Date_Blown=1. This means Ferdinand will not go on any more dates with the female PC and she can only convince him to join her as an NPC follower if she completes the bones quest. Ferdinand will not talk to the PC again and will immediately walk back to his normal spot in the Wasteland Explorers' tent. Only then will he talk to the PC.
+NOption(2002,Node999,4);
+end
+
+procedure Ferd_9
+begin
+Reply(3740);
+// NOTE: This node only appears if the variable Ferd_Join_Ask>0.
+NOption(712,Ferd_4_1,4);
+NOption(472,Ferd_3_1b_1,4);
+NOption(471,Ferd_3_1a,4);
+NOption(681,Ferd_2_1,4);
+NOption(682,Node999,4);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

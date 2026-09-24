@@ -1,0 +1,3 @@
+# Grammar pass done
+
+{100}{}{You discover an ancient oil refinery repurposed into a fortress. The unmistakable scent of death lingers in the air.}

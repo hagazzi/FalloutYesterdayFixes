@@ -1,0 +1,10 @@
+
+{100}{}{Welcome to SimTek 5000: Black & White Edition, }
+{101}{}{. Initializing the simulation hologram, "Getting to Your Vault!"}
+{102}{}{This area looks like it was hit by a high-pressure firebomb. A mountain wall throws a big shadow over it to the east.}
+
+{105}{}{A lone canine appears on the street. Will it bite or befriend? Only time will tell.}
+{106}{}{In the distance, a hostile figure looms.}
+{107}{}{Like a curious radroach, the vault dweller cautiously edges toward the red-bricked structure, each step screaming, "This is definitely a trap," but the allure of potential loot is simply too great.}
+{108}{}{The vault dweller pauses, sniffing the acrid air like a mutated mole rat on high alert. Smoke - possibly the promise of warmth, or perhaps just the scent of their impending doom.}
+{109}{}{Towering before the vault dweller is the massive Vault door, a true testament to engineering - and an absolute nightmare for anyone hoping to pick a lock.}

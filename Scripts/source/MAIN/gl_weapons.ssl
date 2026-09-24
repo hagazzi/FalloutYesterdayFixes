@@ -1,0 +1,79 @@
+/*
+
+Some special weapon mods
+Based on: Molotov Fire Damage mod for Fallout 2 by NovaRain
+
+*/
+
+
+procedure start;
+procedure afterhitroll_handler;
+
+#include "..\headers\define.h"
+#include "..\headers\sfall.h"
+#include "..\headers\define_extra.h"
+
+procedure start begin
+   if (game_loaded) then begin
+      register_hook_proc(HOOK_AFTERHITROLL, afterhitroll_handler);
+   end
+end
+
+procedure afterhitroll_handler begin
+   variable
+      hitType := get_sfall_arg,
+      attacker := get_sfall_arg,
+      target := get_sfall_arg,
+      slot, item;
+
+   if (target and attacker) then begin
+      if ((attacker == dude_obj) and (active_hand == 0)) then begin
+         slot := INVEN_TYPE_LEFT_HAND;
+      end else begin
+         slot := INVEN_TYPE_RIGHT_HAND;
+      end
+      item := critter_inven_obj(attacker, slot);
+
+      if (item and (obj_pid(item) == PID_INCENDIARY_GRENADE)) then begin
+         if ((obj_type(target) == OBJ_TYPE_SCENERY) and (hitType > 1)) then begin
+            set_proto_data(PID_INCENDIARY_GRENADE, PROTO_WP_DMG_TYPE, DMG_explosion);
+         end else begin
+            set_proto_data(PID_INCENDIARY_GRENADE, PROTO_WP_DMG_TYPE, DMG_fire);
+            set_attack_explosion_radius(2); // grenade radius
+            set_attack_is_explosion_fire;
+         end
+      end
+      else if (item and (obj_pid(item) == PID_PUNCH_GUN)) then begin
+         play_sfx("WAR1XXX" + random(1, 2));
+      end
+      else if (item and (obj_pid(item) == PID_ULTRASONIC_GENERATOR)) then begin
+         if ((obj_type(target) == OBJ_TYPE_CRITTER) and (hitType > 1)) then begin
+            variable flee = 0;
+            // Dogs are always scared away
+            if (critter_kill_type(target) == KILL_TYPE_dog_kills) then begin
+               flee = 1;
+            end
+            // (20 - STAT_en + STAT_pe) % chance to scare away other animals except the Thunderbird
+            else if (
+               (random(1, 100) <= (20 - get_critter_stat(target, STAT_en) + get_critter_stat(target, STAT_pe))) and
+               (
+                  (critter_kill_type(target) == KILL_TYPE_brahmin_kills) or
+                  (critter_kill_type(target) == KILL_TYPE_radscorpion_kills) or
+                  (critter_kill_type(target) == KILL_TYPE_rat_kills) or
+                  (critter_kill_type(target) == KILL_TYPE_dog_kills) or          // Canines
+                  (critter_kill_type(target) == KILL_TYPE_manti_kills) or        // Giant Insects
+                  (critter_kill_type(target) == KILL_TYPE_gecko_kills) or        // Giant Reptiles
+                  (critter_kill_type(target) == KILL_TYPE_alien_kills) or        // Yao Guai
+                  (critter_kill_type(target) == KILL_TYPE_giant_ant_kills)       // Mirelurks
+               )
+               ) then begin
+               flee = 1;
+            end
+
+            if (flee == 1) then begin
+               critter_set_flee_state(target, true);
+            end
+         end
+      end
+   end
+end

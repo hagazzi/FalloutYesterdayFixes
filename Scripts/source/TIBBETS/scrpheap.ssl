@@ -1,0 +1,150 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\updatmap.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_SCRPHEAP
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+export variable Is_Fool;
+export variable Is_Crypt;
+export variable Broken_Gen;
+export variable Use_Fridge;
+export variable Use_Generator;
+export variable Dog_Is_Angry := 1;
+export variable Phil_Approaches;
+export variable Growling;
+export variable Smartass;
+export variable Smartass2;
+export variable Know_Fools;
+export variable Know_Crypts;
+export variable Know_Power;
+export variable Rock_Invite;
+export variable Skippy_Talk;
+export variable Crypt_Pointer;
+export variable Fool_Pointer;
+export variable Phrax_Pointer;
+export variable Fool_Taunt;
+export variable Crypt_Taunt;
+export variable Scouted_Crypts;
+export variable Scouted_Fools;
+export variable Mad_Cow;
+export variable Fool_counter := 4;
+export variable Crypt_counter := 8;
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+variable msg_once;
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   variable id;
+
+   id := load_shader("SimTek.fx");
+   set_global_var(GVAR_SHADER_ID, id);
+   activate_shader(id);
+
+   if(not(is_loading_game)) then begin
+      override_map_start_hex(27306, 0, 5);
+   end
+
+   if (map_first_run) then begin
+      display_msg(mstr(100) + dude_name + mstr(101));
+      display_mstr(102);
+      // Give equipment
+      give_pid_qty(dude_obj, PID_10MM_SMG, 1)
+      give_pid_qty(dude_obj, PID_LEATHER_ARMOR, 1)
+      give_pid_qty(dude_obj, PID_10MM_AP, 2)
+      give_pid_qty(dude_obj, PID_STIMPAK, 2)
+      give_pid_qty(dude_obj, PID_FLARE, 1)
+      give_pid_qty(dude_obj, PID_LIL_PIP_3000, 1)
+   end
+
+   float_msg(dude_obj, g_mstr(923), FLOAT_MSG_WARNING);
+
+   fadein(1);
+   Lighting;
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_WASTELAND), 1);
+end
+
+procedure map_update_p_proc begin
+
+   Lighting;
+
+   if (not(combat_is_initialized)) then begin
+      if (Broken_Gen) then begin
+         add_timer_event(self_obj, game_ticks(30), 1);
+      end
+      else if ((Fool_counter <= 1) and (Crypt_counter <= 1)) then begin
+         add_timer_event(self_obj, game_ticks(30), 2);
+      end
+   end
+
+end
+
+procedure map_exit_p_proc begin
+   set_global_var(GVAR_VT_HOLOGRAM, 1);
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end
+
+procedure timed_event_p_proc begin
+   if (fixed_param == 1) then begin
+      if (msg_once == 0) then begin
+         display_mstr(400);
+         msg_once = 1;
+      end
+      add_timer_event(self_obj, game_ticks(4), 3);
+   end
+   else if (fixed_param == 2) then begin
+      if (msg_once == 0) then begin
+         display_mstr(402);
+         msg_once = 1;
+      end
+      add_timer_event(self_obj, game_ticks(4), 3);
+   end
+   else if (fixed_param == 3) then begin
+      display_mstr(403);
+      destroy_obj_inven(dude_obj);
+      set_global_var(GVAR_VT_HOLOGRAM, 1);
+      load_map("tbsrvc03", 0);
+   end
+end

@@ -1,0 +1,96 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Holy Knights Map 1
+        Location: Random
+        Description: This is for the first holy knight encounter
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created: April 14, 1998
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\rndforvr.h"
+
+#define NAME                    SCRIPT_RNDFORVR
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+#include "..\headers\vehicles.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+variable track;
+
+procedure start begin
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+
+   set_map_music(cur_map_index, "36fsauce");
+end
+
+procedure map_enter_p_proc begin
+   set_global_var(GVAR_SPECIAL_ENCOUNTER_GUARDIAN,1);
+
+   if (map_first_run) then begin
+      display_mstr(100);
+   end
+
+   if (not(is_loading_game)) then begin
+      override_map_start_hex( 18095, 0, 5 );
+   end
+
+   set_map_music(cur_map_index, "36fsauce");
+
+   call Check_Create_Vehicle;
+   fadein(1);
+   Lighting;
+end
+
+procedure map_update_p_proc begin
+
+   if(dude_elevation == 0) then begin
+
+      if (track != AMBIENT_WASTELAND) then begin
+         stop_sfall_sound(ambient_sfx);
+         track = AMBIENT_WASTELAND;
+         ambient_sfx := play_sfall_sound(AmbientTrack(track), 1);
+      end
+
+      Lighting;
+   end
+   else begin
+
+      if (track != AMBIENT_ABANDONED_WIND) then begin
+         stop_sfall_sound(ambient_sfx);
+         track = AMBIENT_ABANDONED_WIND;
+         ambient_sfx := play_sfall_sound(AmbientTrack(track), 1);
+      end
+
+      Darkness;
+   end
+
+end

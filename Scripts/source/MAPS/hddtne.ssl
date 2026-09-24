@@ -1,0 +1,211 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#include "..\headers\updatmap.h"
+#include "..\headers\party.h"
+#include "..\headers\hddtne.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+
+/* Defines */
+#define NAME                  SCRIPT_HDDTNE
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+variable t1, t2, t3, t4;
+export variable BeatriceBouncer;
+export variable Dusty_Ptr;
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if (
+      not(is_loading_game) and
+      map_first_run )
+      then begin
+         display_mstr(100);
+   end
+
+   // Beatrice's bar fight
+   if ((global_var(GVAR_QUEST_HELP_BEATRICE) == HELP_BEATRICE_ASKED_TO_JOIN) and night) then begin
+
+         t1 = create_object_sid(PID_TOUGH_THUG_MALE, 16521, dude_elevation, SCRIPT_HDTHUG);
+         give_pid_qty(t1, PID_CATTLE_PROD, 1)
+         give_pid_qty(t1, PID_POOL_CUE, 1)
+         reg_anim_clear(t1);
+         reg_anim_begin();
+         anim(t1, ANIMATE_ROTATION, 3);
+         reg_anim_end();
+
+         t2 = create_object_sid(PID_MELEE_GUARD_MALE, 16921, dude_elevation, SCRIPT_HDTHUG);
+         give_pid_qty(t2, PID_SUPER_SLEDGE, 1)
+         reg_anim_clear(t2);
+         reg_anim_begin();
+         anim(t2, ANIMATE_ROTATION, 4);
+         reg_anim_end();
+
+         t3 = create_object_sid(PID_WEAK_MELEE_GUARD_MALE, 17124, dude_elevation, SCRIPT_HDTHUG);
+         give_pid_qty(t3, PID_ASSAULT_RIFLE, 1)
+         reg_anim_clear(t3);
+         reg_anim_begin();
+         anim(t3, ANIMATE_ROTATION, 0);
+         reg_anim_end();
+
+         t4 = create_object_sid(PID_TRIBAL_BLACK_LONG_HAIR, 16523, dude_elevation, SCRIPT_HDTHUG);
+         give_pid_qty(t4, PID_CATTLE_PROD, 1)
+         reg_anim_clear(t4);
+         reg_anim_begin();
+         anim(t4, ANIMATE_ROTATION, 1);
+         reg_anim_end();
+
+         create_object(PID_BEER, 16322, dude_elevation);
+         create_object(PID_BEER, 16723, dude_elevation);
+         create_object(PID_BEER, 16922, dude_elevation);
+         create_object(PID_CRATE_HALF_FULL, 16722, dude_elevation);
+
+         set_global_var(GVAR_QUEST_HELP_BEATRICE, HELP_BEATRICE_BAR_FIGHT_IS_ON);
+
+         add_timer_event(self_obj, game_ticks(0), 0);
+         add_timer_event(self_obj, game_ticks(1), 1);
+         add_timer_event(self_obj, game_ticks(7), 2);
+         add_timer_event(self_obj, game_ticks(13), 3);
+         add_timer_event(self_obj, game_ticks(19), 4);
+         add_timer_event(self_obj, game_ticks(25), 5);
+         add_timer_event(self_obj, game_ticks(31), 6);
+         add_timer_event(self_obj, game_ticks(37), 7);
+         add_timer_event(self_obj, game_ticks(43), 8);
+
+         party_no_follow_on;
+
+         game_ui_disable;
+
+   end else begin
+      fadein(1);
+   end
+
+   Shady_Lighting;
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_WASTELAND), 1);
+end
+
+procedure map_update_p_proc begin
+   Shady_Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end
+
+procedure timed_event_p_proc begin
+
+   if(fixed_param == 0) then begin
+      fadein(1);
+      tile_set_center(17315);
+   end
+   else if(fixed_param == 1) then begin
+      float_msg(t1, mstr(200), FLOAT_COLOR_BAD);
+   end
+   else if(fixed_param == 2) then begin
+      float_msg(t4, mstr(201), FLOAT_COLOR_BAD);
+   end
+   else if(fixed_param == 3) then begin
+      play_sfx("drunkla1");
+      float_msg(t1, mstr(202), FLOAT_COLOR_BAD);
+      float_msg(t2, mstr(203), FLOAT_COLOR_BAD);
+      float_msg(t3, mstr(204), FLOAT_COLOR_BAD);
+      float_msg(t4, mstr(205), FLOAT_COLOR_BAD);
+   end
+   else if(fixed_param == 4) then begin
+      float_msg(t3, mstr(206), FLOAT_COLOR_BAD);
+   end
+   else if(fixed_param == 5) then begin
+      float_msg(t2, mstr(207), FLOAT_COLOR_BAD);
+   end
+   else if(fixed_param == 6) then begin
+      float_msg(t3, mstr(208), FLOAT_COLOR_BAD);
+   end
+   else if(fixed_param == 7) then begin
+      float_msg(t1, mstr(209), FLOAT_COLOR_BAD);
+   end
+   else if(fixed_param == 8) then begin
+      fadeout(1);
+      move_to(t1, 16908, dude_elevation);
+      critter_attempt_placement(t1, 16908, dude_elevation);
+      Face_Critter(BeatriceBouncer, t1);
+
+      move_to(t2, 16709, dude_elevation);
+      critter_attempt_placement(t2, 16709, dude_elevation);
+      Face_Critter(BeatriceBouncer, t2);
+
+      critter_add_trait(t3,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_LONER);
+      move_to(t3, 18289, dude_elevation);
+      critter_attempt_placement(t3, 18289, dude_elevation);
+      Face_Critter(Dusty_Ptr, t3);
+
+      move_to(t4, 17307, dude_elevation);
+      critter_attempt_placement(t4, 17307, dude_elevation);
+      Face_Critter(BeatriceBouncer, t4);
+
+      move_to(BeatriceBouncer, 16706, dude_elevation);
+      critter_attempt_placement(BeatriceBouncer, 16706, dude_elevation);
+      Face_Critter(t1, BeatriceBouncer);
+
+      // Diplomatic solution available if we are better at Speech than any combat Skill
+      if (
+         (dude_skill(SKILL_CONVERSANT) > dude_skill(SKILL_SMALL_GUNS)) and
+         (dude_skill(SKILL_CONVERSANT) > dude_skill(SKILL_BIG_GUNS)) and
+         (dude_skill(SKILL_CONVERSANT) > dude_skill(SKILL_ENERGY_WEAPONS)) and
+         (dude_skill(SKILL_CONVERSANT) > dude_skill(SKILL_UNARMED_COMBAT)) and
+         (dude_skill(SKILL_CONVERSANT) > dude_skill(SKILL_MELEE)) and
+         (dude_skill(SKILL_CONVERSANT) > dude_skill(SKILL_THROWING))
+         ) then begin
+            set_map_var(MVAR_Bar_Fight_Diplomacy, 1);
+      end else begin
+         attack_setup(t4, BeatriceBouncer);
+      end
+
+      tile_set_center(dude_tile);
+      game_time_advance(ONE_GAME_MINUTE);
+      fadein(1);
+      party_no_follow_off;
+      game_ui_enable;
+   end
+end

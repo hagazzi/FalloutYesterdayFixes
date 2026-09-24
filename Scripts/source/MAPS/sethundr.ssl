@@ -1,0 +1,42 @@
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\vehicles.h"
+
+procedure start;
+procedure map_enter_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_SETHUNDR
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   if (map_first_run and global_var(GVAR_SPECIAL_ENCOUNTER_THUNDERBIRD) == 1) then begin
+      set_global_var(GVAR_SPECIAL_ENCOUNTER_THUNDERBIRD, 2);
+      display_mstr(100);
+   end
+
+   if (not(is_loading_game)) then begin
+      override_map_start_hex(20927, 0, 0);
+   end
+
+   call Check_Create_Vehicle;
+
+   fadein(1);
+   Lighting;
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_WASTELAND), 1);
+end
+
+procedure map_update_p_proc begin
+   Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

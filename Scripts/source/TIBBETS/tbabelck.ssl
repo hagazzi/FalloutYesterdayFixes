@@ -1,0 +1,75 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_TBABELCK
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+    variable new_tile, str;
+    script_overrides;
+    fadeout(1);
+
+    if (get_critter_stat(dude_obj,STAT_st)<= 3) then begin
+        str := "You're too weak to move the locker.";
+    end else begin
+
+        if(self_tile == 15292) then begin
+            new_tile := 15485;
+            str := "You push the locker out of the way.";
+        end else if(self_tile == 15485) then begin
+            new_tile := 15292;
+            str := "You move the locker and block the doorway.";
+        end
+
+        destroy_object(tile_contains_pid_obj(self_tile, 0, PID_BLOCKING_HEX));
+        move_to(self_obj, new_tile, 0);
+        create_object(PID_BLOCKING_HEX, new_tile, 0);
+    end
+
+    display_msg(str);
+
+    fadein(1);
+end
+

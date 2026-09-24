@@ -1,0 +1,134 @@
+#include "..\HEADERS\DEFINE.H"
+#include "..\HEADERS\COMMAND.H"
+
+procedure start;
+procedure GetBoozes;
+procedure update_shader;
+
+variable begin
+	perception;
+	boozes;
+	shader1;
+	shader2;
+	shader3;
+	shader4;
+	drunk_level;
+	next_reduction;
+	booze_pids;
+end
+
+procedure start begin
+	variable new_pe, new_booze, drunk_count;
+
+	if (metarule(22, 0)) then return; //is_loading_game
+	if (game_loaded) then begin
+		if (not graphics_funcs_available) then begin
+			return;
+		end else begin
+			// pid list of the items for the mod to apply the effect
+			booze_pids := [PID_BOOZE, PID_BEER, PID_ROT_GUT, PID_GAMMA_GULP_BEER, PID_ROENTGEN_RUM, PID_AYAYAY_HOOCH];
+
+			fix_array(booze_pids);
+			//new_pe := create_object_sid(125, 0, 0, -1);
+			//add_mult_objs_to_inven(dude_obj, new_pe, 10);
+			perception := get_pc_extra_stat(1);
+			boozes := GetBoozes;
+
+			set_global_script_repeat(50);
+			set_global_script_type(1);
+
+			shader1 := load_shader("booze1.fx");
+			shader2 := load_shader("booze2.fx");
+			shader3 := load_shader("booze3.fx");
+			shader4 := load_shader("booze4.fx");
+		end
+	end else begin
+		new_pe := get_pc_extra_stat(1);
+		new_booze := GetBoozes;
+		if ((perception != new_pe) orElse (boozes != new_booze)) then begin
+			if ((perception > new_pe) andAlso (boozes > new_booze)) then begin
+				variable pe_diff := perception - new_pe;
+				variable booze_diff := boozes - new_booze;
+				if (pe_diff < booze_diff) then begin
+					drunk_count := pe_diff;
+				end else begin
+					drunk_count := booze_diff;
+				end
+				drunk_level += (drunk_count * 10);
+				call update_shader;
+				next_reduction := game_time + game_ticks(6);
+			end
+			perception := new_pe;
+			boozes := new_booze;
+		end
+		if ((next_reduction != 0) andAlso (game_time >= next_reduction)) then begin
+			drunk_level -= 1;
+			if (drunk_level == 0) then
+				next_reduction := 0;
+			else
+				next_reduction += game_ticks(6);
+			call update_shader;
+		end
+	end
+end
+
+procedure GetBoozes begin
+	variable pid, count_booze := 0;
+	foreach (pid in booze_pids) begin
+		count_booze += obj_is_carrying_obj_pid(dude_obj, pid);
+	end
+	return count_booze;
+end
+
+procedure update_shader begin
+
+	if(cur_map_index == MAP_SPECIAL_RND_LAMP and drunk_level > 0) then begin
+		variable r, s;
+		r := random(1,5);
+
+		if(r == 1) then begin
+			s := "I'll show you, you piece of lamp shit.";
+		end
+		else if (r == 2) then begin
+			s := "*hic*";
+		end
+		else if (r == 3) then begin
+			s := "You ain't tougher than me, you tall bastard.";
+		end
+		else if (r == 4) then begin
+			s := "Don't just stand there, fight back!";
+		end
+		else if (r == 5) then begin
+			s := "I curse you and your family, lamp.";
+		end
+
+    	obj_floater_type(dude_obj, s, FLOAT_COLOR_SICK);
+	end
+
+	if (drunk_level >= 100) then begin
+		deactivate_shader(shader1);
+		deactivate_shader(shader2);
+		deactivate_shader(shader3);
+		activate_shader(shader4);
+	end else if (drunk_level >= 50) then begin
+		deactivate_shader(shader1);
+		deactivate_shader(shader2);
+		activate_shader(shader3);
+		deactivate_shader(shader4);
+	end else if (drunk_level >= 25) then begin
+		deactivate_shader(shader1);
+		activate_shader(shader2);
+		deactivate_shader(shader3);
+		deactivate_shader(shader4);
+	end else if (drunk_level > 0) then begin
+		activate_shader(shader1);
+		deactivate_shader(shader2);
+		deactivate_shader(shader3);
+		deactivate_shader(shader4);
+	end else begin
+		deactivate_shader(shader1);
+		deactivate_shader(shader2);
+		deactivate_shader(shader3);
+		deactivate_shader(shader4);
+	end
+end

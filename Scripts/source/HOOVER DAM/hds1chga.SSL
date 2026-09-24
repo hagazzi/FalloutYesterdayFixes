@@ -1,0 +1,30 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+   Single use script to add "Repair Hei Gui Armor" option when the player picks up broken one
+*/
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_HDS1CHGA
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure pickup_p_proc;
+
+procedure start begin
+end
+
+procedure pickup_p_proc begin
+   variable tmp;
+   // We want to be able to repair it in Mr. Fixit! so add the option once we pick up the first one
+   if (global_var(GVAR_CRAFT_HEI_GUI_ARMOR) == 0) then
+      set_global_var(GVAR_CRAFT_HEI_GUI_ARMOR, 1);
+   // Remove and re-add to get rid off the one with this script attached to it to avoid "too many items" bug
+   give_pid_qty(dude_obj, PID_DAMAGED_HEI_GUI_ARMOR, 1)
+   tmp = rm_mult_objs_from_inven(dude_obj, self_obj, 1);
+   destroy_object(self_obj);
+end

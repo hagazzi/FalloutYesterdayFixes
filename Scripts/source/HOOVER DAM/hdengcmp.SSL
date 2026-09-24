@@ -1,0 +1,70 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\HDGATENR.h"
+
+#define NAME                    SCRIPT_HDENGCMP
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_skill_on_p_proc;
+procedure repair_time;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_skill_on_p_proc begin
+   if (action_being_used == SKILL_SCIENCE) then begin
+      script_overrides;
+
+      if(skill_success(source_obj, SKILL_SCIENCE, -33)) then begin
+         set_map_var(MVAR_FOUND_BOS_MENTION_COMPUTER, 1);
+         display_mstr(100);
+      end
+
+      if(skill_success(source_obj, SKILL_SCIENCE, -75)) then begin
+         if(not(town_known(AreaNukeStatus(AREA_BROTHERHOOD_OF_STEEL)))) then begin
+            give_xp(500);
+            mark_on_map(AreaNukeStatus(AREA_BROTHERHOOD_OF_STEEL))
+            display_msg(g_mstr(1008) + " " + mstr_map(1508) + ".");
+         end
+      end else begin
+         display_msg(mstr_skill(611));
+      end
+   end
+end

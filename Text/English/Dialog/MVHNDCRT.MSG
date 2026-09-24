@@ -1,0 +1,6 @@
+{100}{}{These wagons hold the camp's food and water supplies.}
+{101}{}{You poisoned a portion of the camp's food and water supplies. But that might not be enough.}
+{102}{}{You poisoned the camp's entire food and water supplies.}
+{103}{}{You could poison the camp's food and water supplies using a radscorpion's tail or some other poison.}
+{104}{}{Trapping the camp's food and water supplies wouldn't cause that much damage to the Hounds.}
+{105}{}{You didn't get any new ideas regarding the camp's food and water supplies.}

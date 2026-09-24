@@ -1,0 +1,5 @@
+
+{100}{}{You successfully replaced and fine-tuned the water chip.}
+{101}{}{You failed to replace the water chip.}
+{102}{}{Looks like the water chip needs replacing and fine-tuning.}
+{103}{}{You successfully replaced and fine-tuned the water chip.}

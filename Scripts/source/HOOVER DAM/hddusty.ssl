@@ -1,0 +1,917 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Dusty Heart
+        Location: Hoover Dam Downtown
+        Description:
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created:
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_HDDUSTY
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_HOOVER_DAM)
+
+#define SHELF    16890
+#define DRINKS   16291
+#define BAR      17291
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+#include "..\headers\party.h"
+#include "..\headers\hdam.h"
+#include "..\headers\hddtne.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure timed_event_p_proc;
+procedure node999;
+procedure node998;
+procedure node043;
+procedure node041;
+procedure node045;
+procedure node044;
+procedure node042;
+procedure node040;
+procedure node039;
+procedure node038;
+procedure node030;
+procedure node029;
+procedure node028;
+procedure node027;
+procedure node026;
+procedure node025;
+procedure node024;
+procedure node023;
+procedure node022;
+procedure node018;
+procedure node037;
+procedure node036;
+procedure node035;
+procedure node034;
+procedure node033;
+procedure node032;
+procedure node031;
+procedure node017;
+procedure node020;
+procedure node019;
+procedure node016;
+procedure node007;
+procedure node015;
+procedure node011;
+procedure node014;
+procedure node010;
+procedure node013;
+procedure node009;
+procedure node012;
+procedure node008;
+procedure node006;
+procedure node005;
+procedure node004;
+procedure node003;
+procedure node002;
+procedure node001;
+procedure node046;
+procedure node047;
+procedure node048;
+procedure node049;
+procedure node050;
+procedure node051;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure pimp;
+procedure pimp_female;
+procedure pimp_male;
+procedure pimp_dance;
+procedure pimp_dusty;
+procedure pimp_female_act;
+procedure pimp_male_act;
+procedure pimp_dance_act;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat                                  // This Node is Always Ending
+
+
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+
+#define LVAR_Know_name                  (3)
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Post_Bar_Fight_Chat        (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+variable pole1, pole2, stripper1, stripper2, dance;
+
+import variable Dusty_Ptr;
+
+procedure start begin
+   Dusty_Ptr = self_obj;
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM, TEAM_HOOVER_DAM);
+   add_timer_event(self_obj,game_ticks(random(10,15)),1);
+   add_timer_event(self_obj,game_ticks(random(5,20)),2);
+   Dusty_Ptr = self_obj;
+end
+
+procedure map_update_p_proc begin
+   Dusty_Ptr = self_obj;
+end
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+   if (((local_var(LVAR_Hostile) == 2) or (global_var( GVAR_ENEMY_HOOVER_DAM ) == 1))) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+   end
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+   if (obj_in_party(source_obj)) then begin
+      set_local_var(LVAR_Personal_Enemy,1);
+      set_global_var(GVAR_ENEMY_HOOVER_DAM, 1);
+   end
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc
+begin
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+   start_gdialog(NAME, self_obj, 4, HEAD_DUSTY, -1);
+   gsay_start;
+
+   if (
+      (local_var(LVAR_Post_Bar_Fight_Chat) == 0) and
+      ((global_var(GVAR_QUEST_HELP_BEATRICE) == HELP_BEATRICE_PROPOSED_TO_JOIN) or
+      (global_var(GVAR_QUEST_HELP_BEATRICE) == HELP_BEATRICE_FAILED))
+      ) then begin
+      call node051;
+   end
+   else if (dude_is_stupid) then
+      call node002;
+   else
+      call node001;
+
+   gsay_end;
+   end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+   set_local_var(LVAR_Herebefore,1);
+end
+
+procedure node001
+begin
+if local_var(LVAR_Know_name)==0 then
+   Reply(104);
+else begin
+   if random(1, 2)==1 then
+      Reply(105);
+   else
+      Reply(mstr(106)+ dude_name + mstr(107));
+end
+
+if (global_var(GVAR_QUEST_HELP_BEATRICE) == HELP_BEATRICE_PROPOSED_TO_JOIN) then
+   NOption(221,node046,4);
+
+if ((global_var(GVAR_QUEST_HELP_BEATRICE) != HELP_BEATRICE_FAILED) and (global_var(GVAR_QUEST_HELP_BEATRICE) != HELP_BEATRICE_JOINED)) then
+   NOption(115,node038,4);
+
+if (local_var(LVAR_Know_name)==0) then
+   NOption(mstr(108) + dude_name + mstr(103),node002,4);
+if (dude_caps>=5) then
+   NOption(109,node003,4);
+if (dude_caps>=15) then
+   NOption(110,node004,4);
+if (dude_caps>=4) then
+   NOption(111,node005,4);
+NOption(112,node006,4);
+NOption(113,node007,4);
+if (not(language_filter_is_on)) then
+   GOption(237,pimp,4);
+NOption(114,node999,4);
+end
+
+
+procedure node002
+begin
+set_local_var( LVAR_Know_name,1);
+Reply(175);
+NOption(176,node001,4);
+end
+
+procedure node003
+begin
+
+item_caps_adjust(dude_obj,-5);
+give_pid_qty(dude_obj,PID_BEER,1)
+
+if dude_is_male then
+   Reply(124);
+else
+   Reply(125);
+
+NOption(127,node007,4);
+NOption(126,node999,4);
+
+
+end
+
+procedure node004
+begin
+
+item_caps_adjust(dude_obj,-15);
+give_pid_qty(dude_obj,PID_BOOZE,1)
+
+if dude_is_male then
+Reply(129);
+else
+Reply(130);
+
+NOption(127,node007,4);
+NOption(126,node999,4);
+end
+
+procedure node005
+begin
+
+item_caps_adjust(dude_obj,-4);
+give_pid_qty(dude_obj,PID_NUKA_COLA,1)
+
+if dude_is_male then
+Reply(131);
+else
+Reply(132);
+
+NOption(127,node007,4);
+NOption(126,node999,4);
+end
+
+procedure node006
+begin
+
+Reply(133);
+NOption(134,node008,4);
+NOption(135,node009,4);
+NOption(136,node010,4);
+NOption(137,node011,4);
+NOption(138,node001,4);
+
+end
+
+procedure node008
+begin
+Reply(144);
+if (dude_caps>=20) then
+NOption(145,node012,4);
+NOption(146,node001,4);
+NOption(147,node999,4);
+
+end
+
+procedure node012
+begin
+
+item_caps_adjust(dude_obj,-20);
+give_pid_qty(dude_obj,PID_IGUANA_ON_A_STICK,1)
+
+call node001;
+end
+
+procedure node009
+begin
+
+Reply(148);
+if (dude_caps>=10) then
+   NOption(145,node013,4);
+NOption(146,node001,4);
+NOption(147,node999,4);
+
+end
+
+procedure node013
+begin
+
+item_caps_adjust(dude_obj,-10);
+give_pid_qty(dude_obj,PID_MEAT_JERKY,1)
+
+call node001;
+end
+
+procedure node010
+begin
+Reply(mstr(152)+mstr(154));
+if (dude_caps>=50) then
+   NOption(153,node014,4);
+NOption(157,node001,4);
+end
+
+procedure node014
+begin
+
+item_caps_adjust(dude_obj,-50);
+give_pid_qty(dude_obj,PID_COOKIE,1)
+
+Reply(145);
+NOption(156,node001,4);
+NOption(155,node999,4);
+
+end
+
+procedure node011
+begin
+Reply(149);
+
+if (dude_caps>=4) then
+   NOption(145,node015,4);
+NOption(146,node001,4);
+NOption(147,node999,4);
+
+end
+
+procedure node015
+begin
+
+   item_caps_adjust(dude_obj,-4);
+   give_pid_qty(dude_obj,PID_MUTATED_FRUIT,1)
+
+call node001;
+end
+
+procedure node007
+begin
+Reply(179);
+NOption(180,node016,4);
+NOption(181,node017,4);
+NOption(182,node018,4);
+NOption(183,node999,4);
+
+end
+
+procedure node016
+begin
+Reply(184);
+NOption(151,node019,4);
+
+end
+
+procedure node019
+begin
+Reply(185);
+NOption(151,node020,4);
+
+end
+
+procedure node020
+begin
+   set_map_var(MVAR_Know_Beatrice_Good_Bouncer, 1);
+Reply(186);
+NOption(187,node001,4);
+
+end
+
+procedure node017
+begin
+if (major_dead) then begin
+   Reply(208);
+   if (dude_is_prizefighter) then
+      NOption(209,node032,4);
+   else
+      NOption(209,node031,4);
+
+   NOption(210,node999,4);
+   NOption(211,node001,4);
+end else
+   call node031;
+end
+
+procedure node031
+begin
+Reply(212);
+NOption(189,node032,4);
+NOption(190,node999,4);
+
+end
+
+procedure node032
+begin
+Reply(213);
+if (global_var( GVAR_MET_MARK_GANNON ) == 1) then
+NOption(214,node033,4);
+NOption(189,node033,4);
+NOption(190,node999,4);
+
+end
+
+procedure node033
+begin
+Reply(215);
+NOption(189,node034,4);
+NOption(190,node999,4);
+
+end
+
+procedure node034
+begin
+
+Reply(216);
+NOption(189,node035,4);
+BOption(217,node045,4);
+NOption(190,node999,4);
+
+end
+
+procedure node035
+begin
+Reply(218);
+NOption(189,node036,4);
+NOption(190,node999,4);
+
+end
+
+procedure node036
+begin
+if (global_var( GVAR_QUEST_DELIVERANCE) == QUEST_NONE) then
+begin
+   set_global_var( GVAR_QUEST_DELIVERANCE, QUEST_KNOWN);
+Reply(219);
+NOption(189,node037,4);
+NOption(190,node999,4);
+end
+else
+call node037;
+end
+
+procedure node037
+begin
+Reply(220);
+NOption(205,node001,4);
+NOption(190,node999,4);
+
+end
+
+procedure node018
+begin
+Reply(192);
+NOption(189,node022,4);
+NOption(190,node999,4);
+
+end
+
+procedure node022
+begin
+Reply(193);
+NOption(189,node023,4);
+NOption(190,node999,4);
+end
+
+procedure node023
+begin
+Reply(194);
+NOption(189,node024,4);
+NOption(190,node999,4);
+
+end
+
+procedure node024
+begin
+Reply(195);
+NOption(189,node025,4);
+NOption(190,node999,4);
+
+end
+
+procedure node025
+begin
+Reply(196);
+NOption(189,node026,4);
+NOption(190,node999,4);
+
+end
+
+procedure node026
+begin
+Reply(197);
+NOption(189,node027,4);
+NOption(190,node999,4);
+
+end
+
+procedure node027
+begin
+Reply(198);
+NOption(189,node028,4);
+NOption(190,node999,4);
+
+end
+
+procedure node028
+begin
+Reply(199);
+NOption(189,node029,4);
+NOption(190,node999,4);
+
+end
+
+procedure node029
+begin
+Reply(200);
+NOption(201,node999,4);
+NOption(202,node001,4);
+if (dude_caps>=20) then
+   NOption(203,node030,4);
+
+end
+
+procedure node030
+begin
+
+item_caps_adjust(dude_obj,-10);
+give_pid_qty(dude_obj,PID_BEER,1)
+
+
+Reply(204);
+NOption(205,node001,4);
+if (dude_is_married) then
+   NOption(206,node999,4);
+NOption(207,node999,4);
+
+end
+
+procedure node038
+begin
+Reply(116);
+NOption(117,node039,4);
+NOption(118,node001,4);
+NOption(119,node040,4);
+NOption(120,node041,4);
+
+end
+
+procedure node039
+begin
+call Node998;
+end
+
+procedure node040
+begin
+Reply(162);
+NOption(163,node042,4);
+NOption(164,node999,4);
+
+end
+
+procedure node042
+begin
+Reply(165);
+NOption(166,node044,4);
+NOption(167,node045,4);
+NOption(168,node999,4);
+
+end
+
+procedure node044
+begin
+Reply(172);
+NOption(173,node001,4);
+
+end
+
+procedure node045
+begin
+Reply(169);
+BOption(170,node998,4);
+NOption(171,node999,4);
+
+end
+
+procedure node041
+begin
+Reply(121);
+NOption(122,node999,4);
+BOption(123,node998,4);
+end
+
+procedure node046
+begin
+Reply(222);
+NOption(223,node047,4);
+end
+
+procedure node047
+begin
+Reply(224);
+NOption(225,node048,4);
+end
+
+procedure node048
+begin
+Reply(226);
+NOption(227,node049,4);
+end
+
+procedure node049
+begin
+Reply(228);
+NOption(229,node050,4);
+end
+
+procedure node050
+begin
+   set_global_var(GVAR_QUEST_HELP_BEATRICE, HELP_BEATRICE_DUSTY_OK);
+Reply(230);
+NOption(231,node999,4);
+end
+
+procedure node051
+begin
+
+   set_local_var(LVAR_Post_Bar_Fight_Chat, 1);
+
+   if (global_var(GVAR_QUEST_HELP_BEATRICE) == HELP_BEATRICE_FAILED) then begin
+      Reply(mstr(232) + " " + mstr(234));
+      NOption(236,node999,4);
+   end else begin
+      Reply(mstr(232) + " " + mstr(233));
+      NOption(235,node999,4);
+   end
+
+end
+
+procedure pimp
+begin
+Reply(238);
+if (dude_caps >= 100) then begin
+   GOption(239,pimp_female,4);
+   GOption(240,pimp_male,4);
+   GOption(241,pimp_dance,4);
+   BOption(242,pimp_dusty,4);
+end
+BOption(243,node999,4);
+end
+
+procedure pimp_dusty
+begin
+   set_global_var(GVAR_KNOW_MARY_JO, 1);
+Reply(246);
+if (dude_caps >= 100) then begin
+   GOption(239,pimp_female,4);
+   GOption(240,pimp_male,4);
+   GOption(241,pimp_dance,4);
+end
+BOption(243,node999,4);
+end
+
+procedure pimp_female
+begin
+   Reply(244);
+   GOption(245,pimp_female_act,4);
+end
+
+procedure pimp_male
+begin
+   Reply(244);
+   GOption(245,pimp_male_act,4);
+end
+
+procedure pimp_dance
+begin
+   Reply(244);
+   GOption(245,pimp_dance_act,4);
+end
+
+procedure pimp_female_act
+begin
+   set_global_var(GVAR_KNOW_MARY_JO, 1);
+   set_global_var(GVAR_KNOW_MARY_JO_BIRTHMARK, 1);
+   item_caps_adjust(dude_obj, -100);
+   fadeout(1);
+   move_to(dude_obj, 16887, 0);
+   critter_attempt_placement(dude_obj, 16887, 0);
+   reg_anim_clear(dude_obj);
+   reg_anim_begin();
+   anim(dude_obj, ANIMATE_ROTATION, 5);
+   reg_anim_end();
+   do_default_sex;
+   game_time_advance(ONE_GAME_MINUTE * (dude_endurance * 6));
+   tile_set_center(dude_tile);
+   display_mstr(248);
+   fadein(1);
+end
+
+procedure pimp_male_act
+begin
+   item_caps_adjust(dude_obj, -100);
+   fadeout(1);
+   move_to(dude_obj, 16878, 0);
+   critter_attempt_placement(dude_obj, 16878, 0);
+   reg_anim_clear(dude_obj);
+   reg_anim_begin();
+   anim(dude_obj, ANIMATE_ROTATION, 5);
+   reg_anim_end();
+   do_default_sex;
+   game_time_advance(ONE_GAME_MINUTE * (dude_endurance * 6));
+   tile_set_center(dude_tile);
+   display_mstr(247);
+   fadein(1);
+end
+
+procedure pimp_dance_act
+begin
+
+   dance = random(1, 3);
+
+   pole1 = obj_blocking_tile(16276, dude_elevation, BLOCKING_TYPE_BLOCK);
+   pole2 = obj_blocking_tile(16274, dude_elevation, BLOCKING_TYPE_BLOCK);
+
+   item_caps_adjust(dude_obj, -100);
+   fadeout(1);
+   move_to(dude_obj, 16875, 0);
+   critter_attempt_placement(dude_obj, 16875, 0);
+   reg_anim_clear(dude_obj);
+   reg_anim_begin();
+   anim(dude_obj, ANIMATE_ROTATION, 5);
+   reg_anim_end();
+   tile_set_center(dude_tile);
+   if ((dance == 1) or (dance == 3)) then begin
+      set_obj_visibility(pole1, 1);
+      stripper1 = create_object(PID_STRIPPER_BRUNETTE, 16276, dude_elevation);
+   end
+
+   if ((dance == 2) or (dance == 3)) then begin
+      set_obj_visibility(pole2, 1);
+      stripper2 = create_object(PID_STRIPPER_BLACK_HAIR, 16274, dude_elevation);
+   end
+
+   game_ui_disable;
+   party_no_follow_on;
+   add_timer_event(self_obj,game_ticks(30),3);
+   fadein(1);
+   dude_floater_high_rand(249, 255);
+end
+
+// End Dialogue.
+
+//xxxxxxxxxxxxxxxxxxxx
+
+procedure timed_event_p_proc
+begin
+
+   if ((fixed_param == 1) and self_can_speak and (random(1,30) == 1)) then begin
+      floater_rand(400,407);
+   end
+   else if ((fixed_param == 2) and self_can_speak) then begin
+      variable rnd:=0;
+      rnd := random(1,3);
+      reg_anim_clear(self_obj);
+      reg_anim_begin();
+      if (rnd == 1) then begin
+         animate_rotation(0);
+         reg_anim_obj_move_to_tile(self_obj,SHELF,0);
+      end
+      else if (rnd == 2) then begin
+         animate_rotation(5);
+         reg_anim_obj_move_to_tile(self_obj,DRINKS,0);
+      end
+      else if (rnd == 3) then begin
+         animate_rotation(3);
+         reg_anim_obj_move_to_tile(self_obj,BAR,0);
+      end
+      reg_anim_animate(self_obj,ANIM_magic_hands_middle,-1);
+      reg_anim_end();
+      add_timer_event(self_obj,game_ticks(random(5,15)),2);
+   end
+   else if (fixed_param == 3) then begin
+      fadeout(1);
+      if ((dance == 1) or (dance == 3)) then begin
+         set_obj_visibility(stripper1, 1);
+         destroy_object(stripper1);
+         set_obj_visibility(pole1, 0);
+      end
+
+      if ((dance == 2) or (dance == 3)) then begin
+         set_obj_visibility(stripper2, 1);
+         destroy_object(stripper2);
+         set_obj_visibility(pole2, 0);
+      end
+
+      fadein(1);
+      party_no_follow_off;
+      game_ui_enable;
+   end
+   add_timer_event(self_obj,game_ticks(random(10,15)),1);
+end

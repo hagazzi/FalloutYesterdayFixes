@@ -1,0 +1,3 @@
+# Grammar pass done
+
+{100}{}{You stumble upon a vast town surrounding a towering pre-war dam, its fortified gate guarded by turrets and soldiers. Scorch marks and craters scar the landscape.}

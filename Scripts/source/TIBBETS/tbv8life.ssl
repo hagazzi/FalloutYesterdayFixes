@@ -1,0 +1,77 @@
+#include "..\headers\define.h"
+#include "..\headers\vault8.h"
+#include "..\headers\command.h"
+
+procedure start;
+procedure description_p_proc;
+procedure use_p_proc;
+procedure use_skill_on_p_proc;
+procedure look_at_p_proc;
+
+/* Defines */
+#define NAME                  SCRIPT_TBV8LIFE
+
+procedure start begin
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   display_mstr(100);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(101);
+end
+
+procedure use_p_proc begin
+   script_overrides;
+   if(map_var(MVAR_POWER) == 0) then begin
+      display_mstr(102);
+      play_sfx("vcomp6");
+   end
+   else if(map_var(MVAR_POWER) == 1 and map_var(MVAR_LIFE) == 0) then begin
+      display_mstr(103);
+      play_sfx("vcomp7");
+   end
+   else if(map_var(MVAR_LIFE) == 1) then begin
+      display_mstr(104);
+      play_sfx("vcomp8");
+   end
+end
+
+procedure use_skill_on_p_proc begin
+ if (action_being_used == SKILL_SCIENCE) then begin
+
+      if(map_var(MVAR_LIFE) == 1) then begin
+         return;
+      end
+
+       script_overrides;
+       if(map_var(MVAR_POWER) == 1) then begin
+            if(is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, 0))) then begin
+               give_xp(250);
+               display_mstr(105);
+               set_map_var(MVAR_LIFE, 1);
+               set_global_var(GVAR_QUEST_ACTIVATE_LIFE_SUPPORT, 2);
+               play_sfx("vcomp8");
+               play_sfx("acstart");
+               play_sfx("SIMTEK14");
+               display_msg(message_str(SCRIPT_VAULT8, 108));
+            end
+            else begin
+               display_mstr(106);
+               play_sfx("vcomp7");
+            end
+       end else begin
+               display_mstr(107);
+               play_sfx("vcomp6");
+       end
+   end
+end
+

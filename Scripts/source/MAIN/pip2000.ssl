@@ -1,0 +1,100 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+#define NAME                    SCRIPT_PIP2000
+
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure pickup_p_proc;
+
+
+procedure start begin
+   if (script_action == pickup_proc) then begin
+		call pickup_p_proc;
+	end
+end
+
+procedure pickup_p_proc begin
+
+if(source_obj == dude_obj) then begin
+    set_pipboy_available(1);
+end
+
+end
+
+
+procedure use_p_proc begin
+    variable r, d, m;
+    r := random(1, 100);
+    d := get_day;
+    m := get_month;
+
+    if(d + m == 2) then begin
+        play_sfx("piphnyd");
+        display_mstr(100);
+        return;
+    end else if (d == 14 and m == 2) then begin
+        play_sfx("piphvd");
+        display_mstr(101);
+        return;
+    end else if (d == 1 and m == 4) then begin
+        play_sfx("piphafd");
+        display_mstr(102);
+        return;
+    end else if (d == 10 and m == 6) then begin
+        play_sfx("piphsd");
+        display_mstr(103);
+        return;
+    end else if (d == 4 and m == 7) then begin
+        play_sfx("piphid");
+        display_mstr(104);
+        return;
+    end else if (d == 31 and m == 10) then begin
+        play_sfx("piphh");
+        display_mstr(105);
+        return;
+    end else if (d == 26 and m == 11) then begin
+        play_sfx("piphtd");
+        display_mstr(106);
+        return;
+    end else if (d == 25 and m == 12) then begin
+        play_sfx("pipmc");
+        display_mstr(107);
+        return;
+    end
+
+    if(r >= 90 and r <= 95) then begin
+        play_sfx("pipdooda");
+        display_mstr(202);
+    end else if(r >= 96 and r <= 98) then begin
+        play_sfx("pipnewtn");
+        display_mstr(204);
+    end else if(r >= 99) then begin
+        play_sfx("piptesla");
+        display_mstr(203);
+    end else if (r >= 1 and r <= 33) then begin
+        play_sfx("piptalk1");
+        display_mstr(200);
+    end else if (r >= 34 and r <= 66) then begin
+        play_sfx("pipfixit");
+        display_mstr(205);
+    end else begin
+        play_sfx("piptalk2");
+        display_mstr(201);
+    end
+end

@@ -1,0 +1,103 @@
+;
+; Fallout 2 team quotes
+;
+; Begun 10/22/97
+;
+; The fonts used to display this file are the reverse of the
+; credits.txt file.  In other words, the font used to display
+; titles in credits.txt (the lines with the '@') is the font
+; used to display these quotes.  Putting an '@' at the start of
+; a line in this file will use the font used to display the
+; names in the credits.txt file (currently 104).
+;
+; Max line length with the current font (103) is about 63.
+; Anything longer than that won't be displayed, as it won't fit
+; on the screen.
+;
+; All lines are automatically centered on the display.
+;
+; See top of credits.txt for additional info.
+;
+@Quotes from the Fallout Yesterday team:
+(Press ESC if you don't want to see some raw language)
+
+
+
+What's that thing?
+-TBS
+
+Something nasty.
+-PJ Hexer
+
+Oh, God - there's loads I'd be interested in.
+-Grotsnik
+
+I'm gonna implement driving under the influence.
+-PJ Hexer
+
+Slaying the king of all streetlights nets you 1000 xp.
+-Vaarna Aarne
+
+There's a bug with race reset after gender change.
+-PJ Hexer
+
+Since then I've declared my war on the Sun.
+-TBS
+
+-No, just wondering. It's at an impressive size already.
+-QAN
+
+I opened a Pandora's box!
+-PJ Hexer
+
+Just throw something at me and I'll have a go at it.
+-Grotsnik
+
+Her teeth are sharpened.
+-PJ Hexer
+
+I accidentally kicked my extension.
+-TBS
+
+I agree, we can polish this thing really good.
+-PJ Hexer
+
+"How do you eat a death claw, son?" The Tribal asks his son.
+The Boy looks at his dad and asks, "How pa?"
+The older man smiles, "One piece at a time."
+-Carib
+
+In China those are normal.
+-PJ Hexer
+
+Spiders don't have necks.
+-TBS
+
+Lynette was the master bitch.
+-PJ Hexer
+
+I will store it in the deepest folder tree,
+so it will lay forgotten.
+-PJ Hexer
+
+They die like flies near me.
+-TBS
+
+I have 3 sizes.
+-PJ Hexer
+
+I have a feeling you'll be awake when you get up.
+-PJ Hexer
+
+Also, those fruit fly (cozazon?) are even more
+annoying than the rad tarantualas.
+-QAN
+
+What does hitting the upper limit mean for us going forwards?
+-J4N3
+
+Bro, if you're not, USE THE FONLINE ENGINE FOR THE LOVE OF GOD.
+-TBS
+
+I guess the game will be released in about a year and a half.
+-PJ Hexer

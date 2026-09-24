@@ -1,0 +1,31 @@
+# Grammar pass done
+
+{100}{}{You see a crazy.}
+{101}{}{Mmmm... brains.}
+{102}{}{Send more adventurers, fresh meat.}
+{103}{}{Mooooaaaan...}
+{104}{}{Make the pain go away.}
+{105}{}{Braaaains!}
+{106}{}{Hun-gry!}
+{107}{}{I hate smoothskins!}
+{108}{}{Die, normie!}
+{109}{}{Attack! Tear them apart!}
+{110}{}{Do you believe you're superior to me?}
+{111}{}{Ghouls are the next stage of evolution, mark my words.}
+{112}{}{Aiiiieeeeeeeeee!}
+{113}{}{Do not trifle with me, or you'll regret it.}
+
+
+{201}{}{Mmmm....cerebros.}
+{202}{}{Envía más aventureros.}
+{203}{}{Mooooaaaan...}
+{204}{}{Haz que el dolor pare.}
+{205}{}{Cerebros!}
+{206}{}{Hambri-ento!}
+{207}{}{Odio las pieles rosadas!}
+{208}{}{Morir normie!}
+{209}{}{Ataque!}
+{210}{}{¿Crees que eres mejor que yo?}
+{211}{}{Los necrófagos son el siguiente paso en la cadena evolutiva.}
+{212}{}{Aiiiieeeeeeeeee!}
+{213}{}{No te metas conmigo.}

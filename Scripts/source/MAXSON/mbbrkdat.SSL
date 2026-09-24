@@ -1,0 +1,153 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_MBBRKDAT
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_skill_on_p_proc;
+procedure use_obj_on_p_proc;
+procedure repair_time(variable ok);
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+procedure animfrvr;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_skill_on_p_proc begin
+
+   if (action_being_used == SKILL_REPAIR and global_var(GVAR_QUEST_REPAIR_BROKEN_MEMORY_BANKS) < 2) then begin
+       script_overrides;
+
+      if(skill_success(source_obj, SKILL_REPAIR, -80)) then begin
+         set_global_var(GVAR_QUEST_REPAIR_BROKEN_MEMORY_BANKS, 2);
+         display_mstr(100);
+         give_xp(800);
+         call repair_time(1);
+      end else begin
+         display_mstr(101);
+         call repair_time(0);
+      end
+
+   end else if (action_being_used == SKILL_SCIENCE) then begin
+      script_overrides;
+
+      if(skill_success(source_obj, SKILL_SCIENCE, -80)) then begin
+         display_mstr(102);
+      end else begin
+         display_msg(mstr_skill(611));
+      end
+
+   end
+
+end
+
+procedure use_obj_on_p_proc begin
+   variable tool := obj_pid(obj_being_used_with);
+
+   if (
+      tool == PID_WRENCH or
+      tool == PID_MULTI_TOOL or
+      tool == PID_SUPER_TOOL_KIT
+   ) and (global_var(GVAR_QUEST_REPAIR_BROKEN_MEMORY_BANKS) < 2) then begin
+      script_overrides;
+      if(skill_success(source_obj, SKILL_REPAIR, -60)) then begin
+       display_mstr(103);
+       give_xp(800);
+         set_global_var(GVAR_QUEST_REPAIR_BROKEN_MEMORY_BANKS, 2);
+
+       call repair_time(1);
+      end else begin
+         display_mstr(101);
+         call repair_time(0);
+      end
+   end
+end
+
+
+procedure repair_time(variable ok) begin
+   fadeout(1);
+     if(ok == 1) then  begin
+        add_timer_event(self_obj, 1, 1);
+     end
+   game_time_advance(ONE_GAME_HOUR * 8);
+   fadein(1);
+
+end
+
+procedure animfrvr begin
+
+   if(global_var(GVAR_QUEST_REPAIR_BROKEN_MEMORY_BANKS) < 2) then
+      return;
+
+   reg_anim_begin();
+   reg_anim_animate_forever(self_obj, ANIM_stand);
+   reg_anim_end();
+end
+
+procedure timed_event_p_proc begin
+
+ if (fixed_param == 1) then begin
+     if (
+        (not(anim_busy(self_obj))) and
+        (not(combat_is_initialized)) and
+        (self_elevation == dude_elevation)
+        ) then begin
+           call animfrvr;
+     end
+     add_timer_event(self_obj, 1, 1);
+ end
+end
+
+procedure map_enter_p_proc begin
+   call animfrvr;
+   add_timer_event(self_obj, 1, 1);
+end
+
+procedure map_update_p_proc begin
+   if (
+      (not(combat_is_initialized)) and
+      (self_elevation == dude_elevation)
+   ) then
+   begin
+      call animfrvr;
+   end
+end

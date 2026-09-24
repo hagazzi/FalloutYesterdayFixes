@@ -1,0 +1,84 @@
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MAXBTURR
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+
+procedure start;
+procedure critter_p_proc;
+procedure dismantle_laser_rifle;
+procedure use_skill_on_p_proc;
+procedure destroy_p_proc;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+procedure start begin
+end
+
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+ inc_neutral_critter
+set_global_var(GVAR_DESTROYED_MAXSON_TURRET, 1);
+/* Set global_variable for Enemy status*/
+end
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if (self_can_see_dude and (tile_distance_objs(self_obj,dude_obj) <= 17) and (global_var(GVAR_WELCOME_BOS) < 1)) then begin
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   if (
+   action_being_used == SKILL_REPAIR
+   ) then begin
+       script_overrides;
+
+      call dismantle_laser_rifle;
+
+   end else if (action_being_used == SKILL_SCIENCE) then begin
+      script_overrides;
+
+      if(skill_success(source_obj, SKILL_SCIENCE, -20)) then begin
+         display_mstr(100);
+      end else begin
+         display_mstr(101);
+      end
+   end else if (action_being_used == SKILL_STEAL) then begin
+       script_overrides;
+   end
+end
+
+procedure dismantle_laser_rifle begin
+
+   if(skill_success(source_obj, SKILL_REPAIR, -125)) then begin
+      display_msg(mstr_skill(612) + " " + obj_name(self_obj) + mstr(102));
+      transfer_pid_between_objs(self_obj, source_obj, PID_LASER_RIFLE_EXT_CAP, 1)
+      critter_dmg(self_obj, 150, DMG_emp);
+   end else begin
+      display_msg(mstr_skill(613) + " " + obj_name(self_obj)  + mstr(102));
+      self_attack_dude;
+   end
+end

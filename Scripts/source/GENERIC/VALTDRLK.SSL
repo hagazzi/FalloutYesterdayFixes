@@ -1,0 +1,4 @@
+#define CLOSE_STATUS                 STATE_DOOR_CLOSE
+#define LOCKED_STATUS                STATE_ACTIVE
+
+#include "..\generic\zimtldor.ssl"

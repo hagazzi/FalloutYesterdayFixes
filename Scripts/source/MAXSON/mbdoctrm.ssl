@@ -1,0 +1,317 @@
+/*
+
+        Name:           Maxson Bunker Network
+        Location:
+        Description:
+
+           Created: 27/12/2020 17:15:52
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+#include "..\HEADERS\maxbunkr.h"
+
+#define NAME                    SCRIPT_MBDOCTRM
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+
+procedure talk_p_proc;
+procedure use_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+procedure Skill_Check_000_Doctor;
+procedure solve_illness_mystery (variable hours, variable xp) ;
+
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+procedure Node012;
+procedure Node013;
+procedure Node014;
+procedure Node015;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+
+procedure use_p_proc begin
+if (source_obj == dude_obj) then
+   dialogue_system_enter;
+end
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       call Node001;
+       gSay_End;
+       end_dialogue;
+
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure Skill_Check_000_Doctor begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_DOCTOR, -90);
+if is_success(roll_temp) then
+begin
+call Node006;
+end
+else begin
+call Node005;
+ end
+end
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Node001
+begin
+Reply(200);
+NOption(201,Node002,1);
+NOption(202,Node999,1);
+end
+
+procedure Node002
+begin
+Reply(230);
+NOption(231,Node004,1);
+NOption(232,Node003,1);
+NOption(233,Node007,1);
+if (global_var(GVAR_KNOW_PIERRE_BOS) == 1) then begin
+   NOption(236,Node011,1);
+end
+if(obj_is_carrying_obj_pid(dude_obj,PID_DEPLETED_POISONED_STIMPAK)>0 and global_var(GVAR_QUEST_FIND_POISONER) == 1) then begin
+   NOption(234,Node008,1);
+end
+if(obj_is_carrying_obj_pid(dude_obj,PID_DEPLETED_POISONED_STIMPAK)>0 and global_var(GVAR_QUEST_CURE_COMMANDER) == 1) then begin
+   NOption(235,Node009,1);
+end
+NOption(237,Node012,1);
+NOption(202,Node999,1);
+end
+
+procedure Node003
+begin
+   set_global_var(GVAR_KNOW_JEAN_BAPTISTE, 1);
+   set_global_var(GVAR_KNOW_LOCATION_JEAN, 1);
+Reply(260);
+NOption(261,Node002,1);
+NOption(202,Node999,1);
+end
+
+procedure Node004
+begin
+Reply(290);
+NOption(291,Skill_Check_000_Doctor,1);
+NOption(292,Node010,1);
+NOption(261,Node002,1);
+NOption(202,Node999,1);
+end
+
+procedure Node005
+begin
+fadeout(1);
+game_time_advance(12 * ONE_GAME_HOUR);
+fadein(1);
+Reply(320);
+NOption(321,Node999,4);
+NOption(322,Node999,-3);
+end
+
+procedure Node006
+begin
+
+   call solve_illness_mystery(12, 2000);
+
+
+   Reply(350);
+NOption(351,Node999,4);
+NOption(352,Node999,-3);
+end
+
+procedure Node007
+begin
+Reply(380);
+NOption(261,Node002,1);
+NOption(202,Node999,1);
+end
+
+procedure Node008
+begin
+   set_map_var(MVAR_KNOW_POISONER_STIMPAK, 1);
+Reply(410);
+NOption(411,Node999,1);
+end
+
+procedure Node009
+begin
+
+call solve_illness_mystery(4, 1500);
+
+Reply(440);
+NOption(441,Node999,1);
+end
+
+procedure Node010
+begin
+   set_map_var(MVAR_DL_MEDICAL_RECORD, 1);
+Reply(470);
+NOption(261,Node002,1);
+NOption(202,Node999,1);
+end
+
+procedure solve_illness_mystery (variable hours, variable xp) begin
+   give_xp(xp);
+   set_global_var(GVAR_QUEST_CURE_COMMANDER, 2);
+   fadeout(1);
+   game_time_advance(hours * ONE_GAME_HOUR);
+   fadein(1);
+   display_mstr(105);
+end
+
+procedure Node011
+begin
+Reply(500);
+NOption(261,Node002,1);
+NOption(202,Node999,1);
+end
+
+procedure Node012
+begin
+Reply(530);
+NOption(531,Node013,1);
+end
+
+procedure Node013
+begin
+Reply(560);
+NOption(531,Node014,1);
+end
+
+procedure Node014
+begin
+Reply(590);
+NOption(531,Node015,1);
+end
+
+procedure Node015
+begin
+Reply(620);
+NOption(261,Node002,1);
+NOption(202,Node999,1);
+end
+
+//xxxxxxxxxxxxxxxxxxxx

@@ -1,0 +1,71 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_MVCAVROP
+
+/* Standard Script Procedures */
+procedure start;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure map_enter_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+end
+
+procedure look_at_p_proc begin
+
+end
+
+procedure description_p_proc begin
+
+end
+
+
+procedure map_enter_p_proc begin
+
+   if (global_var(GVAR_MVCAVES_FREEFALL) == 1) then begin
+      set_obj_visibility(self_obj, 1);
+   end
+   else if (global_var(GVAR_MVCAVES_ROPE) == 1) then begin
+      set_obj_visibility(self_obj, 0);
+   end
+   else if (global_var(GVAR_MVCAVES_ROPE) == 0) then begin
+      set_obj_visibility(self_obj, 1);
+   end
+
+end

@@ -1,0 +1,668 @@
+#
+# #############################################################################
+#
+# Text labels and messages used by town and world map
+#
+# #############################################################################
+#
+
+#
+# Town map entry-point selection names
+#
+# Format:
+#	city type.
+#	Up to 10 selection names
+#
+# Tibbets
+{200}{}{Cell Block 13}
+{201}{}{Security Hub}
+{202}{}{Service Area}
+{203}{}{Breach}
+{204}{}{Temple Interior}
+#
+# Den
+{210}{}{West Side}
+{211}{}{East Side}
+{212}{}{Den Residential}
+#
+# Klamath
+{220}{}{Downtown}
+{221}{}{Trapper Town}
+{222}{}{Rat Caves}
+{223}{}{Trapping Grounds}
+{224}{}{Grazing Area}
+{225}{}{Canyon}
+#
+# Modoc
+{230}{}{Main Street}
+{231}{}{Bed & Breakfast}
+{232}{}{Grisham's Brahmin Pastures}
+{233}{}{Farrel's Garden}
+{234}{}{Down the John}
+{235}{}{Town Well}
+#
+# Fort Abandon
+{240}{}{Courtyard}
+{241}{}{Oil Refinery}
+{242}{}{Parking Lot}
+{243}{}{Farm}
+#
+# Gecko
+{250}{}{Settlement}
+{251}{}{Power Plant}
+{252}{}{Junkyard}
+{253}{}{Access Tunnels}
+#
+# Mesa Verde
+{260}{}{Canyon}
+{261}{}{Village}
+{262}{}{Mesa Top}
+#
+# New Reno
+{270}{}{Virgin Street}
+{271}{}{2nd Street}
+{272}{}{Commercial Row}
+{273}{}{East Side}
+{274}{}{Chop Shop}
+{275}{}{Boxing Arena}
+{276}{}{Vertibird Area}
+#
+# Brotherhood
+{280}{}{Cliff}
+{281}{}{Maxson Bunker: Entrance}
+{282}{}{Maxson Bunker: Level 1}
+{283}{}{Maxson Bunker: Level 2}
+{284}{}{Maxson Bunker: Level 3}
+{285}{}{Maxson Bunker: Entrance}
+#
+# Vault 15
+{290}{}{South Gate}
+{291}{}{North Gate}
+{292}{}{The Rim}
+{293}{}{Downtown}
+{294}{}{Baseline}
+{295}{}{Scum Pits}
+{296}{}{S1C}
+#
+# New California Republic
+{300}{}{Bazaar}
+{301}{}{Council 2}
+{302}{}{Downtown}
+{303}{}{Council Hall}
+{304}{}{Westin Ranch}
+{305}{}{Grazing Lands}
+#
+# Reservation
+{310}{}{Front Gate}
+{311}{}{Trading Post}
+#
+# Military Base
+{320}{}{Entrance}
+{321}{}{Level 1}
+{322}{}{Level 2}
+{323}{}{Level 3}
+{324}{}{Level 4}
+#
+# Redding
+{330}{}{Downtown}
+{331}{}{Great Wanamingo Mine}
+{332}{}{Wanamingo Mine}
+{333}{}{Mining Camp}
+{334}{}{Downtown Tunnels}
+{335}{}{Mine Tunnels}
+#
+# Bloomfield Space Center
+{340}{}{Control Center}
+{341}{}{Runway}
+{342}{}{Fuel Tanks}
+{343}{}{Launch Pad}
+{344}{}{Operations & Communications}
+{345}{}{Sub-Reactor}
+#
+# Navarro
+{350}{}{Gas Station}
+{351}{}{Main Gate}
+#
+# The Enclave
+{360}{}{Dock}
+{361}{}{Detention Center}
+{362}{}{End Boss}
+{363}{}{Barracks}
+{364}{}{Presidential Area}
+{365}{}{Reactor}
+{366}{}{Trap Room}
+#
+# Abbey
+{370}{}{Error:Blank}
+#
+# Primitive Tribe
+{380}{}{Error:Blank}
+#
+# Environmental Protection Agency
+{390}{}{Error:Blank}
+#
+# Modoc: Ghost Town Sub-Area
+{400}{}{The Ghost Town}
+{401}{}{Main Cavern}
+{402}{}{Underground Lake}
+#
+# Car Out of Gas
+{410}{}{Car outta power}
+#
+# Destroyed Arroyo
+{420}{}{Destroyed Bridge}
+#
+# Klamath Toxic Caves
+{430}{}{Toxic Caves}
+#
+# Den Slave Runs
+{440}{}{Den Slave Run}
+#
+# Raiders
+{450}{}{Well}
+{451}{}{Cliff}
+{452}{}{Entry Cave}
+#
+# Random Encounter Desert
+{460}{}{Desert}
+{461}{}{Desert}
+{462}{}{Desert}
+{463}{}{Desert}
+{464}{}{Desert}
+{465}{}{Desert}
+{466}{}{Desert}
+{467}{}{Desert}
+{468}{}{Desert}
+{469}{}{Desert}
+#
+# Random Encounter Mountain
+{470}{}{Mountain}
+{471}{}{Cavern}
+{472}{}{Mountain}
+{473}{}{Cavern}
+{474}{}{Cavern}
+{475}{}{Cavern}
+{476}{}{Cavern}
+{477}{}{Cavern}
+{478}{}{Mountain}
+{479}{}{Mountain}
+#
+# Random Encounter City
+{480}{}{Ruined City}
+{481}{}{Ruined City}
+{482}{}{Ruined City}
+{483}{}{Ruined City}
+{484}{}{Ruined City}
+{485}{}{Ruined City}
+{486}{}{Ruined City}
+{487}{}{Ruined City}
+#
+# Random Encounter Coast
+{490}{}{Coastline}
+{491}{}{Coastline}
+{492}{}{Coastline}
+{493}{}{Coastline}
+{494}{}{Coastline}
+{495}{}{Coastline}
+{496}{}{Coastline}
+{497}{}{Coastline}
+{498}{}{Coastline}
+{499}{}{Coastline}
+#
+# New Reno: Golgatha
+{500}{}{Golgotha}
+#
+# Special Encounter: Whale Encounter
+{510}{}{Smashed Whale Guts}
+#
+# Special Encounter: Tin Woodsman
+{520}{}{Tin Woodsman}
+#
+# Special Encounter: Big Head
+{521}{}{Big Head}
+#
+# Special Encounter: Crashed Federation Shuttle
+{530}{}{Crash Site}
+#
+# Special Encounter: Unwashed Villagers
+{540}{}{Desert}
+#
+# Special Encounter: Bridge Guardian
+{550}{}{Bridge}
+#
+# Special Encounter: Cafe of Broken Dreams
+{560}{}{Cafe of Broken Dreams}
+#
+# Special Encounter: Holy Hand Grenade 1
+{570}{}{Desert}
+#
+# Special Encounter: Holy Hand Grenade 2
+{580}{}{Cavern}
+#
+# Special Encounter: Guardian of Forever
+{590}{}{Guardian of Forever}
+#
+# Special Encounter: Toxic Waste Dump
+{600}{}{Toxic Waste Dump}
+#
+# Special Encounter: Pariahs
+{610}{}{Desert}
+#
+# Special Encounter: Mad Brahmin
+{620}{}{Herd of Brahmin}
+#
+# Caravan Encounters
+{630}{}{Desert}
+{631}{}{Mountain}
+#
+# Fake Vault 13 A
+{640}{}{Vault 13 Cavern}
+#
+# Fake Vault 13 B
+{650}{}{Cavern}
+#
+# Shadow Areas (Those which fit nowhere else
+{660}{}{Coastline}
+{661}{}{Coastline}
+{662}{}{Desert}
+{663}{}{Desert}
+{664}{}{Desert}
+{665}{}{Mountain}
+{666}{}{Mountain}
+{667}{}{Desert}
+{668}{}{Desert}
+#
+# New Reno Stables
+{670}{}{Stables}
+
+
+#
+# Terrain type names for world map hover button
+#
+{1000}{}{Desert}
+{1001}{}{Mountains}
+{1002}{}{City}
+{1003}{}{Coast}
+{1004}{}{Unknown}  # Unknown/visited city
+
+
+# Misc messages
+{1500}{}{You gained 10,000 experience points!}
+{1501}{}{Ruins}
+{1502}{}{The }
+{1503}{}{This is a car. It doesn't look like it's running.}
+{1504}{}{ is out of power.}
+
+
+
+#
+# Worldmap Encounter messages
+#
+
+{2998}{}{You encounter:}
+{2999}{}{Do you wish to encounter:}
+
+# Encounter Table 0
+{3000}{}{A war party.}
+{3001}{}{A group of cannibals.}
+{3002}{}{A field of spore plants and some silver geckos.}
+{3003}{}{A group of silver geckos.}
+{3004}{}{Some trappers.}
+{3005}{}{Some mantis hunters.}
+{3006}{}{Some hunters hunting giant badgers.}
+{3007}{}{Some hunters hunting big rats.}
+{3008}{}{Some bounty hunters.}
+{3009}{}{Some bounty hunters.}
+{3010}{}{Some bounty hunters.}
+{3011}{}{Some bounty hunters.}
+{3012}{}{Some wolves fighting cannibals.}
+{3013}{}{A group of giant badgers.}
+{3014}{}{A field of spore plants.}
+{3015}{}{A group of pig rats.}
+{3016}{}{A group of rats.}
+{3017}{}{A hunting party fighting cannibals.}
+{3018}{}{A group of ants.}
+{3019}{}{Hunters fighting some radscorpions.}
+{3020}{}{A small group of pig rats.}
+{3021}{}{Some wilders.}
+{3022}{}{A hermit.}
+{3023}{}{Some yao guai.}
+{3024}{}{A group of nomads.}
+{3025}{}{A band of outcasts.}
+{3026}{}{A group of holy people.}
+{3027}{}{A group of molerats.}
+{3028}{}{Some geckos.}
+{3029}{}{Some golden geckos.}
+{3030}{}{A caravan.}
+{3031}{}{A group of molerats and pig rats.}
+{3032}{}{Some wild brahmin.}
+{3033}{}{Some giant centipedes.}
+{3034}{}{Some wild dogs.}
+{3035}{}{A swarm of mantis.}
+{3036}{}{Some traders meeting a caravan.}
+{3037}{}{A group of mutated molerats.}
+{3038}{}{A group of mutated molerats and pig rats.}
+{3039}{}{ARGOS.}
+
+# Encounter Table 1
+{3050}{}{A war party.}
+{3051}{}{A group of cannibals.}
+{3052}{}{A field of spore plants and some silver geckos.}
+{3053}{}{A group of silver geckos.}
+{3054}{}{Some hunters hunting radscorpions.}
+{3055}{}{Some hunters.}
+{3056}{}{Some hunters fighting a swarm of mantis.}
+{3057}{}{Some hunters hunting mantis.}
+{3058}{}{Some bounty hunters.}
+{3059}{}{Some bounty hunters.}
+{3060}{}{Some bounty hunters.}
+{3061}{}{Some bounty hunters.}
+{3062}{}{Some wolves fighting cannibals.}
+{3063}{}{A group of giant centipedes.}
+{3064}{}{A field of spore plants.}
+{3065}{}{A group of pig rats.}
+{3066}{}{Some cazadores.}
+{3067}{}{A hunting party fighting cannibals.}
+{3068}{}{A group of ants.}
+{3069}{}{Hunters fighting some radscorpions.}
+{3070}{}{A swarm of giant wasps.}
+{3071}{}{A small group of radscorpions.}
+{3072}{}{Some robots.}
+{3073}{}{Some sand shark.}
+{3074}{}{A group of nomads.}
+{3075}{}{A group of radscorpions.}
+{3076}{}{A caravan.}
+{3077}{}{A caravan.}
+{3078}{}{Some glowing geckos.}
+{3079}{}{ARGOS.}
+{3080}{}{Some escaped prisoners.}
+{3081}{}{Some escaped prisoners fighting robots.}
+{3082}{}{A homebot.}
+{3083}{}{A gas station.}
+{3084}{}{A big hole in the ground.}
+{3085}{}{A Guardian Portal.}
+{3086}{}{A cemetery.}
+{3087}{}{A lone street lamp.}
+
+# Encounter Table 2
+{3100}{}{A war party.}
+{3101}{}{A group of cannibals.}
+{3102}{}{A field of spore plants and some silver geckos.}
+{3103}{}{A group of silver geckos.}
+{3104}{}{Some nomads fighting hunters.}
+{3105}{}{Some trappers hunting geckos.}
+{3106}{}{Some trappers fighting fishermen.}
+{3107}{}{Some bounty hunters.}
+{3108}{}{Some bounty hunters.}
+{3109}{}{Some bounty hunters.}
+{3110}{}{Some bounty hunters.}
+{3111}{}{Some bounty hunters.}
+{3112}{}{Some wolves fighting cannibals.}
+{3113}{}{Some fishermen.}
+{3114}{}{A field of spore plants.}
+{3115}{}{A group of pig rats.}
+{3116}{}{A group of rats.}
+{3117}{}{A hunting party fighting cannibals.}
+{3118}{}{A group of ants.}
+{3119}{}{Hunters fighting some radscorpions.}
+{3120}{}{A small group of pig rats.}
+{3121}{}{A group of radtoads.}
+{3122}{}{A small group of ants.}
+{3123}{}{A hunting party.}
+{3124}{}{A group of nomads.}
+{3125}{}{A group of mutants.}
+{3126}{}{Some mutant cannibals.}
+{3127}{}{Some robots.}
+{3128}{}{Fishermen fighting some giant badgers.}
+{3129}{}{Some mirelurks fighting some fishermen.}
+{3130}{}{ARGOS.}
+{3131}{}{Some escaped prisoners.}
+{3132}{}{Some escaped prisoners fighting robots.}
+{3133}{}{A homebot.}
+{3134}{}{A group of floaters.}
+{3135}{}{Some wild brahmin.}
+{3136}{}{Some hunters hunting wild brahmin.}
+
+# Encounter Table 3
+{3150}{}{Some radroaches.}
+{3151}{}{A group of cannibals.}
+{3152}{}{A field of spore plants and some silver geckos.}
+{3153}{}{A group of silver geckos.}
+{3154}{}{Some bounty hunters fighting killers.}
+{3155}{}{An empty parking lot.}
+{3156}{}{A group of radrats.}
+{3157}{}{Some bounty hunters.}
+{3158}{}{Some bounty hunters.}
+{3159}{}{Some bounty hunters.}
+{3160}{}{Some bounty hunters.}
+{3161}{}{Some bounty hunters.}
+{3162}{}{Some wolves fighting cannibals.}
+{3163}{}{A caravan.}
+{3164}{}{A field of spore plants.}
+{3165}{}{A group of pig rats.}
+{3166}{}{A group of rats.}
+{3167}{}{Some giant radroaches fighting cannibals.}
+{3168}{}{A group of ants.}
+{3169}{}{A group of mutants fighting some giant badgers.}
+{3170}{}{A small group of pig rats.}
+{3171}{}{A small group of radscorpions.}
+{3172}{}{A small group of ants.}
+{3173}{}{Some giant radroaches.}
+{3174}{}{Some mutant cannibals.}
+{3175}{}{A caravan.}
+{3176}{}{A caravan.}
+{3177}{}{Some robots.}
+{3178}{}{ARGOS.}
+{3179}{}{Some escaped prisoners.}
+{3180}{}{Some escaped prisoners fighting robots.}
+{3181}{}{A homebot.}
+{3182}{}{Some killers.}
+{3183}{}{Some drunks.}
+{3184}{}{Some hunters hunting rats.}
+{3185}{}{Some hunters.}
+{3186}{}{Some hunters fighting radroaches.}
+{3187}{}{Some hunters.}
+{3188}{}{Some hunters fighting pig rats.}
+
+# Encounter Table 4
+{3200}{}{A field of xander roots.}
+{3201}{}{Some trash.}
+{3202}{}{Some wilder digging through trash.}
+{3203}{}{A hermit in a field of xander roots.}
+{3204}{}{Some wilder in a field of xander roots.}
+{3205}{}{A caravan fending off cazadores.}
+{3206}{}{Some hunters fending off cazadores.}
+{3207}{}{Some hunters fending off giant wasps.}
+{3208}{}{A caravan fending off sand sharks.}
+{3209}{}{A caravan fending off wolves.}
+{3210}{}{Some bounty hunters.}
+{3211}{}{Some bounty hunters.}
+{3212}{}{Some bounty hunters.}
+{3213}{}{Some bounty hunters.}
+{3214}{}{Some bounty hunters.}
+{3215}{}{Some bounty hunters.}
+{3216}{}{Some bounty hunters.}
+{3217}{}{Some bounty hunters.}
+{3218}{}{Some trappers hunting silver geckos.}
+{3219}{}{Some trappers hunting geckos.}
+{3220}{}{Some trappers hunting golden geckos.}
+{3221}{}{Some cannibals fending off cazadores.}
+{3222}{}{Some nightcrawlers.}
+{3223}{}{A huge nest.}
+{3224}{}{A big hole in the ground.}
+{3225}{}{A traveler.}
+{3226}{}{A Guardian Portal.}
+{3227}{}{A prisoner.}
+{3228}{}{A prisoner.}
+{3229}{}{A prisoner.}
+{3230}{}{A prisoner.}
+{3231}{}{A prisoner.}
+{3232}{}{A prisoner.}
+{3233}{}{A mad redhead and bounty hunters.}
+{3234}{}{A car mart.}
+{3235}{}{Some desert stalkers.}
+{3236}{}{A casino.}
+
+# Encounter Table 5
+{3250}{}{A field of broc flowers.}
+{3251}{}{A hermit in a field of broc flowers.}
+{3252}{}{Some wilder in a field of broc flowers.}
+{3253}{}{A strange tree.}
+{3254}{}{Some bounty hunters.}
+{3255}{}{Some bounty hunters.}
+{3256}{}{Some bounty hunters.}
+{3257}{}{Some bounty hunters.}
+{3258}{}{Some bounty hunters.}
+{3259}{}{Some bounty hunters.}
+{3260}{}{Some bounty hunters.}
+{3261}{}{Some bounty hunters.}
+{3262}{}{Some nightcrawlers.}
+
+# Encounter Table 6
+{3300}{}{Some escaped prisoners.}
+{3301}{}{Some escaped prisoners fighting robots.}
+{3302}{}{A homebot.}
+{3303}{}{A camp site.}
+{3304}{}{A dark cave.}
+{3305}{}{A car wreck.}
+{3306}{}{Some trappers hunting silver geckos.}
+{3307}{}{Some trappers hunting geckos.}
+{3308}{}{Some trappers hunting golden geckos.}
+{3309}{}{Some trappers fighting fire geckos.}
+{3310}{}{A caravan fending off yao guai.}
+{3311}{}{Some nightcrawlers.}
+{3312}{}{A huge nest.}
+
+# Encounter Table 7
+{3350}{}{A Brotherhood of Steel patrol.}
+{3351}{}{A Brotherhood patrol fighting cazadores.}
+{3352}{}{A Brotherhood patrol training an Initiate Knight.}
+{3353}{}{Some bounty hunters.}
+{3354}{}{Some bounty hunters.}
+{3355}{}{Some bounty hunters.}
+{3356}{}{Some bounty hunters.}
+{3357}{}{Some bounty hunters.}
+{3358}{}{Some bounty hunters.}
+{3359}{}{Some bounty hunters.}
+{3360}{}{Some bounty hunters.}
+{3361}{}{A Brotherhood patrol fighting deserters.}
+{3362}{}{A Brotherhood patrol training an Initiate Knight.}
+{3363}{}{A Brotherhood patrol ambushing a caravan.}
+{3364}{}{A Brotherhood of Steel patrol.}
+{3365}{}{A Brotherhood of Steel patrol.}
+
+# Encounter Table 8
+{3400}{}{An endless walker.}
+{3401}{}{A small group of radscorpions.}
+{3402}{}{A group of radscorpions.}
+{3403}{}{Some bounty hunters.}
+{3404}{}{Some bounty hunters.}
+{3405}{}{Some bounty hunters.}
+{3406}{}{Some bounty hunters.}
+{3407}{}{Some bounty hunters.}
+{3408}{}{Some bounty hunters.}
+{3409}{}{Some bounty hunters.}
+{3410}{}{Some bounty hunters.}
+{3411}{}{A group of slavers and slaves.}
+{3412}{}{A band of slavers.}
+{3413}{}{A group of slavers attempting to enslave some people.}
+{3414}{}{A band of slavers fending off an endless walker.}
+{3415}{}{A ghoul crazy.}
+
+# Encounter Table 9
+{3450}{}{Some Scaven-pickers.}
+{3451}{}{Some radroaches.}
+{3452}{}{Some giant radroaches.}
+{3453}{}{Some bounty hunters.}
+{3454}{}{Some bounty hunters.}
+{3455}{}{Some bounty hunters.}
+{3456}{}{Some bounty hunters.}
+{3457}{}{Some bounty hunters.}
+{3458}{}{Some bounty hunters.}
+{3459}{}{Some bounty hunters.}
+{3460}{}{Some bounty hunters.}
+{3461}{}{A group of slavers and slaves.}
+{3462}{}{A band of slavers.}
+{3463}{}{A group of slavers attempting to enslave some people.}
+{3464}{}{A Scaven-picker camp.}
+{3465}{}{A Scaven-picker camp.}
+
+# Encounter Table 10
+{3500}{}{Some Scaven-pickers.}
+{3501}{}{A group of mutated molerats.}
+{3502}{}{A group of mutated molerats and pig rats.}
+{3503}{}{Some bounty hunters.}
+{3504}{}{Some bounty hunters.}
+{3505}{}{Some bounty hunters.}
+{3506}{}{Some bounty hunters.}
+{3507}{}{Some bounty hunters.}
+{3508}{}{Some bounty hunters.}
+{3509}{}{Some bounty hunters.}
+{3510}{}{Some bounty hunters.}
+{3511}{}{A group of slavers and slaves.}
+{3512}{}{A band of slavers.}
+{3513}{}{A group of slavers attempting to enslave some people.}
+{3514}{}{A Scaven-picker camp.}
+{3515}{}{A Scaven-picker camp.}
+
+# Encounter Table 11
+{3550}{}{Some glowing one crazies.}
+{3551}{}{Some bounty hunters.}
+{3552}{}{Some bounty hunters.}
+{3553}{}{Some bounty hunters.}
+{3554}{}{Some bounty hunters.}
+{3555}{}{Some bounty hunters.}
+{3556}{}{Some bounty hunters.}
+{3557}{}{Some bounty hunters.}
+{3558}{}{Some bounty hunters.}
+
+# Encounter Table 12
+{3600}{}{Some glowing one crazies.}
+{3601}{}{Some bounty hunters.}
+{3602}{}{Some bounty hunters.}
+{3603}{}{Some bounty hunters.}
+{3604}{}{Some bounty hunters.}
+{3605}{}{Some bounty hunters.}
+{3606}{}{Some bounty hunters.}
+{3607}{}{Some bounty hunters.}
+{3608}{}{Some bounty hunters.}
+
+# Encounter Table 13
+{3650}{}{Some bounty hunters.}
+{3651}{}{Some bounty hunters.}
+{3652}{}{Some bounty hunters.}
+{3653}{}{Some bounty hunters.}
+{3654}{}{Some bounty hunters.}
+{3655}{}{Some bounty hunters.}
+{3656}{}{Some bounty hunters.}
+{3657}{}{Some bounty hunters.}
+{3658}{}{A cemetery.}
+{3659}{}{A lone streetlamp.}
+{3660}{}{Three personal fallout shelters.}
+{3661}{}{An injured traveler.}
+{3662}{}{A traveler.}
+{3663}{}{A quiet grove.}
+
+# Encounter Table 14
+{3700}{}{Some bounty hunters.}
+{3701}{}{Some bounty hunters.}
+{3702}{}{Some bounty hunters.}
+{3703}{}{Some bounty hunters.}
+{3704}{}{Some bounty hunters.}
+{3705}{}{Some bounty hunters.}
+{3706}{}{Some bounty hunters.}
+{3707}{}{Some bounty hunters.}
+{3708}{}{Some traders meeting a caravan.}
+{3709}{}{A lost Enclave patrol.}
+
+# Encounter Table 15
+{3750}{}{Some bounty hunters.}
+{3751}{}{Some bounty hunters.}
+{3752}{}{Some bounty hunters.}
+{3753}{}{Some bounty hunters.}
+{3754}{}{Some bounty hunters.}
+{3755}{}{Some bounty hunters.}
+{3756}{}{Some bounty hunters.}
+{3757}{}{Some bounty hunters.}
+{3758}{}{Some traders meeting a caravan.}
+{3759}{}{A lost Enclave patrol.}

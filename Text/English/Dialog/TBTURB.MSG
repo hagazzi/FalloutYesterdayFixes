@@ -1,0 +1,7 @@
+
+{100}{}{This computer is locked down. Maybe a more specialized approach would yield more information.}
+{101}{}{Compu off!}
+{102}{}{The computer is offline.}
+{103}{}{This computer is connected to the big turbomachine which uses a custom Teller-Ulam design to provide power to a number of levels. Everything looks in order but you don't see a generator anywhere near.}
+{104}{}{The computer output states that turbine is working at 100%. You don't see any ways of disabling it directly.}
+{105}{}{A well-placed charge next to this computer might cause damage to the turbine.}

@@ -1,0 +1,205 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\maxbunkr.h"
+
+#define NAME                    SCRIPT_GENDESC
+
+/* Standard Script Procedures */
+procedure start;
+procedure spatial_p_proc;
+
+/* Defines */
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+   if (script_action == spatial_proc) then begin
+		call spatial_p_proc;
+	end
+end
+
+procedure spatial_p_proc begin
+    variable str;
+    variable map := cur_map_index;
+    variable tile := self_tile;
+
+    if(source_obj == dude_obj) then begin
+        if(map == MAP_SPECIAL_ENCOUNTER_TEMPLE) then begin
+            if(tile == 14685) then begin
+                str := mstr(100);
+            end else if(tile == 28906) then begin
+                str := mstr(101);
+                set_global_var(GVAR_DROWNED_TEMPLE_UPPER, 1);
+            end else if(tile ==  13285) then begin
+                str := mstr(102);
+            end else if(tile ==  27086) then begin
+                str := mstr(103);
+            end
+        end else if(map == MAP_VAULT_8) then begin
+            if(tile == 19696) then begin
+                str := mstr(104);
+            end
+            else if(
+                (tile == 25694) and
+                (dude_elevation == 2) and
+                (global_var(GVAR_QUEST_FIX_GENERATOR) < 2)
+            ) then begin
+                str := message_str(SCRIPT_VAULT8, 110);
+                play_sfx("SIMTEK7");
+            end
+        end else if(map == MAP_BOMBED_OUT_CITY) then begin
+            if(tile == 14510) then begin
+                str := message_str(SCRIPT_V8EXT, 107);
+                play_sfx("SIMTEK1");
+            end
+            else if (tile == 15904) then begin
+                str := message_str(SCRIPT_V8EXT, 108);
+                play_sfx("SIMTEK2");
+            end
+            else if (tile == 16260) then begin
+                str := message_str(SCRIPT_V8EXT, 109);
+                play_sfx("SIMTEK4");
+            end
+        end else if(map == MAP_TIBBETS_ASYLUM_HOSPITAL) then begin
+            if(tile == 24080) then begin
+                str := mstr(105);
+            end
+        end else if(map == MAP_ASYLUM_MOUNTAIN_ENTRANCE_TRAM_STATION) then begin
+            if(tile == 20906) then begin
+                str := mstr(106);
+            end
+        end else if (map == MAP_BOS_CLIFF) then begin
+            if(tile == 18306) then begin
+                str := mstr(107);
+            end
+        end else if (map == MAP_MAXSON_BUNKER) then begin
+            if(tile == 31138) then begin
+                str := mstr(108);
+            end
+            else if(tile == 14056 and map_var(MVAR_KNOW_COMMANDER_BEER) == 1) then begin
+                set_map_var(MVAR_KNOW_CAMERA, 1);
+                str := mstr(109);
+            end
+            else if(tile == 24855) then begin
+                str := mstr(110);
+            end
+        end else if (map == MAP_THE_CRATER_TUNNEL) then begin
+            if(tile == 17526) then begin
+                str := mstr(111);
+            end
+            else if(tile == 17501) then begin
+                str := mstr(112);
+            end
+        end else if (map == MAP_FORT_ABANDON_OIL_REFINERY) then begin
+            if(tile == 12726) then begin
+                str := mstr(113);
+                set_global_var(GVAR_FA_SEEN_DEAD_LEGIONARY, 1);
+            end
+        end else if (map == MAP_FORT_ABANDON_PARKING) then begin
+            if(tile == 11127) then begin
+                str := mstr(114);
+            end
+            else if(tile == 11752) then begin
+                str := mstr(115);
+            end
+        end else if (map == MAP_SCRAPHEAP) then begin
+            if(tile == 19119) then begin
+                str := mstr(116);
+            end
+        end else if (map == MAP_VACCS_8) then begin
+            if(tile == 18271) then begin
+                str := mstr(117);
+            end
+        end else if (map == MAP_BOMB_001) then begin
+            if(tile == 2907 and dude_elevation == 0) then begin
+                str := mstr(118);
+            end
+        end else if (map == MAP_BOULDER_DOME_TRAIN_STATION) then begin
+            if(tile == 9936) then begin
+                fadeout(1);
+                game_time_advance(10 * ONE_GAME_MINUTE);
+                fadein(1);
+                set_global_var(GVAR_KNOW_LOCATION_PRESPER, 1);
+                str := mstr(119);
+            end
+        end else if (map == MAP_HOOVER_DAM_RIM) then begin
+            if(tile == 10225) then begin
+                str := mstr(120);
+            end
+        end else if (map == MAP_BLOOMFIELD_CONTROL_CENTER) then begin
+            if(tile == 30134) then begin
+                str := mstr(121);
+            end
+        end else if (map == MAP_BLOOMFIELD_CONTROL_CENTER_NORTH) then begin
+            if(tile == 13673) then begin
+                str := mstr(122);
+            end
+        end else if (map == MAP_HOOVER_DAM_S1C) then begin
+            if(tile == 13251) then begin
+                str := mstr(123);
+            end
+            else if(tile == 18098) then begin
+                str := mstr(124);
+            end
+        end else if (map == MAP_HOOVER_DAM_DOWNTOWN_SOUTHEAST) then begin
+            if(tile == 19119) then begin
+                str := mstr(125);
+            end
+        end else if (map == MAP_HOOVER_DAM_DOWNTOWN_NORTHWEST) then begin
+            if(tile == 15028) then begin
+                str := message_str(SCRIPT_HDDTNW, 100);
+            end
+        end else if (map == MAP_MESA_VERDE_CAVES) then begin
+            if (tile == 16043) then begin
+                str := mstr(126);
+            end
+        end else if (map == MAP_MESA_VERDE_HOUNDS_CAMP) then begin
+            if(tile == 18897) then begin
+                str := mstr(127);
+            end
+            else if(tile == 24883) then begin
+                str := mstr(128);
+            end
+        end else if (map == MAP_MESA_VERDE_VILLAGE_EAST) then begin
+            if (tile == 27706 and dude_elevation == 1) then begin
+                str := mstr(129);
+            end
+        end
+
+        if(str != "") then begin
+            display_msg(str);
+        end
+        destroy_object(self_obj);
+    end
+end

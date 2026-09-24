@@ -1,0 +1,9 @@
+
+{100}{}{You fine-tune the Auto-Doc's settings.}
+{101}{}{The Auto-Doc session finishes and you feel better already.}
+{102}{}{Hmmm... Dr. Dani use it only.}
+{103}{}{Hmmm... The biometric readings are locked to Dr. Danika.}
+{104}{}{You have lost -4 Max HP.}
+{105}{}{You have lost -2 Max HP.}
+{106}{}{You have gained +2 Max HP.}
+{107}{}{You have gained +4 Max HP.}

@@ -1,0 +1,3 @@
+
+{100}{}{You feel better.}
+{101}{}{Besides the functions of a normal shower, it can also deliver an antiseptic treatment.}

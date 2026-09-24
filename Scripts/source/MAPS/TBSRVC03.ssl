@@ -1,0 +1,67 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\updatmap.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+
+/* Defines */
+#define NAME                  SCRIPT_TBSRVC03
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if(global_var(GVAR_VT_HOLOGRAM) == 1) then begin
+      deactivate_shader(global_var(GVAR_SHADER_ID));
+      if (not(is_loading_game)) then
+         override_map_start_hex(11068, 0, 5);
+
+      set_global_var(GVAR_VT_HOLOGRAM, 2);
+      call inc_code(50);
+// for simulation loot
+      move_obj_inven_to_obj(dude_obj, tile_contains_pid_obj(22372, 0, PID_FOOTLOCKER_RUSTY_LEFT));
+// real loot
+      move_obj_inven_to_obj(tile_contains_pid_obj(22172, 0, PID_FOOTLOCKER_RUSTY_LEFT), dude_obj);
+
+      // just in case
+      call setup_pipboy;
+
+      if(dude_is_stupid or dude_is_idiot_savant) then begin
+         obj_floater_type(dude_obj, mstr(100), FLOAT_COLOR_SICK);
+      end else begin
+         obj_floater_type(dude_obj, mstr(101), FLOAT_COLOR_SICK);
+      end
+   end
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_TIBBETS), 1);
+
+   fadein(1);
+   Tibbets_Lighting;
+end
+
+procedure map_update_p_proc begin
+   Tibbets_Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

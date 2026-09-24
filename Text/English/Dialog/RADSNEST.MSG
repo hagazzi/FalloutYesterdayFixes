@@ -1,0 +1,9 @@
+
+{100}{}{Seems no one's home.}
+{101}{}{You stir the nest and a radscorpion emerges!}
+{102}{}{You stir the nest but nothing happens.}
+{103}{}{You bury the radscorpion nest.}
+{104}{}{Disturbing this nest would probably draw the attention of its inhabitants.}
+{105}{}{Burying the nest is possible using  the shovel or a well-placed explosive.}
+{106}{}{You manage to bury the radscorpion nest.}
+{107}{}{You couldn't find a way to sabotage the nest entrance using Traps.}

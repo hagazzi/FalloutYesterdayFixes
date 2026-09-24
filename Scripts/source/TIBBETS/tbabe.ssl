@@ -1,0 +1,511 @@
+/*
+
+        Name:           Brother Abraham
+        Location:
+        Description:
+
+           Created: 26/09/2020 20:04:04
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_C /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+
+#define NAME                    SCRIPT_TBABE
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+#include "..\HEADERS\tbcb29.h"
+
+/* Helper macros */
+
+variable temp;
+
+import variable maurice_ptr;
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure bar_floats;
+procedure sleeping_floats;
+procedure starter_1;
+procedure starter_2;
+procedure questions_menu;
+procedure garry_awakens;
+procedure shh_everythings_good;
+procedure want_me_to_say_someting;
+procedure so_hostile;
+procedure no_place_is_safe;
+procedure i_been_working_hard;
+procedure make_yourself_comfy;
+procedure bigger_picture;
+procedure getting_away_with_murder;
+procedure easy_target;
+procedure works_you_into_the_ground;
+procedure proud_of_it;
+procedure it_be_more_expensive_to_find_somebody_else;
+procedure work;
+procedure no_not_really;
+procedure got_me;
+procedure sure_thing;
+procedure end_sleep;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Pissed               (8)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+   call new_plague_check(self_obj, LVAR_Herebefore);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if(local_var(LVAR_Pissed) == 1) then begin
+      floater_bad_rand(200, 203);
+   end else begin
+
+      call set_idiot_savant_int;
+
+         start_gdialog(NAME,self_obj,4,-1,-1);
+         gSay_Start;
+
+   if (local_var(LVAR_Herebefore)==0) then begin
+         call starter_1;
+   end else if (local_var(LVAR_Herebefore)==1) then begin
+         call starter_2;
+   end
+         gSay_End;
+         end_dialogue;
+
+      call restore_idiot_savant_int;
+   end
+end
+
+procedure timed_event_p_proc begin
+
+   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+
+    if (random(1, 30) == 1 and self_can_speak) then begin
+      floater_rand(230,237);
+    end
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+/* inc_evil_critter */
+/* inc_neutral_critter */
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure bar_floats
+begin
+floater_rand(200,203);
+end
+
+procedure sleeping_floats
+begin
+floater_rand(230,237);
+end
+
+
+procedure starter_1
+begin
+Reply(260);
+NOption(261,garry_awakens,4);
+NOption(262,garry_awakens,-3);
+NOption(263,Node999,1);
+end
+
+procedure starter_2
+begin
+Reply(290);
+NOption(291,shh_everythings_good,4);
+NOption(292,shh_everythings_good,-3);
+NOption(263,Node999,1);
+end
+
+procedure questions_menu
+begin
+Reply(320);
+NOption(321,want_me_to_say_someting,4);
+NOption(322,getting_away_with_murder,4);
+NOption(323,easy_target,4);
+NOption(324,Node999,4);
+NOption(325,want_me_to_say_someting,-3);
+NOption(326,getting_away_with_murder,-3);
+NOption(327,easy_target,-3);
+NOption(328,Node999,-3);
+end
+
+procedure garry_awakens
+begin
+Reply(350);
+NOption(321,want_me_to_say_someting,4);
+BOption(351,so_hostile,4);
+NOption(352,Node999,4);
+NOption(353,no_place_is_safe,4);
+NOption(354,want_me_to_say_someting,-3);
+NOption(355,so_hostile,-3);
+NOption(356,Node999,-3);
+NOption(357,no_place_is_safe,-3);
+end
+
+procedure shh_everythings_good
+begin
+Reply(380);
+NOption(381,work,4);
+NOption(382,no_not_really,4);
+NOption(383,Node999,4);
+NOption(384,no_not_really,-3);
+NOption(385,Node999,-3);
+NOption(386,work,4);
+end
+
+procedure want_me_to_say_someting
+begin
+Reply(410);
+BOption(351,so_hostile,4);
+NOption(411,i_been_working_hard,4);
+NOption(412,Node999,4);
+NOption(413,so_hostile,-3);
+NOption(414,i_been_working_hard,-3);
+NOption(415,Node999,-3);
+end
+
+procedure so_hostile
+begin
+Reply(440);
+NOption(441,bigger_picture,4);
+NOption(442,getting_away_with_murder,4);
+NOption(443,Node999,4);
+NOption(444,bigger_picture,-3);
+NOption(445,getting_away_with_murder,-3);
+NOption(446,Node999,-3);
+end
+
+procedure no_place_is_safe
+begin
+   set_map_var(MVAR_ABE_HOLY_WATER, 1);
+Reply(470);
+NOption(471,getting_away_with_murder,4);
+NOption(472,proud_of_it,4);
+NOption(473,Node999,4);
+NOption(mstr(474)+dude_name+mstr(475),getting_away_with_murder,-3);
+NOption(476,proud_of_it,-3);
+NOption(477,Node999,-3);
+end
+
+procedure i_been_working_hard
+begin
+Reply(500);
+NOption(501,make_yourself_comfy,4);
+NOption(502,Node999,4);
+NOption(503,make_yourself_comfy,-3);
+NOption(446,Node999,-3);
+end
+
+procedure make_yourself_comfy
+begin
+Reply(530);
+NOption(531,end_sleep,4);
+NOption(532,Node999,4);
+NOption(533,end_sleep,-3);
+NOption(534,Node999,-3);
+end
+
+procedure bigger_picture
+begin
+Reply(560);
+NOption(561,easy_target,4);
+NOption(562,Node999,4);
+NOption(563,easy_target,-3);
+NOption(mstr(564)+dude_name+mstr(565),Node999,-3);
+end
+
+procedure getting_away_with_murder
+begin
+Reply(590);
+NOption(591,it_be_more_expensive_to_find_somebody_else,4);
+NOption(592,make_yourself_comfy,4);
+NOption(593,it_be_more_expensive_to_find_somebody_else,-3);
+NOption(594,make_yourself_comfy,-3);
+NOption(595,Node999,-3);
+NOption(596,Node999,4);
+end
+
+procedure easy_target
+begin
+Reply(620);
+NOption(621,works_you_into_the_ground,4);
+NOption(622,make_yourself_comfy,4);
+NOption(623,questions_menu,4);
+NOption(624,works_you_into_the_ground,-3);
+NOption(625,make_yourself_comfy,-3);
+NOption(626,questions_menu,-3);
+end
+
+procedure works_you_into_the_ground
+begin
+Reply(650);
+NOption(651,proud_of_it,4);
+NOption(652,proud_of_it,4);
+NOption(653,proud_of_it,-3);
+NOption(654,proud_of_it,-3);
+end
+
+procedure proud_of_it
+begin
+if (dude_is_male) then Reply(680); else
+if (dude_is_female) then Reply(681);
+NOption(682,it_be_more_expensive_to_find_somebody_else,4);
+NOption(683,make_yourself_comfy,4);
+NOption(684,Node999,4);
+NOption(685,it_be_more_expensive_to_find_somebody_else,-3);
+NOption(686,make_yourself_comfy,-3);
+NOption(687,Node999,-3);
+end
+
+procedure it_be_more_expensive_to_find_somebody_else
+begin
+Reply(710);
+NOption(711,questions_menu,4);
+NOption(712,Node999,4);
+NOption(713,questions_menu,-3);
+NOption(714,Node999,-3);
+end
+
+procedure work
+begin
+Reply(740);
+NOption(741,got_me,4);
+NOption(742,Node999,4);
+NOption(743,got_me,-3);
+NOption(744,Node999,-3);
+end
+
+procedure no_not_really
+begin
+Reply(770);
+NOption(771,proud_of_it,4);
+NOption(772,Node999,4);
+NOption(773,questions_menu,4);
+NOption(774,proud_of_it,-3);
+NOption(775,Node999,-3);
+NOption(776,questions_menu,-3);
+end
+
+procedure got_me
+begin
+Reply(800);
+NOption(801,sure_thing,4);
+NOption(502,Node999,5);
+NOption(802,sure_thing,-3);
+NOption(415,Node999,-3);
+end
+
+procedure sure_thing
+begin
+Reply(830);
+NOption(831,end_sleep,4);
+NOption(831,end_sleep,5);
+end
+
+procedure end_sleep
+begin
+   fadeout(1);
+
+    game_time_advance(ONE_GAME_HOUR);
+
+if(not(tile_is_blocked_hex(15292, self_elevation)) and maurice_ptr != false) then begin
+   move_to(maurice_ptr, 15292, self_elevation);
+   critter_attempt_placement(maurice_ptr, 15292, self_elevation);
+   obj_floater_type(maurice_ptr, mstr(105), FLOAT_COLOR_HIGH);
+   obj_floater_type(self_obj, mstr(106), FLOAT_COLOR_SAD);
+   reg_anim_clear(maurice_ptr);
+   animate_move_obj_to_tile(maurice_ptr, 25704, ANIMATE_WALK);
+   reg_anim_end();
+   set_local_var(LVAR_Pissed, 1);
+end
+
+   fadein(1);
+call Node999;
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

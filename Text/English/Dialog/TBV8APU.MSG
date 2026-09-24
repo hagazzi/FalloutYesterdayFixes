@@ -1,0 +1,6 @@
+
+{100}{}{The APU is up and running.}
+{101}{}{The APU is activated somewhere else.}
+{102}{}{You fail to figure out how to activate the APU.}
+{103}{}{The APU seems to be shut down amid power outage.}
+{104}{}{The APU uses a combination of 3-layered filters and separators to remove harmful particles from the air.}

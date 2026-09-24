@@ -1,0 +1,53 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+   Map for Vault13 Fake entrance
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_BDTRAIN
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+#include "..\headers\vehicles.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure start begin
+end
+
+
+procedure map_enter_p_proc begin
+
+   if (map_first_run) then begin
+      display_mstr(100);
+   end
+
+   if (not(is_loading_game)) then begin
+      override_map_start_hex(15623, 0, 3);
+   end
+
+   call Check_Create_Vehicle;
+
+   fadein(1);
+   Cavern_Lighting;
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_STRONG_WIND), 1);
+end
+
+procedure map_update_p_proc begin
+   Cavern_Lighting;
+end
+
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

@@ -1,0 +1,109 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#include "..\headers\updatmap.h"
+#include "..\headers\bomb001.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+
+/* Defines */
+#define NAME                  SCRIPT_BOMB001
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if(global_var(GVAR_NY_HOLOGRAM) == 1) then begin
+      deactivate_shader(global_var(GVAR_SHADER_ID));
+      override_map_start_hex(9295, 0, 5);
+      set_global_var(GVAR_NY_HOLOGRAM, 2);
+      // for simulation loot
+      move_obj_inven_to_obj(dude_obj, tile_contains_pid_obj(33132, 2, PID_FOOTLOCKER_RUSTY_LEFT));
+      // real loot
+      move_obj_inven_to_obj(tile_contains_pid_obj(32932, 2, PID_FOOTLOCKER_RUSTY_LEFT), dude_obj);
+
+      // just in case
+      call setup_pipboy;
+
+      if(dude_is_stupid or dude_is_idiot_savant) then begin
+         obj_floater_type(dude_obj, mstr(201), FLOAT_COLOR_SICK);
+      end else begin
+         obj_floater_type(dude_obj, mstr(202), FLOAT_COLOR_SICK);
+      end
+   end
+
+   fadein(1);
+   Full_Light;
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_BOMB001), 1);
+
+   if (not(is_loading_game) and map_first_run) then begin
+      display_mstr(200);
+   end
+
+   // Start 2h countdown
+   if (global_var(GVAR_BOMB001_COUNTDOWN) == 0) then begin
+      set_global_var(GVAR_BOMB001_COUNTDOWN, game_time);
+   end
+
+end
+
+procedure map_update_p_proc begin
+
+   if (dude_elevation == 1) then begin
+      if (not(dude_wearing_space_suit)) then begin
+         critter_dmg(dude_obj, 999999, DMG_explosion);
+      end
+      stop_sfall_sound(ambient_sfx);
+   end
+    Full_Light;
+
+    check_countdown
+
+    check_overload_countdown
+
+    check_blow_up_countdown
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

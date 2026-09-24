@@ -1,0 +1,62 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_MBCOST
+
+/* Standard Script Procedures */
+procedure start;
+procedure spatial_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure spatial_p_proc begin
+    if (is_success(roll_vs_skill(source_obj, SKILL_TRAPS, 0)) or has_trait(TRAIT_OBJECT, source_obj, OBJECT_TEAM_NUM) == TEAM_CIRCLE_OF_STEEL) then
+        if(source_obj == dude_obj) then
+            display_mstr(100);
+        else
+            display_msg(obj_name(source_obj) + " " + mstr(101));
+    else begin
+      critter_dmg(source_obj, random(15, 30), DMG_laser);
+      if(source_obj == dude_obj) then
+          display_mstr(102);
+      else
+          display_msg(obj_name(source_obj) + " " + mstr(103));
+    end
+end

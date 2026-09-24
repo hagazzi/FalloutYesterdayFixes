@@ -1,0 +1,96 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\tibbets.h"
+
+#define NAME                    SCRIPT_TBTURB
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+   script_overrides;
+   fadeout(1);
+   game_time_advance(ONE_GAME_MINUTE * 5);
+   fadein(1);
+   display_mstr(100);
+end
+
+procedure use_obj_on_p_proc begin
+
+    if(global_var(GVAR_TIBBETS_BATTALION_ATTACK) > 0) then begin
+        if(dude_is_stupid) then begin
+            dude_floater_bad(101);
+        end else begin
+            dude_floater_bad(102);
+        end
+    end else begin
+      if (obj_pid(obj_being_used_with) == PID_MACH_V_MINE) then begin
+            call TibbetsAttack;
+      end
+   end
+end
+
+procedure use_skill_on_p_proc begin
+
+   if (
+      (action_being_used == SKILL_SCIENCE) and
+      is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, -20))
+   ) then begin
+      script_overrides;
+      display_mstr(103);
+   end else if (
+      (action_being_used == SKILL_REPAIR) and
+      is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -20))
+   ) then begin
+      script_overrides;
+      display_mstr(104);
+   end else if (
+      (action_being_used == SKILL_TRAPS) and
+      is_success(roll_vs_skill(source_obj, SKILL_TRAPS, -20))
+   ) then begin
+      script_overrides;
+      display_mstr(105);
+   end
+end

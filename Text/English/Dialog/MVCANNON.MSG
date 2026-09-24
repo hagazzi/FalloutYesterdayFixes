@@ -1,0 +1,10 @@
+{100}{}{The laser cannon is not operational yet.}
+{101}{}{You install the first capacitator. One more is required.}
+{102}{}{You install the second capacitator. The laser cannon is now operational.}
+{103}{}{You fired the laser cannon at the Hounds of Hecate camp down below. The results were... impressive.}
+{104}{}{The laser cannon is missing a set of new capacitators.}
+{105}{}{You are not sure what needs to be done to make the laser cannon operational.}
+{106}{}{The laser cannon is now operational.}
+{107}{}{Properly installing a capacitator requires a skill-based approach.}
+{108}{}{You are not sure at what exactly would you fire the laser cannon at.}
+{109}{}{You fail to install the capacitator.}

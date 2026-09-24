@@ -1,0 +1,86 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/* Random Encounter scripts. These will be filled in more once they
+   have been designed.
+*/
+
+procedure start;
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_ECRADTOD
+
+#include "..\headers\command.h"
+
+procedure critter_p_proc;
+procedure map_enter_p_proc;
+procedure combat_p_proc;
+procedure destroy_p_proc;
+procedure radtoad_radiate;
+procedure use_skill_on_p_proc;
+
+#define RAD_RADIUS    (proto_data(self_pid, cr_light_distance))
+#define RAD_AMT       (RAD_RADIUS / 2)
+
+variable starttile := 0;
+
+procedure start begin
+end
+
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_neutral_critter
+
+/* Set global_variable for Enemy status*/
+
+end
+
+procedure map_enter_p_proc begin
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_RND_RADTOAD);
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_FLOATER);
+   starttile := self_tile;
+   reg_anim_clear(self_obj);
+   reg_anim_begin();
+   animate_rotation(Random(0, 5));
+   reg_anim_end();
+end
+
+procedure critter_p_proc begin
+   if (self_can_see_dude) then begin
+      self_attack_dude;
+   end
+
+   if (not anim_busy(self_obj)) then begin
+      reg_anim_clear(self_obj);
+      reg_anim_begin();
+      animate_move_to_tile(tile_num_in_direction(starttile, Random(0, 5), Random(3, 10)));
+      reg_anim_end();
+   end
+
+   call radtoad_radiate;
+
+end
+
+procedure combat_p_proc begin
+   call radtoad_radiate;
+end
+
+// Radtoads radiate around themselves
+procedure radtoad_radiate begin
+
+   if (
+      (tile_distance_objs(self_obj, dude_obj) <= RAD_RADIUS) and
+      not(dude_immune_to_radiation)
+      ) then begin
+      radiation_inc(dude_obj, RAD_AMT);
+      display_msg(message_str(SCRIPT_ECIRRAD, 100));
+   end
+
+end
+
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end

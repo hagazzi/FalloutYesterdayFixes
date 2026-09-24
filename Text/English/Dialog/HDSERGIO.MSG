@@ -1,0 +1,41 @@
+# Grammar pass done
+
+{100}{}{You see a friendly person.}
+{101}{}{You see Salty Sergio, a merchant.}
+
+{102}{}{Nuts, bolts, wheels, spokes... Salty Sergio's got your buildin' needs covered!}
+{103}{}{Come on, I got cats to feed!}
+{104}{}{Concrete, rebar, and occasional wood - everythin' you need for buildin'!}
+{105}{}{From nails to nuts, Sergio's got the construction stuff you need!}
+{106}{}{Buildin' your dream shack? I got the goods to make it real!}
+{107}{}{Salty Sergio's: where every cap helps me feed my feline family members!}
+{108}{}{Don't let your plans crumble - stock up on solid supplies here!}
+{109}{}{Meow! My cats say you need some cement today!}
+{110}{}{From blueprints to bolts, I've got what you need to build BIG!}
+{111}{}{Helpin' you build a better house, one brick at a time!}
+{112}{}{Got a project? Get your materials here and keep my cats purrin'!}
+{113}{}{Sergio's shop: where sturdy supplies meet kittens!}
+{114}{}{I've got the materials you need to build!}
+{115}{}{Buildin' your raft, one plank at a time!}
+{116}{}{Don't let your dreams fall apart, shop at Salty Sergio's!}
+{117}{}{Got a hammer? I've got nails!}
+{118}{}{Sergio's specials: the best deals for the best builds!}
+{119}{}{Cats need food, and you need materials - let's barter!}
+{120}{}{Quality construction goods for every builder!}
+{121}{}{Nails, boards, and beams - everythin' you need for sturdy dreams!}
+{122}{}{Shop here!}
+{123}{}{Build your outhouse with the best!}
+
+{200}{}{Would you like to trade with Salty Sergio?}
+{201}{}{Hey there! It's really great that you dropped by. Would you like to trade some things with Salty Sergio?}
+{202}{}{Would you be interested in a little trade at Salty Sergio's?}
+
+{250}{}{That'd be good.}
+{251}{}{Sorry, have to keep on moving.}
+{252}{}{Yah. Me got stuff!}
+{253}{}{Me go.}
+
+{260}{}{Good tradin' with you. Good luck in your travels.}
+{261}{}{Bye.}
+
+{270}{}{Glad to have you back. Can I interest you in somethin' else?}

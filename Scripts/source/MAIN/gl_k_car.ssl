@@ -1,0 +1,30 @@
+// Workaround for an engine bug where your vehicle is still used on a world map after abandoning it on a random encounter map. See AbandonCurrentVehicle in VEHICLES.H for related code
+
+#define SCRIPT_REALNAME "gl_k_car"
+#include "..\headers\define.h"
+
+#include "..\headers\command.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\party.h"
+#include "..\headers\vehicles.h"
+
+procedure start;
+procedure fix_phantom_outta_gas;
+
+procedure start begin
+   if (game_loaded) then begin
+      register_hook_proc(HOOK_MOUSECLICK, fix_phantom_outta_gas);
+   end
+end
+
+procedure fix_phantom_outta_gas begin
+   if (in_world_map) then begin
+      // Looks like we abandoned our current vehicle on a random encounter and now we see the phantom "outta gas" area
+      if (
+         town_visible_on_map(VehicleAbandonedArea(current_vehicle_type)) and
+         town_visible_on_map(AREA_VEHICLE_OUTTA_GAS)
+         ) then begin
+            remove_from_map(AREA_VEHICLE_OUTTA_GAS)
+      end
+   end
+end

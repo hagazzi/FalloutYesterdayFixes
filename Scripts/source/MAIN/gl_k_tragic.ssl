@@ -1,0 +1,50 @@
+#define SCRIPT_REALNAME "gl_k_tragic"
+#include "..\HEADERS\define.h"
+#include "..\HEADERS\scripts.h"
+#include "..\HEADERS\command.h"
+
+procedure start;
+
+variable do_once;
+variable game_timer;
+variable game_timer2;
+
+procedure start begin
+   if (is_loading_game) then return;
+	if (game_loaded) then begin
+	  	set_global_script_repeat(60);
+		set_global_script_type(3);
+		do_once := 0;
+	end else begin
+      if (global_var(GVAR_ADDICT_TRAGIC) == 1) then begin
+	     if (do_once != 1) then begin
+	         do_once := 1;
+            game_timer := game_time;
+            game_timer2 := game_time;
+        end
+        if (((game_time - game_timer) >= (24*(60*(60*(10)))))) then begin
+            if (in_world_map) then
+               force_encounter(0);
+            game_timer := game_time;
+            if (((game_time - game_timer2) < (7*(24*(60*(60*(10))))))) then
+              display_msg(message_str(SCRIPT_OBJ_DUDE,1000));
+        end
+        if (((game_time - game_timer2) >= (7*(24*(60*(60*(10))))))) then begin
+            set_global_var(GVAR_ADDICT_TRAGIC,0);
+            if (
+               not(dude_is_addicted_to_jet) and
+               not(dude_is_addicted_to_smooch) and
+               not(dude_is_addicted_to_nuka_cola) and
+               not(dude_is_addicted_to_buffout) and
+               not(dude_is_addicted_to_mentats) and
+               not(dude_is_addicted_to_psycho) and
+               not(dude_is_addicted_to_radaway) and
+               not(dude_is_addicted_to_alcohol)
+            ) then begin
+               hide_iface_tag(iface_tag_addict);
+            end
+            display_msg(message_str(SCRIPT_OBJ_DUDE,1001));
+        end
+      end
+   end
+end

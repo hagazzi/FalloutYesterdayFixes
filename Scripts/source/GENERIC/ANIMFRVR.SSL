@@ -1,0 +1,68 @@
+/*
+	Animate forever
+*/
+
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_ANIMFRVR
+
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+procedure map_exit_p_proc;
+
+variable sfx;
+
+procedure map_enter_p_proc begin
+   add_timer_event(self_obj, 1, 1);
+end
+
+
+procedure timed_event_p_proc begin
+
+   variable wav = "";
+   variable pid = 0;
+
+   if (fixed_param == 1) then begin
+      if (
+         obj_on_screen(self_obj) and
+         (not(anim_busy(self_obj))) and
+         (not(combat_is_initialized)) and
+         (self_elevation == dude_elevation)
+      ) then begin
+            reg_anim_begin();
+            reg_anim_animate_forever(self_obj, ANIM_stand);
+            reg_anim_end();
+
+            if(
+               obj_can_hear_obj(dude_obj, self_obj) and
+               (self_elevation == dude_elevation) and
+               (self_distance_from_dude <= (5 + dude_perception))
+            ) then begin
+               pid := self_pid;
+
+               if (pid == PID_FIREPIT) then begin
+                  wav := "firebrl";
+               end
+
+               if(wav and (sfx == 0)) then begin
+                  sfx := play_sfall_sound("data\\sound\\SFX\\" + wav + ".wav", 1);
+               end
+            end else begin
+               stop_sfall_sound(sfx);
+               sfx := 0;
+            end
+      end
+      else if (combat_is_initialized) then begin
+         reg_anim_clear(self_obj);
+      end
+      add_timer_event(self_obj, 1, 1);
+   end
+end
+
+procedure map_exit_p_proc begin
+   if(sfx) then begin
+      stop_sfall_sound(sfx);
+   end
+end

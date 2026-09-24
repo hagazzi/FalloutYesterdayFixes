@@ -1,0 +1,8 @@
+{100}{}{You see a hunter.}
+{101}{}{You are welcome here.}
+{102}{}{Sand sharks are the worst. They hide well.}
+{103}{}{We hunt together.}
+{104}{}{May your travels be without pain.}
+{105}{}{Danger everywhere.}
+{106}{}{Bad things out there. Ugly too.}
+{107}{}{Our prayers are with you.}

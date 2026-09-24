@@ -1,0 +1,106 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MVCANNON
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure use_p_proc;
+
+#define MVAR_Capacitators                        (0)
+
+variable sfx;
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+   if (global_var(GVAR_CIPHER_CANNON) == CIPHER_CANNON_FINISHED) then begin
+      if (global_var(GVAR_QUEST_DEAL_WITH_HOUNDS) == DEAL_WITH_HOUNDS_SIEGE) then begin
+         set_global_var(GVAR_QUEST_DEAL_WITH_HOUNDS, DEAL_WITH_HOUNDS_BLASTED);
+         set_global_var(GVAR_MESA_HOUNDS_RESOLUTION, DEAL_WITH_HOUNDS_BLASTED);
+         fadeout(1);
+         fadein(1);
+         display_mstr(103);
+         sfx := play_sfall_sound("data\\sound\\SFX\\laser_cannon.wav", 0);
+      end
+      else begin
+         display_mstr(108);
+      end
+   end
+   else begin
+      display_mstr(100);
+   end
+end
+
+
+procedure use_obj_on_p_proc begin
+   if (obj_pid(obj_being_used_with) == PID_CAPACITATOR) then begin
+      script_overrides;
+      display_mstr(107);
+   end
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+
+   if (global_var(GVAR_CIPHER_CANNON) == CIPHER_CANNON_FINISHED) then begin
+      display_mstr(106);
+   end
+   else begin
+      if (action_being_used == SKILL_REPAIR) then begin
+         script_overrides;
+
+         if (dude_item(PID_CAPACITATOR) >= 2) then begin
+            if(skill_success(source_obj, SKILL_REPAIR, -50)) then begin
+               if (map_var(MVAR_Capacitators) < 2) then begin
+
+                  fadeout(1);
+                  inc_map_var(MVAR_Capacitators);
+                  game_time_advance(ONE_GAME_MINUTE * 30);
+                  remove_pid_qty(dude_obj, PID_CAPACITATOR, 1)
+                  fadein(1);
+                  sfx := play_sfall_sound("data\\sound\\SFX\\install_capacitator.wav", 0);
+
+                  if (map_var(MVAR_Capacitators) == 1) then begin
+                     display_mstr(101);
+                  end
+                  else if (map_var(MVAR_Capacitators) == 2) then begin
+                     display_mstr(102);
+                     variable sfx2 := play_sfall_sound("data\\sound\\SFX\\laser_cannon_constructed.wav", 0);
+                     set_global_var(GVAR_CIPHER_CANNON, CIPHER_CANNON_FINISHED);
+                  end
+               end
+               else begin
+                  display_mstr(106);
+               end
+            end
+            else begin
+               fadeout(1);
+               game_time_advance(ONE_GAME_MINUTE * 30);
+               fadein(1);
+               display_mstr(109);
+            end
+         end else begin
+            display_mstr(101);
+         end
+      end
+      else if (action_being_used == SKILL_SCIENCE) then begin
+         script_overrides;
+
+         if(skill_success(source_obj, SKILL_SCIENCE, -50)) then begin
+            if (global_var(GVAR_CIPHER_CANNON) == CIPHER_CANNON_UNFINISHED) then begin
+               set_global_var(GVAR_CIPHER_CANNON, CIPHER_CANNON_INSPECTED);
+               display_mstr(104);
+            end else if (global_var(GVAR_CIPHER_CANNON) == CIPHER_CANNON_INSPECTED) then begin
+               display_mstr(104);
+            end
+         end
+         else begin
+            display_mstr(105);
+         end
+      end
+   end
+end

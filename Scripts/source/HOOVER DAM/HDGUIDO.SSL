@@ -1,0 +1,580 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name:
+        Location:
+        Description:
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created:
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_HDGUIDO
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_HOOVER_DAM)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+#include "..\HEADERS\hdam.h"
+#include "..\headers\caravan.h"
+
+#define START_DAY               (15)
+#define CURRENT_CARAVAN         (GVAR_WATER_CARAVAN)
+
+/* Standard Script Procedures */
+procedure start;
+procedure timed_event_p_proc; //added by killap
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node002a;
+procedure Node003;
+procedure Node003a;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+procedure Node012;
+procedure Node013;
+procedure Node014;
+procedure Node014a;
+procedure Node015;
+procedure Node016;
+procedure Node017;
+procedure Node018;
+procedure Node019;
+procedure Node020;
+procedure Node021;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Finish_Caravan_Time        (8)
+#define LVAR_Said_3                     (9)
+#define LVAR_Said_5                     (10)
+#define LVAR_Said_14                    (11)
+#define LVAR_Said_1                     (12)
+#define LVAR_Called_Clear               (13)
+#define LVAR_No_More_Caravans           (14) //added by killap
+#define LVAR_OK_To_Talk                 (15)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+import variable Guido_Ptr;
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+variable day_tile = 15530;
+variable day_rot = 2;
+variable night_tile = 19738;
+variable night_rot = 2;
+
+procedure start begin
+   Guido_Ptr = self_obj;
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   if((global_var(GVAR_QUEST_FRAME_ENZO) == QUEST_COMPLETED) or (global_var(GVAR_QUEST_FRAME_ENZO) == QUEST_DEFAULT_SOLVE)) then
+      switch_team(self_obj, TEAM_3SOME_CARAVAN)
+   else
+      switch_team(self_obj,TEAM_HOOVER_DAM)
+
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_MOBSTER);
+   Guido_Ptr = self_obj;
+end
+
+procedure map_update_p_proc begin
+   Guido_Ptr = self_obj;
+end
+
+procedure timed_event_p_proc begin
+end
+//end added
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if (
+      holyfeld_dead and
+      self_can_speak
+      ) then begin
+      floater_bad(200);
+      call Node998;
+   end
+
+   if ((global_var(GVAR_ENEMY_HOOVER_DAM) == 1) and self_can_see_dude) then begin
+      self_attack_dude;
+  end
+
+   if ((local_var(LVAR_Hostile) == 2) and self_can_see_dude) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+   end
+
+   if (self_can_speak) then begin
+      if (night) then begin
+         if (self_tile != night_tile) then begin
+            animate_move_to_tile(night_tile);
+         end
+         else begin
+            if (self_cur_rot != night_rot) then
+               animate_rotation(night_rot);
+         end
+      end
+      else begin
+         if (self_tile != day_tile) then begin
+            animate_move_to_tile(day_tile);
+         end
+         else begin
+            if (self_cur_rot != day_rot) then
+               animate_rotation(day_rot);
+         end
+      end
+   end
+
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+
+       if(global_var(GVAR_3S_SHOWDOWN) != SHOWDOWN_IN_PROGRESS) then begin
+         set_global_var(GVAR_ENEMY_HOOVER_DAM,1);
+       end
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if ((local_var(LVAR_OK_To_Talk) == 0) and (global_var(GVAR_3S_CARAVAN_RUNS) == -1)) then
+      set_local_var(LVAR_OK_To_Talk, 1);
+
+   if (night and self_can_speak) then begin
+         floater_whisper(202);
+   end else begin
+      if (
+         (local_var(LVAR_OK_To_Talk) == 0) or
+         ((global_var(GVAR_QUEST_3SOME_INVITE) == QUEST_ACCEPTED) and (global_var(GVAR_3S_CARAVAN_RUNS) == 1))
+         ) then begin
+         floater(201);
+      end else begin
+
+         call set_idiot_savant_int;
+
+         call CalculateCaravanRunSuccessRate(CURRENT_CARAVAN);
+
+         if ((global_var(CURRENT_CARAVAN) == CARAVAN_ABANDONED) and (local_var(LVAR_No_More_Caravans) == 0)) then
+            call Node005;
+         else if ((global_var(CURRENT_CARAVAN) == CARAVAN_ABANDONED) and (local_var(LVAR_No_More_Caravans) == 1)) then
+            call Node001;
+         else begin
+
+            start_gdialog(NAME,self_obj,4,HEAD_GUIDO_GIORDANO,-1);
+            gSay_Start;
+
+            if (global_var(CURRENT_CARAVAN) == CARAVAN_THEFT) then
+                  call Node006;
+            else if (global_var(CURRENT_CARAVAN) == CARAVAN_TOTAL_FAILURE) then
+                  call Node007;
+            else if (global_var(CURRENT_CARAVAN) == CARAVAN_FAILURE) then
+                  call Node008;
+            else if (global_var(CURRENT_CARAVAN) == CARAVAN_AVERAGE_SUCCESS) then
+                  call Node009;
+            else if (global_var(CURRENT_CARAVAN) == CARAVAN_COMPLETE_SUCCESS) then
+                  call Node010;
+            else
+                  call Node003;
+
+                  gSay_End;
+                  end_dialogue;
+         end
+
+         call restore_idiot_savant_int;
+      end
+
+      if ((caravan_status == CARAVAN_STATUS_ON_JOB) and (caravan_end == AREA_JERICHO)) then begin
+         mark_on_map(caravan_end)
+         set_global_var(GVAR_CARAVAN_START_TIME, game_time);
+         world_map;
+      end
+   end
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_neutral_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Looked_Before) == 0) then begin
+       set_local_var(LVAR_Looked_Before,1);
+       display_mstr(100);
+   end
+   else
+       display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+   set_knows_iwazaru;
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+   set_local_var(LVAR_Herebefore, 1);
+end
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+procedure Node001 begin
+   if (local_var(LVAR_Said_1) == 0) then begin
+       floater_bad(103);
+       set_local_var(LVAR_Said_1,1);
+   end
+   else
+       floater_bad(104);
+end
+
+procedure Node002 begin
+   Reply(105);
+
+   NOption(106,Node002a,004);
+end
+
+procedure Node002a begin
+   variable Caravan_Carts;
+   variable Caravan_Guards;
+
+   Caravan_Carts := random(1, 3);
+   Caravan_Guards := random(2, 4);
+   Caravan_Guards := (Caravan_Guards - party_size);
+   if (Caravan_Guards < 1) then
+      Caravan_Guards := 1;
+
+   set_global_var(CURRENT_CARAVAN, CARAVAN_ON_CARAVAN);
+   set_caravan_status(CARAVAN_STATUS_ON_JOB);
+   set_global_var(GVAR_CARAVAN_EXPECTED_TIME, CARAVAN_RUN_DAYS_HOOVER_DAM_JERICHO);
+
+   set_global_var(GVAR_CARAVAN_START,AREA_HOOVER_DAM);
+   set_global_var(GVAR_CARAVAN_END,AREA_JERICHO);
+
+   if (not(dude_is_caravan_master)) then
+      set_caravan_masters(1);
+   set_caravan_guards(Caravan_Guards);
+   set_caravan_carts(Caravan_Carts);
+   set_caravan_brahmin(2 * Caravan_Carts);
+   set_caravan_drivers(Caravan_Carts);
+end
+
+procedure Node003 begin
+   if (local_var(LVAR_Said_3) == 0) then begin
+       set_local_var(LVAR_Said_3,1);
+       if (get_day == START_DAY) then
+           Reply(107);
+       else
+           Reply(108);
+   end
+   else
+       Reply(109);
+
+   NLowOption(110,Node013);
+   NOption(111,Node003a,004);
+   NOption(112,Node014,004);
+   NOption(113,Node011,004);
+   if(global_var(GVAR_KNOW_3SOME_EX_PRISONERS) == 1) then
+      NOption(159,Node017,004);
+
+   NOption(114,Node999,004);
+end
+
+procedure Node003a begin
+   if (get_day == START_DAY) then
+       call Node015;
+   else
+       call Node012;
+end
+
+procedure Node004 begin
+   floater_rand(115,119);
+end
+
+procedure Node005 begin
+   set_local_var(LVAR_No_More_Caravans,1);   //killap
+
+   if (local_var(LVAR_Said_5) == 0) then begin
+       inc_local_var(LVAR_Said_5);
+       floater_bad(120);
+   end
+   else
+       floater_bad(121);
+end
+
+procedure Node006 begin
+   //   set_global_var(CURRENT_CARAVAN,REDDING_CARAVAN_NONE);  not needed, since when set you can go on another of his caravans - killap
+   set_local_var(LVAR_No_More_Caravans,1); //added by killap
+
+   Reply(122);
+
+   NOption(123,Node999,004);
+   BOption(124,Node999,004);
+   BOption(203,Node998,004);
+end
+
+procedure Node007 begin
+   set_global_var(CURRENT_CARAVAN,CARAVAN_NONE);
+
+   Reply(125);
+
+   NOption(126,Node999,004);
+   BOption(127,Node999,004);
+end
+
+procedure Node008 begin
+   set_global_var(CURRENT_CARAVAN,CARAVAN_NONE);
+   item_caps_adjust(dude_obj,500);
+
+   Reply(128);
+
+   NOption(129,Node999,004);
+   NOption(130,Node999,004);
+end
+
+procedure Node009 begin
+   set_global_var(CURRENT_CARAVAN,CARAVAN_NONE);
+   item_caps_adjust(dude_obj,1500);
+
+   Reply(131);
+
+   NOption(132,Node999,004);
+   NOption(133,Node999,004);
+end
+
+procedure Node010 begin
+   set_global_var(CURRENT_CARAVAN,CARAVAN_NONE);
+   item_caps_adjust(dude_obj,1700);
+
+   Reply(134);
+
+   NOption(135,Node999,004);
+   NOption(136,Node999,004);
+end
+
+procedure Node011 begin
+   /*if (cur_map_index == MAP_REDDING_MINE_ENT) then
+       Reply(137);
+   else*/
+       Reply(138);
+
+   NOption(139,Node014,004);
+   if (get_day == START_DAY) then
+       NOption(140,Node015,004);
+   NOption(141,Node999,004);
+end
+
+procedure Node012 begin
+   Reply(142);
+
+   NOption(143,Node011,004);
+   NOption(144,Node014,004);
+   NOption(145,Node999,004);
+end
+
+procedure Node013 begin
+   Reply(146);
+
+   NOption(147,Node999,004);
+end
+
+procedure Node014 begin
+   Reply(148);
+
+   if (local_var(LVAR_Said_14) == 0) then
+       NOption(149,Node014a,004);
+   NOption(150,Node003,004);
+   NOption(151,Node999,004);
+end
+
+procedure Node014a begin
+   set_local_var(LVAR_Said_14,1);
+
+   debug_msg("get_day == "+get_day+". START_DAY == "+START_DAY);
+
+   if (get_day == START_DAY) then
+       call Node015;
+   else
+       call Node012;
+end
+
+procedure Node015 begin
+   if (party_size > 1) then
+       Reply(152);
+   else
+       Reply(153);
+
+   NOption(154,Node002,004);
+   NOption(155,Node999,004);
+end
+
+procedure Node016 begin
+   set_global_var(CURRENT_CARAVAN,CARAVAN_NONE);
+
+   Reply(156);
+
+   NLowOption(157,Node999);
+   NLowOption(158,Node999);
+end
+
+procedure Node017
+begin
+Reply(160);
+NOption(161,Node018,4);
+end
+
+procedure Node018
+begin
+Reply(162);
+NOption(163,Node019,4);
+end
+
+procedure Node019
+begin
+Reply(164);
+NOption(165,Node020,4);
+end
+
+procedure Node020
+begin
+Reply(166);
+NOption(167,Node020,4);
+end
+
+procedure Node021
+begin
+Reply(168);
+NOption(169,Node999,4);
+end
+
+//xxxxxxxxxxxxxxxxxxxx

@@ -1,0 +1,1085 @@
+/*
+
+        Name:           ODYSSEUS
+        Location:       Courtroom
+        Description:    Trial
+
+           Created: 12/07/2020 19:31:47
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBODYTRL
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure use_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+procedure hack_odysseus;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+#define LVAR_hacked              (8)
+
+
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+procedure Node012;
+procedure Node013;
+procedure Node014;
+procedure Node015;
+procedure Node016;
+procedure Node017;
+procedure Node018;
+procedure Node019;
+procedure Node020;
+procedure Node021;
+procedure Node022;
+procedure Node023;
+procedure Node024;
+procedure Node025;
+procedure Node026;
+procedure Node027;
+procedure Node028;
+procedure Node029;
+procedure Node030;
+procedure Node031;
+procedure Node032;
+procedure Node033;
+procedure Node034;
+procedure Node035;
+procedure Node036;
+procedure Node037;
+procedure Node038;
+procedure Node039;
+procedure Node040;
+procedure Node041;
+procedure Node042;
+procedure Node043;
+procedure Node044;
+procedure Node044_cont;
+procedure Node045;
+procedure Node046;
+procedure Node046_cont;
+procedure Node047;
+procedure Node048;
+procedure Node049;
+procedure Node050;
+procedure Node051;
+procedure Node052;
+procedure Node053;
+procedure Node054;
+procedure Node055;
+procedure Node056;
+procedure Node057;
+procedure Node058;
+procedure Node059;
+procedure Node060;
+procedure Node061;
+procedure Node062;
+procedure Node063;
+procedure Node064;
+procedure Node065;
+procedure Node066;
+procedure Node067;
+procedure Node068;
+procedure Node069;
+procedure Node070;
+procedure Node071;
+procedure Node072;
+procedure Node073;
+procedure Node074;
+procedure Node075;
+
+//procedure movie_vats;
+//procedure movie_mariposa;
+procedure movie_cathedral;
+procedure movie_tanker;
+procedure movie_derrick;
+
+procedure update_pipboy(variable quest_gvar);
+procedure update_location(variable quest_gvar);
+
+procedure update_location_presper;
+procedure update_location_jean;
+procedure update_location_jill;
+procedure update_location_chagas;
+procedure update_location_blackjack;
+procedure update_location_daniel;
+procedure update_location_mallet;
+procedure update_location_ginger;
+procedure update_location_akeisha;
+
+procedure update_pipboy_presper;
+procedure update_pipboy_jean;
+procedure update_pipboy_jill;
+procedure update_pipboy_chagas;
+procedure update_pipboy_blackjack;
+procedure update_pipboy_daniel;
+procedure update_pipboy_mallet;
+procedure update_pipboy_ginger;
+procedure update_pipboy_akeisha;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+
+procedure use_p_proc begin
+if (source_obj == dude_obj) then begin
+   play_sfx("SLDOORSO");
+   dialogue_system_enter;
+end
+end
+
+procedure start begin
+   if (script_action == use_skill_on_proc) then begin
+      call use_skill_on_p_proc();
+   end
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+ //  critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_ROBOTS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+end
+
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+if((global_var(GVAR_TIBBETS_BATTALION_ATTACK) >= 1) and (global_var(GVAR_ONLY_13_LEFT) < 14)) then begin
+
+   start_gdialog(NAME,self_obj,4,-1,-1);
+   gSay_Start;
+   call Node074;
+   gSay_End;
+   end_dialogue;
+
+end
+else if (local_var(LVAR_Herebefore)==1) then begin
+   script_overrides;
+   display_mstr(2419);
+end
+else begin
+   call set_idiot_savant_int;
+   start_gdialog(NAME,self_obj,4,-1,-1);
+   gSay_Start;
+   call Node001;
+   gSay_End;
+   end_dialogue;
+   call restore_idiot_savant_int;
+end
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+/*   inc_good_critter */
+/* inc_evil_critter */
+ inc_neutral_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+
+   if (
+      (action_being_used == SKILL_SCIENCE) and
+      is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, -99))
+   ) then begin
+      script_overrides;
+call hack_odysseus;
+
+   end else if (
+      (action_being_used == SKILL_REPAIR) and
+      is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -99))
+   ) then begin
+      script_overrides;
+call hack_odysseus;
+
+
+   end
+end
+
+procedure hack_odysseus begin
+fadeout(1);
+    game_time_advance(ONE_GAME_MONTH);
+    fadein(1);
+
+    if(local_var(LVAR_hacked) == 0) then begin
+give_xp(1000);
+    end
+
+set_local_var(LVAR_hacked, 1);
+
+
+start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       call Node073;
+       gSay_End;
+       end_dialogue;
+
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+      set_global_var(GVAR_QUEST_ESCAPE_TIBBETS, 1);
+      set_global_var(GVAR_QUEST_ATTEND_TRIAL, 2);
+give_xp(500);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Node001
+begin
+Reply(200);
+NOption(201,Node002,4);
+NOption(202,Node002,-3);
+end
+
+procedure Node002
+begin
+Reply(230);
+NOption(231,Node003,4);
+NOption(232,Node003,-3);
+end
+
+procedure Node003
+begin
+Reply(260);
+NOption(261,Node004,4);
+NOption(262,Node004,4);
+NOption(263,Node004,-3);
+end
+
+procedure Node004
+begin
+Reply(290);
+NOption(291,Node005,4);
+NOption(292,Node005,-3);
+end
+
+procedure Node005
+begin
+Reply(320);
+NOption(321,Node006,4);
+NOption(322,Node006,-3);
+end
+
+procedure Node006
+begin
+Reply(350);
+NOption(351,Node007,4);
+NOption(352,Node049,4);
+NOption(353,Node049,4);
+NOption(354,Node049,-3);
+NOption(355,Node007,-3);
+end
+
+procedure Node007
+begin
+Reply(380);
+NOption(381,Node008,1);
+end
+
+procedure Node008
+begin
+Reply(mstr(410)+string_toupper(dude_name)+mstr(411));
+NOption(381,Node009,1);
+end
+
+procedure Node009
+begin
+Reply(440);
+NOption(381,Node010,1);
+end
+
+procedure Node010
+begin
+Reply(470);
+NOption(381,Node011,1);
+end
+
+procedure Node011
+begin
+Reply(500);
+NOption(501,Node012,4);
+NOption(502,Node012,-3);
+end
+
+procedure Node012
+begin
+Reply(530);
+NOption(381,Node013,1);
+end
+
+procedure Node013
+begin
+Reply(560);
+NOption(381,Node014,1);
+end
+
+procedure Node014
+begin
+Reply(mstr(590)+string_toupper(dude_name)+mstr(591)+string_toupper(dude_name)+mstr(592));
+NOption(381,Node015,1);
+end
+
+procedure Node015
+begin
+Reply(620);
+NOption(381,Node016,1);
+end
+
+procedure Node016
+begin
+Reply(650);
+NOption(381,Node017,1);
+end
+
+procedure Node017
+begin
+Reply(680);
+NOption(381,Node018,1);
+end
+
+procedure Node018
+begin
+Reply(710);
+NOption(381,Node019,1);
+end
+
+procedure Node019
+begin
+Reply(740);
+NOption(381,Node020,1);
+end
+
+procedure Node020
+begin
+Reply(770);
+NOption(381,Node021,1);
+end
+
+procedure Node021
+begin
+Reply(800);
+NOption(381,Node022,1);
+end
+
+procedure Node022
+begin
+Reply(830);
+NOption(381,Node023,1);
+end
+
+procedure Node023
+begin
+Reply(860);
+NOption(381,Node024,1);
+end
+
+procedure Node024
+begin
+Reply(890);
+NOption(381,Node025,1);
+end
+
+procedure Node025
+begin
+Reply(920);
+NOption(921,Node026,4);
+NOption(922,Node026,-3);
+end
+
+procedure Node026
+begin
+Reply(950);
+NOption(381,Node027,1);
+end
+
+procedure Node027
+begin
+Reply(980);
+NOption(381,Node028,1);
+end
+
+procedure Node028
+begin
+Reply(1010);
+NOption(381,Node029,1);
+end
+
+procedure Node029
+begin
+Reply(1040);
+NOption(381,Node030,1);
+end
+
+procedure Node030
+begin
+Reply(1070);
+NOption(381,Node031,1);
+end
+
+procedure Node031
+begin
+Reply(1100);
+NOption(381,Node032,1);
+end
+
+procedure Node032
+begin
+Reply(1130);
+NOption(381,Node033,1);
+end
+
+procedure Node033
+begin
+Reply(1160);
+NOption(381,Node034,1);
+end
+
+procedure Node034
+begin
+Reply(1190);
+NOption(381,Node035,1);
+end
+
+procedure Node035
+begin
+Reply(1220);
+NOption(381,Node036,1);
+end
+
+procedure Node036
+begin
+Reply(1250);
+NOption(381,Node037,1);
+end
+
+procedure Node037
+begin
+Reply(1280);
+NOption(1281,Node038,4);
+NOption(1282,Node072,4);
+NOption(1283,Node038,-3);
+NOption(1284,Node072,-3);
+end
+
+procedure Node038
+begin
+Reply(1310);
+NOption(1311,Node050,4);
+NOption(1312,Node050,-3);
+end
+
+procedure Node039
+begin
+Reply(1340);
+NOption(1341,Node040,4);
+NOption(1342,Node040,-3);
+end
+
+procedure Node040
+begin
+Reply(1370);
+NOption(1371,Node041,4);
+NOption(1372,Node041,-3);
+end
+
+procedure Node041
+begin
+Reply(1400);
+NOption(1401,Node042,4);
+NOption(1402,Node042,-3);
+end
+
+procedure Node042
+begin
+Reply(1430);
+NOption(1431,Node043,4);
+NOption(1432,Node043,-3);
+end
+
+procedure Node043
+begin
+Reply(1460);
+NOption(1461,Node054,4);
+NOption(1462,Node054,-3);
+end
+
+procedure Node044
+begin
+Reply(1490);
+NOption(381,Node044_cont,1);
+end
+
+procedure Node044_cont
+begin
+Reply(1491);
+NOption(381,Node045,1);
+end
+
+
+procedure Node045
+begin
+Reply(1520);
+NOption(381,Node046,1);
+end
+
+procedure Node046
+begin
+Reply(1550);
+NOption(381,Node046_cont,1);
+end
+
+procedure Node046_cont
+begin
+Reply(1551);
+NOption(381,Node047,1);
+end
+
+procedure Node047
+begin
+Reply(mstr(1580)+string_toupper(dude_name)+mstr(1581)+(dude_name)+mstr(1582));
+NOption(381,Node048,1);
+end
+
+procedure Node048
+begin
+Reply(1610);
+NOption(1611,Node049,4);
+NOption(1612,Node049,-3);
+end
+
+procedure Node049
+begin
+Reply(mstr(1640)+string_toupper(dude_name)+mstr(1641));
+NOption(1642,Node999,4);
+NOption(1643,Node999,4);
+NOption(1644,Node999,4);
+NOption(1645,Node999,4);
+if(not(has_fake_trait(TRAIT_pacifist))) then
+NOption(1646,Node999,4);
+NOption(1647,Node999,-3);
+NOption(1648,Node999,-3);
+if(not(has_fake_trait(TRAIT_pacifist))) then
+NOption(1649,Node999,-3);
+end
+
+procedure Node050
+begin
+Reply(1670);
+NOption(dude_name+mstr(1672),Node051,4);
+NOption(mstr(1673)+dude_name,Node051,-3);
+end
+
+procedure Node051
+begin
+Reply(mstr(1700)+string_toupper(dude_name)+mstr(1701));
+NOption(1702,Node052,4);
+NOption(1703,Node052,-3);
+end
+
+procedure Node052
+begin
+Reply(1730);
+NOption(1731,Node053,4);
+NOption(1732,Node053,-3);
+end
+
+procedure Node053
+begin
+Reply(1760);
+NOption(1761,Node039,4);
+NOption(1762,Node039,-3);
+end
+
+procedure Node054
+begin
+Reply(1790);
+NOption(1791,Node055,4);
+NOption(1792,Node055,-3);
+end
+
+procedure Node055
+begin
+Reply(1820);
+NOption(1821,Node056,4);
+NOption(1822,Node056,-3);
+end
+
+procedure Node056
+begin
+Reply(1850);
+NOption(1851,Node057,4);
+NOption(1852,Node057,-3);
+end
+
+procedure Node057
+begin
+Reply(1880);
+NOption(1881,Node058,4);
+NOption(1882,Node058,-3);
+end
+
+procedure Node058
+begin
+Reply(1910);
+NOption(1911,Node059,4);
+NOption(1912,Node059,-3);
+end
+
+procedure Node059
+begin
+Reply(1940);
+NOption(1941,Node060,4);
+NOption(1942,Node060,-3);
+end
+
+procedure Node060
+begin
+Reply(1970);
+NOption(1971,Node061,4);
+NOption(1972,Node061,-3);
+end
+
+procedure Node061
+begin
+Reply(2000);
+NOption(2001,Node062,4);
+NOption(2002,Node062,-3);
+end
+
+procedure Node062
+begin
+Reply(2030);
+NOption(1461,Node063,4);
+NOption(2031,Node063,-3);
+end
+
+procedure Node063
+begin
+Reply(2060);
+NOption(2061,Node064,4);
+NOption(2062,Node064,-3);
+end
+
+procedure Node064
+begin
+Reply(2090);
+NOption(2091,Node065,4);
+NOption(2092,Node065,-3);
+end
+
+procedure Node065
+begin
+Reply(mstr(2120)+string_toupper(dude_name)+mstr(2121)+string_toupper(dude_name)+mstr(2122));
+NOption(2123,Node066,4);
+NOption(2124,Node066,-3);
+end
+
+procedure Node066
+begin
+Reply(2150);
+NOption(2151,Node067,4);
+NOption(2152,Node067,-3);
+end
+
+procedure Node067
+begin
+Reply(2180);
+NOption(2181,Node071,4);
+NOption(2182,Node071,-3);
+end
+
+procedure Node068
+begin
+Reply(2210);
+NOption(2211,Node069,4);
+NOption(2212,Node069,-3);
+end
+
+procedure Node069
+begin
+Reply(2240);
+NOption(1911,Node070,4);
+NOption(2241,Node070,-3);
+end
+
+procedure Node070
+begin
+Reply(2270);
+NOption(381,Node044,1);
+end
+
+procedure Node071
+begin
+Reply(2300);
+NOption(2301,Node068,4);
+NOption(2302,Node068,-3);
+end
+
+procedure Node072
+begin
+Reply(2330);
+NOption(381,Node044,1);
+end
+
+procedure Node073
+begin
+   fadein(1);
+Reply(2360);
+//NOption(2361,movie_vats,1);
+//NOption(2362,movie_mariposa,1);
+NOption(2363,movie_cathedral,1);
+NOption(2364,movie_tanker,1);
+NOption(2365,movie_derrick,1);
+NOption(2366,Node999,1);
+end
+
+/*procedure movie_vats begin
+   play_gmovie(DIPEDV_MOVIE);
+   call Node073;
+end*/
+
+/*procedure movie_mariposa begin
+      play_gmovie(VEXPLD_MOVIE);
+         call Node073;
+
+end*/
+
+procedure movie_cathedral begin
+      play_gmovie(CATHEXP_MOVIE);
+   call Node073;
+
+end
+
+procedure movie_tanker begin
+      play_gmovie(TANKER_MOVIE);
+   call Node073;
+
+end
+
+procedure movie_derrick begin
+      play_gmovie(DERRICK_MOVIE);
+   call Node073;
+
+end
+
+procedure Node074
+begin
+
+if (global_var(GVAR_ONLY_13_LEFT) == 13) then
+   Reply(2418);
+else if (global_var(GVAR_ONLY_13_LEFT) == 12) then
+   Reply(mstr(2390)+ " " +mstr(2392));
+else
+   Reply(mstr(2390) + " " + (13 - global_var(GVAR_ONLY_13_LEFT)) + " " + mstr(2391));
+
+   if (global_var(GVAR_QUEST_FIND_VICTOR_PRESPER) < 2) then begin
+      if (global_var(GVAR_KNOW_LOCATION_PRESPER) == 1) then
+         NOption(2393,update_location_presper,1);
+      if (dude_item_count(PID_PIERCE_LIL_PIP_3000)>0) then
+         NOption(2417,update_pipboy_presper,1);
+   end
+
+   if (global_var(GVAR_QUEST_FIND_JEAN_BAPTISTE_CUTTING) < 2) then begin
+      if (dude_item_count(PID_JEAN_BAPTISTE_CUTTING_LIL_PIP_3000)>0) then
+         NOption(2398,update_pipboy_jean,1);
+      if (global_var(GVAR_KNOW_LOCATION_JEAN) == 1) then
+         NOption(2399,update_location_jean,1);
+   end
+
+   if (global_var(GVAR_QUEST_FIND_JILLIAN_MCKINLEY) < 2) then begin
+      if (dude_item_count(PID_JILLIAN_MCKINLEY_LIL_PIP_3000)>0) then
+         NOption(2400,update_pipboy_jill,1);
+      if (global_var(GVAR_KNOW_LOCATION_JILLIAN) == 1) then
+         NOption(2401,update_location_jill,1);
+   end
+
+   if (global_var(GVAR_QUEST_FIND_CHAGAS) < 2) then begin
+      if (dude_item_count(PID_CHAGAS_LIL_PIP_3000)>0) then
+         NOption(2402,update_pipboy_chagas,1);
+      if (global_var(GVAR_KNOW_LOCATION_CHAGAS) == 1) then
+         NOption(2403,update_location_chagas,1);
+   end
+
+   if (global_var(GVAR_QUEST_FIND_BLACKJACK) < 2) then begin
+      if (dude_item_count(PID_BLACKJACK_LIL_PIP_3000)>0) then
+         NOption(2404,update_pipboy_blackjack,1);
+      if (global_var(GVAR_KNOW_LOCATION_BLACKJACK) == 1) then
+         NOption(2405,update_location_blackjack,1);
+   end
+
+   if (global_var(GVAR_QUEST_FIND_DANIEL) < 2) then begin
+      if (dude_item_count(PID_DANIEL_LIL_PIP_3000)>0) then
+         NOption(2406,update_pipboy_daniel,1);
+      if (global_var(GVAR_KNOW_LOCATION_DANIEL) == 1) then
+         NOption(2407,update_location_daniel,1);
+   end
+
+   if (global_var(GVAR_QUEST_FIND_MALLET_MCBRIDE) < 2) then begin
+      if (dude_item_count(PID_MALLET_MCBRIDE_LIL_PIP_3000)>0) then
+         NOption(2408,update_pipboy_mallet,1);
+      if (global_var(GVAR_KNOW_LOCATION_MALLET) == 1) then
+         NOption(2409,update_location_mallet,1);
+   end
+
+   if (global_var(GVAR_QUEST_FIND_GINGER_FLOWERS) < 2) then begin
+      if (dude_item_count(PID_GINGER_FLOWERS_LIL_PIP_3000)>0) then
+         NOption(2410,update_pipboy_ginger,1);
+      if (global_var(GVAR_KNOW_LOCATION_GINGER) == 1) then
+         NOption(2411,update_location_ginger,1);
+   end
+
+   if (global_var(GVAR_QUEST_FIND_AKEISHA_MOON) < 2) then begin
+      if (dude_item_count(PID_AKEISHA_MOON_LIL_PIP_3000)>0) then
+         NOption(2412,update_pipboy_akeisha,1);
+      if (global_var(GVAR_KNOW_LOCATION_AKEISHA) == 1) then
+         NOption(2413,update_location_akeisha,1);
+   end
+
+   if (global_var(GVAR_ONLY_13_LEFT) == 13) then
+      NOption(2414,Node075,1);
+
+   NOption(2415,Node999,1);
+end
+
+procedure Node075
+begin
+
+   if (global_var(GVAR_QUEST_FIND_PRISONERS) == 1) then begin
+      set_global_var(GVAR_ONLY_13_LEFT, 14);
+      set_global_var(GVAR_QUEST_FIND_PRISONERS, 2);
+      set_global_var(GVAR_KNOW_VEHICLE_DEPOT, 1);
+      give_xp(10000);
+      display_mstr(2420);
+   end
+   Reply(2416);
+   NOption(2415,Node999,1);
+end
+
+procedure update_pipboy(variable quest_gvar)
+begin
+   give_xp(1000);
+   inc_global_var(GVAR_ONLY_13_LEFT);
+   inc_global_var(quest_gvar);
+   call Node999;
+end
+
+procedure update_location(variable quest_gvar)
+begin
+   give_xp(500);
+   inc_global_var(GVAR_ONLY_13_LEFT);
+   inc_global_var(quest_gvar);
+   call Node999;
+end
+
+procedure update_pipboy_presper begin
+
+   inc_global_var(GVAR_QUEST_FIND_PIERCE);
+   inc_global_var(GVAR_ONLY_13_LEFT);
+   inc_global_var(GVAR_QUEST_FIND_COLERIDGE);
+   inc_global_var(GVAR_ONLY_13_LEFT);
+   inc_global_var(GVAR_QUEST_FIND_DAVIDSON);
+   inc_global_var(GVAR_ONLY_13_LEFT);
+   inc_global_var(GVAR_QUEST_FIND_BRIGGS);
+   inc_global_var(GVAR_ONLY_13_LEFT);
+
+   call update_pipboy(GVAR_QUEST_FIND_VICTOR_PRESPER);
+
+   display_msg(mstr(2421) + " " + mstr(2422) + ".");
+end
+
+procedure update_location_presper begin
+
+   inc_global_var(GVAR_QUEST_FIND_PIERCE);
+   inc_global_var(GVAR_ONLY_13_LEFT);
+   inc_global_var(GVAR_QUEST_FIND_COLERIDGE);
+   inc_global_var(GVAR_ONLY_13_LEFT);
+   inc_global_var(GVAR_QUEST_FIND_DAVIDSON);
+   inc_global_var(GVAR_ONLY_13_LEFT);
+   inc_global_var(GVAR_QUEST_FIND_BRIGGS);
+   inc_global_var(GVAR_ONLY_13_LEFT);
+
+   call update_location(GVAR_QUEST_FIND_VICTOR_PRESPER);
+
+   display_msg(mstr(2421) + " " + mstr(2422) + ".");
+end
+
+procedure update_location_jean begin
+   call update_location(GVAR_QUEST_FIND_JEAN_BAPTISTE_CUTTING);
+   display_msg(mstr(2421) + " " + mstr(2423) + ".");
+end
+
+procedure update_location_jill begin
+   call update_location(GVAR_QUEST_FIND_JILLIAN_MCKINLEY);
+   display_msg(mstr(2421) + " " + mstr(2424) + ".");
+end
+
+procedure update_location_chagas begin
+   call update_location(GVAR_QUEST_FIND_CHAGAS);
+   display_msg(mstr(2421) + " " + mstr(2425) + ".");
+end
+
+procedure update_location_blackjack begin
+   call update_location(GVAR_QUEST_FIND_BLACKJACK);
+   display_msg(mstr(2421) + " " + mstr(2426) + ".");
+end
+
+procedure update_location_daniel begin
+   call update_location(GVAR_QUEST_FIND_DANIEL);
+   display_msg(mstr(2421) + " " + mstr(2427) + ".");
+end
+
+procedure update_location_mallet begin
+   call update_location(GVAR_QUEST_FIND_MALLET_MCBRIDE);
+   display_msg(mstr(2421) + " " + mstr(2428) + ".");
+end
+
+procedure update_location_ginger begin
+   call update_location(GVAR_QUEST_FIND_GINGER_FLOWERS);
+   display_msg(mstr(2421) + " " + mstr(2429) + ".");
+end
+
+procedure update_location_akeisha begin
+   call update_location(GVAR_QUEST_FIND_AKEISHA_MOON);
+   display_msg(mstr(2421) + " " + mstr(2430) + ".");
+end
+
+procedure update_pipboy_jean begin
+   call update_pipboy(GVAR_QUEST_FIND_JEAN_BAPTISTE_CUTTING);
+   display_msg(mstr(2421) + " " + mstr(2423) + ".");
+end
+
+procedure update_pipboy_jill begin
+   call update_pipboy(GVAR_QUEST_FIND_JILLIAN_MCKINLEY);
+   display_msg(mstr(2421) + " " + mstr(2424) + ".");
+end
+
+procedure update_pipboy_chagas begin
+   call update_pipboy(GVAR_QUEST_FIND_CHAGAS);
+   display_msg(mstr(2421) + " " + mstr(2425) + ".");
+end
+
+procedure update_pipboy_blackjack begin
+   call update_pipboy(GVAR_QUEST_FIND_BLACKJACK);
+   display_msg(mstr(2421) + " " + mstr(2426) + ".");
+end
+
+procedure update_pipboy_daniel begin
+   call update_pipboy(GVAR_QUEST_FIND_DANIEL);
+   display_msg(mstr(2421) + " " + mstr(2427) + ".");
+end
+
+procedure update_pipboy_mallet begin
+   call update_pipboy(GVAR_QUEST_FIND_MALLET_MCBRIDE);
+   display_msg(mstr(2421) + " " + mstr(2428) + ".");
+end
+
+procedure update_pipboy_ginger begin
+   call update_pipboy(GVAR_QUEST_FIND_GINGER_FLOWERS);
+   display_msg(mstr(2421) + " " + mstr(2429) + ".");
+end
+
+procedure update_pipboy_akeisha begin
+   call update_pipboy(GVAR_QUEST_FIND_AKEISHA_MOON);
+   display_msg(mstr(2421) + " " + mstr(2430) + ".");
+end
+
+//xxxxxxxxxxxxxxxxxxxx

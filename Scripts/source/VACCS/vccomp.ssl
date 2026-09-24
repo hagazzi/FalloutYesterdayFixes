@@ -1,0 +1,648 @@
+/*
+
+        Name:
+        Location:
+        Description:
+
+           Created: 2.10.2023. 10:09:24
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_VCCOMP
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure talk_p_proc;
+procedure use_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node001;
+procedure Node002;
+procedure Node003;
+procedure Node004;
+procedure Node005;
+procedure Node006;
+procedure Node007;
+procedure Node008;
+procedure Node009;
+procedure Node010;
+procedure Node011;
+procedure Node012;
+procedure Node013;
+procedure Node014;
+procedure Node015;
+procedure Node016;
+procedure Node017;
+procedure Node018;
+procedure Node019;
+procedure Node020;
+procedure Node021;
+procedure Node022;
+procedure Node023;
+procedure Node024;
+procedure Node025;
+procedure Node026;
+procedure Node027;
+procedure Node028;
+procedure Node029;
+procedure Node030;
+procedure Node031;
+procedure Node032;
+procedure Node033;
+procedure Node034;
+procedure Node035;
+procedure Node036;
+procedure Node037;
+procedure Smash;
+procedure Skill_Check_000_Science;
+procedure Skill_Check_001_Science;
+procedure Skill_Check_001_Gamble;
+procedure repair_time;
+procedure Skill_Check_001_Gambling;
+procedure mark_vault29;
+//procedure mark_vault70;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Broken                     (5)
+#define LVAR_Locked                     (6)
+#define LVAR_Deleted                    (7)
+#define LVAR_Learn_Lib                  (8)
+#define LVAR_Learn_Scheme               (9)
+#define LVAR_Learn_Tutorial             (10)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+
+procedure use_p_proc begin
+   if (source_obj == dude_obj) then begin
+      call talk_p_proc;
+   end
+end
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       if (local_var(LVAR_Broken) == 1) then
+          display_mstr(100);
+       else if (local_var(LVAR_Locked) == 1) then
+          call Node002;
+       else
+          call Node001;
+       gSay_End;
+       end_dialogue;
+
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure Skill_Check_000_Science begin
+   variable roll_temp;
+   roll_temp := roll_vs_skill(dude_obj, SKILL_SCIENCE, -25);
+   if is_success(roll_temp) then
+   begin
+      call Node015;
+   end
+   else begin
+      call Node023;
+    end
+   end
+
+procedure Skill_Check_001_Science begin
+   variable roll_temp;
+   roll_temp := roll_vs_skill(dude_obj, SKILL_SCIENCE, -25);
+   if is_success(roll_temp) then
+   begin
+      call Node003;
+   end
+   else begin
+      call Node002;
+      end
+   end
+
+procedure Skill_Check_001_Gambling begin
+   variable roll_temp;
+   roll_temp := roll_vs_skill(dude_obj, SKILL_GAMBLING, -25);
+
+   if is_success(roll_temp) then begin
+      if (is_critical(roll_temp)) then
+         call Node011;
+      else
+         call Node014;
+   end
+   else begin
+      if (is_critical(roll_temp)) then
+         call Node013;
+      else
+         call Node012;
+   end
+   end
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Node001
+begin
+Reply(200);
+if (dude_item_count(PID_BLUE_PASS_KEY) > 0) then
+   NOption(201,Node003,1);
+if (dude_item_count(PID_RED_PASS_KEY) > 0) then
+   NOption(202,Node002,1);
+if (dude_item_count(PID_YELLOW_PASS_KEY) > 0) then
+   NOption(203,Node002,1);
+NOption(204,Smash,1);
+NOption(205,Skill_Check_001_Science,1);
+NOption(206,Node999,1);
+end
+
+procedure Node002
+begin
+   set_local_var(LVAR_Locked, 1);
+Reply(230);
+NOption(231,Node999,1);
+end
+
+procedure Node003
+begin
+Reply(260);
+NOption(261,Node031,1);
+NOption(262,Node019,1);
+NOption(263,Node009,1);
+NOption(264,Node999,1);
+NOption(265,Skill_Check_000_Science,1);
+end
+
+procedure Node004
+begin
+critter_dmg(dude_obj, 1, DMG_normal_dam);
+Reply(290);
+NOption(291,Node001,1);
+end
+
+procedure Node005
+begin
+Reply(320);
+NOption(321,Node001,1);
+end
+
+procedure Node006
+begin
+Reply(350);
+NOption(321,Node001,1);
+end
+
+procedure Node007
+begin
+   set_local_var(LVAR_Broken, 1);
+Reply(380);
+NOption(381,Node999,1);
+end
+
+procedure Node008
+begin
+Reply(410);
+NOption(321,Node003,1);
+end
+
+procedure Node009
+begin
+Reply(440);
+NOption(mstr(441)+dude_name+mstr(442),Node010,1);
+end
+
+procedure Node010
+begin
+if (dude_is_male) then
+Reply(mstr(470)+dude_name+mstr(472));
+if (dude_is_female) then
+Reply(mstr(471)+dude_name+mstr(472));
+NOption(473,Skill_Check_001_Gambling,1);
+NOption(503,Node999,1);
+end
+
+procedure Node011
+begin
+if (dude_is_male) then
+Reply(mstr(500)+dude_name+mstr(502));
+if (dude_is_female) then
+Reply(mstr(501)+dude_name+mstr(502));
+NOption(503,Node999,1);
+end
+
+procedure Node012
+begin
+
+   call repair_time;
+
+Reply(530);
+NOption(531,Node010,1);
+NOption(503,Node999,1);
+end
+
+procedure Node013
+begin
+Reply(560);
+NOption(531,Node010,1);
+NOption(503,Node999,1);
+end
+
+procedure Node014
+begin
+
+   call repair_time;
+
+Reply(590);
+NOption(591,Skill_Check_001_Gambling,1);
+NOption(592,Node999,1);
+end
+
+procedure Node015
+begin
+
+   fadeout(1);
+   game_time_advance(ONE_GAME_HOUR * 8);
+   fadein(1);
+
+Reply(620);
+NOption(261,Node031,1);
+NOption(262,Node019,1);
+NOption(263,Node009,1);
+NOption(264,Node999,1);
+if (local_var(LVAR_Deleted) == 0) then
+NOption(621,Node016,1);
+if (local_var(LVAR_Deleted) == 1) then
+NOption(621,Node036,1);
+NOption(622,Node024,1);
+end
+
+procedure Node016
+begin
+Reply(650);
+NOption(651,mark_vault29,1);
+//NOption(652,mark_vault70,1);
+NOption(653,Node018,1);
+NOption(503,Node999,1);
+end
+
+procedure Node017
+begin
+Reply(680);
+NOption(681,Node016,1);
+end
+
+procedure Node018
+begin
+set_local_var(LVAR_Deleted, 1);
+Reply(710);
+NOption(681,Node015,1);
+NOption(503,Node999,1);
+end
+
+procedure Node019
+begin
+Reply(740);
+if (local_var(LVAR_Learn_Lib) == 0) then
+   NOption(741,Node020,1);
+else
+   NOption(741,Node037,1);
+if (local_var(LVAR_Learn_Scheme) == 0) then
+   NOption(742,Node021,1);
+else
+   NOption(742,Node037,1);
+
+if (local_var(LVAR_Learn_Tutorial) == 0) then
+   NOption(743,Node022,1);
+else
+   NOption(743,Node037,1);
+
+NOption(744,Node999,1);
+end
+
+procedure Node020
+begin
+
+   fadeout(1);
+   game_time_advance(ONE_GAME_HOUR * 8);
+   fadein(1);
+   set_local_var(LVAR_Learn_Lib, 1);
+   critter_mod_skill(dude_obj, SKILL_CONVERSANT, 1);
+Reply(770);
+NOption(681,Node019,1);
+end
+
+procedure Node021
+begin
+
+   fadeout(1);
+   game_time_advance(ONE_GAME_HOUR * 8);
+   fadein(1);
+   set_local_var(LVAR_Learn_Scheme, 1);
+   critter_mod_skill(dude_obj, SKILL_SCIENCE, 1);
+Reply(800);
+NOption(681,Node019,1);
+end
+
+procedure Node022
+begin
+
+   fadeout(1);
+   game_time_advance(ONE_GAME_HOUR * 8);
+   fadein(1);
+   set_local_var(LVAR_Learn_Tutorial, 1);
+   critter_mod_skill(dude_obj, SKILL_REPAIR, 1);
+Reply(830);
+NOption(681,Node019,1);
+end
+
+procedure Node023
+begin
+
+   fadeout(1);
+   game_time_advance(ONE_GAME_HOUR * 8);
+   fadein(1);
+
+Reply(860);
+NOption(861,Node999,1);
+end
+
+procedure Node024
+begin
+Reply(890);
+NOption(321,Node025,1);
+NOption(503,Node999,1);
+end
+
+procedure Node025
+begin
+Reply(920);
+NOption(321,Node026,1);
+NOption(503,Node999,1);
+end
+
+procedure Node026
+begin
+Reply(950);
+NOption(321,Node027,1);
+NOption(503,Node999,1);
+end
+
+procedure Node027
+begin
+Reply(980);
+NOption(321,Node028,1);
+NOption(503,Node999,1);
+end
+
+procedure Node028
+begin
+Reply(1010);
+NOption(321,Node029,1);
+NOption(503,Node999,1);
+end
+
+procedure Node029
+begin
+Reply(1040);
+NOption(321,Node030,1);
+NOption(503,Node999,1);
+end
+
+procedure Node030
+begin
+Reply(1070);
+NOption(503,Node999,1);
+end
+
+procedure Node031
+begin
+Reply(1100);
+NOption(321,Node032,1);
+end
+
+procedure Node032
+begin
+Reply(1130);
+NOption(321,Node033,1);
+end
+
+procedure Node033
+begin
+Reply(1160);
+NOption(321,Node034,1);
+end
+
+procedure Node034
+begin
+Reply(1190);
+NOption(321,Node035,1);
+end
+
+procedure Node035
+begin
+Reply(1220);
+NOption(503,Node003,1);
+end
+
+procedure Node036
+begin
+Reply(1250);
+NOption(681,Node015,1);
+end
+
+procedure Node037
+begin
+
+   fadeout(1);
+   game_time_advance(ONE_GAME_HOUR * 2);
+   fadein(1);
+
+Reply(1280);
+NOption(681,Node019,1);
+end
+
+procedure Smash begin
+   variable r := random(0, 5);
+
+   if (r == 0) then
+      call Node004;
+   else if (r == 1) then
+      call Node005;
+   else if (r == 2) then
+      call Node006;
+   else if (r == 3) then
+      call Node002;
+   else if (r == 4) then
+      call Node008;
+   else
+      call Node007;
+end
+
+procedure use_skill_on_p_proc begin
+
+   if (action_being_used == SKILL_REPAIR) then begin
+       script_overrides;
+
+      if(
+          skill_success(source_obj, SKILL_REPAIR, -10) and
+          local_var(LVAR_Broken) == 1
+        ) then begin
+         set_local_var(LVAR_Broken, 0);
+         display_msg(mstr_skill(606) + " " + obj_name(self_obj) + ".");
+         call repair_time;
+
+      end else begin
+         display_msg(mstr_skill(607) + " " + obj_name(self_obj) + ".");
+         call repair_time;
+      end
+
+   end else if (action_being_used == SKILL_SCIENCE) then begin
+      script_overrides;
+
+      if(skill_success(source_obj, SKILL_SCIENCE, -25) and local_var(LVAR_Locked) == 1 and local_var(LVAR_Broken) == 0) then begin
+         set_local_var(LVAR_Locked, 0);
+         display_mstr(105);
+      end else begin
+         display_mstr(106);
+      end
+
+   end
+
+end
+
+procedure use_obj_on_p_proc begin
+   variable tool := obj_pid(obj_being_used_with);
+
+   if (
+   tool == PID_WRENCH or
+   tool == PID_MULTI_TOOL or
+   tool == PID_SUPER_TOOL_KIT
+   ) then begin
+      script_overrides;
+
+      if(
+          skill_success(source_obj, SKILL_REPAIR, 10) and
+          local_var(LVAR_Broken) == 1
+        ) then begin
+         set_local_var(LVAR_Broken, 0);
+         display_msg(mstr_skill(606) + " " + obj_name(self_obj) + ".");
+         call repair_time;
+
+      end else begin
+         display_msg(mstr_skill(607) + " " + obj_name(self_obj) + ".");
+         call repair_time;
+      end
+
+   end
+end
+
+procedure repair_time begin
+    fadeout(1);
+    game_time_advance(ONE_GAME_HOUR);
+    fadein(1);
+end
+/*
+procedure mark_vault70() begin
+
+   if(not(town_known(AREA_SALT_LAKE_CITY))) then begin
+      give_xp(500);
+      mark_on_map(AREA_SALT_LAKE_CITY)
+      display_msg("You have discovered the location of Vault 70.");
+   end
+
+   call Node017;
+
+end
+*/
+procedure mark_vault29() begin
+
+   if(not(town_known(AreaNukeStatus(AREA_TWIN_MOTHERS)))) then begin
+      give_xp(500);
+      mark_on_map(AreaNukeStatus(AREA_TWIN_MOTHERS))
+      display_msg(g_mstr(1008) + " " + mstr(107) + ".");
+   end
+
+   call Node017;
+
+end
+
+
+//xxxxxxxxxxxxxxxxxxxx

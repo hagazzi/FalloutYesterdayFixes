@@ -1,0 +1,57 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_VACCS8
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+variable track;
+
+procedure start begin
+end
+
+
+procedure map_enter_p_proc begin
+   fadein(1);
+   Cavern_Lighting;
+end
+
+procedure map_update_p_proc begin
+
+   if(dude_elevation == 0) then begin
+
+      if (track != AMBIENT_MOUNTAIN_CAVE_WIND) then begin
+         stop_sfall_sound(ambient_sfx);
+         track = AMBIENT_MOUNTAIN_CAVE_WIND;
+         ambient_sfx := play_sfall_sound(AmbientTrack(track), 1);
+      end
+
+      Cavern_Lighting;
+   end
+   else begin
+
+      if (track != AMBIENT_ABANDONED_WIND) then begin
+         stop_sfall_sound(ambient_sfx);
+         track = AMBIENT_ABANDONED_WIND;
+         ambient_sfx := play_sfall_sound(AmbientTrack(track), 1);
+      end
+
+      Darkness;
+   end
+
+end
+
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

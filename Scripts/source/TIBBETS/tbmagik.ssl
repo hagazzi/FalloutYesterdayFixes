@@ -1,0 +1,2247 @@
+/*
+
+        Name:           Magik
+        Location:
+        Description:
+
+           Created: 05/11/2020 09:02:52
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBMAGIK
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+procedure Skill_Check_004_Strength;
+procedure Skill_Check_001_Speech;
+procedure Skill_Check_002_Speech;
+procedure Skill_Check_003_Barter;
+procedure Skill_Check_000_Steal;
+procedure Skill_Check_005_Barter;
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Node_Door;
+procedure Node_FirstIntro;
+procedure Node_FirstIntro2;
+procedure Node_FirstIntro3;
+procedure Node_FirstIntro4;
+procedure Node_RobIntro;
+procedure Node_NextIntro;
+procedure Node_JobIntro;
+procedure Node_AngelaIntro;
+procedure Node_Job;
+procedure Node_Job2;
+procedure Node_Job3;
+procedure Node_JobBarter;
+procedure Node_JobBarterFail;
+procedure Node_JobInfoCleaning;
+procedure Node_JobPromotion;
+procedure Node_JobPromotionEasy;
+procedure Node_JobPromotionGood;
+procedure Node_JobPromotionStart;
+procedure Node_JobPromotionSwitch;
+procedure Node_JobPromotionWeird;
+procedure Node_JobQuit;
+procedure Node_JobRepeatClean;
+procedure Node_JobRepeatClean2;
+procedure Node_JobRepeatCleanStart;
+procedure Node_JobRepeatGutting;
+procedure Node_JobRepeatSwitch;
+procedure Node_JobRepeatTrust;
+procedure Node_JobRespect;
+procedure Node_JobStart;
+procedure Node_Q_Business;
+procedure Node_Q_Business_CR;
+procedure Node_Q_Business2;
+procedure Node_Q_Business3;
+procedure Node_Q_Business4;
+procedure Node_Q_Business5;
+procedure Node_Q_Business5_Curious;
+procedure Node_Q_Business5_STR;
+procedure Node_Q_CotC;
+procedure Node_Q_CotC_Angela;
+procedure Node_Q_CotC_Angela2;
+procedure Node_Q_CotC_Angela3;
+procedure Node_Q_CotC_AngelaNo;
+procedure Node_Q_CotC2;
+procedure Node_Q_CotC3;
+procedure Node_Q_Magik;
+procedure Node_Q_Magik2;
+procedure Node_Q_Magik3;
+procedure Node_Q_Magik4;
+procedure Node_Q_Magik_Hogg;
+procedure Node_Questions;
+procedure Node_Questions2;
+procedure Node_RobJob;
+procedure Node_RobRobbed;
+procedure Node_RobRobbed2;
+procedure Node_Threat;
+procedure Node_AngelaNotYet;
+procedure Node_AngelaStall;
+procedure Node_AngelaCheck;
+procedure Node_AngelaSpec;
+procedure Node_AngelaMisread;
+procedure Node_AngelaFrank;
+procedure Node_AngelaSpill;
+procedure Node_AngelaThink;
+procedure Node_AngelaFrank2;
+procedure Node_AngelaBought;
+procedure Node_AngelaSpillAdmit;
+procedure Node_AngelaTime;
+procedure Node_AngelaAlarm;
+procedure Node_AngelaCrux;
+procedure Node_AngelaSpill2;
+procedure Node_Intimidate;
+procedure Node_IntimidateProtect;
+procedure Node_Intimidate2;
+procedure Node_IntimidateCrux;
+procedure Node_IntimidateCrux2;
+procedure Node_IntimidateSequence;
+procedure Node_IntimidateBottle;
+procedure Node_AngelaIntimidateWin;
+procedure Node_AngelaIntimidateWin2;
+procedure Node_AngelaIntimidateString;
+procedure Node_AngelaIntimidateWin3;
+procedure Node_AngelaRobo;
+procedure Node_AngelaRobo_CLONE;
+procedure Node_AngelaRobo2;
+procedure Node_AngelaRobo3;
+procedure Node_AngelaIllBe;
+procedure Node_AngelaSpeech;
+procedure Node_AngelaSpillBull;
+procedure Node_AngelaEscape;
+procedure Node_AngelaThink_CLONE;
+procedure Node_AngelaSpeech2;
+procedure Node_AngelaSpeech3;
+procedure Node_AngelaSpeech4;
+procedure Node_AngelaSpeech5;
+procedure Node_AngelaSpeechFail;
+procedure Node_AngelaSpeechFailJ;
+procedure Node_MidShift;
+procedure Node_MidshiftSnitch;
+procedure Node_MidshiftSnitch2;
+procedure Node_MidshiftBreak;
+procedure Node_MidshiftBreak2;
+procedure Node_MidshiftQuit;
+procedure Node_MidshiftQuit2;
+procedure Node_MidshiftQuitMoneyA;
+procedure Node_MidshiftQuitMoneyB;
+procedure Node_MidshiftQuitMoneyBarterSuccess;
+procedure Node_JobEnd;
+procedure Node_JobEnds2;
+procedure Node_JobEndsShirk;
+procedure Node_JobEndSolicit;
+procedure Node_JobEndsShirk2;
+procedure Node_Solicit2;
+procedure Node_JobEndSolicit3;
+procedure Node_JobEndSolicitRefuse;
+procedure Node_JobEndSolicitPrice;
+procedure Node_JobEndSolicitBarter;
+procedure Node_JobEndSolicitDeal;
+procedure Node_JobEndSolicitProp;
+procedure Node_JobEndSolicitTen;
+procedure Node_JobEndSolicitHagdeal;
+procedure Node_JobEndSolicitWoah;
+procedure Node_JobEndSolicitWoah2;
+procedure Node_Sleeping;
+procedure Node_SleepingStealSuccess;
+procedure Node_SleepingKillswitch;
+procedure Node_SleepingStealFail;
+procedure Node_SleepingKillFin;
+procedure Node_SleepingKillStr;
+procedure Node_SleepingKillElse;
+procedure Node_SleepingKillHtH;
+procedure Node_Q_CotCAngelaMore;
+procedure Node_Q_CotCAngelaMarriage;
+procedure Node_Q_CotCAngelaQuest;
+procedure Node_Q_CotCAngelaQuest2;
+procedure Node_IntroThreat;
+procedure Node_DumbIntro;
+procedure Node_DumbIntro2;
+procedure Node_DumbIntro3;
+procedure Node_DumbJob;
+procedure Node_DumbJobNo;
+procedure Node_DumbPay;
+procedure Node_JobPayConfuse;
+procedure Node_DumbJob3;
+procedure Node_JobPayConfuse2;
+procedure Node_JobPayConfuse3;
+procedure Node_JobPayConfuseEnd;
+procedure Node_DumbEnd;
+procedure Node_DumbBarrels;
+procedure Node_MurderIntro;
+procedure Node_MurderQ;
+procedure Node_MurderInfo;
+procedure Node_MurderInfoMoses;
+procedure Node_MurderInfoWhere;
+procedure Node_MurderTragic;
+procedure Node_MurderAlibi;
+procedure Node_MurderAnger;
+procedure Node_MurderCut;
+procedure Node_MurderInfo2;
+procedure Node_MurderAlibiFails;
+procedure Node_MurderCutNo;
+procedure Node_MurderAlibiF2;
+procedure Node_MurderAlibiFBob;
+procedure Node_MurderAlibiFMoney;
+procedure Node_MurderAlibiFSkin;
+procedure Node_MurderAlibiFAngry;
+procedure Node_MurderAlibiFEnd;
+procedure Node_MurderAlibiFStory;
+procedure Node_MurderAlibiFREnd;
+procedure Node_MurderAlibiFCEnd;
+procedure Node_MurderAngerMarry;
+procedure Node_MurderAngryMarry2;
+procedure Node_MurderAngryMarry3;
+procedure Node_MurderQAuthoratah;
+procedure Node_MurderQSuspect;
+procedure Node_MurderQCoop;
+procedure Node_MurderQ_CLONE;
+procedure Node_DumbJob2;
+procedure Node_MidshiftDumbJ;
+procedure Node_MidshiftDumbJ2;
+procedure Node_MidshiftDumbJ3;
+procedure Node_SleepingDumb;
+procedure Node_SleepingDumb2;
+procedure Node_DefaultIntro;
+procedure Node_JobEndDumb;
+procedure Node_NoonIntro;
+procedure Node_RobGag;
+procedure Shiva;
+procedure FortAradesh;
+procedure YouThinkStupid;
+procedure Barter30OK;
+procedure Barter30Fail;
+procedure Node_JobStart_10;
+procedure Node_JobEndSolicitDeal_3k;
+procedure Node_JobEndSolicitDeal_2k;
+procedure Node_JobEndSolicitDeal_1k;
+procedure Node_JobEndSolicitBarter_10k;
+procedure Node_JobEndSolicitBarter_2k;
+procedure Node_JobEndSolicitBarter_5k;
+procedure Node999_sex;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Robbed                     (8)
+#define LVAR_Intimidated                     (9)
+#define LVAR_Default_Intro               (10)
+#define LVAR_Job_Intro               (11)
+#define LVAR_Waiting_Angela           (12)
+#define LVAR_Shiva           (13)
+#define LVAR_Solicit           (14)
+#define LVAR_TooDumb           (15)
+#define LVAR_MarryAngela           (16)
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_MAGIK);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+
+   call new_plague_check(self_obj, LVAR_Herebefore);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+
+      inc_local_var(LVAR_Robbed);
+
+      if(local_var(LVAR_Robbed) == 1) then
+         floater_whisper_rand(290,292);
+      else if(local_var(LVAR_Robbed) == 2) then
+         floater_bad_rand(320,324);
+      else if(local_var(LVAR_Robbed) >= 3) then begin
+         floater_bad_rand(230,232);
+         set_local_var(LVAR_Hostile,2);
+      end
+
+   end
+
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   Evil_Critter:=1;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if(local_var(LVAR_Intimidated) == 1) then begin
+      floater_afraid_rand(200, 205);
+      return;
+   end
+
+   if(local_var(LVAR_TooDumb) == 1) then begin
+      floater_afraid_rand(440, 444);
+      return;
+   end
+
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,HEAD_MAGIK,BACKGROUND_ENCLAVE);
+       gSay_Start;
+
+      if(night) then begin
+         call Node_Sleeping;
+      end else if (global_var(GVAR_ANGELA_DEAD) == 1) then begin
+         call Node_MurderIntro;
+      end else if(local_var(LVAR_Robbed) >= 1) then begin
+         call Node_RobIntro;
+      end else if(local_var(LVAR_Waiting_Angela) == 1) then begin
+         call Node_AngelaIntro;
+      end else if(global_var(GVAR_WORKED_FOR_MAGIK) == 0) then begin
+         if(local_var(LVAR_Herebefore) == 0) then
+            call Node_FirstIntro;
+         else if(local_var(LVAR_Herebefore) == 1 and local_var(LVAR_Default_Intro) == 0) then
+            call Node_NextIntro;
+         else if(local_var(LVAR_Herebefore) == 1 and local_var(LVAR_Default_Intro) == 1) then
+            call Node_DefaultIntro;
+      end else begin
+         if(local_var(LVAR_Job_Intro) == 0) then
+            call Node_JobIntro;
+         else if(local_var(LVAR_Job_Intro) == 1 and game_time_hour >= 1200 and game_time_hour <= 1300) then
+            call Node_NoonIntro;
+         else if(local_var(LVAR_Job_Intro) == 1 and not(night)) then
+            call Node_MidShift;
+         else if(local_var(LVAR_Job_Intro) == 2) then begin
+            if(dude_is_stupid) then
+               call Node_JobEndDumb;
+            else
+               call Node_JobEnd;
+         end
+      end
+
+
+       gSay_End;
+       end_dialogue;
+
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+
+   add_timer_event(self_obj,game_ticks(random(3, 5)),0);
+
+    if (random(0, 30) == 1) then begin
+       if(night) then
+         if(random(1,2) == 1) then
+            floater_rand(260, 263);
+         else
+            floater_rand(290, 292);
+       else
+          floater_rand(350, 355);
+   end
+
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+ inc_evil_critter
+set_global_var(GVAR_MAGIK_DEAD, 1);
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+set_global_var(GVAR_KNOW_MAGIK, 1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+procedure Skill_Check_004_Strength begin
+variable roll_temp;
+roll_temp := do_check(dude_obj, STAT_st, -1);
+if is_success(roll_temp) then
+begin
+call Node_Q_Business5_STR;
+end
+else begin
+call Node_Threat;
+ end
+end
+
+procedure Skill_Check_001_Speech begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -10);
+if is_success(roll_temp) then
+begin
+call Node_AngelaSpeech2;
+end
+else begin
+call Node_AngelaSpeechFail;
+ end
+end
+
+procedure Skill_Check_002_Speech begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_CONVERSANT, -10);
+if is_success(roll_temp) then
+begin
+call Node_AngelaSpeech3;
+end
+else begin
+call Node_AngelaSpeechFail;
+ end
+end
+
+procedure Skill_Check_003_Barter begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_BARTER, -20);
+if is_success(roll_temp) then
+begin
+call Node_MidshiftQuitMoneyBarterSuccess;
+end
+else begin
+call Node_MidshiftQuitMoneyB;
+ end
+end
+
+procedure Skill_Check_000_Steal begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_STEAL, -10);
+if is_success(roll_temp) then
+begin
+call Node_SleepingStealSuccess;
+end
+else begin
+call Node_SleepingStealFail;
+ end
+end
+
+procedure Skill_Check_005_Barter begin
+variable roll_temp;
+roll_temp := roll_vs_skill(dude_obj, SKILL_BARTER, -30);
+if is_success(roll_temp) then
+begin
+call Barter30OK;
+end
+else begin
+call Barter30Fail;
+ end
+end
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure RobbedIdle
+begin
+floater_rand(380,383);
+end
+
+// Node OffTime
+//
+// Notes:
+//
+// if the PC tries to talk to Magik outside of working hours
+
+procedure OffTime
+begin
+floater_rand(410,413);
+end
+
+// Node TooDumb
+//
+// Notes:
+//
+// If a dumb PC has infuriated Magik with his stupidity
+
+procedure TooDumb
+begin
+floater_rand(440,444);
+end
+
+procedure Node_Door
+begin
+Reply(500);
+NOption(501,Node999,4);
+end
+
+procedure Node_FirstIntro
+begin
+if (dude_is_male) then Reply(530); else
+if (dude_is_female) then Reply(531);
+NOption(532,Node_FirstIntro2,4);
+NOption(533,Node999,4);
+NOption(534,Node_DumbIntro,-3);
+NOption(535,Node999,-3);
+end
+
+procedure Node_FirstIntro2
+begin
+if (dude_is_male) then Reply(560); else
+if (dude_is_female) then Reply(561);
+NOption(mstr(562)+dude_name+mstr(563),Node_FirstIntro3,4);
+NOption(564,Node_FirstIntro4,4);
+end
+
+procedure Node_FirstIntro3
+begin
+if (dude_is_male) then Reply(590); else
+if (dude_is_female) then Reply(591);
+NOption(592,Node_Job,4);
+NOption(593,Node_Questions,4);
+// NOTE: male only
+if (dude_is_male) then
+NOption(594,Node_IntroThreat,4);
+NOption(595,Node999,4);
+end
+
+procedure Node_FirstIntro4
+begin
+if (dude_is_male) then Reply(620); else
+if (dude_is_female) then Reply(621);
+NOption(592,Node_Job,4);
+NOption(593,Node_Questions,4);
+NOption(595,Node999,4);
+end
+
+procedure Node_RobIntro
+begin
+Reply(650);
+NOption(651,Node_RobJob,4);
+NOption(652,Node_RobRobbed,4);
+if(dude_caps >= 1 and local_var(LVAR_Robbed) == 1) then
+NOption(6081,YouThinkStupid,4);
+NOption(653,Node999,4);
+end
+
+procedure Node_NextIntro
+begin
+   set_local_var(LVAR_Default_Intro, 1);
+if (dude_is_male) then Reply(680); else
+if (dude_is_female) then Reply(681);
+NOption(682,Node_Job,4);
+NOption(683,Node_Questions,4);
+if(global_var(GVAR_ANGELA_DEAD) == 1) then
+NOption(684,Node_MurderQAuthoratah,4);
+NOption(685,Node999,4);
+NOption(mstr(686)+dude_name+mstr(687),Node_DumbJob2,-3);
+NOption(688,Node999,-3);
+end
+
+procedure Node_JobIntro
+begin
+   set_local_var(LVAR_Job_Intro, 1);
+if (dude_is_male) then Reply(710); else
+if (dude_is_female) then Reply(711);
+NOption(712,Node_JobRepeatSwitch,4);
+NOption(713,Node_Questions,4);
+if(global_var(GVAR_ANGELA_DEAD) == 1) then
+NOption(714,Node_MurderQ_CLONE,4);
+NOption(715,Node999,4);
+NOption(716,Node_JobRepeatSwitch,-3);
+NOption(717,Node999,-3);
+end
+
+procedure Node_AngelaIntro
+begin
+Reply(740);
+NOption(741,Node_AngelaNotYet,4);
+if(global_var(GVAR_ANGELA_MAGIK_DATE) == 1) then
+NOption(742,Node_AngelaCheck,4);
+NOption(743,Node999,4);
+end
+
+procedure Node_Job
+begin
+Reply(770);
+NOption(771,Node_Job2,4);
+end
+
+procedure Node_Job2
+begin
+Reply(800);
+NOption(801,Node_Job3,4);
+NOption(802,Node_JobInfoCleaning,4);
+NOption(803,Node999,4);
+end
+
+procedure Node_Job3
+begin
+Reply(830);
+NOption(831,Node_JobRespect,4);
+NOption(832,Node_JobInfoCleaning,4);
+NOption(833,Node999,4);
+end
+
+procedure Node_JobBarter
+begin
+if (dude_is_male) then Reply(860); else
+if (dude_is_female) then Reply(861);
+NOption(862,Node_JobStart_10,4);
+NOption(863,Node_JobBarterFail,4);
+NOption(864,Node999,4);
+end
+
+procedure Node_JobStart_10 begin
+   set_global_var(GVAR_MAGIK_JOB_PAY, 10);
+   call Node_JobStart;
+end
+
+procedure Node_JobBarterFail
+begin
+Reply(890);
+NOption(891,Node_JobStart_10,4);
+NOption(892,Node999,4);
+end
+
+procedure Node_JobInfoCleaning
+begin
+if (dude_is_male) then Reply(920); else
+if (dude_is_female) then Reply(921);
+// NOTE: Variable CleaningWork = 1
+NOption(922,Node_JobStart_10,4);
+NOption(923,Node_JobBarter,4);
+NOption(924,Node_JobQuit,4);
+end
+
+procedure Node_JobPromotion
+begin
+Reply(950);
+NOption(951,Node_JobPromotionEasy,4);
+NOption(952,Node_JobPromotionEasy,4);
+NOption(953,Node_JobPromotionGood,4);
+NOption(954,Node_JobPromotionGood,4);
+NOption(955,Node_JobPromotionWeird,4);
+NOption(mstr(686)+dude_name+mstr(956),Node_JobPromotionEasy,-3);
+NOption(957,Node_JobPromotionWeird,-3);
+end
+
+procedure Node_JobPromotionEasy
+begin
+Reply(980);
+NOption(981,Node_JobPromotionStart,4);
+NOption(982,Node999,4);
+NOption(983,Node_JobPromotionStart,-3);
+NOption(mstr(686)+dude_name+mstr(984),Node_JobPromotionSwitch,4);
+end
+
+procedure Node_JobPromotionGood
+begin
+Reply(1010);
+NOption(981,Node_JobPromotionStart,4);
+NOption(1011,Node_JobPromotionSwitch,4);
+NOption(982,Node999,4);
+end
+
+procedure Node_JobPromotionStart
+begin
+   set_global_var(GVAR_MAGIK_JOB_PAY, 20);
+   set_local_var(LVAR_Shiva, 1);
+Reply(1040);
+NOption(1041,Shiva,4);
+NOption(1042,Node999,4);
+end
+
+procedure Node_JobPromotionSwitch
+begin
+Reply(1070);
+NOption(1071,Node_JobPromotionStart,4);
+NOption(1072,Node_JobRepeatCleanStart,4);
+NOption(mstr(686)+dude_name+mstr(1073),Node_JobPromotionStart,-3);
+NOption(mstr(686)+dude_name+mstr(1074),Node_JobRepeatCleanStart,-3);
+end
+
+procedure Node_JobPromotionWeird
+begin
+Reply(1100);
+NOption(1101,Node_JobPromotionStart,4);
+NOption(1102,Node999,4);
+NOption(1103,Node_JobPromotionStart,4);
+NOption(mstr(686)+dude_name+mstr(1104),Node_JobPromotionSwitch,4);
+NOption(1105,Node999,4);
+end
+
+procedure Node_JobQuit
+begin
+   set_global_var(GVAR_WORKED_FOR_MAGIK, 0);
+if (dude_is_male) then Reply(1130); else
+if (dude_is_female) then Reply(1131);
+NOption(892,Node999,4);
+end
+
+procedure Node_JobRepeatClean
+begin
+if (dude_is_male) then Reply(1160); else
+if (dude_is_female) then Reply(1161);
+NOption(1162,Node_JobRepeatClean2,4);
+NOption(1163,Node999,4);
+NOption(mstr(686)+dude_name+mstr(1164),Node_JobRepeatClean2,-3);
+end
+
+procedure Node_JobRepeatClean2
+begin
+Reply(1190);
+NOption(1191,Node_JobRepeatTrust,4);
+NOption(mstr(686)+dude_name+mstr(1192),Node_JobRepeatTrust,-3);
+end
+
+procedure Node_JobRepeatCleanStart
+begin
+      set_global_var(GVAR_MAGIK_JOB_PAY, 8);
+
+Reply(1220);
+NOption(1221,Node999,4);
+end
+
+procedure Node_JobRepeatGutting
+begin
+Reply(1250);
+NOption(1221,Node999,4);
+end
+
+procedure Node_JobRepeatSwitch
+begin
+Reply(1280);
+// NOTE: If variable JobSkived = 1 OR variable JobQuit = 1
+if(global_var(GVAR_WORKED_FOR_MAGIK) == 0) and (global_var(GVAR_MAGIK_JOB_PAY) > 0) then
+NOption(1281,Node_JobRepeatClean,4);
+// NOTE: if PC worked hard (no quitting or skiving)
+if(global_var(GVAR_WORKED_FOR_MAGIK) == 1) and (has_skill(dude_obj, SKILL_STEAL) >= 50) then
+NOption(1281,Node_JobPromotion,4);
+// NOTE: if PC has been promoted
+if(local_var(LVAR_Shiva) > 0) then
+NOption(1281,Node_JobRepeatGutting,4);
+end
+
+procedure Node_JobRepeatTrust
+begin
+Reply(1310);
+NOption(1311,Node_JobRepeatCleanStart,4);
+NOption(1312,Node_Door,4);
+NOption(mstr(686)+dude_name+mstr(1313),Node_JobRepeatCleanStart,-3);
+NOption(1314,Node999,-3);
+end
+
+procedure Node_JobRespect
+begin
+Reply(1340);
+NOption(1341,Node_Threat,4);
+NOption(1342,Node_JobInfoCleaning,4);
+NOption(501,Node999,4);
+end
+
+procedure Node_JobStart
+begin
+   set_global_var(GVAR_WORKED_FOR_MAGIK, 1);
+Reply(1370);
+NOption(1371,Node999,4);
+NOption(1372,Node999,4);
+end
+
+procedure Node_Q_Business
+begin
+Reply(1400);
+NOption(1401,Node_Q_Business3,4);
+NOption(1402,Node_Q_Business2,4);
+NOption(1403,Node_Questions2,4);
+end
+
+procedure Node_Q_Business_CR
+begin
+Reply(1430);
+NOption(1431,Node_Questions2,4);
+NOption(501,Node999,4);
+end
+
+procedure Node_Q_Business2
+begin
+Reply(1460);
+NOption(1461,Node_Q_Business4,4);
+NOption(1401,Node_Q_Business3,4);
+NOption(1403,Node_Questions2,4);
+end
+
+procedure Node_Q_Business3
+begin
+Reply(1490);
+NOption(1491,Node_Q_Business_CR,4);
+NOption(1492,Node_Q_Business2,4);
+NOption(1493,Node_Questions2,4);
+end
+
+procedure Node_Q_Business4
+begin
+Reply(1520);
+NOption(1521,Node_Q_Business5,4);
+NOption(1491,Node_Q_Business_CR,4);
+NOption(1493,Node_Questions2,4);
+end
+
+procedure Node_Q_Business5
+begin
+Reply(1550);
+NOption(1551,Skill_Check_004_Strength,4);
+NOption(1552,Node_Q_Business5_Curious,4);
+end
+
+procedure Node_Q_Business5_Curious
+begin
+Reply(1580);
+NOption(1221,Node999,4);
+end
+
+procedure Node_Q_Business5_STR
+begin
+Reply(1610);
+NOption(1611,Node_Questions2,4);
+NOption(1612,Node999,4);
+end
+
+procedure Node_Q_CotC
+begin
+Reply(1640);
+NOption(1641,Node_Q_CotC2,4);
+NOption(1642,Node_Q_CotC3,4);
+NOption(1493,Node_Questions2,4);
+end
+
+procedure Node_Q_CotC_Angela
+begin
+Reply(1670);
+NOption(1671,Node_Q_CotCAngelaMore,4);
+NOption(1672,Node_Questions2,4);
+end
+
+procedure Node_Q_CotC_Angela2
+begin
+Reply(1700);
+NOption(1701,Node_Q_CotC_Angela3,4);
+NOption(1702,Node_Q_CotC_AngelaNo,4);
+end
+
+procedure Node_Q_CotC_Angela3
+begin
+   set_local_var(LVAR_Waiting_Angela, 1);
+
+Reply(1730);
+NOption(1221,Node999,4);
+end
+
+procedure Node_Q_CotC_AngelaNo
+begin
+if (dude_is_male) then Reply(1760); else
+if (dude_is_female) then Reply(1761);
+NOption(1221,Node999,4);
+end
+
+procedure Node_Q_CotC2
+begin
+Reply(1790);
+NOption(1642,Node_Q_CotC3,4);
+NOption(1403,Node_Questions2,4);
+end
+
+procedure Node_Q_CotC3
+begin
+Reply(1820);
+NOption(1821,Node_Q_CotC_Angela,4);
+NOption(1403,Node_Questions2,4);
+end
+
+procedure Node_Q_Magik
+begin
+Reply(1850);
+NOption(1851,Node_Q_Magik2,4);
+NOption(1852,Node_Q_Magik3,4);
+NOption(1853,Node_Questions2,4);
+end
+
+procedure Node_Q_Magik2
+begin
+Reply(1880);
+NOption(1881,Node_Q_Magik4,4);
+NOption(1882,Node_Q_Magik_Hogg,4);
+NOption(1403,Node_Questions2,4);
+end
+
+procedure Node_Q_Magik3
+begin
+Reply(1910);
+NOption(1911,Node_Q_Magik4,4);
+NOption(1912,Node_Q_Magik2,4);
+NOption(1403,Node_FirstIntro,4);
+end
+
+procedure Node_Q_Magik4
+begin
+if (dude_is_male) then Reply(1940); else
+if (dude_is_female) then Reply(1941);
+NOption(1942,Node_Questions2,4);
+NOption(1943,Node999,4);
+end
+
+procedure Node_Q_Magik_Hogg
+begin
+Reply(1970);
+NOption(1403,Node_Questions,4);
+end
+
+procedure Node_Questions
+begin
+Reply(2000);
+NOption(2001,Node_Q_Magik,4);
+NOption(2002,Node_Q_Business,4);
+NOption(2003,Node_Q_CotC,4);
+NOption(595,Node999,4);
+end
+
+procedure Node_Questions2
+begin
+Reply(2030);
+NOption(2001,Node_Q_Magik,4);
+NOption(2031,Node_Q_Business,4);
+NOption(2032,Node_Q_CotC,4);
+NOption(595,Node999,4);
+end
+
+procedure Node_RobJob
+begin
+Reply(2060);
+// NOTE: if pc has not been promoted
+if(local_var(LVAR_Shiva) == 0) then
+NOption(2061,Node_JobRepeatCleanStart,4);
+// NOTE: if PC has been promoted
+if(local_var(LVAR_Shiva) == 1) then
+NOption(2061,Node_JobRepeatGutting,4);
+NOption(2062,Node999,4);
+end
+
+procedure Node_RobRobbed
+begin
+Reply(2090);
+NOption(2091,Node_RobRobbed2,4);
+NOption(2092,Node_RobJob,4);
+NOption(2093,Node999,4);
+end
+
+procedure Node_RobRobbed2
+begin
+Reply(2120);
+NOption(2121,Node_RobGag,4);
+NOption(2122,Node_RobJob,4);
+NOption(2123,Node999,4);
+end
+
+procedure Node_Threat
+begin
+if (dude_is_male) then Reply(2150); else
+if (dude_is_female) then Reply(2151);
+BOption(2152,Node998,4);
+NOption(892,Node999,4);
+end
+
+procedure Node_AngelaNotYet
+begin
+Reply(2180);
+NOption(1221,Node999,4);
+end
+
+procedure Node_AngelaStall
+begin
+Reply(2210);
+NOption(2211,Node_AngelaMisread,4);
+NOption(2212,Node999,4);
+end
+
+procedure Node_AngelaCheck
+begin
+Reply(2240);
+NOption(2241,Node_AngelaSpec,4);
+NOption(2242,Node_AngelaStall,4);
+end
+
+procedure Node_AngelaSpec
+begin
+Reply(2270);
+NOption(2271,Node_AngelaFrank,4);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(2272,Node_AngelaSpill,4);
+NOption(2273,Node_AngelaThink,4);
+NOption(2274,Node_AngelaEscape,4);
+end
+
+procedure Node_AngelaMisread
+begin
+Reply(2300);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(2301,Node_AngelaSpillAdmit,4);
+NOption(2302,Node_AngelaFrank2,4);
+NOption(2303,Node_AngelaThink,4);
+end
+
+procedure Node_AngelaFrank
+begin
+Reply(2330);
+NOption(2331,Node_AngelaFrank2,4);
+NOption(2332,Node_AngelaFrank2,4);
+NOption(2333,Node_AngelaFrank2,4);
+end
+
+procedure Node_AngelaSpill
+begin
+Reply(2360);
+NOption(2361,Node_AngelaCrux,4);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(2362,Node_AngelaSpillAdmit,4);
+NOption(2363,Node_Intimidate,4);
+end
+
+procedure Node_AngelaThink
+begin
+Reply(2390);
+NOption(2391,Node_AngelaTime,4);
+NOption(2211,Node_AngelaMisread,4);
+NOption(2392,Node_AngelaFrank,4);
+end
+
+procedure Node_AngelaFrank2
+begin
+Reply(2420);
+NOption(2421,Node_AngelaBought,4);
+NOption(2422,Node_AngelaTime,4);
+NOption(2423,Node_AngelaAlarm,4);
+end
+
+procedure Node_AngelaBought
+begin
+Reply(2450);
+NOption(2451,Node_AngelaCrux,4);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(2452,Node_AngelaSpill2,4);
+NOption(2453,Node_Intimidate,4);
+end
+
+procedure Node_AngelaSpillAdmit
+begin
+Reply(2480);
+NOption(2481,Node_AngelaRobo,4);
+end
+
+procedure Node_AngelaTime
+begin
+Reply(2510);
+NOption(2511,Node_AngelaCrux,4);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(2512,Node_AngelaSpill2,4);
+end
+
+procedure Node_AngelaAlarm
+begin
+Reply(2540);
+NOption(2541,Node_AngelaCrux,4);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(2542,Node_AngelaSpill2,4);
+NOption(2543,Node_Intimidate,4);
+end
+
+procedure Node_AngelaCrux
+begin
+if (dude_is_male) then Reply(2570); else
+if (dude_is_female) then Reply(2571);
+NOption(2572,Node_AngelaSpeech,4);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(2573,Node_AngelaSpillAdmit,4);
+NOption(2574,Node_Intimidate,4);
+end
+
+procedure Node_AngelaSpill2
+begin
+Reply(2600);
+NOption(2601,Node_AngelaRobo,4);
+NOption(2602,Node_AngelaRobo_CLONE,4);
+NOption(2603,Node_AngelaFrank2,4);
+end
+
+procedure Node_Intimidate
+begin
+if (dude_is_male) then Reply(2630); else
+if (dude_is_female) then Reply(2631);
+NOption(2632,Node_IntimidateProtect,4);
+NOption(2633,Node_Intimidate2,4);
+NOption(2634,Node_IntimidateCrux,4);
+end
+
+procedure Node_IntimidateProtect
+begin
+if (dude_is_male) then Reply(2660); else
+if (dude_is_female) then Reply(2661);
+if (dude_is_male) then
+NOption(2662,Node_IntimidateCrux,4);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(2663,Node_AngelaRobo,4);
+NOption(2664,Node_AngelaMisread,4);
+end
+
+procedure Node_Intimidate2
+begin
+Reply(2690);
+NOption(2691,Node_IntimidateProtect,4);
+NOption(2692,Node_IntimidateCrux,4);
+end
+
+procedure Node_IntimidateCrux
+begin
+if (dude_is_male) then Reply(2720); else
+if (dude_is_female) then Reply(2721);
+// NOTE: only if PC has robbed Magik (clearly). Magik simply attacks with the floats from the 'RobCaught' range
+BOption(2722,Node998,4);
+NOption(2723,Node_IntimidateCrux2,4);
+NOption(2724,Node_AngelaSpillAdmit,4);
+end
+
+procedure Node_IntimidateCrux2
+begin
+Reply(2750);
+NOption(2751,Node_IntimidateSequence,4);
+NOption(2752,Node999,4);
+NOption(2753,Node_IntimidateBottle,4);
+end
+
+procedure Node_IntimidateSequence
+begin
+Reply(2780);
+NOption(2781,Node_AngelaIntimidateWin,4);
+end
+
+procedure Node_IntimidateBottle
+begin
+Reply(2810);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(2811,Node_AngelaSpillAdmit,4);
+else
+BOption(2812,Node998,4);
+end
+
+procedure Node_AngelaIntimidateWin
+begin
+Reply(2840);
+NOption(2841,Node_AngelaIntimidateWin3,4);
+end
+
+procedure Node_AngelaIntimidateWin2
+begin
+Reply(2870);
+// NOTE: This path effectively 'kills' Magik for the murder investigation - ie he doesn't show up to meet bob at the cutty sark. Speaking to Magik after this node draw floats from the 'Intimidated' set.
+set_local_var(LVAR_Intimidated, 1);
+NOption(2871,Node999,4);
+end
+
+procedure Node_AngelaIntimidateString
+begin
+Reply(2900);
+NOption(2901,Node_AngelaIntimidateWin2,4);
+BOption(2902,Node998,4);
+end
+
+procedure Node_AngelaIntimidateWin3
+begin
+Reply(2930);
+NOption(2931,Node_AngelaIntimidateString,4);
+BOption(2932,Node998,4);
+NOption(2933,Node_AngelaIntimidateWin2,4);
+end
+
+procedure Node_AngelaRobo
+begin
+Reply(2960);
+NOption(2961,Node_AngelaRobo2,4);
+// NOTE: Ends with floats from the AngelaRobo set
+NOption(2962,Node999,4);
+end
+
+procedure Node_AngelaRobo_CLONE
+begin
+Reply(2960);
+NOption(2961,Node_AngelaRobo2,4);
+NOption(2990,Node_AngelaSpillBull,4);
+// NOTE: Ends with floats from the AngelaRobo set
+NOption(2991,Node999,4);
+end
+
+procedure Node_AngelaRobo2
+begin
+Reply(3020);
+NOption(3021,Node_AngelaRobo3,4);
+NOption(3022,Node999,4);
+end
+
+procedure Node_AngelaRobo3
+begin
+      inc_global_var_amt(GVAR_KNOW_ANGELA, 5);
+Reply(3050);
+// NOTE: the cat is out of the bag!
+NOption(1221,Node999,4);
+end
+
+procedure Node_AngelaIllBe
+begin
+Reply(3080);
+NOption(3081,Node_IntimidateProtect,4);
+NOption(3082,Node_AngelaMisread,4);
+end
+
+procedure Node_AngelaSpeech
+begin
+Reply(3110);
+if (get_critter_stat(dude_obj,STAT_iq)>=6) then
+NOption(3111,Node_AngelaSpeech2,4);
+NOption(3112,Node_AngelaSpeechFail,4);
+end
+
+procedure Node_AngelaSpillBull
+begin
+Reply(3140);
+NOption(3141,Node_AngelaRobo2,4);
+end
+
+procedure Node_AngelaEscape
+begin
+Reply(3170);
+NOption(3171,Node_AngelaThink_CLONE,4);
+NOption(3172,Node_AngelaFrank,4);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(3173,Node_AngelaRobo,4);
+end
+
+procedure Node_AngelaThink_CLONE
+begin
+Reply(3200);
+NOption(2391,Node_AngelaTime,4);
+NOption(2211,Node_AngelaMisread,4);
+NOption(2392,Node_AngelaFrank,4);
+end
+
+procedure Node_AngelaSpeech2
+begin
+Reply(3230);
+NOption(3231,Node_AngelaSpeech3,4);
+end
+
+procedure Node_AngelaSpeech3
+begin
+Reply(3260);
+NOption(3261,Skill_Check_002_Speech,4);
+end
+
+procedure Node_AngelaSpeech4
+begin
+Reply(3290);
+NOption(3291,Node_AngelaSpeech5,4);
+end
+
+procedure Node_AngelaSpeech5
+begin
+Reply(3320);
+NOption(3321,Node999,4);
+end
+
+procedure Node_AngelaSpeechFail
+begin
+Reply(3350);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(3351,Node_AngelaSpillAdmit,4);
+NOption(3352,Node_AngelaSpeechFailJ,4);
+end
+
+procedure Node_AngelaSpeechFailJ
+begin
+Reply(3380);
+if(global_var(GVAR_ANGELA_ROBOSLUT) > 0) then
+NOption(3381,Node_AngelaSpillAdmit,4);
+NOption(3382,Node_IntimidateCrux2,4);
+end
+
+procedure Node_MidShift
+begin
+Reply(3410);
+NOption(3411,Node_MidshiftSnitch,4);
+NOption(3412,Node_MidshiftBreak,4);
+NOption(3413,Node_MidshiftQuit2,4);
+NOption(3414,Node999,4);
+NOption(mstr(686)+dude_name+mstr(3415)+dude_name+mstr(3416),Node_MidshiftBreak,-3);
+// NOTE: if PC is on shovel work
+if(local_var(LVAR_Shiva) == 0) then
+   NOption(3417,Node_MidshiftDumbJ,-3);
+// NOTE: if PC is a gutter
+else
+   NOption(3417,Node_MidshiftDumbJ2,-3);
+NOption(3418,Node_MidshiftDumbJ3,-3);
+NOption(3419,Node999,-3);
+end
+
+procedure Node_MidshiftSnitch
+begin
+Reply(3440);
+NOption(3441,Node_MidshiftSnitch2,4);
+NOption(3442,Node999,4);
+end
+
+procedure Node_MidshiftSnitch2
+begin
+if (dude_is_male) then Reply(3470); else
+if (dude_is_female) then Reply(3471);
+NOption(1221,Node999,4);
+end
+
+procedure Node_MidshiftBreak
+begin
+Reply(3500);
+NOption(3501,Node_MidshiftBreak2,4);
+NOption(3502,Node999,4);
+NOption(mstr(686)+dude_name+mstr(3503),Node_MidshiftBreak2,-3);
+NOption(892,Node999,-3);
+end
+
+procedure Node_MidshiftBreak2
+begin
+Reply(3530);
+NOption(3531,Node_MidshiftQuit,4);
+NOption(3414,Node999,4);
+NOption(mstr(686)+dude_name+mstr(3532),Node_MidshiftQuit2,-3);
+NOption(3533,Node999,-3);
+end
+
+procedure Node_MidshiftQuit
+begin
+Reply(3560);
+// NOTE: if more than 1 hour has passed since accepting the job
+if(get_dude_attr(STAT_lu) >= 6) then
+   NOption(3561,Node_MidshiftQuitMoneyA,4);
+// NOTE: if less than one hour is spent doing the job
+else
+   NOption(3561,Node_MidshiftQuitMoneyB,4);
+NOption(892,Node999,4);
+end
+
+procedure Node_MidshiftQuit2
+begin
+      set_global_var(GVAR_WORKED_FOR_MAGIK, 0);
+
+if (dude_is_male) then Reply(3590); else
+if (dude_is_female) then Reply(3591);
+NOption(892,Node999,4);
+end
+
+procedure Node_MidshiftQuitMoneyA
+begin
+Reply(3620);
+NOption(3621,Skill_Check_003_Barter,4);
+NOption(3622,Node999,4);
+end
+
+procedure Node_MidshiftQuitMoneyB
+begin
+Reply(3650);
+NOption(892,Node999,4);
+end
+
+procedure Node_MidshiftQuitMoneyBarterSuccess
+begin
+   item_caps_adjust(dude_obj, random(20, 40));
+   set_global_var(GVAR_WORKED_FOR_MAGIK, 0);
+Reply(3680);
+NOption(1221,Node999,4);
+end
+
+procedure Node_JobEnd
+begin
+Reply(3710);
+// NOTE: if PC worked hard
+if(dude_is_male) then begin
+   if(has_skill(dude_obj, SKILL_STEAL) >= 50) then
+      NOption(1281,Node_JobEnds2,4);
+   // NOTE: if PC shirked
+   else
+      NOption(1281,Node_JobEndsShirk,4);
+end
+// NOTE: if PC is a woman (shirking doesnt matter)
+if (dude_is_female) then
+NOption(1281,Node_JobEndSolicit,4);
+// NOTE: dummy pcs
+NOption(1281,Node_JobEndDumb,-3);
+end
+
+procedure Node_JobEnds2
+begin
+
+   item_caps_adjust(dude_obj, global_var(GVAR_MAGIK_JOB_PAY));
+   move_obj_inven_to_obj(dude_obj, self_obj);
+
+Reply(3740);
+NOption(1221,Node999,4);
+end
+
+procedure Node_JobEndsShirk
+begin
+
+   item_caps_adjust(dude_obj, global_var(GVAR_MAGIK_JOB_PAY));
+   move_obj_inven_to_obj(dude_obj, self_obj);
+
+
+Reply(3770);
+NOption(3771,Node_JobEndsShirk2,4);
+NOption(3772,Node999,4);
+end
+
+procedure Node_JobEndSolicit
+begin
+Reply(3800);
+NOption(3801,Node_Solicit2,4);
+NOption(3802,Node999,4);
+end
+
+procedure Node_JobEndsShirk2
+begin
+Reply(3830);
+NOption(1221,Node999,4);
+end
+
+procedure Node_Solicit2
+begin
+Reply(3860);
+NOption(3861,Node_JobEndSolicitRefuse,4);
+NOption(3862,Node_JobEndSolicit3,4);
+NOption(3863,Node_JobEndSolicitRefuse,4);
+end
+
+procedure Node_JobEndSolicit3
+begin
+Reply(3890);
+NOption(3891,Node_JobEndSolicitPrice,4);
+NOption(3892,Node_JobEndSolicitRefuse,4);
+end
+
+procedure Node_JobEndSolicitRefuse
+begin
+Reply(3920);
+NOption(3921,Node999,4);
+end
+
+procedure Node_JobEndSolicitPrice
+begin
+Reply(3950);
+NOption(3951,Node_JobEndSolicitBarter_10k,4);
+NOption(3952,Node_JobEndSolicitBarter_5k,4);
+NOption(3953,Node_JobEndSolicitDeal_2k,4);
+NOption(3954,Node_JobEndSolicitDeal_1k,4);
+NOption(3955,Node_JobEndSolicitProp,4);
+end
+
+procedure Node_JobEndSolicitBarter_10k begin
+   set_local_var(LVAR_Solicit, 10000);
+   call Node_JobEndSolicitBarter;
+end
+
+procedure Node_JobEndSolicitBarter_5k begin
+   set_local_var(LVAR_Solicit, 5000);
+   call Node_JobEndSolicitBarter;
+end
+
+procedure Node_JobEndSolicitBarter_2k begin
+   set_local_var(LVAR_Solicit, 2000);
+   call Node_JobEndSolicitBarter;
+end
+
+procedure Node_JobEndSolicitBarter_1k begin
+   set_local_var(LVAR_Solicit, 1000);
+   call Node_JobEndSolicitBarter;
+end
+
+
+procedure Node_JobEndSolicitBarter
+begin
+Reply(3980);
+// NOTE: (only if tenlarge picked before)
+if(local_var(LVAR_Solicit) == 10000) then
+NOption(3981,Node_JobEndSolicitTen,4);
+NOption(3982,Node_JobEndSolicitHagdeal,4);
+NOption(3983,Node_JobEndSolicitDeal_3k,4);
+NOption(3955,Node_JobEndSolicitProp,4);
+end
+
+procedure Node_JobEndSolicitDeal_3k begin
+   set_local_var(LVAR_Solicit, 3000);
+   call Node_JobEndSolicitDeal;
+end
+
+procedure Node_JobEndSolicitDeal_2k begin
+   set_local_var(LVAR_Solicit, 2000);
+   call Node_JobEndSolicitDeal;
+end
+
+procedure Node_JobEndSolicitDeal_1k begin
+   set_local_var(LVAR_Solicit, 1000);
+   call Node_JobEndSolicitDeal;
+end
+
+
+procedure Node_JobEndSolicitDeal
+begin
+Reply(4010);
+NOption(4011,Node999_sex,4);
+end
+
+procedure Node999_sex begin
+   call Node999;
+   fadeout(1);
+   game_time_advance(ONE_GAME_HOUR * 2);
+   do_default_sex;
+   do_default_sex;
+   do_default_sex;
+   fadein(1);
+   item_caps_adjust(dude_obj, local_var(LVAR_Solicit));
+end
+
+procedure Node_JobEndSolicitProp
+begin
+Reply(4040);
+NOption(4041,Node_JobEndSolicitWoah,4);
+NOption(4042,Node_JobEndSolicitRefuse,4);
+end
+
+procedure Node_JobEndSolicitTen
+begin
+Reply(4070);
+NOption(1221,Node999,4);
+end
+
+procedure Node_JobEndSolicitHagdeal
+begin
+   set_local_var(LVAR_Solicit, 4000);
+Reply(4100);
+NOption(4011,Node999_sex,4);
+end
+
+procedure Node_JobEndSolicitWoah
+begin
+Reply(4130);
+NOption(4131,Node_JobEndSolicitWoah2,4);
+NOption(4132,Node_JobEndSolicitRefuse,4);
+end
+
+procedure Node_JobEndSolicitWoah2
+begin
+Reply(4160);
+BOption(1221,Node998,4);
+end
+
+procedure Node_Sleeping
+begin
+Reply(4190);
+NOption(4191,Skill_Check_000_Steal,4);
+NOption(4192,Node_SleepingKillswitch,4);
+// NOTE: dumb pc only?
+NOption(4193,Node_SleepingDumb,-3);
+NOption(4194,Node999,4);
+end
+
+procedure Node_SleepingStealSuccess
+begin
+   item_caps_adjust(dude_obj, (dude_luck * random(4, 8)));
+   inc_local_var(LVAR_Robbed);
+Reply(4220);
+NOption(4192,Node_SleepingKillswitch,4);
+NOption(4194,Node999,4);
+end
+
+// Node Node_SleepingKillswitch
+//
+// Notes:
+//
+// nodes ordered by priority
+
+procedure Node_SleepingKillswitch
+begin
+Reply(4254);
+if(has_trait(TRAIT_PERK, dude_obj, TRAIT_finesse)) then
+NOption(4250,Node_SleepingKillFin,4);
+if(get_dude_attr(STAT_st) >= 8) then
+NOption(4251,Node_SleepingKillStr,4);
+if(has_skill(dude_obj, SKILL_UNARMED_COMBAT) >= 50) then
+NOption(4252,Node_SleepingKillHtH,4);
+NOption(4253,Node_SleepingKillElse,4);
+end
+
+// Node Node_SleepingStealFail
+//
+// Notes:
+//
+// if the PC fails the steal 3 times, Magik wakes up
+
+procedure Node_SleepingStealFail
+begin
+Reply(4280);
+NOption(4191,Node_SleepingStealSuccess,4);
+NOption(4192,Node_SleepingKillswitch,4);
+NOption(4194,Node999,4);
+end
+
+procedure Node_SleepingKillFin
+begin
+Reply(4310);
+NOption(1221,Node999,4);
+end
+
+procedure Node_SleepingKillStr
+begin
+Reply(4340);
+NOption(1221,Node999,4);
+end
+
+procedure Node_SleepingKillElse
+begin
+Reply(4370);
+NOption(1221,Node999,4);
+end
+
+procedure Node_SleepingKillHtH
+begin
+Reply(4400);
+NOption(1221,Node999,4);
+end
+
+procedure Node_Q_CotCAngelaMore
+begin
+Reply(4430);
+NOption(4431,Node_Q_CotCAngelaMarriage,4);
+NOption(4432,Node_Q_CotCAngelaMarriage,4);
+end
+
+procedure Node_Q_CotCAngelaMarriage
+begin
+   set_local_var(LVAR_MarryAngela, 1);
+Reply(4460);
+NOption(4461,Node_Q_CotCAngelaQuest,4);
+end
+
+procedure Node_Q_CotCAngelaQuest
+begin
+Reply(4490);
+NOption(4491,Node_Q_CotCAngelaQuest2,4);
+NOption(4492,Node_Q_CotC_Angela2,4);
+end
+
+procedure Node_Q_CotCAngelaQuest2
+begin
+Reply(4520);
+NOption(1221,Node999,4);
+end
+
+procedure Node_IntroThreat
+begin
+Reply(4550);
+NOption(1221,Node999,4);
+end
+
+procedure Node_DumbIntro
+begin
+Reply(4580);
+NOption(mstr(4581)+dude_name+mstr(563),Node_DumbIntro3,-3);
+NOption(mstr(4582)+dude_name+mstr(4583),Node_DumbIntro2,-3);
+end
+
+procedure Node_DumbIntro2
+begin
+Reply(4610);
+NOption(4611,Node_DumbJob,4);
+NOption(mstr(686)+dude_name+mstr(4612),Node_DumbJobNo,4);
+end
+
+procedure Node_DumbIntro3
+begin
+Reply(4640);
+NOption(4641,Node_DumbJob,-3);
+NOption(4642,Node_DumbJobNo,-3);
+end
+
+procedure Node_DumbJob
+begin
+Reply(4670);
+NOption(4671,Node_DumbPay,-3);
+NOption(4672,Node_DumbBarrels,-3);
+end
+
+procedure Node_DumbJobNo
+begin
+Reply(4700);
+NOption(4701,Node_DumbPay,-3);
+NOption(mstr(4702)+dude_name+mstr(4703),Node999,-3);
+end
+
+procedure Node_DumbPay
+begin
+Reply(4730);
+NOption(4731,Node_DumbJob3,-3);
+NOption(mstr(686)+dude_name+mstr(4732),Node_JobPayConfuse,-3);
+end
+
+procedure Node_JobPayConfuse
+begin
+Reply(4760);
+NOption(mstr(4761)+dude_name+mstr(4762),Node_DumbJob3,-3);
+NOption(4763,Node_JobPayConfuse2,-3);
+end
+
+procedure Node_DumbJob3
+begin
+   set_global_var(GVAR_MAGIK_JOB_PAY, 10);
+   set_global_var(GVAR_WORKED_FOR_MAGIK, 1);
+Reply(4790);
+NOption(4791,Node999,-3);
+end
+
+procedure Node_JobPayConfuse2
+begin
+Reply(4820);
+NOption(4731,Node_DumbJob3,-3);
+NOption(4821,Node_JobPayConfuse3,-3);
+end
+
+procedure Node_JobPayConfuse3
+begin
+Reply(4850);
+NOption(4851,Node_DumbJob3,-3);
+NOption(4852,Node_JobPayConfuseEnd,-3);
+NOption(mstr(686)+dude_name+mstr(4853),Node999,-3);
+end
+
+procedure Node_JobPayConfuseEnd
+begin
+Reply(4880);
+NOption(4881,Node_DumbEnd,-3);
+NOption(4882,Node_DumbEnd,-3);
+NOption(688,Node999,-3);
+end
+
+// Node Node_DumbEnd
+//
+// Notes:
+//
+// PC becomes 'too dumb'. Magik only floats from the TooDumb set from now on.
+
+procedure Node_DumbEnd
+begin
+   set_local_var(LVAR_TooDumb, 1);
+if (dude_is_male) then Reply(4910); else
+if (dude_is_female) then Reply(4911);
+NOption(4912,Node999,-3);
+end
+
+procedure Node_DumbBarrels
+begin
+Reply(4940);
+NOption(4941,Node_DumbJob3,-3);
+NOption(4942,Node_DumbJobNo,-3);
+NOption(4943,Node999,-3);
+end
+
+procedure Node_MurderIntro
+begin
+if (dude_is_male) then Reply(4970); else
+if (dude_is_female) then Reply(4971);
+// NOTE: if pc has authority from hoskins
+NOption(4972,Node_MurderQAuthoratah,4);
+NOption(4973,Node_MurderTragic,4);
+// NOTE: if PC has not heard about the death
+NOption(4974,Node_MurderInfo,4);
+NOption(4975,Node999,4);
+end
+
+procedure Node_MurderQ
+begin
+Reply(5000);
+NOption(5001,Node_MurderAlibi,4);
+NOption(5002,Node_MurderAnger,4);
+NOption(5003,Node_MurderCut,4);
+NOption(5004,Node999,4);
+end
+
+procedure Node_MurderInfo
+begin
+Reply(5030);
+NOption(5031,Node_MurderInfo2,4);
+NOption(5032,Node_MurderInfoMoses,4);
+NOption(5033,Node_MurderInfoWhere,4);
+NOption(5034,Node999,4);
+end
+
+procedure Node_MurderInfoMoses
+begin
+Reply(5060);
+NOption(5033,Node_MurderInfoWhere,4);
+end
+
+procedure Node_MurderInfoWhere
+begin
+Reply(5090);
+NOption(1221,Node999,4);
+end
+
+procedure Node_MurderTragic
+begin
+Reply(5120);
+NOption(5121,Node_MurderQAuthoratah,4);
+NOption(5122,Node999,4);
+end
+
+procedure Node_MurderAlibi
+begin
+if (dude_is_male) then Reply(5150); else
+if (dude_is_female) then Reply(5151);
+if(global_var(GVAR_ANGELA_LATE) > 0) then
+NOption(5152,Node_MurderAlibiFails,4);
+NOption(5153,Node_MurderAnger,4);
+NOption(5003,Node_MurderCut,4);
+NOption(5154,Node999,4);
+end
+
+procedure Node_MurderAnger
+begin
+Reply(5180);
+if((global_var(GVAR_ANGELA_MAGIK_MARRY) > 0) or (local_var(LVAR_MarryAngela) > 0)) then
+NOption(5181,Node_MurderAngerMarry,4);
+NOption(5182,Node_MurderAlibi,4);
+NOption(5003,Node_MurderCut,4);
+NOption(5154,Node999,4);
+end
+
+procedure Node_MurderCut
+begin
+Reply(5210);
+NOption(5211,Node_MurderCutNo,4);
+NOption(5212,Node_MurderAlibi,4);
+NOption(5213,Node_MurderAnger,4);
+NOption(5214,Node999,4);
+end
+
+procedure Node_MurderInfo2
+begin
+Reply(5240);
+NOption(5032,Node_MurderInfoMoses,4);
+NOption(5241,Node_MurderInfoWhere,4);
+NOption(5242,Node999,4);
+end
+
+procedure Node_MurderAlibiFails
+begin
+Reply(5270);
+NOption(5271,Node_MurderAlibiF2,4);
+NOption(5272,Node_MurderAlibiFBob,4);
+NOption(5273,Node999,4);
+end
+
+procedure Node_MurderCutNo
+begin
+Reply(5300);
+NOption(5301,Node_MurderAlibi,4);
+NOption(5302,Node_MurderAnger,4);
+NOption(5214,Node999,4);
+end
+
+procedure Node_MurderAlibiF2
+begin
+Reply(5330);
+NOption(5331,Node_MurderAlibiFBob,4);
+NOption(5332,Node999,4);
+end
+
+procedure Node_MurderAlibiFBob
+begin
+Reply(5360);
+NOption(5361,Node_MurderAlibiFMoney,4);
+NOption(5362,Node_MurderAlibiFAngry,4);
+NOption(5363,Node999,4);
+end
+
+procedure Node_MurderAlibiFMoney
+begin
+Reply(5390);
+NOption(5391,Node_MurderAlibiFSkin,4);
+end
+
+procedure Node_MurderAlibiFSkin
+begin
+Reply(5420);
+NOption(5421,Node_MurderAlibiFStory,4);
+end
+
+procedure Node_MurderAlibiFAngry
+begin
+Reply(5450);
+NOption(5451,Node_MurderAlibiFMoney,4);
+end
+
+procedure Node_MurderAlibiFEnd
+begin
+Reply(5480);
+NOption(5481,Node999,4);
+end
+
+procedure Node_MurderAlibiFStory
+begin
+Reply(5510);
+NOption(5511,Node_MurderAlibiFREnd,4);
+NOption(5512,Node_MurderAlibiFEnd,4);
+NOption(5513,Node_MurderAlibiFREnd,4);
+NOption(5514,Node_MurderAlibiFCEnd,4);
+end
+
+procedure Node_MurderAlibiFREnd
+begin
+Reply(5540);
+NOption(5541,Node999,4);
+end
+
+procedure Node_MurderAlibiFCEnd
+begin
+Reply(5570);
+NOption(5571,Node999,4);
+end
+
+procedure Node_MurderAngerMarry
+begin
+Reply(5600);
+NOption(5601,Node_MurderAngryMarry2,4);
+// NOTE: if pc has talked to donald
+if(global_var(GVAR_ANGELA_MAGIK_MARRY) > 0) then
+NOption(5602,Node_MurderAngryMarry2,4);
+end
+
+procedure Node_MurderAngryMarry2
+begin
+Reply(5630);
+// NOTE: if pc talked to donald
+if(global_var(GVAR_ANGELA_MAGIK_MARRY) > 0) then
+NOption(5631,Node_MurderAngryMarry3,4);
+NOption(5632,Node_MurderAngryMarry3,4);
+NOption(5633,Node_MurderAlibi,4);
+end
+
+procedure Node_MurderAngryMarry3
+begin
+Reply(5660);
+NOption(5661,Node_MurderAlibi,4);
+NOption(5662,Node_MurderCut,4);
+NOption(5663,Node999,4);
+end
+
+procedure Node_MurderQAuthoratah
+begin
+Reply(5690);
+NOption(5691,Node_MurderQSuspect,4);
+NOption(5692,Node_MurderQCoop,4);
+NOption(5693,Node999,4);
+end
+
+procedure Node_MurderQSuspect
+begin
+Reply(5720);
+// NOTE: if PC has hoskins' authority
+NOption(5721,Node_MurderQ_CLONE,4);
+NOption(5722,Node999,4);
+end
+
+procedure Node_MurderQCoop
+begin
+if (dude_is_male) then Reply(5750); else
+if (dude_is_female) then Reply(5751);
+NOption(5752,Node_MurderQ,4);
+NOption(5753,Node999,4);
+end
+
+procedure Node_MurderQ_CLONE
+begin
+Reply(5780);
+NOption(5001,Node_MurderAlibi,4);
+NOption(5781,Node_MurderAnger,4);
+NOption(5003,Node_MurderCut,4);
+NOption(5782,Node999,4);
+end
+
+procedure Node_DumbJob2
+begin
+Reply(5810);
+NOption(5811,Node999,-3);
+end
+
+procedure Node_MidshiftDumbJ
+begin
+Reply(5840);
+NOption(5811,Node999,-3);
+end
+
+procedure Node_MidshiftDumbJ2
+begin
+Reply(5870);
+NOption(5871,Node999,-3);
+end
+
+procedure Node_MidshiftDumbJ3
+begin
+Reply(5900);
+NOption(5901,Node999,-3);
+end
+
+procedure Node_SleepingDumb
+begin
+Reply(5930);
+NOption(4191,Skill_Check_000_Steal,1);
+NOption(4192,Node_SleepingKillswitch,1);
+// NOTE: dumb pc only?
+NOption(5931,Node_SleepingDumb2,-3);
+NOption(4194,Node999,1);
+end
+
+// Node Node_SleepingDumb2
+//
+// Notes:
+//
+// Magik wakes up
+
+procedure Node_SleepingDumb2
+begin
+Reply(5960);
+BOption(5961,Node998,-3);
+end
+
+procedure Node_DefaultIntro
+begin
+if (dude_is_male) then Reply(5990); else
+if (dude_is_female) then Reply(5991);
+NOption(5992,Node_JobRepeatSwitch,4);
+NOption(713,Node_Questions,4);
+NOption(714,Node_MurderQ_CLONE,4);
+if(dude_caps >= 1 and local_var(LVAR_Robbed) == 1) then
+NOption(6081,YouThinkStupid,4);
+NOption(715,Node999,4);
+NOption(716,Node_JobRepeatSwitch,-3);
+NOption(717,Node999,-3);
+end
+
+procedure Node_JobEndDumb
+begin
+
+   item_caps_adjust(dude_obj, global_var(GVAR_MAGIK_JOB_PAY));
+   move_obj_inven_to_obj(dude_obj, self_obj);
+
+Reply(6020);
+NOption(6021,Node999,-3);
+end
+
+procedure Node_NoonIntro
+begin
+if (dude_is_male) then Reply(6050); else
+if (dude_is_female) then Reply(6051);
+NOption(6052,Node_Questions,4);
+NOption(714,Node_MurderQ_CLONE,4);
+NOption(6053,Node999,4);
+end
+
+procedure Node_RobGag
+begin
+Reply(6080);
+if(dude_caps >= 1 and local_var(LVAR_Robbed) == 1) then
+NOption(6081,YouThinkStupid,4);
+NOption(6082,Skill_Check_005_Barter,4);
+NOption(6083,Node999,4);
+end
+
+procedure Shiva
+begin
+if (dude_is_male) then Reply(6110); else
+if (dude_is_female) then Reply(6111);
+NOption(6112,FortAradesh,4);
+NOption(6113,Node999,4);
+end
+
+procedure FortAradesh
+begin
+if (dude_is_male) then Reply(6140); else
+if (dude_is_female) then Reply(6141);
+NOption(6142,Node999,4);
+end
+
+procedure YouThinkStupid
+begin
+Reply(6170);
+BOption(6171,Node998,4);
+end
+
+procedure Barter30OK
+begin
+if (dude_is_male) then Reply(6200); else
+if (dude_is_female) then Reply(6201);
+NOption(6202,Node999,4);
+end
+
+procedure Barter30Fail
+begin
+if (dude_is_male) then Reply(6230); else
+if (dude_is_female) then Reply(6231);
+NOption(6232,Node999,4);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

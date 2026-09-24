@@ -1,0 +1,250 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Cave01
+        Location: Cave01 Random encounter map
+        Description: This is a cave random encounter
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created: April 14, 1998
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_CAVE01
+
+#include "..\headers\command.h"
+#include "..\headers\cvgenenc.h"
+#include "..\headers\party.h"
+#include "..\headers\vehicles.h"
+
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure LoadCritters;
+procedure LoadCritterPos;
+procedure LoadChests;
+
+#define AREA_1 12666
+#define AREA_2 16067
+#define AREA_3 20266
+#define AREA_4 21888
+#define AREA_5 28901
+#define AREA_6 24506
+#define AREA_7 20326
+#define AREA_8 14300
+//#define AREA_1 15102
+//#define AREA_2 20928
+//#define AREA_3 13067
+//#define AREA_4 16466
+//#define AREA_5 20667
+//#define AREA_6 22088
+//#define AREA_7 29303
+//#define AREA_8 24908
+
+#define CHEST_1 19929
+#define CHEST_2 29304
+#define CHEST_3 19863
+
+variable Critter;
+variable Critter_Tile;
+variable track;
+
+procedure start begin
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+
+      fadeout(1);
+
+   set_map_music(cur_map_index, "13carvrn");
+end
+
+procedure map_enter_p_proc begin
+
+   call Check_Create_Vehicle;
+
+   fadein(1);
+
+   set_cur_exit;
+   if (not is_loading_game) then begin
+      call LoadCritters;
+
+      if (special_theif_encounter) then begin
+         call LoadChests;
+      end
+   end
+
+   if (map_first_run) then begin
+      display_msg(mstr(100));
+   end
+   Cavern_Lighting;
+
+   call MysteriousStranger;
+   set_global_var(GVAR_LOAD_MAP_INDEX,0);
+
+end
+
+procedure map_update_p_proc begin
+
+   if(dude_elevation == 0) then begin
+
+      if (track != AMBIENT_MOUNTAIN_WIND) then begin
+         stop_sfall_sound(ambient_sfx);
+         track = AMBIENT_MOUNTAIN_WIND;
+         ambient_sfx := play_sfall_sound(AmbientTrack(track), 1);
+      end
+
+      Lighting;
+   end
+   else begin
+
+      if (track != AMBIENT_MOUNTAIN_CAVE_WIND) then begin
+         stop_sfall_sound(ambient_sfx);
+         track = AMBIENT_MOUNTAIN_CAVE_WIND;
+         ambient_sfx := play_sfall_sound(AmbientTrack(track), 1);
+      end
+
+      Cavern_Lighting;
+   end
+
+end
+
+
+procedure Initial_Inven begin
+end
+
+procedure LoadCritters begin
+   call Choose_Encounter;
+   call LoadCritterPos;
+end
+
+procedure LoadCritterPos begin
+   variable tile;
+   variable count;
+   variable obj;
+
+   count := total_encounter_mobs;
+   debug_msg("CAVE01: count " + count);
+   while (count > 0) do begin
+      call Choose_Pid;
+      call placeCritter(choose_enc_pid, choose_enc_sid, AREA_1);
+      count -= 1;
+   end
+
+   count := total_encounter_mobs;
+   while (count > 0) do begin
+      call Choose_Pid;
+      call placeCritter(choose_enc_pid, choose_enc_sid, AREA_2);
+      count -= 1;
+   end
+
+   count := total_encounter_mobs;
+   while (count > 0) do begin
+      call Choose_Pid;
+      call placeCritter(choose_enc_pid, choose_enc_sid, AREA_3);
+      count -= 1;
+   end
+
+   count := total_encounter_mobs;
+   while (count > 0) do begin
+      call Choose_Pid;
+      call placeCritter(choose_enc_pid, choose_enc_sid, AREA_4);
+      count -= 1;
+   end
+
+   count := total_encounter_mobs;
+   while (count > 0) do begin
+      call Choose_Pid;
+      call placeCritter(choose_enc_pid, choose_enc_sid, AREA_5);
+      count -= 1;
+   end
+
+   count := total_encounter_mobs;
+   while (count > 0) do begin
+      call Choose_Pid;
+      call placeCritter(choose_enc_pid, choose_enc_sid, AREA_6);
+      count -= 1;
+   end
+
+   count := total_encounter_mobs;
+   while (count > 0) do begin
+      call Choose_Pid;
+      call placeCritter(choose_enc_pid, choose_enc_sid, AREA_7);
+      count -= 1;
+   end
+
+   count := total_encounter_mobs;
+   while (count > 0) do begin
+      call Choose_Pid;
+      call placeCritter(choose_enc_pid, choose_enc_sid, AREA_8);
+      count -= 1;
+   end
+end
+
+procedure LoadChests begin
+   variable obj;
+
+   debug_msg("Making Chests.");
+
+   obj := create_object(PID_CHEST, CHEST_1, 1);
+   if (obj) then begin
+      if (Random(1, 2) == 1) then
+         add_mult_objs_to_inven(obj, create_object(PID_STIMPAK, CHEST_1, 1), Random(1, 5));
+      if (Random(1, 4) == 1) then
+         if (dude_level > 7) then
+            add_obj_to_inven(obj, create_object(PID_POWER_FIST, CHEST_1, 1));
+         else
+            add_obj_to_inven(obj, create_object(PID_CATTLE_PROD, CHEST_1, 1));
+      item_caps_adjust(obj, 20 * Random(1, dude_luck));
+   end
+
+   obj := create_object(PID_CHEST, CHEST_2, 1);
+   if (obj) then begin
+      if (Random(1, 2) == 1) then
+         add_mult_objs_to_inven(obj, create_object(PID_STIMPAK, CHEST_2, 1), Random(1, 5));
+      if (Random(1, 4) == 1) then
+         if (dude_level > 5) then
+            add_obj_to_inven(obj, create_object(PID_SUPER_SLEDGE, CHEST_2, 1));
+         else
+            add_obj_to_inven(obj, create_object(PID_HUNTING_RIFLE, CHEST_2, 1));
+      item_caps_adjust(obj, 20 * Random(dude_luck, dude_luck * dude_luck));
+   end
+
+   obj := create_object(PID_CHEST, CHEST_3, 1);
+   if (obj) then begin
+      if (Random(1, 2) == 1) then
+         if (dude_level < 7) then
+            add_mult_objs_to_inven(obj, create_object(PID_FRAG_GRENADE, CHEST_3, 1), Random(1, 5));
+         else
+            add_mult_objs_to_inven(obj, create_object(PID_PLASMA_GRENADE, CHEST_3, 1), Random(1, 5));
+
+      if (Random(1, 4) == 1) then
+         if (dude_level > 10) then
+            add_obj_to_inven(obj, create_object(PID_PLASMA_RIFLE, CHEST_3, 1));
+         else
+            add_obj_to_inven(obj, create_object(PID_HUNTING_RIFLE, CHEST_3, 1));
+      item_caps_adjust(obj, 20 * Random(dude_luck, dude_luck * dude_luck));
+   end
+end

@@ -1,0 +1,122 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_MBCOSPA
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_skill_on_p_proc;
+procedure use_obj_on_p_proc;
+procedure repair_time;
+procedure use_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+   display_mstr(100);
+end
+
+procedure use_skill_on_p_proc begin
+
+   if (action_being_used == SKILL_REPAIR) then begin
+       script_overrides;
+
+      if(
+          skill_success(source_obj, SKILL_REPAIR, -150) and
+          (obj_is_carrying_obj_pid(source_obj, PID_TECHNICAL_MANUAL)>0) and
+          (obj_is_carrying_obj_pid(source_obj, PID_MOTIVATOR)>0)
+        ) then begin
+         display_msg(mstr_skill(606) + " " + obj_name(self_obj) + ".");
+		 give_xp(500);
+         call repair_time;
+         create_object(PID_POWERED_ARMOR, dude_tile, dude_elevation);
+         remove_pid_qty(source_obj, PID_MOTIVATOR, 1)
+         destroy_object(self_obj);
+      end else begin
+         display_msg(mstr_skill(607) + " " + obj_name(self_obj) + ".");
+         call repair_time;
+      end
+
+   end else if (action_being_used == SKILL_SCIENCE) then begin
+      script_overrides;
+
+      if(skill_success(source_obj, SKILL_SCIENCE, -50)) then begin
+         display_mstr(101);
+      end else begin
+         display_msg(mstr_skill(611));
+      end
+   end
+end
+
+procedure use_obj_on_p_proc begin
+   variable tool := obj_pid(obj_being_used_with);
+
+   if (
+      tool == PID_WRENCH or
+      tool == PID_MULTI_TOOL or
+      tool == PID_SUPER_TOOL_KIT
+   ) then begin
+      script_overrides;
+
+      if(
+        skill_success(source_obj, SKILL_REPAIR, -80) and
+        (obj_is_carrying_obj_pid(source_obj, PID_TECHNICAL_MANUAL)>0) and
+        (obj_is_carrying_obj_pid(source_obj, PID_MOTIVATOR)>0)
+      ) then begin
+         display_msg(mstr_skill(606) + " " + obj_name(self_obj) + ".");
+         give_xp(500);
+         call repair_time;
+         create_object(PID_POWERED_ARMOR, dude_tile, dude_elevation);
+         remove_pid_qty(source_obj, PID_MOTIVATOR, 1)
+         destroy_object(self_obj);
+      end else begin
+         display_msg(mstr_skill(607) + " " + obj_name(self_obj) + ".");
+         call repair_time;
+      end
+   end
+end
+
+
+procedure repair_time begin
+    fadeout(1);
+    game_time_advance(ONE_GAME_DAY);
+    fadein(1);
+end
+

@@ -1,0 +1,265 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Defines */
+#define NAME                  SCRIPT_HDGATENR
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#include "..\headers\updatmap.h"
+
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\hdam.h"
+#include "..\HEADERS\hdgatenr.h"
+#include "..\HEADERS\party.h"
+
+
+/* Standard Script Procedures */
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+procedure CreateSupport;
+
+export variable Ailis_Ptr;
+
+variable captain, item, costa_status;
+
+procedure map_enter_p_proc begin
+   if (map_first_run) then begin
+      display_mstr(100);
+   end
+
+   if (not(is_loading_game)) then begin
+      // Jail time
+      if(global_var(GVAR_HD_JAIL_TIME) == HD_JAIL_TRANSFER) then begin
+         override_map_start_hex(26706, 0, 3);
+         set_global_var(GVAR_HD_JAIL_TIME, HD_JAIL_DOING_TIME);
+         // Pay the 100 caps fine first
+         if (dude_caps > 0) then begin
+            if(dude_caps >= 100) then begin
+               item_caps_adjust(dude_obj, -100);
+               display_mstr(101);
+            end
+            else if(dude_caps == 1) then begin
+               item_caps_adjust(dude_obj, -dude_caps);
+               display_msg(mstr(102) + " " + dude_caps + " " + mstr(103) + ".");
+            end
+            else begin
+               item_caps_adjust(dude_obj, -dude_caps);
+               display_msg(mstr(102) + " " + dude_caps +" " + mstr(104) + ".");
+            end
+         end
+
+         // move loot
+         move_obj_inven_to_obj(dude_obj, tile_contains_pid_obj(24912, 0, PID_FOOTLOCKER_RUSTY_LEFT));
+
+         // just in case
+         call setup_pipboy;
+
+         if(dude_is_stupid or dude_is_idiot_savant) then begin
+            obj_floater_type(dude_obj, mstr(106), FLOAT_COLOR_HIGH);
+         end else begin
+            obj_floater_type(dude_obj, mstr(107), FLOAT_COLOR_SAD);
+         end
+
+         add_timer_event(self_obj, game_ticks(30), 0);
+      end
+      // Ailis Arrest
+      else if(global_var(GVAR_CC_ARREST) == CC_ARREST_ASSIST) then begin
+         set_global_var(GVAR_CC_ARREST, CC_ARREST_IN_PROGRESS);
+
+         if (global_var(GVAR_CC_ARREST_TACTIC) == CC_ARREST_TACTIC_COMBAT) then begin
+            override_map_start_hex(16103, 0, 4);
+            if(dude_is_stupid or dude_is_idiot_savant) then begin
+               obj_floater_type(dude_obj, mstr(108), FLOAT_COLOR_BAD);
+            end else begin
+               obj_floater_type(dude_obj, mstr(109), FLOAT_COLOR_BAD);
+            end
+         end else if (global_var(GVAR_CC_ARREST_TACTIC) == CC_ARREST_TACTIC_DIPLO) then begin
+            override_map_start_hex(17105, 0, 5);
+         end else if (global_var(GVAR_CC_ARREST_TACTIC) == CC_ARREST_TACTIC_STEALTH) then begin
+
+            override_map_start_hex(15705, 0, 3);
+         end
+
+         call CreateSupport;
+
+      end
+      // Costa deserts
+      else if (global_var(GVAR_HELP_COSTA_DESERT) == QUEST_ACCEPTED) then begin
+
+         set_global_var(GVAR_HELP_COSTA_DESERT, QUEST_COMPLETED);
+         game_time_advance_hour(600);
+         override_map_start_hex(10870, 0, 2);
+
+         // Captain of the Guard
+         captain:=create_object_sid(PID_FEMALE_NCR_RANGER,12076,0,SCRIPT_HDRANGER);
+         critter_attempt_placement(captain,12076,0);
+         arm_obj(captain, PID_223_PISTOL, 1, PID_223_FMJ, 1)
+
+         add_timer_event(self_obj, game_ticks(3), 1);
+         add_timer_event(self_obj, game_ticks(9), 2);
+         add_timer_event(self_obj, game_ticks(12), 3);
+         add_timer_event(self_obj, game_ticks(16), 4);
+         add_timer_event(self_obj, game_ticks(22), 5);
+         add_timer_event(self_obj, game_ticks(28), 6);
+
+         party_no_follow_on;
+         game_ui_disable;
+      end
+      // Costa replacement
+      else if ((map_var(MVAR_COSTA_REPLACEMENT) == 0) and (global_var(GVAR_HELP_COSTA_DESERT) == QUEST_COMPLETED)) then begin
+         variable new_guard;
+         set_map_var(MVAR_COSTA_REPLACEMENT, 1);
+
+         new_guard = create_object_sid(PID_NCR_TROOPER_MALE, 10870, 0, SCRIPT_HDGGRD);
+         critter_attempt_placement(new_guard,10870,0);
+         arm_obj(new_guard, PID_FN_FAL, 1, PID_7_62MM_AMMO, 2)
+         reg_anim_clear(new_guard);
+         reg_anim_begin();
+         anim(new_guard, ANIMATE_ROTATION, 2);
+         reg_anim_end();
+      end
+   end
+
+   // Do the fade in/lightning last so we can do the placement stuff above before
+   fadein(1);
+   Lighting;
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_WASTELAND), 1);
+end
+
+procedure map_update_p_proc begin
+   Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end
+
+procedure timed_event_p_proc begin
+   if ((fixed_param == 0) and (global_var(GVAR_HD_JAIL_TIME) == 2)) then begin
+      fadeout(1);
+      game_time_advance(ONE_GAME_DAY);
+      move_to(dude_obj, 27914, dude_elevation);
+      critter_attempt_placement(dude_obj, 27914, dude_elevation);
+      // Restore loot
+      move_obj_inven_to_obj(tile_contains_pid_obj(24912, 0, PID_FOOTLOCKER_RUSTY_LEFT), dude_obj);
+      call setup_pipboy;
+      fadein(1);
+      set_global_var(GVAR_HD_JAIL_TIME, HD_JAIL_FREE);
+      display_mstr(105);
+   end
+   else if (fixed_param == 1) then begin
+      float_msg(captain, mstr(110), FLOAT_COLOR_GOOD);
+   end
+   else if (fixed_param == 2) then begin
+      float_msg(captain, mstr(111), FLOAT_COLOR_BAD);
+      animate_move_obj_to_tile(captain, 11070, ANIMATE_WALK);
+   end
+   else if (fixed_param == 3) then begin
+      Face_Critter(dude_obj, captain);
+      float_msg(captain, mstr(112), FLOAT_COLOR_BAD);
+   end
+   else if (fixed_param == 4) then begin
+      if (global_var(GVAR_KNOWS_PRIVATE_RYAN) == 1 ) then begin
+         float_msg(dude_obj, mstr(113), FLOAT_COLOR_GOOD);
+         costa_status = 1;
+      end
+      else if ((dude_skill(SKILL_CONVERSANT) > 50) or (dude_charisma > 5)) then begin
+         float_msg(dude_obj, mstr(114) + " " + dude_name + mstr(115), FLOAT_COLOR_GOOD);
+         costa_status = 1;
+      end
+      else begin
+         float_msg(dude_obj, mstr(116), FLOAT_COLOR_AFRAID);
+      end
+   end
+   else if (fixed_param == 5) then begin
+      if (costa_status == 1) then begin
+         float_msg(dude_obj, mstr(117), FLOAT_COLOR_GOOD);
+      end
+      else begin
+         float_msg(dude_obj, mstr(118), FLOAT_COLOR_BAD);
+      end
+   end
+   else if (fixed_param == 6) then begin
+      party_no_follow_off;
+      game_ui_enable;
+      call map_update_p_proc;
+
+      if(costa_status == 1) then begin
+         fadeout(1);
+         set_obj_visibility(captain, 1);
+         destroy_object(captain);
+         fadein(1);
+      end else begin
+         attack_setup(captain, dude_obj);
+      end
+   end
+end
+
+procedure CreateSupport begin
+   variable Critter, Tile, Item, Val;
+   variable Trooper_Counter:=0;
+   variable Ailis_Tile:=15105;
+   variable Total_Troopers:=(3 - true_party_size);
+   if (Total_Troopers < 0) then
+      Total_Troopers = 0;
+
+   // Set proper Ailis location
+   if ((Ailis_Ptr != 0) and (tile_num(Ailis_Ptr) != Ailis_Tile)) then begin
+      move_to(Ailis_Ptr, Ailis_Tile, dude_elevation);
+      critter_attempt_placement(Ailis_Ptr, Ailis_Tile, dude_elevation);
+      reg_anim_clear(Ailis_Ptr);
+      reg_anim_begin();
+      anim(Ailis_Ptr, ANIMATE_ROTATION, 2);
+      reg_anim_end();
+   end
+
+   // Major Fleming
+   if (not(major_dead)) then begin
+      Critter:=create_object_sid(PID_MAJOR_JACK_FLEMING,0,dude_elevation,SCRIPT_HDMAJOR);
+      closest_clear_random_tile(dude_obj, dude_tile, Tile)
+      critter_attempt_placement(Critter,Tile,dude_elevation);
+      arm_obj(Critter, PID_M72_GAUSS_RIFLE, 1, PID_2MM_EC_AMMO, 1)
+      give_pid_qty(Critter, PID_RANGER_PIN, 1)
+      reg_anim_clear(Critter);
+      reg_anim_begin();
+      anim(Critter, ANIMATE_ROTATION, rotation_to_tile(Tile, Ailis_Tile));
+      reg_anim_end();
+   end
+
+   // Major's mean dog
+   if (not(crius_dead)) then begin
+      Critter:=create_object_sid(PID_WILD_DOG_RED,0,dude_elevation,SCRIPT_HDCRIUS);
+      closest_clear_random_tile(dude_obj, dude_tile, Tile)
+      critter_attempt_placement(Critter,Tile,dude_elevation);
+      reg_anim_clear(Critter);
+      reg_anim_begin();
+      anim(Critter, ANIMATE_ROTATION, rotation_to_tile(Tile, Ailis_Tile));
+      reg_anim_end();
+   end
+
+   // NCR Troopers
+   while (Trooper_Counter < Total_Troopers) do begin
+      Trooper_Counter+=1;
+      Critter:=create_object_sid(pick_one(PID_NCR_TROOPER_MALE, PID_NCR_TROOPER_FEMALE),0,dude_elevation,SCRIPT_HDNCRTRC);
+      closest_clear_random_tile(dude_obj, dude_tile, Tile)
+      critter_attempt_placement(Critter,Tile,dude_elevation);
+      arm_obj(Critter, PID_PANCOR_JACKHAMMER, 1, PID_SHOTGUN_SHELLS, 1)
+      reg_anim_clear(Critter);
+      reg_anim_begin();
+      anim(Critter, ANIMATE_ROTATION, rotation_to_tile(Tile, Ailis_Tile));
+      reg_anim_end();
+   end
+end

@@ -1,0 +1,50 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\updatmap.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+
+/* Defines */
+#define NAME                  SCRIPT_TBSRVC01
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if (map_first_run) then begin
+      display_mstr(100);
+   end
+
+   if (not(is_loading_game)) then begin
+      override_map_start_hex(19492, 0, 5);
+   end
+
+   fadein(1);
+   Darkness;
+
+end
+
+procedure map_update_p_proc begin
+   Darkness;
+end
+
+procedure map_exit_p_proc begin
+   fadeout(1);
+end

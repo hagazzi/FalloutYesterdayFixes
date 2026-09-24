@@ -1,0 +1,5 @@
+
+
+#define LOCKED_STATUS                STATE_ACTIVE
+
+#include "..\generic\zimtldor.ssl"

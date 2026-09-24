@@ -1,0 +1,18 @@
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+procedure start;
+procedure spatial_p_proc;
+
+#define NAME                    SCRIPT_TBV8MEET
+#define LVAR_Once                (0)
+
+procedure start begin
+end
+
+procedure spatial_p_proc begin
+   if ((local_var(LVAR_Once) == 0) and (source_obj == dude_obj)) then begin
+      display_mstr(100);
+      set_local_var(LVAR_Once, 1);
+   end
+end

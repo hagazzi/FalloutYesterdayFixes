@@ -1,0 +1,5 @@
+#define LOCKED_STATUS                STATE_ACTIVE
+#define DOOR_KEY_PID                 PID_VAULT_13_SHACK_KEY
+#define DOOR_STATUS                  STATE_WOOD
+
+#include "..\generic\zimtldor.ssl"

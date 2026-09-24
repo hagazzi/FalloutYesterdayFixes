@@ -1,0 +1,128 @@
+#include "..\headers\define.h"
+
+#define NAME                        SCRIPT_ZVEHICLE
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\vehicles.h"
+
+procedure start;
+procedure map_exit_p_proc;
+procedure map_enter_p_proc;
+procedure description_p_proc;
+procedure use_obj_on_p_proc;
+
+variable abandoned_vehicle;
+
+procedure start begin
+end
+
+procedure map_exit_p_proc begin
+    if (
+        // Make sure we don't fire for a non-current vehicle which has already been abandoned
+        (current_vehicle_type != 0) and
+        (current_vehicle_type == SelfVehicleType) and
+        (abandoned_vehicle == 1)
+    ) then begin
+        // We are abandoning on a random encounter
+        if (((cur_town == -1) or
+        (cur_town == AREA_RND_DESERT) or
+        (cur_town == AREA_RND_MOUNTAIN) or
+        (cur_town == AREA_RND_CITY) or
+        (cur_town == AREA_RND_COAST) or
+        (cur_town == AREA_SHADOW_MAPS))) then begin
+            call AbandonCurrentVehicle(true);
+        end
+        // We are abandoning in town
+        else begin
+            set_global_var(GVAR_ABANDONED_CURRENT_VEHICLE, 1);
+            call AbandonCurrentVehicle(false);
+        end
+    end
+
+    call DestroyVehicle(SelfVehicleType);
+end
+
+procedure map_enter_p_proc begin
+    abandoned_vehicle = 1;
+end
+
+procedure use_p_proc begin
+
+    if (dude_is_stupid and not(dude_is_idiot_savant) and not(self_is_bicycle)) then begin
+        display_msg(g_mstr(1109));
+    end
+    else begin
+
+        if (self_is_motorcycle and not(dude_has_motorcycle)) then begin
+            set_global_var(GVAR_PLAYER_GOT_MOTORCYCLE, 1);
+        end
+        else if (self_is_dune_buggy and not(dude_has_dune_buggy)) then begin
+            set_global_var(GVAR_PLAYER_GOT_DUNE_BUGGY, 1);
+        end
+        else if (self_is_cop_car and not(dude_has_cop_car)) then begin
+            set_global_var(GVAR_PLAYER_GOT_COP_CAR, 1);
+        end
+        else if (self_is_semi_truck and not(dude_has_semi_truck)) then begin
+            set_global_var(GVAR_PLAYER_GOT_SEMI_TRUCK, 1);
+        end
+        else if (self_is_bicycle and not(dude_has_bicycle)) then begin
+            set_global_var(GVAR_PLAYER_GOT_BICYCLE, 1);
+        end
+
+        if (dude_has_vehicle) then begin
+            call Drive;
+
+            if (not(car_out_of_fuel) and passengers_have_enough_room) then begin
+                abandoned_vehicle = 0;
+            end
+
+        end
+    end
+end
+
+procedure description_p_proc begin
+    script_overrides;
+    call GasAmountInfo;
+end
+
+procedure use_obj_on_p_proc begin
+    script_overrides;
+    call Refuel(obj_being_used_with);
+end
+
+procedure use_skill_on_p_proc begin
+    if (action_being_used == SKILL_SCIENCE) then begin
+       script_overrides;
+
+       if(skill_success(source_obj, SKILL_SCIENCE, 0)) then begin
+            variable str;
+            if (self_is_motorcycle) then begin
+                str = 1104;
+            end
+            else if (self_is_dune_buggy) then begin
+                str = 1102;
+            end
+            else if (self_is_cop_car) then begin
+                str = 1103;
+            end
+            else if (self_is_semi_truck) then begin
+                str = 1105;
+            end
+            else if (self_is_train) then begin
+                str = 1008;
+            end
+            else if (self_is_car) then begin
+                str = 1106;
+            end
+            else if (self_is_bicycle) then begin
+                str = 1107;
+            end
+
+            display_msg(g_mstr(str));
+       end else begin
+          display_msg(g_mstr(1110) + " " + VehicleName(SelfVehicleType) + ".");
+       end
+    end
+ end

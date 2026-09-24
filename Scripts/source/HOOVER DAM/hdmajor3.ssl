@@ -1,0 +1,208 @@
+/*
+
+        Name:           Major Jack Fleming - 3-Some Showdown
+        Location:
+        Description:
+
+           Created: 10.3.2023. 15:08:40
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TG /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+
+#define NAME                    SCRIPT_HDMAJOR
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_HOOVER_DAM)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+#include "..\HEADERS\hdam.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure use_skill_on_p_proc;
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+import variable Major_3Some_Showdown_Ptr;
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+   Major_3Some_Showdown_Ptr = self_obj;
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Major_3Some_Showdown_Ptr = self_obj;
+   Only_Once:=0;
+
+   // Cleanup after showdown is done
+   if (major_dead or is_3s_dead or (not(self_visible) and (global_var(GVAR_3S_SHOWDOWN) == SHOWDOWN_DONE))) then begin
+      destroy_object(self_obj);
+   end
+   else if (global_var(GVAR_3S_SHOWDOWN) == SHOWDOWN_IN_PROGRESS) then begin
+         switch_team(self_obj,TEAM_PLAYER)
+   end
+   else begin
+      set_obj_visibility(self_obj, 1);
+      switch_team(self_obj,TEAM_HOOVER_DAM)
+   end
+end
+
+procedure map_update_p_proc begin
+   Major_3Some_Showdown_Ptr = self_obj;
+end
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if (global_var(GVAR_3S_SHOWDOWN) == SHOWDOWN_IN_PROGRESS) then begin
+      if (is_3s_dead and self_can_speak) then
+         dialogue_system_enter;
+   end
+
+   if (is_3s_dead and (TEAM_PLAYER == has_trait(TRAIT_OBJECT, self_obj, OBJECT_TEAM_NUM)) and (not(combat_is_initialized))) then
+      switch_team(self_obj,TEAM_HOOVER_DAM)
+
+   if ((global_var(GVAR_ENEMY_HOOVER_DAM) == 1) and self_can_see_dude) then begin
+      self_attack_dude;
+  end
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+
+       if (global_var(GVAR_3S_SHOWDOWN) != SHOWDOWN_IN_PROGRESS) then begin
+         set_global_var(GVAR_ENEMY_HOOVER_DAM,1);
+       end
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+
+   if (global_var(GVAR_3S_SHOWDOWN) == SHOWDOWN_DONE) then begin
+      floater(156);
+   end
+   else if (global_var(GVAR_3S_SHOWDOWN) == SHOWDOWN_IN_PROGRESS) then begin
+      if (is_3s_dead) then begin
+         floater(156);
+         set_global_var(GVAR_3S_SHOWDOWN, SHOWDOWN_DONE);
+         fadeout(1);
+         set_obj_visibility(self_obj, 1);
+         fadein(1);
+      end
+      else
+         floater(153);
+   end
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+   set_major_dead;
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end

@@ -1,0 +1,64 @@
+
+{200}{}{True to Caesar.}
+{201}{}{The new slave girls are quite beautiful.}
+{202}{}{Caesar has been seen walking among the troops. A good omen.}
+{203}{}{The camps are getting crowded.}
+{204}{}{Slaves aren't much of a challenge in the arena.}
+{205}{}{All that Caesar promised will come true.}
+{206}{}{Many warlords thought themselves beyond Caesar's reach. And now they are dead.}
+{207}{}{Our hounds are bred to kill.}
+{208}{}{Most idiots try to defy the Legion.}
+{209}{}{Most are forced to serve.}
+{210}{}{We each serve the Legion, in our way.}
+
+{211}{}{Degenerates like you belong on a cross.}
+{212}{}{Move along.}
+{213}{}{Hold your tongue, wastrel.}
+{214}{}{When the time comes, I'll be the one to kill you.}
+{215}{}{Attack me. Give me license to kill you.}
+{216}{}{You aren't trusted here.}
+{217}{}{You serve yourself, not the Legion.}
+{218}{}{Why is your degeneracy tolerated?}
+{219}{}{How are we to trust one such as you?}
+{220}{}{Who knows what you'll do next?}
+{221}{}{You're a crazed one. I'll not talk to you.}
+{222}{}{You'd do well to serve the Legion.}
+{223}{}{You'd be wise to serve the Legion by choice.}
+{224}{}{You must prove yourself useful.}
+{225}{}{Wretched thing. Try making some trouble.}
+{226}{}{You belong on a cross, degenerate.}
+{227}{}{I'd rather kill you than talk to you.}
+{228}{}{Caesar is to be feared and worshipped.}
+{229}{}{Caesar is a great man!}
+{230}{}{Hail Caesar!}
+{231}{}{*Shh* I'm not supposed to say anything.}
+{232}{}{No talking in the ranks.}
+{233}{}{Move along, degenerate.}
+{234}{}{Free clothes and free food. It sure beats Brahmin herding.}
+{235}{}{We bring order to this chaos.}
+
+{236}{}{For Caesar!}
+{237}{}{Crumble before Caesar's might!}
+{238}{}{You'll be a slave or you'll be dead.}
+{239}{}{Just die already.}
+{240}{}{Charge!}
+{241}{}{Steady advance men.}
+{242}{}{Right flank advance.}
+{243}{}{Form ranks!}
+{244}{}{Left flank advance.}
+{245}{}{Stand fast.}
+{246}{}{Weapons to the ready.}
+{247}{}{Wait for my command. Nevermind.}
+
+{248}{}{There's no glory in death.}
+{249}{}{Screw Caesar!}
+{250}{}{Time to go.}
+{251}{}{I give up.}
+{252}{}{Don't hurt me!}
+{253}{}{I've had enough.}
+{254}{}{Retreat!}
+{255}{}{I'm going to get reinforcements.}
+{256}{}{Protect the standard bearer.}
+{257}{}{I'll be right back.}
+{258}{}{Parley! Parley!}
+{259}{}{No one's gonna scum us anymore!}

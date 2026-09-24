@@ -1,0 +1,782 @@
+/*
+
+        Name:           Fergie
+        Location:
+        Description:
+
+           Created: 07/10/2020 18:55:39
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBFERGIE
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Fergie_1;
+procedure Fergie_2;
+procedure Fergie_3;
+procedure Fergie_sex;
+procedure Fergie_sex_dumb;
+procedure Fergie_info;
+procedure Fergie_drink;
+procedure Fergie_info_return;
+procedure Fergie_info_name;
+procedure Fergie_info_Hospital;
+procedure Fergie_stuff_menu;
+procedure Fergie_info_Cross;
+procedure Fergie_flirt_yes;
+procedure Fergie_flirt_no;
+procedure Fergie_info_home;
+procedure Fergie_smartass;
+procedure Fergie_ignore;
+procedure Fergie_ignore_menu;
+procedure Fergie_threaten;
+procedure Fergie_smartass_2;
+procedure Fergie_ignore_bought;
+procedure Fergie_ignore_end;
+procedure Fergie_ladies;
+procedure Fergie_ladies_no;
+procedure Fergie_ladies_yes;
+procedure Fergie_ladies_yes1;
+procedure Fergie_sex_2;
+procedure Fergie_sex_smart;
+procedure Fergie_sex_screwed;
+procedure Fergie_sex_screwed2;
+procedure Fergie_been_screwed;
+procedure Screwed_good;
+procedure Screwed_ok;
+procedure Screwed_bad;
+procedure Screwed_bad_threat;
+procedure Screwed_Blackmail_caps;
+procedure Screwed_Blackmail_item;
+procedure Blackmail_caps_10;
+procedure Blackmail_caps_50_success;
+procedure Blackmail_caps_50_fail;
+procedure Blackmail_caps_100_success;
+procedure Blackmail_caps_100_fail;
+procedure Blackmail_caps_failed_combat;
+procedure Fergie_sex_smart_sex;
+procedure Fergie_info_Cross_Car;
+procedure Fergie_info_locations;
+procedure Fergie_info_directions;
+procedure Fergie_info_directions_give;
+procedure Fergie_location_FA;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Pissed                    (8)
+#define LVAR_Sex                    (9)
+#define LVAR_Blackmail                    (10)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+call new_plague_check(self_obj, LVAR_Herebefore);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+
+if(local_var(LVAR_Sex) == 0) then begin
+   if(get_dude_attr(STAT_ch) >= 7 and dude_is_male) then begin
+         set_local_var(LVAR_Sex, 1);
+         call Fergie_sex;
+         gSay_End;
+         end_dialogue;
+         call restore_idiot_savant_int;
+         return;
+   end
+end
+
+if (local_var(LVAR_Herebefore)==0) then begin
+       call Fergie_1;
+end else if (local_var(LVAR_Herebefore)==1) then begin
+   if(local_var(LVAR_Pissed) == 1) then
+         call Fergie_3;
+   else
+       call Fergie_2;
+end
+       gSay_End;
+       end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+
+   set_local_var(LVAR_Blackmail, fixed_param);
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+procedure Fergie_1
+begin
+if (dude_is_male) then Reply(231); else
+if (dude_is_female) then Reply(230);
+NOption(232,Fergie_info,4);
+NOption(233,Fergie_drink,4);
+NOption(234,Node999,4);
+end
+
+procedure Fergie_2
+begin
+if (dude_is_male) then Reply(261); else
+if (dude_is_female) then Reply(260);
+NOption(262,Fergie_info_return,4);
+NOption(263,Fergie_drink,4);
+if (dude_is_male and get_dude_attr(STAT_ch) >= 7 and local_var(LVAR_Sex) == 1) then
+NOption(264,Fergie_sex_smart_sex,4);
+end
+
+procedure Fergie_3
+begin
+
+if(local_var(LVAR_Blackmail) > 0) then begin
+
+   if(local_var(LVAR_Blackmail) == 1) then begin
+      variable r;
+      r := random(1,4);
+      if(r == 1) then begin
+         give_pid_qty(dude_obj, PID_RADSCORPION_PARTS, 1)
+      end else if(r > 1) then begin
+         give_pid_qty(dude_obj, PID_PUMP_PARTS, 1)
+      end
+   end
+   else if(local_var(LVAR_Blackmail) == 10) then begin
+      item_caps_adjust(dude_obj, 10);
+   end else if(local_var(LVAR_Blackmail) == 50) then begin
+      item_caps_adjust(dude_obj, 50);
+end else if(local_var(LVAR_Blackmail) == 100) then begin
+      item_caps_adjust(dude_obj, 100);
+end
+
+   add_timer_event(self_obj,ONE_GAME_DAY,local_var(LVAR_Blackmail));
+   set_local_var(LVAR_Blackmail, 0);
+
+end
+
+Reply(290);
+NOption(291,Fergie_ignore_menu,4);
+NOption(292,Fergie_ignore,4);
+NOption(293,Node999,4);
+end
+
+procedure Fergie_sex
+begin
+Reply(320);
+NOption(mstr(321)+dude_name+mstr(322),Fergie_sex_2,4);
+NOption(323,Fergie_sex_dumb,-3);
+end
+
+procedure Fergie_sex_dumb
+begin
+Reply(350);
+NOption(351,Node999,-3);
+end
+
+procedure Fergie_info
+begin
+Reply(380);
+NOption(381,Fergie_info_name,4);
+NOption(382,Fergie_info_Hospital,4);
+NOption(383,Fergie_info_Cross,4);
+NOption(384,Fergie_info_home,4);
+if (dude_is_male and global_var(GVAR_FERGIE_EASY_WOMAN) == 1) then
+NOption(385,Fergie_ladies,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and dude_is_female then
+NOption(386,Fergie_flirt_yes,4);
+if (get_critter_stat(dude_obj,STAT_ch)<=6) and dude_is_male then
+NOption(386,Fergie_flirt_no,4);
+NOption(387,Node999,4);
+end
+
+procedure Fergie_drink
+begin
+Reply(410);
+NOption(411,Fergie_stuff_menu,4);
+end
+
+procedure Fergie_info_return
+begin
+Reply(440);
+NOption(441,Fergie_info_name,4);
+NOption(442,Fergie_info_Hospital,4);
+NOption(443,Fergie_info_home,4);
+NOption(444,Fergie_info_Cross,4);
+NOption(445,Fergie_threaten,4);
+NOption(446,Node999,4);
+end
+
+procedure Fergie_info_name
+begin
+Reply(470);
+NOption(mstr(471)+dude_name+mstr(472),Fergie_info_Cross,4);
+NOption(mstr(473)+dude_name+mstr(474),Fergie_info_Hospital,4);
+NOption(mstr(475)+dude_name+mstr(476),Fergie_info_home,4);
+if (get_critter_stat(dude_obj,STAT_ch)>=7) and (dude_is_male) then
+NOption(mstr(477)+dude_name+mstr(478),Fergie_flirt_yes,4);
+if (get_critter_stat(dude_obj,STAT_ch)<=6) and (dude_is_male) then
+NOption(mstr(477)+dude_name+mstr(478),Fergie_flirt_no,4);
+end
+
+procedure Fergie_info_Hospital
+begin
+Reply(500);
+NOption(501,Node999,4);
+NOption(502,Fergie_info,4);
+end
+
+procedure Fergie_stuff_menu
+begin
+      gdialog_barter;
+
+Reply(530);
+NOption(536,Fergie_info,4);
+NOption(537,Node999,4);
+end
+
+
+procedure Fergie_info_Cross
+begin
+Reply(590);
+NOption(384,Fergie_info_home,4);
+NOption(591,Fergie_info_Cross_Car,4);
+end
+
+procedure Fergie_flirt_yes
+begin
+   give_pid_qty(dude_obj, PID_BEER, 1)
+Reply(620);
+NOption(621,Fergie_info,4);
+end
+
+procedure Fergie_flirt_no
+begin
+Reply(650);
+NOption(651,Fergie_drink,4);
+NOption(652,Fergie_info,4);
+NOption(653,Node999,4);
+end
+
+procedure Fergie_info_home
+begin
+Reply(680);
+// NOTE: After this dialogue path has been taken, all player options except drink options should lead to Node Fergie_ignore
+BOption(681,Fergie_smartass,4);
+NOption(682,Fergie_drink,4);
+NOption(683,Fergie_info,4);
+NOption(684,Node999,4);
+end
+
+procedure Fergie_smartass
+begin
+   set_local_var(LVAR_Pissed, 1);
+Reply(710);
+NOption(711,Fergie_smartass_2,4);
+BOption(712,Node999,4);
+end
+
+procedure Fergie_ignore
+begin
+Reply(740);
+NOption(741,Fergie_ignore_menu,4);
+NOption(742,Fergie_threaten,4);
+NOption(743,Node999,4);
+end
+
+procedure Fergie_ignore_menu
+begin
+         gdialog_barter;
+Reply(770);
+NOption(776,Node999,4);
+end
+
+procedure Fergie_threaten
+begin
+Reply(800);
+BOption(801,Node998,4);
+BOption(802,Node998,4);
+end
+
+procedure Fergie_smartass_2
+begin
+Reply(830);
+NOption(831,Fergie_ignore_menu,4);
+NOption(832,Fergie_threaten,4);
+NOption(833,Node999,4);
+end
+
+procedure Fergie_ignore_bought
+begin
+Reply(860);
+NOption(861,Fergie_ignore_menu,4);
+NOption(862,Fergie_ignore_end,4);
+end
+
+procedure Fergie_ignore_end
+begin
+Reply(890);
+NOption(891,Node999,4);
+end
+
+procedure Fergie_ladies
+begin
+Reply(920);
+if (get_critter_stat(dude_obj,STAT_ch)>=8) and (dude_is_male) then
+NOption(921,Fergie_ladies_yes,4);
+if (get_critter_stat(dude_obj,STAT_ch)<=7) and (dude_is_male) then
+NOption(921,Fergie_ladies_no,4);
+NOption(922,Fergie_drink,4);
+end
+
+procedure Fergie_ladies_no
+begin
+Reply(950);
+NOption(951,Fergie_info,4);
+NOption(952,Fergie_threaten,4);
+NOption(953,Node999,4);
+end
+
+procedure Fergie_ladies_yes
+begin
+Reply(980);
+NOption(981,Fergie_ladies_yes1,4);
+end
+
+procedure Fergie_ladies_yes1
+begin
+
+fadeout(1);
+critter_mod_skill(dude_obj, SKILL_CONVERSANT, 5);
+fadein(1);
+
+Reply(1010);
+NOption(1011,Fergie_drink,4);
+NOption(1012,Fergie_info,4);
+NOption(1013,Node999,4);
+end
+
+procedure Fergie_sex_2
+begin
+Reply(1040);
+if (get_critter_stat(dude_obj,STAT_iq)<=6) then
+NOption(1041,Fergie_sex_screwed,4);
+if (get_critter_stat(dude_obj,STAT_iq)>=7) then
+NOption(1042,Fergie_sex_smart,4);
+end
+
+procedure Fergie_sex_smart
+begin
+Reply(1070);
+NOption(1071,Node999,4);
+NOption(1072,Fergie_sex_smart_sex,4);
+BOption(1073,Node998,4);
+end
+
+procedure Fergie_sex_screwed
+begin
+Reply(1100);
+NOption(1101,Fergie_sex_screwed2,4);
+NOption(1102,Fergie_sex_screwed2,4);
+if(not(dude_is_horny_male)) then
+NOption(1103,Node999,4);
+end
+
+// Node Fergie_sex_screwed2
+//
+// Notes:
+//
+// The PC and Fergie are teleported to to Fergie's home. Any followers that the PC has are to be left at the bar. They will automatically rejoin the PC when she returns to the CrossHou map, provided the PC has room for all of them. If not, then they will all stay at the bar and the PC will have to manually select the followers she wants.
+
+procedure Fergie_sex_screwed2
+begin
+Reply(1130);
+NOption(1131,Fergie_been_screwed,4);
+end
+
+procedure Fergie_been_screwed
+begin
+
+fadeout(1);
+do_default_sex;
+game_time_advance( random(6,8) * ONE_GAME_HOUR);
+fadein(1);
+
+Reply(1160);
+GOption(1161,Screwed_good,4);
+NOption(1162,Screwed_ok,4);
+BOption(1163,Screwed_bad,4);
+end
+
+procedure Screwed_good
+begin
+Reply(1190);
+GOption(1191,Node999,4);
+NOption(1192,Node999,4);
+end
+
+procedure Screwed_ok
+begin
+Reply(1220);
+NOption(1221,Node999,4);
+NOption(1222,Node999,4);
+end
+
+procedure Screwed_bad
+begin
+
+set_local_var(LVAR_Pissed, 1);
+
+Reply(1250);
+BOption(1251,Node999,4);
+NOption(1252,Screwed_bad_threat,4);
+end
+
+procedure Screwed_bad_threat
+begin
+Reply(1280);
+NOption(1281,Screwed_Blackmail_item,4);
+NOption(1282,Screwed_Blackmail_caps,4);
+end
+
+procedure Screwed_Blackmail_caps
+begin
+Reply(1310);
+NOption(1311,Blackmail_caps_10,4);
+// NOTE: This option only visible if the PC has a barter skill of 75% or higher.
+if (has_skill(dude_obj,SKILL_BARTER)>=75) then
+NOption(1312,Blackmail_caps_50_success,4);
+// NOTE: This option only visible if the PC has a barter skill of 74% or lower.
+if (has_skill(dude_obj,SKILL_BARTER)<=74) then
+NOption(1312,Blackmail_caps_50_fail,4);
+// NOTE: This option only visible if the PC has a barter skill of 140% or higher.
+if (has_skill(dude_obj,SKILL_BARTER)>=140) then
+NOption(1313,Blackmail_caps_100_success,4);
+// NOTE: This option only visible if the PC has a barter skill of139% or lower.
+if (has_skill(dude_obj,SKILL_BARTER)<=139) then
+NOption(1313,Blackmail_caps_100_fail,4);
+end
+
+// Node Screwed_Blackmail_item
+//
+// Notes:
+//
+// After this path, any time the PC talks to Fergie the starting node will be Fergie_3 and 1 beer per visit per game day will be added to her inventory.
+
+procedure Screwed_Blackmail_item
+begin
+   set_local_var(LVAR_Blackmail, 1);
+Reply(1340);
+NOption(891,Node999,4);
+end
+
+// Node Blackmail_caps_10
+//
+// Notes:
+//
+// After this path, any time the PC talks to Fergie the starting node will be Fergie_3 and 10 caps per visit per game day will be added to her inventory.
+
+procedure Blackmail_caps_10
+begin
+   set_local_var(LVAR_Blackmail, 10);
+Reply(1370);
+NOption(891,Node999,4);
+end
+
+// Node Blackmail_caps_50_success
+//
+// Notes:
+//
+// After this path, any time the PC talks to Fergie the starting node will be Fergie_3 and 50 caps per visit per game day will be added to her inventory.
+
+procedure Blackmail_caps_50_success
+begin
+   set_local_var(LVAR_Blackmail, 50);
+Reply(1400);
+BOption(891,Node999,4);
+end
+
+procedure Blackmail_caps_50_fail
+begin
+Reply(1430);
+NOption(1431,Blackmail_caps_10,4);
+NOption(1432,Blackmail_caps_failed_combat,4);
+end
+
+// Node Blackmail_caps_100_success
+//
+// Notes:
+//
+// After this path, any time the PC talks to Fergie the starting node will be Fergie_3 and 100 caps per visit per game day will be added to her inventory.
+
+procedure Blackmail_caps_100_success
+begin
+      set_local_var(LVAR_Blackmail, 100);
+
+Reply(1460);
+BOption(891,Node999,4);
+end
+
+procedure Blackmail_caps_100_fail
+begin
+Reply(1490);
+if (has_skill(dude_obj,SKILL_BARTER)>=75) then
+NOption(1491,Blackmail_caps_50_success,4);
+if (has_skill(dude_obj,SKILL_BARTER)<=74) then
+NOption(1491,Blackmail_caps_50_fail,4);
+NOption(1492,Blackmail_caps_failed_combat,4);
+end
+
+procedure Blackmail_caps_failed_combat
+begin
+Reply(1520);
+BOption(891,Node998,4);
+end
+
+// Node Fergie_sex_smart_sex
+//
+// Notes:
+//
+// The PC and Fergie are teleported to to Fergie's home. Any followers that the PC has are to be left at the bar. They will automatically rejoin the PC when she returns to the CrossHou map, provided the PC has room for all of them. If not, then they will all stay at the bar and the PC will have to manually select the followers she wants.
+
+procedure Fergie_sex_smart_sex
+begin
+Reply(1550);
+NOption(1551,Fergie_been_screwed,4);
+end
+
+procedure Fergie_info_Cross_Car
+begin
+Reply(1580);
+NOption(1581,Fergie_info_locations,4);
+NOption(1582,Fergie_info_home,4);
+NOption(1583,Node999,4);
+end
+
+procedure Fergie_info_locations
+begin
+Reply(1610);
+NOption(1611,Fergie_info_directions,4);
+if(town_visible_on_map(AREA_FORT_ABANDON)) then
+   NOption(1612,Fergie_info,4);
+else
+   NOption(1613,Fergie_info,4);
+end
+
+procedure Fergie_info_directions
+begin
+Reply(1640);
+NOption(1641,Fergie_info_directions_give,4);
+end
+
+procedure Fergie_info_directions_give
+begin
+Reply(1670);
+NOption(1671,Fergie_location_FA,4);
+end
+
+procedure Fergie_location_FA
+begin
+
+mark_on_map(AREA_FORT_ABANDON)
+
+Reply(1700);
+NOption(1701,Fergie_info,4);
+NOption(1702,Fergie_drink,4);
+NOption(1703,Node999,4);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

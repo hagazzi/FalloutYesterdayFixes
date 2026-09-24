@@ -1,0 +1,20 @@
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+procedure start;
+procedure spatial_p_proc;
+
+#define NAME                    SCRIPT_TBV8ROOM
+#define LVAR_Once                (0)
+
+procedure start begin
+end
+
+procedure spatial_p_proc begin
+   if ((local_var(LVAR_Once) == 0) and (source_obj == dude_obj)) then begin
+      set_local_var(LVAR_Once, 1);
+      display_msg(message_str(SCRIPT_VAULT8, 109));
+      play_sfx("SIMTEK13");
+      display_mstr(100);
+   end
+end

@@ -1,0 +1,44 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_ODYCORE
+
+#include "..\headers\command.h"
+#include "..\headers\tibbets.h"
+
+variable sfx;
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure start begin
+end
+
+
+procedure map_enter_p_proc begin
+   fadein(1);
+   Tibbets_Lighting;
+   if (cur_map_index == MAP_TIBBETS_CRYOGENIC_CELL_BLOCK_0_ODYSSEUS_COMPUTER_CORE) then begin
+      sfx := play_sfall_sound("data\\sound\\SFX\\odycore.mp3", 1);
+   end
+end
+
+procedure map_update_p_proc begin
+   Tibbets_Lighting;
+
+   check_countdown
+end
+
+
+procedure map_exit_p_proc begin
+   if (cur_map_index == MAP_TIBBETS_CRYOGENIC_CELL_BLOCK_0_ODYSSEUS_COMPUTER_CORE) then begin
+      stop_sfall_sound(sfx);
+   end
+   fadeout(1);
+end

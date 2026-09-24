@@ -1,0 +1,10 @@
+procedure start;
+procedure map_enter_p_proc ;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+    set_obj_visibility(self_obj, 1);
+    destroy_object(self_obj);
+end

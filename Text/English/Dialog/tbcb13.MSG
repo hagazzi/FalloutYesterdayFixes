@@ -1,0 +1,11 @@
+# Grammar pass done
+
+{100}{}{PIP! To craft items, use Repair on yourself.}
+{101}{}{*drool*}
+{102}{}{More sim!}
+{103}{}{Well, these simulations are always more enjoyable than the harsh reality.}
+{104}{}{Well, that was fun! I'm starting to wonder if I'm becoming addicted to these simulations.}
+{105}{}{That was a blast!}
+{106}{}{You are back in your jail cell. Home sweet home.}
+{107}{}{It's so boring. Let's see what's going on in SimTek.}
+{108}{}{BoOOoOo-ring. Let go Sim!}

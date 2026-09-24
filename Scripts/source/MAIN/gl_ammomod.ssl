@@ -1,0 +1,69 @@
+/*
+
+Ammo INI Loader mod v1.1 for Fallout 2 by NovaRain
+--------------------------------------------------
+
+- modifies ammo protos with data from an INI file:
+  * AmmoGlovz.ini if DamageFormula=1 or 2 in ddraw.ini
+  * AmmoYAAM.ini if DamageFormula=5 in ddraw.ini
+  * AmmoMod.ini if not using any bulit-in damage formula
+
+Requires sfall 4.0/3.8.29 or higher
+
+*/
+
+#include "..\headers\sfall.h"
+#include "..\headers\define_extra.h"
+
+procedure start;
+procedure map_enter_p_proc;
+
+variable ammoIni;
+variable ammoData;
+variable enabled;
+
+procedure start begin
+   variable i := 1, ammo, ammoSection, dmgMod;
+   if game_loaded then begin
+      enabled := get_ini_setting("ddraw.ini|Misc|DamageFormula");
+      if (enabled == 1 or enabled == 2) then
+         ammoIni := "AmmoGlovz.ini";
+      else if (enabled == 5) then
+         ammoIni := "AmmoYAAM.ini";
+      else
+         ammoIni := "AmmoMod.ini";
+
+      enabled := get_ini_setting(ammoIni + "|1|pid");
+      if (enabled <= 0) then return;
+
+      ammoData := create_array_map;
+      ammoSection := get_ini_section(ammoIni, "" + i);
+      while (ammoSection.pid > 0) do begin
+         ammo := create_array_map; // create permanent arrays
+         ammo.ac_adjust := atoi(ammoSection.ac_adjust);
+         ammo.dr_adjust := atoi(ammoSection.dr_adjust);
+         // dam_mult and dam_div must be positive integers
+         dmgMod := atoi(ammoSection.dam_mult);
+         ammo.dam_mult := dmgMod if (dmgMod > 0) else 1;
+         dmgMod := atoi(ammoSection.dam_div);
+         ammo.dam_div := dmgMod if (dmgMod > 0) else 1;
+         ammoData[atoi(ammoSection.pid)] := ammo;
+         i++;
+         ammoSection := get_ini_section(ammoIni, "" + i);
+      end
+      call map_enter_p_proc;
+      debug_msg("Ammo INI Loader mod: " + ammoIni + " - set " + (i - 1) + " ammo protos.");
+   end
+end
+
+procedure map_enter_p_proc begin
+   variable pid, values;
+   if (enabled > 0) then begin
+      foreach (pid: values in ammoData) begin
+         set_proto_data(pid, PROTO_AM_AC_MOD, values.ac_adjust);
+         set_proto_data(pid, PROTO_AM_DR_MOD, values.dr_adjust);
+         set_proto_data(pid, PROTO_AM_DMG_MULT, values.dam_mult);
+         set_proto_data(pid, PROTO_AM_DMG_DIV, values.dam_div);
+      end
+   end
+end

@@ -1,0 +1,229 @@
+#
+#   Messages from trait.c
+#
+#
+#   TRAIT NAMES
+#
+{100}{}{Fast Metabolism}
+{101}{}{Bruiser}
+{102}{}{Small Frame}
+{103}{}{One Hander}
+{104}{}{Finesse}
+{105}{}{Kamikaze}
+{106}{}{Heavy Handed}
+{107}{}{Fast Shot}
+{108}{}{Bloody Mess}
+{109}{}{Jinxed}
+{110}{}{Good Natured}
+{111}{}{Chem Reliant}
+{112}{}{Chem Resistant}
+{113}{}{Sex Appeal}  # was: Night Person
+{114}{}{Skilled}
+{115}{}{Gifted}
+# Fallout Yesterday
+{116}{}{Color Blind}
+{117}{}{Feral Kid}
+{118}{}{Night Person}
+{119}{}{One In a Million}
+{120}{}{Fear of the Dark}
+{121}{}{Red Scare}
+{122}{}{Pacifist}
+{123}{}{Lecherous}
+{124}{}{Computer Ops}
+{125}{}{Danger Sense}
+{126}{}{Detect Lie}
+{127}{}{Electronic Ops}
+{128}{}{Strong Will}
+{129}{}{Weak Will}
+{130}{}{Delusional}
+{131}{}{Big Liar}
+{132}{}{Soothsayer}
+{133}{}{Domesticated}
+{134}{}{Tech Wizard}
+{135}{}{Ham Fisted}
+{136}{}{Beastlord}
+{137}{}{NCR Background}
+{138}{}{Raised by the Vipers}
+{139}{}{Fear the Reaper}
+{140}{}{Apprenticed to a Trader}
+{141}{}{Army Training}
+{142}{}{Highwayman Background}
+{143}{}{Tribal Background}
+{144}{}{Bookworm}
+{145}{}{Beat with an Ugly Stick}
+{146}{}{Bully}
+{147}{}{Idiot Savant}
+{148}{}{Hyperactive}
+{149}{}{Lady's Man}
+{150}{}{Mad Scientist}
+{151}{}{Miracle Operation}
+{152}{}{Raised by Super Mutants}
+{153}{}{Raised in the Pits}
+{154}{}{Sheltered Childhood}
+{155}{}{Sickly}
+{156}{}{Pin-up Girl}
+{157}{}{Hermit Background}
+{158}{}{Former Slave}
+{159}{}{Arsonist}
+{160}{}{Only Child}
+{161}{}{Blade Tosser}
+{162}{}{Frankenstein Monster}
+{163}{}{Bride of Frankenstein}
+{164}{}{Rabid}
+{165}{}{Nietzsche Poster Child}
+{166}{}{Tomboy}
+{167}{}{Day Person}
+{168}{}{Shady Sidekick}
+{169}{}{Socialite}
+{170}{}{Vat Skin}
+{171}{}{Glowing One}
+{172}{}{Raised by Ghouls}
+{173}{}{Photophobic}
+{174}{}{Capitalist Background}
+{175}{}{Communist Background}
+{176}{}{Super Duper Mutant}
+{177}{}{Strong, Silent Type}
+{178}{}{Guilty Conscience}
+{179}{}{Daredevil}
+{180}{}{Gold Digger}
+{181}{}{Special Person}
+{182}{}{Tough Hide}
+{183}{}{Grotesque}
+{184}{}{Ascetic}
+{185}{}{Nasty Disposition}
+{186}{}{Renaissance Man}
+{187}{}{Renaissance Woman}
+{188}{}{Studious Tinkerer}
+{189}{}{Thick Skinned}
+{190}{}{Shoot First, Q&A Later}
+{191}{}{Mutation: Acid Blood}
+{192}{}{Mutation: Bloody Talons}
+{193}{}{Ghoulish Frenzy}
+{194}{}{Mutation: Forked Tongue}
+{195}{}{Lucky Devil}
+{196}{}{Mutation: Scaly Hide}
+{197}{}{Mutation: Night Child}
+{198}{}{Mutation: Beast of Burden}
+{199}{}{Mutation: Chameleon}
+{1000}{}{Mutation: Eagle Eye}
+{1001}{}{Mutation: Elephant Hide}
+{1002}{}{Mutation: Monkey Brains}
+{1003}{}{Mutation: Fervor}
+{1004}{}{Mutation: Regeneration}
+{1005}{}{Mutation: Tusks}
+{1006}{}{Mutation: Fur Hide}
+{1007}{}{Mutation: Skin Of Thorns}
+{1008}{}{Mutation: Bullet Storm}
+#
+#   TRAIT DESCRIPTIONS
+#
+{200}{}{Your metabolic rate is twice normal. This means that you are much less resistant to radiation and poison, but your body heals faster.}
+{201}{}{A little slower, but a little bigger. You may not hit as often, but they will feel it when you do! Your total action points are lowered, but your Strength is increased.}
+{202}{}{You are not quite as big as the other villagers, but that never slowed you down. You can't carry as much, but you are more agile.}
+{203}{}{One of your hands is very dominant. You excel with single-handed weapons, but two-handed weapons cause a problem.}
+{204}{}{Your attacks show a lot of finesse. You don't do as much damage, but you cause more critical hits.}
+{205}{}{By not paying attention to any threats, you can act a lot faster in a turn. This lowers your armor class to just what you are wearing, but you sequence much faster in a combat turn.}
+{206}{}{You swing harder, not better. Your attacks are very brutal, but lack finesse. You rarely cause a good critical, but you always do more melee damage.}
+{207}{}{You don't have time to aim for a targeted attack, because you attack faster than normal people. It costs you one less action point for guns and thrown weapons.}
+{208}{}{By some strange twist of fate, people around you die violently. You always see the worst way a person can die.}
+{209}{}{The good thing is that everyone around you has more critical failures in combat, the bad thing is so do you!}
+{210}{}{You studied less-combative skills as you were growing up. Your combat skills start at a lower level, but First Aid, Doctor, Speech and Barter are substantially improved.}
+{211}{}{You are more easily addicted to chems. Your chance to be addicted by chem use is twice normal, but you recover faster from their ill effects.}
+{212}{}{Clean living or too much stuff already running through your system? Chems only affect you half as long as normal, but your chance to be addicted is also only 50% of normal.}
+{213}{}{You've got the "right" stuff. Members of the opposite sex are attracted to you, but those of the same sex tend to become quite jealous.}
+{214}{}{Since you spent more time improving your skills than a normal person, you gain 5 additional skill points per experience level. The tradeoff is that you do not gain as many extra abilities. You gain a perk one level later.}
+{215}{}{You have more innate abilities than most, so you have not spent as much time honing your skills. Your primary statistics are each +1, but you lose -10% on all skills to start, and receive 5 less skill points per level.}
+# Fallout Yesterday
+{216}{}{You have a small mutation the Auto-Doc calls "deuteranopia". You don't distinguish certain colors, such as red and green.}
+{217}{}{You grew up in the heart of the savage wasteland. You are swift and powerful, gaining +20% to Throwing and Outdoorsman, but you tend to shun the company of others reducing your maximum party limit by -1.}
+{218}{}{As a night-time person, you are more awake when the Sun goes down. Your Intelligence and Perception are improved at night by +1, but dulled during the day by -1.}
+{219}{}{You're particularly lucky or unfortunate. When the lightning strikes, it strikes hard! Your Luck is either 1 or 10 on any given day.}
+{220}{}{You cannot stand to be in the dark. You stay constantly aware of your surroundings, peering into dim corners and dark shadows to see if something is there. This raised your Perception by +2, but made you suffer a panic attack in dark areas.}
+{221}{}{You are paranoid in the extreme and think that everyone around you may be trying to do you in. Your Perception is sharper by +2 but your shaky nerves lower your aim by -5% in combat.}
+{222}{}{Make love, not war! You were never into the violent ways of the wasteland so your aim is lowered by -50%. However, your Speech and First Aid are increased by +50%, and Doctor by +25%.}
+{223}{}{You just can't say no when it comes to any chance of practicing horizontal acrobatics under the sheets. Affects some dialog choices.}
+{224}{}{You're a master of programming, a code wizard that can create new software at a whim with +30% to Science. Your knowledge of hardware including any ray guns is basic though, making you suffer a -15% to Repair and Energy Weapons.}
+{225}{}{Sometimes you get this gut feeling and you know something's wrong. You are quick to spot and move out of danger, giving you +1 to Perception and Agility. But you never seem to think things through, lowering your Intelligence by -2.}
+{226}{}{You're particularly good at spotting liars. However, some can spot such analytical behavior and trust you even less if that's possible. Affects some dialog choices.}
+{227}{}{You're more than skilled at using electronic equipment. There's no hardware or a ray gun you can't tear apart and put back together, giving you +15% to Repair and Energy Weapons. Your knowledge of software is basic though with -30% penalty.}
+{228}{}{My way or the highway! You find it's so easy to disagree with anyone and listen only to yourself. Affects some dialog choices.}
+{229}{}{You rarely have an opinion of your own and are easily persuaded by others. Affects some dialog choices.}
+{230}{}{You sometimes see and hear things that only you can perceive. A mutation, loss of sanity or something third? It's hard to tell when real and unreal blend together.}
+{231}{}{Sometimes others call you a liar and throw things in your direction. But it's just your wild imagination and big mouth. Honest! Affects some dialog choices.}
+{232}{}{The truth is all you believe in and stand for. This often puts you in interesting situations. Affects some dialog choices.}
+{233}{}{You have undergone extensive house training and have developed a higher IQ, raising Intelligence by +2. However, you do less unarmed damage suffering -50% to Unarmed.}
+{234}{}{You spent your formative years hunched over a bench learning tech stuff, boosting Science, Repair and Lockpick by +20%. Trouble is you've ruined your eyes, decreasing Perception by -1!}
+{235}{}{You have huge hands. The damage your fists dish out is increased by +2 and your Unarmed by +30%. Your fingers aren't as agile, decreasing First Aid, Doctor, Science, Traps, Lockpick and Repair by -10%.}
+{236}{}{Some mutants can reach within the minds of the easily swayed (animals, politicians and marketing personnel) to control their very thoughts and actions in battle. Beastlords only wear armor made from animals.}
+{237}{}{You grew up with the prisoners from the New California Republic. You can easily identify clues leading to hidden NCR caches and also get extra background info from the locals. However, not everyone likes the NCR. Affects some dialog choices.}
+{238}{}{You grew up with members of the Vipers clan, the mysterious followers of an ancient religion. You gain +20% to Poison Resistance, but suffer -1 to Charisma due to the large numbers of bite scars on your limbs.}
+{239}{}{You have cheated death and gain perks more quickly as though you were still alive. Unfortunately you are now on death's short list! Your perk rate is increased by one but your Strength and Endurance are reduced by -5 each.}
+{240}{}{Spending your whole childhood inside a shop, you gain +60% to Barter, but you suffer -1 to Agility.}
+{241}{}{You received some paramilitary training during your youth, but were discharged for having flat feet. You gain +1 to Strength, +20% to Small Guns and Melee skills, but also -1 to Agility.}
+{242}{}{You are a criminal who steals from others. Your lifestyle has earned you +40% to Small Guns, as well as -1 to Charisma.}
+{243}{}{You were raised by tribals. Others tried to civilize you, but given your ferocious demeanor, they failed. You gain +2 to Strength, +1 to Endurance, +20% to Melee Weapons, +40% to Outdoorsman, -1 to Intelligence, -2 to Charisma, -40% to Barter, and -20% to Speech.}
+{244}{}{You have spent most of your life reading. You gain +1 to Intelligence. Unfortunately, myopia has set in, and you suffer -1 to Perception.}
+{245}{}{You are ugly. There is just no other word for it, unless you consider *hideous* a better word. You take -6 to Charisma, but because you have had to defend yourself from frequent attacks, you gain +2 to Strength and Agility, and +20% to Small Guns, Melee Weapons, Unarmed, and Throwing.}
+{246}{}{As a kid, you were a bully, big and dumb. Extortion and intimidation have afforded you +1 to Strength, but getting people to do your chores for you leaves you with a -1 deficiency in Intelligence.}
+{247}{}{You are brilliant with a keen grasp of mathematics, but can barely talk. You gain +6 to Intelligence and +60% to Gambling. However, years of being locked away makes you suffer physically and emotionally. You suffer -1 to Strength and Endurance, and -2 to Agility and Charisma.}
+{248}{}{You are constantly busy. Your Action Points are increased by +1, but most people find you annoying, and your Charisma suffers by -1.}
+{249}{}{Women swoon whenever they are near you. Being unusually good-looking, you gain +6 to Charisma. Unfortunately, all that primping and powdering has you lacking in the more manly virtues... you lose -2 in Endurance, Strength, and Agility.}
+{250}{}{You did many dangerous medical experiments upon yourself and suffer from the adverse effects. You get +20% to Doctor, +2 IN, +2 PE, +20 Poison, and Electrical Resistance, but you suffer -2 to CH, AG, and -3 to EN.}
+{251}{}{As a child you had contracted a fatal, degenerative disease. An Auto-Doc miraculously restored your health but at a price. You gain +5 to Perception, +3 to Intelligence and Charisma but suffer -3 to Strength and Agility, and -5 to Endurance.}
+{252}{}{You were raised by super mutants. Their brutish ways have left you with +2 to Strength and Perception, and +20% to all combat skills but also -6 to Charisma.}
+{253}{}{Being a veteran in the prison fights, you gain +2 to Strength and Agility, and +20% to all combat skills. The vicious combat has also taken a toll. Head trauma gives you -6 to Intelligence. As a result, you're not especially good with money, lowering Barter by -40%.}
+{254}{}{You were cooed and coddled incessantly as a child. As a result of overprotective parenting, you take -6 to Strength, but, being more sensitive, you gain +2 to Intelligence and Charisma, and +1 to Perception.}
+{255}{}{Mother Nature can be a harsh mistress. Having been born with an extremely weak immune system, you have -2 to Strength, -4 to Endurance, and -1 to Agility. But all is not lost. Afternoons spent with a fever and a good book gave you +6 to Intelligence.}
+{256}{}{You are a stunningly gorgeous woman, and you have been pampered and coddled all of your life. You gain +6 to Charisma at the cost of -2 Strength and -4 Intelligence.}
+{257}{}{Piety has its advantages and disadvantages. You gain +1 to Perception, but also -1 to Charisma due to not being used to other people.}
+{258}{}{You were someone's slave. You have low self-confidence, suffering -1 to Charisma, but you gain +1 to Strength.}
+{259}{}{You like fire. No, you LOVE fire! Fire! Fire! FIRE! You were always picked on as a kid for being scrawny, with -1 to Strength and Endurance, but you showed them! You studied explosives, gaining +20% to Traps and a +20%/+1 Fire DR/DT, and you burned their homes! Ha ha!}
+{260}{}{You grew up as the only child of adoptive parents, and you basically always got your own way. Now, you expect nothing less than total obedience of everyone, gaining +6 to Intelligence, but your temperament leaves much to be desired, lowering your Charisma by -4, Speech and Barter by -40%.}
+{261}{}{You traveled the prison, entertaining people with your knife throwing skills for a few caps or a warm meal, until hurting your eye in a freak accident. Your Throwing is raised by +60% but your Perception is lowered by -1.}
+{262}{}{You were reanimated by a mad scientist from various body parts. You gain +4 to Strength and Endurance, +30 Electrical DR, and +20 Poison Resistance, but you have -6 to  Agility, a damaged brain-larynx connection, and a susceptibility to flame with -20% Fire DR.}
+{263}{}{You were reanimated by a mad scientist to be the bride of his other creation, but you managed to escape before the wedding. You gain +4 to Charisma and Endurance, +20 Electrical DR, and +10 Poison Resistance, but have -4 to Luck, a damaged brain-larynx link, and a weakness flame with -10% Fire DR.}
+{264}{}{You are a half-crazed feral killing machine. Crippled limbs heal after 48 hours of rest and you receive +1 temporary bonus Action Points whenever you kill. Chems have no effect on you.}
+{265}{}{Nietzsche once said "That which does not kill me makes me stronger," and he may have been referring to you. All your life you have been making mistakes, but you always seem to come out better afterwards. In other words, you almost never score a critical hit but you have a +10% EXP bonus.}
+{266}{}{As a little girl, you were always playing games with the boys. As a woman, you can hold your own against any man, and you have avoided the stereotypical female role in society. You gain +1 to Strength but suffer -1 to Endurance.}
+{267}{}{As a day-time person, you are more awake when the Sun is up. Your Intelligence and Perception are improved by +1 at day, but dulled by -1 during the night.}
+{268}{}{You became an apprentice to "snake oil salesman", giving up on the the Tibbets' security officers training you were enrolled in. You gain +6 to Charisma, but suffer -2 to Strength and Endurance, as well as -20% to all combat skills.}
+{269}{}{Your social circle is one of the most influential in all of Tibbets. As a young socialite, you have +6 to Charisma. Of course, the easy life has made you soft in mind and body. You have -1 to Strength, Agility, and -40% to all combat skills.}
+{270}{}{Other people find you hideous to behold and vomitous to smell! You get a +10 to Armor Class, but any friend or foe nearby suffers -1 penalty to Perception.}
+{271}{}{Extreme radiation exposure has left you glowing in the dark! Darkness is no obstacle to you or your enemies. You also irradiate those around you.}
+{272}{}{You grew up with ghouls, scavenging and repairing broken things. You gain +1 to Strength and +40% to Repair skill, but you suffer -2 to Agility due to the strenuous and repetitive hard labor.}
+{273}{}{You are terrified of bright spaces. As a child, you rarely went outdoors and spent your time reading and studying, gaining +2 to Intelligence. You are fine if you are in dark areas, but you suffer a panic attack in brightly lit areas.}
+{274}{}{You are a firm believer that the world revolves around caps. The more caps you have, the better person you are. You suffer -1 to Strength, but gain +40% to Barter.}
+{275}{}{You are a firm believer that only hard labor and sharing the wealth equally can make one person truly rich. You suffer -40% to Barter, but gain +1 to Strength.}
+{276}{}{You are a rare specimen of an intelligent super mutant. Having been raised as a human, you gain +2 to Intelligence. Civilized life has also lessened your ferocity, and you lose -1 in both Strength and Endurance.}
+{277}{}{You let your actions do the talking. You gain +1 to Strength and Endurance, but suffer -80% to Speech.}
+{278}{}{The weight of the world rests heavily upon your shoulders. As a result, your Karma gains and losses are doubled.}
+{279}{}{You dropped out of Tibbets' educational program to entertain others with the most daring stunts. You have gained +6 to Strength, but have serious deficiencies with -5 to Intelligence and -1 to Perception due to all of the schooling that you missed.}
+{280}{}{Instead of pursuing a general education, you devoted your time to mastering the art of charming others. You gain +3 to Charisma, but you lose -1 in Intelligence and -2 in Strength.}
+{281}{}{You have suffered congenital brain damage. You lack Intelligence with a -2 penalty, but you receive more praise when you do good deeds.}
+{282}{}{You were born with thick, brutish skin, possibly a mutation. Although your Normal DR is increased by +10%, you unfortunately take -1 to Charisma.}
+{283}{}{The nature frowned upon you when you were born. Cursed with both monstrous looks and mannerisms, you receive -8 to Charisma. Others think that you are spawned from mutants or worse, so you often fend off bounty hunters and religious fanatics, and gain bonuses to +2 ST, +2 EN, and +1 AG.}
+{284}{}{You grew up under stern religious guardians, gaining +10% skill points from your diverse studies. However, the frugal lifestyle stuck with you, so you always leave 10% of any gold you find for the less fortunate.}
+{285}{}{Your quick temper always got you into fights while growing up. Your Speech and Barter are decreased by -15%, but your Unarmed, Melee Weapons and Throwing each get a +9% bonus. Good Natured characters cannot pick this Trait.}
+{286}{}{You're a connoisseur of the arts and a deep thinker who will lead the wasteland into a new Renaissance! You gain a +1 to Intelligence, but -10% to Melee Weapons.}
+{287}{}{You're a connoisseur of the arts and a deep thinker who will lead the wasteland into a new Renaissance! You gain a +1 to Intelligence, but -10% to Melee Weapons.}
+{288}{}{You spent your formative years tinkering with tech, ruining your eyes in the process. You gain +15% to Lockpick, Science, and Repair. However, you suffer -1 to Perception and a -10% to Small Guns, Big Guns, and Energy Weapons.}
+{289}{}{Your skin is unnaturally hardened. Add +5% to all DRs and +4 to Armor Class, but you have a thick head as well and suffer a -1 to Intelligence and -10% to Lockpick.}
+{290}{}{Pick 'em off first, and when they're wounded and dying in the dirt, put the hard questions to them. Your Small Guns, Big Guns, and Energy Weapons gain +15% but your Speech and Barter suffer a -20% penalty.}
+{291}{}{Your body courses with acidic blood. If you are wounded, acid splashes onto your opponent, causing 1 to 2 points of damage. Your Normal DR is decreased by 5%. Your odd skin pallor might make others treat you as a mutant.}
+{292}{}{You have razor sharp claws that give you +4% to Unarmed and +1 to Melee Damage. However, manipulating them can be difficult and you suffer -8% to Small Guns and Lockpick. Others might treat you as a mutant.}
+{293}{}{Sometimes ghouls go stir-crazy because of their need to be alone and away from the rest of society; these solitary ghouls are called "crazies." You're not there yet, but you're on the edge of losing it. You suffer -1 to Intelligence and Charisma, but also +1 to Strength and +15% to Melee Weapons.}
+{294}{}{The barely noticeable bifurcation on your tongue allows you to charm your way through life, giving you +15% to Speech. However, your neglected combat skills suffer a  you a -5% penalty.}
+{295}{}{Things usually seem to go your way. When they don't, things go really wrong. Your Luck is +1, but no matter what you say, you usually put your foot in your mouth. Your Speech is reduced by -15%.}
+{296}{}{Your skin is covered with protective scales that add +5 to AC, +5% to Normal DR, and +10% to Fire DR. Unfortunately, the scales make you look disturbing, so you lose -1 Charisma. Others might treat you as a mutant.}
+{297}{}{Your mutation gives you the ability to blend into shadows better. This grants +20% to Sneak and +5 to Armor, but also -1 to Perception. Others might treat you as a mutant.}
+{298}{}{Because of your massive hands and strong back your carry weight is increased by 20 pounds. However, this has only fed your nearly neurotic compulsion to hoard useless gear, so you suffer a -10% penalty to Sneak. Others might treat you as a mutant.}
+{299}{}{You have the uncanny ability to adjust your skin color and blend in better with your surroundings. You get a +20% to Sneak but your Armor and Normal DR are reduced by -5 because of frail skin. Others might treat you as a mutant.}
+{2000}{}{You have the eyes of an eagle, but unfortunately its lightweight bones as well. You receive a +15% to ranged combat skills, but your carrying capacity is reduced by -30 pounds. Others might treat you as a mutant.}
+{2001}{}{Your skin is unusually calloused. Your pain threshold is higher, +1 to Normal DT, +5% to Normal DR, but suffer a -1 to Agility and -10% to Lockpick. Others might treat you as a mutant.}
+{2002}{}{A mutation passed on a whimsical monkey-like cleverness to you. Add +5% to Speech, Traps, and Lockpick, but your inability to control your mannerisms lowers your Barter by -10% and your ranged combat skills by -5%. Others might treat you as a mutant.}
+{2003}{}{In combat you rely on your animal instincts. You gain +15% to Unarmed, Melee Weapons, and Throwing and +5% to critical chance, but have -1 to Intelligence and Perception. Others might treat you as a mutant.}
+{2004}{}{Your mutation allows wounds to heal relatively quickly. You receive a +1 to Healing Rate. However, your metabolism cannot heal poison and radiation as well, so you receive -15% to Radiation and Poison Resistances. Others might treat you as a mutant.}
+{2005}{}{Your face is marred by a pair of large tusks, frequently making it difficult for others to understand you. Your Speech is reduced by -15%, but when speech fails, you deal +1 Melee Damage. Others might treat you as a mutant.}
+{2006}{}{You have a thick coat of fur covering your entire body. You gain +7 to Armor, and +5 Normal DR. However, your hairy features lower your Charisma by -1, Poison Resistance by -7%, and Fire DR by -5%. Others might treat you as a mutant.}
+{2007}{}{Thorny growths give a +10% to Normal DR and deal 1 to 2 points of explosive damage to nearby foes that hit you. However, you suffer -10% to Plasma, Electrical, Fire and Poison Resistances and -1 to Charisma. Others might treat you as a mutant.}
+{2008}{}{You have lightning fast reflexes and incredible hand-eye coordination. You gain a +5% to all ranged combat skills. However, you do not fight well in close quarters and suffer -10% to Normal DR. Others might treat you as a mutant.}

@@ -1,0 +1,50 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+   Map for Vault13 Fake entrance
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_FA
+
+#include "..\headers\command.h"
+
+#define MVAR_Made_Car                          (0)
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure start begin
+end
+
+
+procedure map_enter_p_proc begin
+   fadein(1);
+   Indoor_Lighting;
+
+   variable track = AMBIENT_ABANDONED_CRICKETS;
+
+   if(global_var(GVAR_FA_REFINERY_RESTARTED) == 1) then begin
+      track = AMBIENT_POWER_CORE;
+   end
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(track), 1);
+end
+
+procedure map_update_p_proc begin
+    Indoor_Lighting;
+end
+
+
+procedure map_exit_p_proc begin
+   if(global_var(GVAR_FA_REFINERY_RESTARTED) == 1) then begin
+      stop_sfall_sound(ambient_sfx);
+   end
+   fadeout(1);
+end

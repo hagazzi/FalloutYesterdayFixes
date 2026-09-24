@@ -1,0 +1,101 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Critters template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_HYDRAU
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure critter_p_proc;
+procedure damage_p_proc;
+procedure destroy_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+variable once, rot, hydra;
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+
+end
+
+procedure map_enter_p_proc begin
+
+   critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_TEAM_NUM, TEAM_HYDRA);
+   critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_AI_PACKET, AI_SPORE_PLANT);
+
+end
+
+procedure create_hydra begin
+    if(not(anim_busy(self_obj)) and once == 1) then begin
+            hydra := create_object(16777803, self_tile, self_elevation);
+            if(hydra) then begin
+                set_obj_visibility(self_obj, 1);
+                destroy_object(self_obj);
+            end
+        end
+end
+
+procedure critter_p_proc begin
+    script_overrides;
+
+    if(tile_distance_objs(dude_obj, self_obj) <= 1) then begin
+        if(once == 0) then begin
+            reg_anim_begin();
+            reg_anim_animate(self_obj, ANIM_jump_begin, -1);
+            reg_anim_end();
+            once := 1;
+        end
+        else begin
+            call create_hydra;
+        end
+    end
+    else begin
+        call create_hydra;
+    end
+
+
+end
+
+procedure damage_p_proc begin
+ // if not killed from first attempt, go under ground
+ display_mstr(100);
+ destroy_object(self_obj);
+end
+
+procedure destroy_p_proc begin
+   if(cur_map_index == MAP_SPECIAL_ENCOUNTER_TEMPLE_COAST) then begin
+      set_global_var(GVAR_DROWNED_TEMPLE_LOWER, global_var(GVAR_DROWNED_TEMPLE_LOWER) + 1);
+   end
+end

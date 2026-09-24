@@ -1,0 +1,446 @@
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_C /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+
+#define NAME                    SCRIPT_TBLENNY
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+/* User defined variables */
+
+variable lenny_hate;
+
+import variable know_fools;
+import variable know_crypts;
+import variable know_power;
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Lenny00;
+procedure Lenny01;
+procedure Lenny02;
+procedure Lenny03;
+procedure Lenny04;
+procedure Lenny04a;
+procedure Lenny04b;
+procedure Lenny05;
+procedure Lenny06;
+procedure Lenny07;
+procedure Lenny08;
+procedure Lenny09;
+procedure Lenny10;
+procedure Lenny11;
+procedure Lenny12;
+procedure Lenny13;
+procedure Lenny14;
+procedure Lenny15;
+procedure Lenny16;
+procedure Lenny17;
+procedure Lenny18;
+procedure Lenny19;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SCRAPHEAP);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+   start_gdialog(NAME, self_obj, 4, -1, -1);
+   gSay_Start;
+
+   if (get_kill_counter(KILL_TYPE_brahmin_kills) >= 1) then begin
+      call Lenny00();
+   end
+   else begin
+      if (lenny_hate == 1) then begin
+         call Lenny14();
+      end
+      else begin
+         if (local_var(LVAR_Herebefore)==1) then begin
+            call Lenny09();
+         end
+         else begin
+            call Lenny01();
+         end
+      end
+   end
+
+   gSay_End;
+   end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Lenny00 begin
+   Reply(104);
+   BOption(103,Node998,1);
+end
+
+procedure Lenny01 begin
+   Reply(105);
+   NOption(106,Lenny15,4);
+   NOption(107,Lenny03,4);
+   NOption(108,Lenny02,4);
+   NOption(206,Lenny15,-3);
+   NOption(207,Lenny03,-3);
+   NOption(208,Lenny02,-3);
+end
+
+procedure Lenny02 begin
+   Reply(109);
+   NOption(107, Lenny03,4);
+   NOption(207, Lenny03,-3);
+end
+
+procedure Lenny03 begin
+   Reply(110);
+   NOption(111, Lenny08,4);
+   NOption(112, Lenny04,4);
+   NOption(211, Lenny08,-3);
+   NOption(212, Lenny04,-3);
+end
+
+procedure Lenny04 begin
+   Reply(113);
+   NOption(114, Lenny04a,4);
+   NOption(115, Lenny04b,4);
+   NOption(116, Lenny06,4);
+   NOption(214, Lenny04a,-3);
+   NOption(215, Lenny04b,-3);
+   NOption(216, Lenny06,-3);
+end
+
+procedure Lenny04a begin
+   if (is_success(roll_vs_skill(dude_obj, SKILL_CONVERSANT, 0))) then begin
+      call Lenny05();
+   end
+   else begin
+      call Lenny06();
+   end
+end
+
+procedure Lenny04b begin
+   if (is_success(roll_vs_skill(dude_obj, SKILL_CONVERSANT, 20))) then begin
+      call Lenny07();
+   end
+   else begin
+      call Lenny06();
+   end
+end
+
+procedure Lenny05 begin
+   Reply(117);
+   NOption(118, Node999,1);
+end
+
+procedure Lenny06 begin
+   lenny_hate := 1;
+   Reply(119);
+   NOption(120, Node999,4);
+   NOption(220, Node999,-3);
+end
+
+procedure Lenny07 begin
+   Reply(121);
+   NOption(122, Node999,4);
+   NOption(222, Node999,-3);
+end
+
+procedure Lenny08 begin
+   Reply(123);
+   NOption(122, Node999,4);
+   NOption(222, Node999,-3);
+end
+
+procedure Lenny09 begin
+   Reply(124);
+   if (know_fools) then begin
+      NOption(125, Lenny10,4);
+      NOption(225, Lenny10,-3);
+   end
+   if (know_crypts) then begin
+      NOption(126, Lenny11,4);
+      NOption(226, Lenny11,-3);
+   end
+   if (know_power) then begin
+      NOption(127, Lenny12,4);
+      NOption(227, Lenny12,-3);
+   end
+   NOption(128, Node999,4);
+   NOption(228, Node999,-3);
+end
+
+procedure Lenny10 begin
+   Reply(129);
+   NOption(130, Node999,4);
+   if (know_crypts) then begin
+      NOption(126, Lenny11,4);
+      NOption(226, Lenny11,-3);
+   end
+   if (know_power) then begin
+      NOption(127, Lenny12,4);
+      NOption(227, Lenny12,-3);
+   end
+end
+
+procedure Lenny11 begin
+   Reply(131);
+      NOption(130, Node999,4);
+      NOption(132, Lenny13,4);
+      NOption(230, Node999,-3);
+      NOption(232, Lenny13,-3);
+   if (know_fools) then begin
+      NOption(125, Lenny10,4);
+      NOption(225, Lenny10,-3);
+   end
+   if (know_power) then begin
+      NOption(127, Lenny12,4);
+      NOption(227, Lenny12,-3);
+   end
+end
+
+procedure Lenny12 begin
+   Reply(133);
+   NOption(130, Node999,4);
+   NOption(230, Node999,-3);
+   if (know_fools) then begin
+      NOption(125, Lenny10,4);
+      NOption(225, Lenny10,-3);
+   end
+   if (know_crypts) then begin
+      NOption(126, Lenny11,4);
+      NOption(226, Lenny11,-3);
+   end
+end
+
+procedure Lenny13 begin
+   Reply(134);
+   NOption(130,Node999,4);
+   NOption(230,Node999,-3);
+   if (know_fools) then begin
+      NOption(125, Lenny10,4);
+      NOption(225, Lenny10,-3);
+   end
+   if (know_crypts) then begin
+      NOption(126, Lenny11,4);
+      NOption(226, Lenny11,-3);
+   end
+   if (know_power) then begin
+      NOption(127, Lenny12,4);
+      NOption(227, Lenny12,-3);
+   end
+end
+
+procedure Lenny14 begin
+   Reply(135);
+   NOption(103,Node999,1);
+end
+
+procedure Lenny15 begin
+   Reply(136);
+   NOption(137,Lenny16,4);
+   NOption(138,Lenny17,4);
+   NOption(237,Lenny16,-3);
+   NOption(238,Lenny17,-3);
+end
+
+procedure Lenny16 begin
+   Reply(139);
+   NOption(140,Lenny03,4);
+   NOption(141,Lenny18,4);
+   NOption(240,Lenny03,-3);
+   NOption(241,Lenny18,-3);
+end
+
+procedure Lenny17 begin
+   Reply(142);
+   NOption(130,Node999,4);
+   NOption(143,Lenny03,4);
+   NOption(230,Node999,-3);
+   NOption(243,Lenny03,-3);
+end
+
+procedure Lenny18 begin
+   Reply(144);
+   NOption(145,Lenny03,4);
+   NOption(146,Lenny19,4);
+   NOption(245,Lenny03,-3);
+   NOption(246,Lenny19,-3);
+end
+
+procedure Lenny19 begin
+   Reply(147);
+   BOption(103,Node998,1);
+end
+
+//xxxxxxxxxxxxxxxxxxxx

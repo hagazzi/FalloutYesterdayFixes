@@ -1,0 +1,80 @@
+/*
+	Animate forever
+*/
+
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_FADEADA
+
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+procedure animfrvr;
+
+variable sfx;
+
+procedure map_enter_p_proc begin
+
+    if(global_var(GVAR_QUEST_GET_RID_OF_CAESARS_LEGION) == 1) then begin
+        set_obj_visibility(self_obj, 1);
+        destroy_object(self_obj);
+     end
+
+
+   call animfrvr;
+   add_timer_event(self_obj, 1, 1);
+end
+
+procedure map_update_p_proc begin
+   if (
+      (not(combat_is_initialized)) and
+      (self_elevation == dude_elevation)
+   ) then
+   begin
+      call animfrvr;
+   end
+end
+
+procedure timed_event_p_proc begin
+
+    variable wav, fid;
+
+  if (fixed_param == 1) then begin
+      if (
+         (not(anim_busy(self_obj))) and
+         (not(combat_is_initialized)) and
+         (self_elevation == dude_elevation)
+         ) then begin
+            call animfrvr;
+/*
+         if(self_distance_from_dude <= (5 + dude_perception)) then begin
+            fid := self_fid;
+            //display_msg("" + fid);
+
+            // fan
+            if(fid == 33556308) then begin
+                wav := "fan";
+            // turbine
+            //end else if(fid == 33556630) then begin
+            //    wav := "turbine";
+            end
+            if(sfx == 0) then begin
+                sfx := play_sfall_sound("data\\sound\\SFX\\" + wav + ".mp3", 1);
+            end
+        end else begin
+            stop_sfall_sound(sfx);
+            sfx := 0;
+        end
+*/
+      end
+      add_timer_event(self_obj, 1, 1);
+  end
+end
+
+procedure animfrvr begin
+   reg_anim_begin();
+   reg_anim_animate_forever(self_obj, ANIM_stand);
+   reg_anim_end();
+end

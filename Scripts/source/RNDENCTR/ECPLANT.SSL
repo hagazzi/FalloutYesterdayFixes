@@ -1,0 +1,94 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/* Random Encounter scripts. These will be filled in more once they
+   have been designed.
+*/
+
+procedure start;
+procedure map_enter_p_proc;
+procedure critter_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure timed_event_p_proc;
+procedure talk_p_proc;
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_ECPLANT
+
+#include "..\headers\command.h"
+
+#define LVAR_Warning                 (8)
+
+
+procedure start begin
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_RND_SPORE_PLANT);
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_SPORE_PLANT);
+end
+
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_neutral_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+
+procedure map_enter_p_proc begin
+   variable item;
+
+   if (map_first_run) then begin
+       item:=create_object(PID_PLANT_SPIKE,0,0);
+       add_mult_objs_to_inven(self_obj,item,random(5,15));
+   end
+end
+
+procedure critter_p_proc begin
+
+   if(self_can_hear_dude and (local_var(LVAR_Warning) == 0)) then begin
+
+         floater_sfx(200);
+         set_local_var(LVAR_Warning, 1);
+         rm_timer_event(self_obj);
+         add_timer_event(self_obj, game_ticks(5), 1);
+
+   end
+
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+   display_msg(mstr(100));
+end
+
+procedure description_p_proc begin
+   script_overrides;
+   display_msg(mstr(101));
+end
+
+procedure use_skill_on_p_proc begin
+   if (action_being_used == SKILL_STEAL) then begin
+      script_overrides;
+   end
+
+   call injure_with_skill;
+end
+
+procedure timed_event_p_proc begin
+   if(self_can_hear_dude and (local_var(LVAR_Warning) == 1)) then begin
+      floater_sfx(200);
+      self_attack_dude;
+   end
+   set_local_var(LVAR_Warning, 0);
+end
+
+procedure talk_p_proc begin
+
+   floater_sfx(200);
+
+end

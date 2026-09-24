@@ -1,0 +1,112 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\vault8.h"
+
+#define NAME                    SCRIPT_TBV8SMK
+
+/* Standard Script Procedures */
+procedure start;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+   display_mstr(100);
+end
+
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(101);
+end
+
+procedure map_enter_p_proc begin
+   reg_anim_begin();
+   reg_anim_animate_forever(self_obj, ANIM_stand);
+   reg_anim_end();
+
+   add_timer_event(self_obj, 1, 1);
+end
+
+procedure map_update_p_proc begin
+   if (not(combat_is_initialized)) then begin
+      if((map_var(MVAR_POWER) == 1) and obj_is_visible_flag(self_obj)) then begin
+         set_obj_visibility(self_obj, 1);
+      end
+      else begin
+         reg_anim_begin();
+         reg_anim_animate_forever(self_obj, ANIM_stand);
+         reg_anim_end();
+      end
+   end
+end
+
+procedure timed_event_p_proc begin
+   if (fixed_param == 1) then begin
+      if ((anim_busy(self_obj) == false) and (combat_is_initialized == 0)) then begin
+
+         if((map_var(MVAR_POWER) == 1) and obj_is_visible_flag(self_obj)) then begin
+            set_obj_visibility(self_obj, 1);
+            return;
+         end else if ((map_var(MVAR_POWER) == 0) and obj_is_visible_flag(self_obj) == FALSE) then begin
+            set_obj_visibility(self_obj, 0);
+         end
+
+         if(map_var(MVAR_POWER) == 0) then begin
+            if(
+               (random(1, 20) == 1) and
+               (self_distance_from_dude <= 10 + dude_perception) and
+               (self_elevation == dude_elevation)
+            ) then begin
+               play_sfx("genstop");
+            end
+         end
+
+         reg_anim_begin();
+         reg_anim_animate_forever(self_obj, ANIM_stand);
+         reg_anim_end();
+      end
+      add_timer_event(self_obj, 1, 1);
+   end
+end

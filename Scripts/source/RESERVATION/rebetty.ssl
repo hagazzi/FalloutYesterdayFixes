@@ -1,0 +1,1136 @@
+/*
+
+        Name:           Betty
+        Location:
+        Description:
+
+           Created: 23/01/2021 12:10:40
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_REBETTY
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_RESERVATION)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+#include "..\HEADERS\partybkg.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure Betty_0;
+procedure Betty_1a;
+procedure Betty_1a_2G;
+procedure Betty_1a_2N_1;
+procedure Betty_1a_2N_2;
+procedure Betty_1a_B1;
+procedure Betty_1a_D1;
+procedure Betty_1a_D2_a1;
+procedure Betty_1a_D2_a2;
+procedure Betty_1a_D2_b;
+procedure Betty_1b_G;
+procedure Betty_1b_N;
+procedure Betty_1b_N_D;
+procedure Betty_2;
+procedure Betty_4_1;
+procedure Betty_4_2;
+procedure Betty_4_3;
+procedure Betty_4_4;
+procedure Betty_5_1;
+procedure Betty_5_2a;
+procedure Betty_5_2b_1;
+procedure Betty_5_2b_2;
+procedure Betty_5_3;
+procedure Betty_6_1;
+procedure Betty_6_2;
+procedure Betty_6_3a_1;
+procedure Betty_6_3a_2_1;
+procedure Betty_6_3a_2_2a;
+procedure Betty_6_3a_2_2b;
+procedure Betty_6_3b_1;
+procedure Betty_6_3b_2a;
+procedure Betty_6_3b_2b;
+procedure Betty_7_1;
+procedure Betty_7_2a_1;
+procedure Betty_7_2a_2;
+procedure Betty_7_2a_3;
+procedure Betty_7_2a_4;
+procedure Betty_7_2a_5;
+procedure Betty_7_2b_1;
+procedure Betty_7_2b_2;
+procedure Betty_7_2b_3;
+procedure Betty_8;
+procedure Betty_9_1;
+procedure Betty_9_2a;
+procedure Betty_9_2b;
+procedure Betty2_1a_1;
+procedure Betty2_1a_2;
+procedure Betty2_1a_3;
+procedure Betty2_1a_4;
+procedure Betty2_1b;
+procedure Betty2_1b_B1;
+procedure Betty2_1b_B2a;
+procedure Betty2_1b_B2b;
+procedure Betty2_1b_B2c;
+procedure Betty2_1b_B3;
+procedure Betty2_2a_1_1;
+procedure Betty2_2a_1_2;
+procedure Betty2_2a_2;
+procedure Betty2_2a_3a;
+procedure Betty2_2a_3b;
+procedure Betty2_2a_4;
+procedure Betty2_2a_5B_1_1;
+procedure Betty2_2a_5B_1_2;
+procedure Betty2_2a_5B_2;
+procedure Betty2_2a_5B_3;
+procedure Betty2_2a_5G_1;
+procedure Betty2_2a_5G_2;
+procedure Betty2_2a_5G_3;
+procedure Betty2_2a_5G_4;
+procedure Betty2_2a_5G_5;
+procedure Betty2_2a_5G_6;
+procedure Betty2_2a_5G_7;
+procedure Betty2_3_1;
+procedure Betty2_3_2;
+procedure Betty2_3_3a;
+procedure Betty2_3_3b;
+procedure Betty2_3_4;
+procedure Betty2_3_5;
+procedure Betty2_3_6;
+procedure Betty2_4_1a;
+procedure Betty2_4_1b;
+procedure Betty2_4_2;
+procedure Betty2_9;
+procedure Betty2_Trade_1;
+procedure Betty2_Trade_2;
+procedure BettyNonGhoul;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_RESERVATION);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+   variable betty_stuff, temp_stuff;
+   betty_stuff := tile_contains_pid_obj(26553, 0, PID_FOOTLOCKER_RUSTY_LEFT);
+   temp_stuff := tile_contains_pid_obj(26953, 0, PID_FOOTLOCKER_RUSTY_LEFT);
+
+   Evil_Critter:=1;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   find_party_background;
+   call set_idiot_savant_int;
+
+   move_obj_inven_to_obj(self_obj,temp_stuff);
+   move_obj_inven_to_obj(betty_stuff,self_obj);
+
+       start_gdialog(NAME,self_obj,4,HEAD_BETTY,PartyMemberBackground);
+       gSay_Start;
+      /* if(dude_is_ghoul) then begin
+         if(local_var(LVAR_Herebefore) == 0) then
+         call Betty_1a;
+      else
+         call Betty_1b_N;
+       end
+       else*/
+         call BettyNonGhoul;
+
+       gSay_End;
+       end_dialogue;
+
+
+   call restore_idiot_savant_int;
+
+   move_obj_inven_to_obj(self_obj,betty_stuff);
+   move_obj_inven_to_obj(temp_stuff,self_obj);
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+ inc_evil_critter
+
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Betty_0
+begin
+Reply(200);
+// NOTE: This node begins the conversation IF the PC has spoken to Betty before AND Betty has spoken the node Betty_2G.
+NOption(202,Betty_1b_G,4);
+NOption(203,Betty_1b_N,4);
+// NOTE: Use this node to begin the conversation if the scripted scene where Betty kills Jedrek has happened AND the player has NOT spoken to Betty since.
+NOption(204,Betty2_1a_1,4);
+NOption(205,Betty2_1b,4);
+end
+
+// Node Betty_1a
+//
+// Notes:
+//
+// This node beings the conversation if Betty has never spoken to the PC before.
+
+procedure Betty_1a
+begin
+Reply(230);
+GOption(mstr(231)+dude_name+mstr(232),Betty_1a_2G,4);
+NOption(233,Betty_1a_D1,-3);
+NOption(234,Betty_1a_2N_1,4);
+BOption(235,Betty_1a_B1,4);
+NOption(236,Node999,4);
+end
+
+procedure Betty_1a_2G
+begin
+if (dude_is_male) then Reply(260); else
+if (dude_is_female) then Reply(261);
+GOption(262,Betty_2,4);
+end
+
+procedure Betty_1a_2N_1
+begin
+Reply(290);
+GOption(mstr(291)+dude_name+mstr(292),Betty_1a_2G,4);
+NOption(293,Betty_2,4);
+BOption(294,Betty_9_1,4);
+NOption(295,Node999,4);
+end
+
+procedure Betty_1a_2N_2
+begin
+Reply(mstr(320)+dude_name+mstr(321));
+NOption(322,Betty_2,4);
+NOption(323,Node999,4);
+end
+
+procedure Betty_1a_B1
+begin
+if (dude_is_male) then Reply(350); else
+if (dude_is_female) then Reply(351);
+GOption(mstr(352)+dude_name+mstr(292),Betty_1a_2N_2,4);
+BOption(353,Betty_9_2b,4);
+NOption(354,Node999,4);
+end
+
+procedure Betty_1a_D1
+begin
+Reply(380);
+NOption(381,Betty_1a_D2_a1,-3);
+NOption(382,Betty_1a_D2_b,-3);
+end
+
+procedure Betty_1a_D2_a1
+begin
+Reply(410);
+NOption(411,Betty_1a_D2_a2,-3);
+end
+
+// Node Betty_1a_D2_a2
+//
+// Notes:
+//
+// Increment player money by 1.
+
+procedure Betty_1a_D2_a2
+begin
+   item_caps_adjust(dude_obj, 1);
+Reply(440);
+NOption(441,Node999,-3);
+end
+
+procedure Betty_1a_D2_b
+begin
+Reply(470);
+NOption(471,Node999,-3);
+end
+
+// Node Betty_1b_G
+//
+// Notes:
+//
+// This node begins the conversation IF the PC has spoken to Betty before AND Betty has spoken the node Betty_2G.
+
+procedure Betty_1b_G
+begin
+Reply(mstr(500)+dude_name+mstr(501));
+NOption(502,Betty_8,4);
+BOption(503,Betty_9_1,4);
+NOption(504,Node999,4);
+end
+
+// Node Betty_1b_N
+//
+// Notes:
+//
+// This node begins the conversation IF the PC has spoken to Betty before.
+
+procedure Betty_1b_N
+begin
+Reply(530);
+NOption(531,Betty_8,4);
+BOption(503,Betty_9_1,4);
+NOption(504,Node999,4);
+NOption(532,Betty_1b_N_D,-3);
+end
+
+procedure Betty_1b_N_D
+begin
+Reply(560);
+NOption(561,Betty_1a_D2_b,-3);
+NOption(562,Node999,4);
+end
+
+procedure Betty_2
+begin
+Reply(590);
+NOption(591,Betty_4_1,4);
+NOption(592,Betty_5_1,4);
+NOption(593,Betty_6_1,4);
+// NOTE: This option only comes up if the player has spoken to Alexander about Jedrek's prices AND Betty has NOT said node Betty_7_2Na_4, where Betty agrees to speak to Jedrek about his prices.
+//
+//IF Betty has spoken node Betty_7_2B_1, where the PC has told Betty that Alexander said some very rude things about her, go to Betty_7_2B_1 instead.
+NOption(594,Betty_7_1,4);
+NOption(595,Node999,4);
+NOption(596,Betty2_Trade_1,4);
+
+end
+
+// Node Betty_4_1
+//
+// Notes:
+//
+// The Betty_4_* path is where the PC finds out about what Betty thinks of Jedrek's relationship with her and Bruce and with Sandover in general.
+
+procedure Betty_4_1
+begin
+Reply(620);
+NOption(621,Betty_4_2,4);
+end
+
+procedure Betty_4_2
+begin
+Reply(650);
+NOption(651,Betty_4_3,4);
+NOption(652,Betty_8,4);
+end
+
+procedure Betty_4_3
+begin
+Reply(680);
+NOption(681,Betty_4_4,4);
+NOption(682,Betty_8,4);
+NOption(683,Node999,4);
+end
+
+procedure Betty_4_4
+begin
+Reply(710);
+NOption(711,Betty_8,4);
+NOption(712,Node999,4);
+end
+
+// Node Betty_5_1
+//
+// Notes:
+//
+// The Betty_5_* path is where the PC finds out a few things about Brute from Betty.
+
+procedure Betty_5_1
+begin
+Reply(740);
+NOption(741,Betty_5_2a,4);
+NOption(742,Betty_5_2b_1,4);
+NOption(743,Betty_8,4);
+NOption(744,Node999,4);
+end
+
+procedure Betty_5_2a
+begin
+Reply(770);
+NOption(771,Betty_5_3,4);
+NOption(772,Betty_8,4);
+end
+
+procedure Betty_5_2b_1
+begin
+Reply(800);
+NOption(801,Betty_5_2b_2,4);
+NOption(802,Betty_5_2a,4);
+end
+
+procedure Betty_5_2b_2
+begin
+Reply(830);
+NOption(831,Betty_5_2a,4);
+end
+
+procedure Betty_5_3
+begin
+Reply(860);
+NOption(861,Betty_8,4);
+NOption(862,Node999,4);
+end
+
+// Node Betty_6_1
+//
+// Notes:
+//
+// The Betty_6_* path is where the PC finds out what Betty thinks of Sandover and Crossroads.
+
+procedure Betty_6_1
+begin
+Reply(890);
+NOption(891,Betty_6_2,4);
+NOption(892,Node999,4);
+end
+
+procedure Betty_6_2
+begin
+Reply(920);
+NOption(921,Betty_6_3a_1,4);
+NOption(922,Betty_6_3b_1,4);
+end
+
+procedure Betty_6_3a_1
+begin
+Reply(950);
+NOption(951,Betty_6_3a_2_1,4);
+end
+
+procedure Betty_6_3a_2_1
+begin
+Reply(980);
+NOption(981,Betty_6_3a_2_2a,4);
+NOption(982,Betty_6_3a_2_2b,4);
+end
+
+procedure Betty_6_3a_2_2a
+begin
+if (dude_is_male) then Reply(1010); else
+if (dude_is_female) then Reply(1011);
+NOption(1012,Betty_6_3a_2_2b,4);
+NOption(1013,Betty_6_3b_1,4);
+NOption(1014,Betty_8,4);
+end
+
+procedure Betty_6_3a_2_2b
+begin
+Reply(1040);
+NOption(981,Betty_6_3a_2_2a,4);
+NOption(1041,Betty_6_3b_1,4);
+NOption(1042,Betty_8,4);
+end
+
+procedure Betty_6_3b_1
+begin
+Reply(1070);
+NOption(1071,Betty_6_3b_2a,4);
+NOption(1072,Betty_6_3b_2b,4);
+end
+
+procedure Betty_6_3b_2a
+begin
+Reply(1100);
+NOption(1101,Betty_6_3b_2b,4);
+NOption(1102,Betty_6_3a_1,4);
+NOption(1103,Betty_8,4);
+end
+
+procedure Betty_6_3b_2b
+begin
+Reply(1130);
+NOption(1131,Betty_6_3a_1,4);
+NOption(1132,Betty_8,4);
+NOption(1133,Node999,4);
+end
+
+// Node Betty_7_1
+//
+// Notes:
+//
+// The Betty_7_* path is where the PC tries to convince Betty to confront Jedrek regarding his ill treatment of Sandover.
+
+procedure Betty_7_1
+begin
+Reply(1160);
+// NOTE: Speech test. If the PC fails, go to Betty_8_1 instead.
+NOption(1161,Betty_7_2a_1,4);
+// NOTE: This option only comes up if the player has spoken to Alexander about Jedrek's prices.
+NOption(1162,Betty_8,4);
+NOption(1163,Node999,4);
+end
+
+procedure Betty_7_2a_1
+begin
+Reply(1190);
+// NOTE: Wrong response (patronising). Hard speech test. If the PC fails, go to Betty_7_2Nb_1 instead.
+NOption(1191,Betty_7_2a_2,4);
+// NOTE: This is the correct response (polite). Easy speech check. If failed, go to Betty_7_2Nb_1 instead.
+NOption(1192,Betty_7_2a_2,4);
+NOption(1193,Node999,4);
+end
+
+procedure Betty_7_2a_2
+begin
+Reply(1220);
+// NOTE: This is the correct response and can bypass Betty_7_2Na_3. Speech test. If the PC fails, go to Betty_7_2Nb_1 instead.
+NOption(1221,Betty_7_2a_4,4);
+// NOTE: Speech test. If the PC fails, go to Betty_7_2Nb_1 instead.
+//
+//This is the incorrect response even if the above speech test is successful (too ambivalent, requires response) punishment is an extra node containing a speech test (Betty_7_2Na_3).
+NOption(1222,Betty_7_2a_3,4);
+// NOTE: This option only comes up if the player has spoken to Alexander about Jedrek's prices.
+NOption(1223,Betty_8,4);
+NOption(1224,Node999,4);
+end
+
+procedure Betty_7_2a_3
+begin
+Reply(1250);
+// NOTE: Wrong response (patronising and brusque). Hard speech test. If the PC fails, go to Betty_7_2Nb_1 instead.
+NOption(1251,Betty_7_2a_4,4);
+// NOTE: This is the correct response (flattery will get you everywhere). Easy speech check. If failed, go toBetty_7_2Nb_1 instead.
+NOption(1252,Betty_7_2a_4,4);
+// NOTE: This option only comes up if the player has spoken to Alexander about Jedrek's prices.
+NOption(1223,Betty_8,4);
+end
+
+procedure Betty_7_2a_4
+begin
+Reply(1280);
+// NOTE: This will instantly trigger the confrontation between Betty and Jedrek. Brute will kill Betty if he hasn't been knocked out with booze administered by the PC.
+NOption(1281,Node999,4);
+GOption(1282,Betty_7_2a_5,4);
+// NOTE: This option only comes up if the player has spoken to Alexander about Jedrek's prices.
+NOption(1283,Betty_8,4);
+end
+
+procedure Betty_7_2a_5
+begin
+Reply(1310);
+NOption(1311,Node999,4);
+NOption(1312,Betty_8,4);
+NOption(1313,Node999,4);
+end
+
+procedure Betty_7_2b_1
+begin
+if (dude_is_male) then Reply(1340); else
+if (dude_is_female) then Reply(1341);
+// NOTE: Speech test. If the PC fails, go to Betty_7_2Nb_2 instead.
+NOption(1342,Betty_7_1,4);
+// NOTE: This option only comes up if the player has spoken to Alexander about Jedrek's prices.
+NOption(1343,Betty_8,4);
+NOption(1163,Node999,4);
+end
+
+procedure Betty_7_2b_2
+begin
+Reply(1370);
+// NOTE: Speech test. If the PC fails, go to Betty_7_2Nb_3 instead.
+NOption(1371,Betty_7_1,4);
+BOption(1372,Betty_9_1,4);
+// NOTE: This option only comes up if the player has spoken to Alexander about Jedrek's prices.
+NOption(1373,Betty_8,4);
+NOption(1374,Node999,4);
+end
+
+procedure Betty_7_2b_3
+begin
+Reply(1400);
+// NOTE: Speech test. If the PC fails, go to Betty_7_2Nb_2 instead.
+NOption(1401,Betty_7_1,4);
+BOption(1402,Betty_9_1,4);
+// NOTE: This option only comes up if the player has spoken to Alexander about Jedrek's prices.
+NOption(1373,Betty_8,4);
+NOption(1374,Node999,4);
+end
+
+// Node Betty_8
+//
+// Notes:
+//
+// The Betty_8 node is the generic 'can I ask you a question?' node.
+
+procedure Betty_8
+begin
+if (dude_is_male) then Reply(1430); else
+if (dude_is_female) then Reply(1431);
+NOption(591,Betty_4_1,4);
+NOption(592,Betty_5_1,4);
+NOption(593,Betty_6_1,4);
+// NOTE: This option only comes up if the player has spoken to Alexander about Jedrek's prices AND Betty has NOT said node Betty_7_2Na_4, where Betty agrees to speak to Jedrek about his prices.
+//
+//IF Betty has spoken node Betty_7_2B_1, where the PC has told Betty that Alexander said some very rude things about her, go to Betty_7_2B_1 instead.
+NOption(594,Betty_7_1,4);
+// NOTE: This node only comes up IF Betty has said node Betty_7_4, where Betty agrees to speak to Jedrek about his prices.
+NOption(1432,Betty_7_2a_4,4);
+BOption(1433,Betty_9_1,4);
+NOption(1434,Node999,4);
+end
+
+procedure Betty_9_1
+begin
+Reply(1460);
+// NOTE: Speech check. If failed, go to Betty_9_2b instead.
+NOption(1461,Betty_9_2a,4);
+BOption(1462,Betty_9_2b,4);
+end
+
+procedure Betty_9_2a
+begin
+Reply(1490);
+NOption(1491,Betty_8,4);
+BOption(1492,Betty_9_2b,4);
+NOption(1493,Node999,4);
+end
+
+// Node Betty_9_2b
+//
+// Notes:
+//
+// Betty will no longer talk to the player after saying this node. She will only use aloof floats to communicate (at best)
+
+procedure Betty_9_2b
+begin
+Reply(1520);
+// NOTE: Luck test. If failed, go instead to Betty_2B_2
+NOption(1521,Node999,4);
+end
+
+// Node Betty2_1a_1
+//
+// Notes:
+//
+// Use this node to begin the conversation if the scripted scene where Betty kills Jedrek has happened AND the player has NOT spoken to Betty since.
+
+procedure Betty2_1a_1
+begin
+Reply(1550);
+NOption(1551,Betty2_1a_2,4);
+NOption(1552,Node999,4);
+end
+
+procedure Betty2_1a_2
+begin
+Reply(1580);
+NOption(1581,Betty2_1a_3,4);
+NOption(1582,Betty2_1a_4,4);
+end
+
+procedure Betty2_1a_3
+begin
+Reply(1610);
+NOption(1611,Betty2_1a_4,4);
+NOption(1612,Node999,4);
+end
+
+procedure Betty2_1a_4
+begin
+Reply(1640);
+NOption(1641,Betty2_2a_1_1,4);
+NOption(1642,Node999,4);
+end
+
+// Node Betty2_1b
+//
+// Notes:
+//
+// Use this node to begin the conversation if the scripted scene where Betty kills Jedrek has happened AND the player has convinced Betty to take over the caravan run.
+
+procedure Betty2_1b
+begin
+Reply(mstr(1670)+dude_name+mstr(1671));
+NOption(1672,Betty2_9,4);
+NOption(1673,Betty2_1b_B1,4);
+NOption(1674,Node999,4);
+end
+
+procedure Betty2_1b_B1
+begin
+Reply(1700);
+NOption(1701,Betty2_1b_B2a,4);
+// NOTE: Speech check. If failed, go to Betty2_1b_B2c instead.
+NOption(1702,Betty2_1b_B2b,4);
+end
+
+procedure Betty2_1b_B2a
+begin
+Reply(1730);
+NOption(1731,Betty2_1b_B3,4);
+end
+
+procedure Betty2_1b_B2b
+begin
+Reply(mstr(1760)+dude_name+mstr(1761));
+NOption(1762,Betty2_9,6);
+NOption(1763,Node999,6);
+end
+
+// Node Betty2_1b_B2c
+//
+// Notes:
+//
+// Betty will no longer speak via the dialogue window and will merely use aloof floats if the PC tries to talk to her.
+
+procedure Betty2_1b_B2c
+begin
+Reply(1790);
+NOption(1791,Node999,4);
+end
+
+// Node Betty2_1b_B3
+//
+// Notes:
+//
+// Betty will no longer speak via the dialogue window and will merely use aloof floats if the PC tries to talk to her.
+
+procedure Betty2_1b_B3
+begin
+Reply(1820);
+NOption(1791,Node999,4);
+end
+
+procedure Betty2_2a_1_1
+begin
+Reply(1850);
+NOption(1851,Betty2_2a_2,4);
+NOption(1852,Betty2_2a_1_2,4);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_1_2
+begin
+Reply(1880);
+NOption(1881,Betty2_2a_2,4);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_2
+begin
+Reply(1910);
+NOption(1911,Betty2_2a_3a,4);
+NOption(1912,Betty2_2a_3b,4);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_3a
+begin
+Reply(1940);
+NOption(1941,Betty2_2a_4,4);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_3b
+begin
+Reply(1970);
+NOption(1971,Betty2_2a_3a,4);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_4
+begin
+Reply(2000);
+// NOTE: Leads to potential good options.
+NOption(2001,Betty2_2a_5G_1,4);
+// NOTE: Evil option.
+NOption(2002,Betty2_2a_5B_1_1,4);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_5B_1_1
+begin
+Reply(2030);
+NOption(2031,Betty2_2a_5B_2,4);
+// NOTE: Easy speech/Luck check. If failed, go to Betty2_2a_5B_1_1 instead.
+NOption(2032,Betty2_2a_5G_1,4);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_5B_1_2
+begin
+Reply(2060);
+NOption(2061,Betty2_2a_5B_2,4);
+NOption(2062,Betty2_2a_5G_1,4);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_5B_2
+begin
+Reply(2090);
+NOption(2091,Betty2_2a_5B_3,4);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_5B_3
+begin
+Reply(2120);
+// NOTE: From now on Betty just stands around worrying. Float speech and unwillingness to talk to the PC to suit. Maybe affects end-game because caravan route fails?
+NOption(2121,Node999,4);
+end
+
+procedure Betty2_2a_5G_1
+begin
+Reply(2150);
+// NOTE: Note intelligence check. The PC is thinking on his/her feet!
+NOption(2151,Betty2_2a_5G_2,6);
+NOption(2152,Betty2_2a_5B_1_1,4);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_5G_2
+begin
+Reply(2180);
+NOption(2181,Betty2_2a_5G_3,6);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_5G_3
+begin
+Reply(2210);
+NOption(2211,Betty2_2a_5G_4,6);
+NOption(1853,Node999,4);
+end
+
+// Node Betty2_2a_5G_4
+//
+// Notes:
+//
+// If Betty speaks this node, she becomes the head of the Sandover-Crossroads caravan and lowers Jedrek's prices.
+
+procedure Betty2_2a_5G_4
+begin
+Reply(2240);
+NOption(2241,Betty2_2a_5G_5,6);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_5G_5
+begin
+Reply(2270);
+NOption(2271,Betty2_2a_5G_6,6);
+NOption(1853,Node999,4);
+end
+
+procedure Betty2_2a_5G_6
+begin
+Reply(mstr(2300)+dude_name+mstr(2301));
+NOption(2302,Betty2_2a_5G_7,4);
+NOption(1853,Node999,4);
+end
+
+// Node Betty2_2a_5G_7
+//
+// Notes:
+//
+// The PC has convinced Betty to take over the Sandover-Crossroads Liberty caravan. Its prices will be much lower from now on.
+
+procedure Betty2_2a_5G_7
+begin
+Reply(2330);
+NOption(2331,Node999,4);
+end
+
+procedure Betty2_3_1
+begin
+Reply(2360);
+NOption(2361,Betty2_3_2,4);
+NOption(2362,Betty2_9,4);
+NOption(2363,Node999,4);
+end
+
+procedure Betty2_3_2
+begin
+Reply(2390);
+NOption(2391,Betty2_3_3a,4);
+NOption(2392,Betty2_3_3b,4);
+NOption(2362,Betty2_9,4);
+NOption(2363,Node999,4);
+end
+
+procedure Betty2_3_3a
+begin
+Reply(2420);
+NOption(2421,Betty2_3_4,4);
+NOption(2362,Betty2_9,4);
+NOption(2363,Node999,4);
+end
+
+procedure Betty2_3_3b
+begin
+Reply(2450);
+NOption(2391,Betty2_3_4,4);
+NOption(2362,Betty2_9,4);
+NOption(2363,Node999,4);
+end
+
+procedure Betty2_3_4
+begin
+Reply(2480);
+NOption(2481,Betty2_3_5,4);
+NOption(2362,Betty2_9,4);
+NOption(2363,Node999,4);
+end
+
+procedure Betty2_3_5
+begin
+Reply(2510);
+NOption(2511,Betty2_3_6,4);
+end
+
+// Node Betty2_3_6
+//
+// Notes:
+//
+// The PC has managed to secure passage for Rolf and Felix with Betty to Crossroads. The PC can tell the two brothers this and give them the date of the caravan's departure the next time he speaks to them. He'll need to do this to complete the quest.
+
+procedure Betty2_3_6
+begin
+Reply(2540);
+NOption(2541,Betty2_9,4);
+NOption(2542,Node999,4);
+end
+
+procedure Betty2_4_1a
+begin
+Reply(2570);
+NOption(2571,Betty2_4_2,4);
+NOption(2572,Betty2_9,4);
+end
+
+procedure Betty2_4_1b
+begin
+Reply(2600);
+NOption(2601,Betty2_9,4);
+NOption(2602,Node999,4);
+end
+
+procedure Betty2_4_2
+begin
+Reply(2630);
+NOption(2601,Betty2_9,4);
+NOption(2602,Node999,4);
+end
+
+procedure Betty2_9
+begin
+Reply(2660);
+// NOTE: This option only appears if the PC has agreed to help Rolf and Felix Baxter to leave Sandover.
+NOption(2661,Betty2_3_1,4);
+NOption(2662,Betty2_Trade_1,4);
+// NOTE: IF Betty has already agreed to take the player before the next caravan run, go to Betty2_4_1b instead.
+NOption(2663,Betty2_4_1a,4);
+NOption(2664,Node999,4);
+end
+
+procedure Betty2_Trade_1
+begin
+   gdialog_barter;
+
+
+Reply(2690);
+//NOption(2691,Betty2_Trade_2,4);
+//NOption(2692,Betty2_9,4);
+NOption(2693,Node999,4);
+end
+
+procedure Betty2_Trade_2
+begin
+Reply(2720);
+NOption(2721,Betty2_9,4);
+NOption(2693,Node999,4);
+end
+
+procedure BettyNonGhoul
+begin
+
+   if(dude_is_human) then
+      Reply(2750);
+   else if (dude_is_super_mutant) then
+      Reply(2749);
+
+   NOption(2751,Betty2_Trade_1,4);
+NOption(2752,Node999,4);
+NOption(2753,Betty2_Trade_1,-3);
+NOption(2754,Node999,-3);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

@@ -1,0 +1,651 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/* This is a very special script. This is the only script that
+   goes anywhere in the game. This is the script that is attached
+   to the obj_dude in the game. Only very specific things need to be
+   in here.
+   -rwh [2/23/1998]
+*/
+#include "..\headers\define.h"
+#include "..\headers\define_extra.h"
+
+#define NAME                    SCRIPT_OBJ_DUDE
+
+#include "..\headers\command.h"
+#include "..\headers\mrfixit.h"
+#include "..\headers\caravan.h"
+#include "..\headers\traits.h"
+#include "..\headers\perks.h"
+#include "..\headers\footsteps.h"
+
+procedure start;
+procedure timed_event_p_proc;
+procedure combat_is_starting_p_proc;
+procedure map_enter_p_proc;
+procedure use_skill_on_p_proc;
+procedure combat_p_proc;
+procedure map_update_p_proc;
+procedure is_dropping_p_proc;
+procedure night_person;
+procedure setup_traits;
+procedure color_blind;
+procedure one_in_a_million;
+procedure die_hard;
+procedure rad_child;
+procedure melee_master;
+procedure code_phobia;
+procedure toggle_sneaking;
+procedure combat_is_over_p_proc;
+procedure check_shader;
+procedure map_exit_p_proc;
+procedure damage_p_proc;
+
+variable count;
+variable alcohol_addict := 0;
+variable walk_ticks = WALKING_TICKS_DEFAULT;
+variable hunger_system;
+
+procedure combat_p_proc begin
+   if (has_fake_trait(TRAIT_rabid)) then begin
+      variable current_kills;
+      current_kills = CountTotalKills;
+
+      // Seems we have killed someone in the last round
+      if (current_kills > global_var(GVAR_TRAIT_RABID_KILL_COUNTER)) then begin
+         set_pc_extra_stat(
+            STAT_max_move_points, (get_pc_extra_stat(STAT_max_move_points) + (current_kills - global_var(GVAR_TRAIT_RABID_KILL_COUNTER)))
+         );
+
+         set_global_var(GVAR_TRAIT_RABID_KILL_COUNTER, current_kills);
+      end
+   end
+
+   if (has_fake_perk(PERK_grace_under_fire)) then begin
+      call Check_Set_Grace_Under_Fire;
+   end
+
+   call toggle_sneaking;
+end
+
+procedure combat_is_starting_p_proc begin
+   if (has_fake_trait(TRAIT_rabid)) then begin
+      set_global_var(GVAR_TRAIT_RABID_KILL_COUNTER, CountTotalKills);
+      set_global_var(GVAR_TRAIT_RABID_ORIG_AP, get_pc_extra_stat(STAT_max_move_points));
+   end
+
+   if (has_fake_perk(PERK_grace_under_fire)) then begin
+      call Check_Set_Grace_Under_Fire;
+   end
+end
+
+procedure start begin
+   if (game_loaded) then begin
+      call setup_traits;
+      register_hook_proc(HOOK_GAMEMODECHANGE, setup_traits);
+      // Need to add the button with a delay otherwise it bleeds through fadeout/fadein
+      add_timer_event(self_obj, 1, 20000);
+
+      if (dude_is_super_mutant) then begin
+         walk_ticks = WALKING_TICKS_SLOWER;
+      end
+
+      call critter_setup_footsteps_map_enter(self_obj, walk_ticks, RUNNING_TICKS_DEFAULT);
+
+      hunger_system = GetFYConfig("hunger_system", 0);
+
+      // Cache this setting
+      set_global_var(GVAR_INI_SETTING_FOOTSTEPS_SFX, GetFYConfig("footsteps_sfx", 1));
+
+      if (has_fake_trait(TRAIT_fear_the_reaper)) then begin
+         if(dude_is_super_mutant or dude_is_ghoul) then begin
+             set_perk_freq(3 + has_trait(TRAIT_TRAIT, dude_obj, TRAIT_skilled) + has_fake_perk(PERK_divine_favor));
+         end else begin
+             set_perk_freq(2 + has_trait(TRAIT_TRAIT, dude_obj, TRAIT_skilled) + has_fake_perk(PERK_divine_favor));
+         end
+      end
+      else if(dude_is_super_mutant or dude_is_ghoul) then begin
+         set_perk_freq(4 + has_trait(TRAIT_TRAIT, dude_obj, TRAIT_skilled) + has_fake_perk(PERK_divine_favor));
+      end
+      else if (has_fake_perk(PERK_divine_favor)) then begin
+         set_perk_freq(4 + has_trait(TRAIT_TRAIT, dude_obj, TRAIT_skilled));
+      end
+
+   end
+
+   if(hunger_system == 1) then begin
+      // initialize stomach
+      if (global_var(GVAR_LAST_DIGEST_TIME) == 0) then begin
+         dude_eat_food(starting_stomach_full);
+      end
+   end
+end
+
+procedure is_dropping_p_proc begin
+   variable r, pid;
+   pid = obj_pid(source_obj);
+
+   if (pid == PID_LIL_PIP_3000) then begin
+      set_pipboy_available(0);
+   end else if (pid == PID_GAS_TANK) then begin
+      script_overrides;
+      create_object(PID_GAS_TANK_SCENERY, self_tile, self_elevation);
+      remove_pid_qty(dude_obj, PID_GAS_TANK, 1)
+   end else if (pid == PID_BALL_AND_CHAIN) then begin
+      script_overrides;
+
+      r := roll_vs_skill(dude_obj, SKILL_LOCKPICK, -30);
+
+      if(is_success(r) or (get_critter_stat(dude_obj, STAT_st) >= 8)) then begin
+         destroy_object(source_obj);
+         create_object(PID_BALL_AND_CHAIN_WEAPON, dude_tile, dude_elevation);
+         display_msg(g_mstr(1100));
+         give_xp(50);
+      end else begin
+         display_msg(g_mstr(1101));
+      end
+   end
+end
+
+/**
+* Setup all new traits here
+*/
+procedure setup_traits begin
+   call color_blind;
+   call night_person;
+   call day_person;
+   call toggle_sneaking;
+end
+
+procedure color_blind begin
+   if(has_fake_trait(TRAIT_color_blind)) then begin
+		activate_shader(load_shader("colorblind.fx"));
+	end
+end
+
+procedure night_person begin
+
+   if (global_var(GVAR_NIGHT_PERSON) > 0) then begin
+      // 6 PM - 6 AM
+      if ((global_var(GVAR_NIGHT_PERSON) == 1) and (evening or night)) then begin
+         call set_dude_attr(STAT_pe, get_pc_base_stat(STAT_pe) + 2);
+         call set_dude_attr(STAT_iq, get_pc_base_stat(STAT_iq) + 2);
+         set_global_var(GVAR_NIGHT_PERSON, 2);
+      end
+      // 6AM - 6PM
+      else if ((global_var(GVAR_NIGHT_PERSON) == 2) and (morning or day)) then begin
+         call set_dude_attr(STAT_pe, get_pc_base_stat(STAT_pe) - 2);
+         call set_dude_attr(STAT_iq, get_pc_base_stat(STAT_iq) - 2);
+         set_global_var(GVAR_NIGHT_PERSON, 1);
+      end
+   end
+end
+
+procedure code_phobia begin
+   if ((global_var(GVAR_CODE_STATUS) >= 50) and (random(0, 100) <= 5)) then begin
+      display_mstr_rand(200, 213);
+   end
+end
+
+procedure map_enter_p_proc begin
+   variable light_level = get_light_level;
+   variable dark_bright_threshold = 55705; // equivalent to set_light_level(60)
+
+   call BuildCaravanTeam(dude_tile);
+
+   if (has_fake_trait(TRAIT_fear_of_the_dark)) then begin
+      // We've been in a dark area previously
+      if (global_var(GVAR_FOTD_PENALTIES_APPLIED) == 1) then begin
+         // Did we enter a place with bright lights: light level 60+?
+         if (light_level > dark_bright_threshold) then begin
+            set_global_var(GVAR_FOTD_PENALTIES_APPLIED, 0);
+            call set_dude_attr(STAT_ag, get_pc_base_stat(STAT_ag) + 2);
+            call set_dude_attr(STAT_iq, get_pc_base_stat(STAT_iq) + 2);
+            call set_dude_attr(STAT_ch, get_pc_base_stat(STAT_ch) + 2);
+            call set_dude_attr(STAT_st, get_pc_base_stat(STAT_st) - 2);
+            hide_iface_tag(iface_tag_panicked);
+         end
+      // We've been in a bright area previously
+      end else begin
+         // Did we enter a place with bad lightning: light level <= 60?
+         if (light_level <= dark_bright_threshold) then begin
+            set_global_var(GVAR_FOTD_PENALTIES_APPLIED, 1);
+            call set_dude_attr(STAT_ag, get_pc_base_stat(STAT_ag) - 2);
+            call set_dude_attr(STAT_iq, get_pc_base_stat(STAT_iq) - 2);
+            call set_dude_attr(STAT_ch, get_pc_base_stat(STAT_ch) - 2);
+            call set_dude_attr(STAT_st, get_pc_base_stat(STAT_st) + 2);
+            show_iface_tag(iface_tag_panicked);
+         end
+      end
+   end
+
+   if (has_fake_trait(TRAIT_photophobic)) then begin
+      // We've been in a bright area previously
+      if (global_var(GVAR_PHOTOPHOBIC_PENALTIES_APPLIED) == 1) then begin
+         // Did we enter a place with dark lights: light level <= 60?
+         if (light_level <= dark_bright_threshold) then begin
+            set_global_var(GVAR_PHOTOPHOBIC_PENALTIES_APPLIED, 0);
+            call set_dude_attr(STAT_ag, get_pc_base_stat(STAT_ag) + 2);
+            call set_dude_attr(STAT_iq, get_pc_base_stat(STAT_iq) + 2);
+            call set_dude_attr(STAT_ch, get_pc_base_stat(STAT_ch) + 2);
+            call set_dude_attr(STAT_st, get_pc_base_stat(STAT_st) - 2);
+            hide_iface_tag(iface_tag_panicked);
+         end
+      // We've been in a dark area previously
+      end else begin
+         // Did we enter a place with bright light: light level 60+?
+         if (light_level > dark_bright_threshold) then begin
+            set_global_var(GVAR_PHOTOPHOBIC_PENALTIES_APPLIED, 1);
+            call set_dude_attr(STAT_ag, get_pc_base_stat(STAT_ag) - 2);
+            call set_dude_attr(STAT_iq, get_pc_base_stat(STAT_iq) - 2);
+            call set_dude_attr(STAT_ch, get_pc_base_stat(STAT_ch) - 2);
+            call set_dude_attr(STAT_st, get_pc_base_stat(STAT_st) + 2);
+            show_iface_tag(iface_tag_panicked);
+         end
+      end
+   end
+
+   if (has_fake_trait(TRAIT_ascetic)) then begin
+      set_global_var(GVAR_TRAIT_ASCETIC_CAPS, dude_caps);
+   end
+
+   add_timer_event(self_obj, game_ticks(1), 20001);
+   add_timer_event(self_obj, game_ticks(2), 20003);
+   add_timer_event(self_obj, (ONE_GAME_HOUR * 4), 20004);
+end
+
+procedure timed_event_p_proc begin
+
+   if (fixed_param == 20000) then begin
+      call create_button;
+   end
+   else if (fixed_param == 20001) then begin
+      add_timer_event(self_obj, game_ticks(1), 20001);
+      call night_person;
+      call day_person;
+      call one_in_a_million;
+      call die_hard;
+      call rad_child;
+      call melee_master;
+      call toggle_sneaking;
+      call check_shader;
+   end
+   else if (
+      (fixed_param == 20002) and
+      (has_fake_perk(PERK_drunken_master) and
+      (get_sfall_global_int("fyp_dmbn") == 1))
+   ) then begin
+      critter_mod_skill(dude_obj, SKILL_UNARMED_COMBAT, -20);
+      set_sfall_global("fyp_dmbn", 0);
+   end
+   else if (fixed_param == 20003) then begin
+      // digest food & drinks
+      if (hunger_system == 1) then begin
+         variable x;
+         x := amt_food_digested_in_time(global_var(GVAR_LAST_DIGEST_TIME));
+
+         if (x > 0) then begin
+            dude_eat_food(-x);
+         end
+
+         if (dude_stomach_hungry) then begin
+
+            if not(is_iface_tag_active(iface_tag_starved)) then
+               show_iface_tag(iface_tag_starved);
+            if not(is_iface_tag_active(iface_tag_dehydrated)) then
+               show_iface_tag(iface_tag_dehydrated);
+         end
+         else begin
+            if (is_iface_tag_active(iface_tag_starved)) then
+               hide_iface_tag(iface_tag_starved);
+            if (is_iface_tag_active(iface_tag_dehydrated)) then
+               hide_iface_tag(iface_tag_dehydrated);
+         end
+
+      end else begin
+         if (is_iface_tag_active(iface_tag_starved)) then
+            hide_iface_tag(iface_tag_starved);
+         if (is_iface_tag_active(iface_tag_dehydrated)) then
+            hide_iface_tag(iface_tag_dehydrated);
+      end
+      add_timer_event(self_obj, game_ticks(2), 20003);
+   end
+   else if (fixed_param == 20004) then begin
+      add_timer_event(self_obj, (ONE_GAME_HOUR * 4), 20004);
+
+      if ((hunger_system == 1) and dude_stomach_hungry) then begin
+         critter_heal(self_obj, -(11 - dude_endurance));
+      end
+   end
+
+   if (dude_is_super_mutant) then begin
+      walk_ticks = WALKING_TICKS_SLOWER;
+   end
+
+   call critter_setup_footsteps_timed_event(self_obj, walk_ticks, RUNNING_TICKS_DEFAULT, dude_footsteps_sfx);
+end
+
+procedure map_update_p_proc begin
+   variable days_since_exposed;
+
+   //MUTATION CODE
+   if (global_var(GVAR_HAVE_MUTATED) == 0) then begin
+      if (global_var(GVAR_MUTATE_STAGE) > 0) then begin
+         days_since_exposed := GAME_TIME_IN_DAYS - global_var(GVAR_MUTATE_WHEN);
+         //debug_msg("days since exposed "+days_since_exposed);
+         if (days_since_exposed > 30) then begin
+            if (global_var(GVAR_MUTATE_STAGE) < 5) then begin
+               display_mstr(140);
+               set_global_var(GVAR_MUTATE_STAGE,5);
+               set_global_var(GVAR_HAVE_MUTATED,1);
+            end
+         end
+         else if (days_since_exposed > 25) then begin
+            if (global_var(GVAR_MUTATE_STAGE) < 4) then begin
+               display_mstr(130);
+               set_global_var(GVAR_MUTATE_STAGE,4);
+            end
+         end
+         else if (days_since_exposed > 20) then begin
+            if (global_var(GVAR_MUTATE_STAGE) < 3) then begin
+               display_mstr(120);
+               set_global_var(GVAR_MUTATE_STAGE,3);
+            end
+         end
+         else if (days_since_exposed > 15) then begin
+            if (global_var(GVAR_MUTATE_STAGE) < 2) then begin
+               display_mstr(110);
+               set_global_var(GVAR_MUTATE_STAGE,2);
+            end
+         end
+      end//if mutate_stage>0
+   end//if have_mutated=0
+
+   call code_phobia;
+end
+
+procedure one_in_a_million begin
+	if (
+      has_fake_trait(TRAIT_one_in_a_million) and
+      (global_var(GVAR_ONE_IN_A_MILLION) != get_day)
+      ) then begin
+		variable luck := 1;
+		variable r := random(1, 100);
+
+		if (r > 50) then begin
+			luck := 10;
+		end
+
+		set_pc_base_stat(STAT_lu, luck);
+		set_global_var(GVAR_ONE_IN_A_MILLION, get_day);
+	end
+end
+
+procedure die_hard begin
+
+   if (has_fake_perk(PERK_die_hard)) then begin
+      variable pct_hp;
+      pct_hp := ((dude_cur_hits / dude_max_hits) * 100);
+      // apply bonus if below 20%
+      if((pct_hp < 20) and get_sfall_global_int("fyp_dhbn") == 0) then begin
+         set_pc_extra_stat(STAT_dmg_resist, (get_pc_extra_stat(STAT_dmg_resist) + 10));
+         set_pc_extra_stat(STAT_dmg_resist_laser, (get_pc_extra_stat(STAT_dmg_resist_laser) + 10));
+         set_pc_extra_stat(STAT_dmg_resist_plasma, (get_pc_extra_stat(STAT_dmg_resist_plasma) + 10));
+         set_pc_extra_stat(STAT_dmg_resist_electrical, (get_pc_extra_stat(STAT_dmg_resist_electrical) + 10));
+         set_pc_extra_stat(STAT_dmg_resist_emp, (get_pc_extra_stat(STAT_dmg_resist_emp) + 10));
+         set_pc_extra_stat(STAT_dmg_resist_explosion, (get_pc_extra_stat(STAT_dmg_resist_explosion) + 10));
+         set_pc_extra_stat(STAT_dmg_resist_fire, (get_pc_extra_stat(STAT_dmg_resist_fire) + 10));
+         set_sfall_global("fyp_dhbn", 1);
+         set_sfall_global("fyp_dhrm", 0);
+      end
+      // remove applied bonus if healed
+      else if ((pct_hp >= 20) and (get_sfall_global_int("fyp_dhbn") == 1) and (get_sfall_global_int("fyp_dhrm") == 0)) then begin
+         set_pc_extra_stat(STAT_dmg_resist, (get_pc_extra_stat(STAT_dmg_resist) - 10));
+         set_pc_extra_stat(STAT_dmg_resist_laser, (get_pc_extra_stat(STAT_dmg_resist_laser) - 10));
+         set_pc_extra_stat(STAT_dmg_resist_plasma, (get_pc_extra_stat(STAT_dmg_resist_plasma) - 10));
+         set_pc_extra_stat(STAT_dmg_resist_electrical, (get_pc_extra_stat(STAT_dmg_resist_electrical) - 10));
+         set_pc_extra_stat(STAT_dmg_resist_emp, (get_pc_extra_stat(STAT_dmg_resist_emp) - 10));
+         set_pc_extra_stat(STAT_dmg_resist_explosion, (get_pc_extra_stat(STAT_dmg_resist_explosion) - 10));
+         set_pc_extra_stat(STAT_dmg_resist_fire, (get_pc_extra_stat(STAT_dmg_resist_fire) - 10));
+         set_sfall_global("fyp_dhbn", 0);
+         set_sfall_global("fyp_dhrm", 1);
+      end
+   end
+
+end
+
+procedure rad_child begin
+   if(has_fake_perk(PERK_rad_child)) then begin
+      if(
+         (dude_is_irradiated > 0) and
+         (get_sfall_global_int("fyp_rcbn") == 0)
+      ) then begin
+         set_pc_extra_stat(STAT_heal_rate, (get_pc_extra_stat(STAT_heal_rate) + 4));
+         set_sfall_global("fyp_rcbn", 1);
+         set_sfall_global("fyp_rcrm", 0);
+      end
+      else if (
+         (dude_is_irradiated == 0) and
+         (get_sfall_global_int("fyp_rcbn") == 1) and
+         (get_sfall_global_int("fyp_rcrm") == 0)
+      ) then begin
+         set_pc_extra_stat(STAT_heal_rate, (get_pc_extra_stat(STAT_heal_rate) - 4));
+         set_sfall_global("fyp_rcbn", 0);
+         set_sfall_global("fyp_rcrm", 1);
+      end
+   end
+end
+
+procedure melee_master begin
+   if(has_fake_perk(PERK_melee_master)) then begin
+      if(
+         (dude_wielding_knife > 0) and
+         (get_sfall_global_int("fyp_mmbn") == 0)
+      ) then begin
+         set_global_var(GVAR_MELEE_MASTER_LUCK, get_dude_attr(STAT_lu));
+         call set_dude_attr(STAT_lu, (get_dude_attr(STAT_lu) + 6));
+         set_sfall_global("fyp_mmbn", 1);
+         set_sfall_global("fyp_mmrm", 0);
+      end
+      else if (
+         (dude_wielding_knife == 0) and
+         (get_sfall_global_int("fyp_mmbn") == 1) and
+         (get_sfall_global_int("fyp_mmrm") == 0)
+      ) then begin
+         call set_dude_attr(STAT_lu, global_var(GVAR_MELEE_MASTER_LUCK));
+         set_sfall_global("fyp_mmbn", 0);
+         set_sfall_global("fyp_mmrm", 1);
+      end
+   end
+end
+
+procedure use_obj_on_p_proc begin
+   variable temp, shader_id, item_pid;
+   item_pid = obj_pid(obj_being_used_with);
+
+   if (has_fake_trait(TRAIT_rabid) and (obj_item_subtype(obj_being_used_with) == item_type_drug)) then begin
+      script_overrides;
+      display_msg(mstr_item(10));
+      remove_pid_qty(source_obj, item_pid, 1)
+   end
+
+   if (has_fake_perk(PERK_way_of_the_fruit) and (item_pid == PID_MUTATED_FRUIT)) then begin
+      variable fruit_bonus;
+      fruit_bonus := create_object(PID_KITTY_SEX_DRUG_STRENGTH, dude_tile, dude_elevation);
+      use_obj_on_obj(fruit_bonus, self_obj);
+   end
+
+   if (has_fake_perk(PERK_psychotic) and (item_pid == PID_PSYCHO)) then begin
+      script_overrides;
+      variable psychotic_psycho;
+      psychotic_psycho := create_object(PID_PSYCHOTIC_PSYCHO, dude_tile, dude_elevation);
+      use_obj_on_obj(psychotic_psycho, self_obj);
+      remove_pid_qty(source_obj, item_pid, 1)
+   end
+
+   // Drinks
+   if (item_pid == PID_NUKA_COLA) then begin
+      // We get a new bottlecap :-)
+      item_caps_adjust(dude_obj, (dude_caps + 1));
+   end
+   else if (pid_is_alcohol_pid(item_pid)) then begin
+      // We get a new bottlecap :-)
+      item_caps_adjust(dude_obj, (dude_caps + 1));
+
+      // TODO Can we swap this for a drug effect?
+      if (has_fake_perk(PERK_drunken_master) and (get_sfall_global_int("fyp_dmbn") == 0)) then begin
+         critter_mod_skill(dude_obj, SKILL_UNARMED_COMBAT, 20);
+         set_sfall_global("fyp_dmbn", 1);
+         add_timer_event(dude_obj, ONE_GAME_MINUTE * 30, 20002);
+      end
+   end
+   //end added
+
+   if (source_obj == dude_obj) then begin
+      // this is related to filling the player's stomach when they eat
+      if (pid_is_drink_pid(item_pid)) then begin
+         dude_eat_food(drink_meal);
+         remove_pid_qty(dude_obj, item_pid, 1)
+
+         // We get our empty flask back
+         if (item_pid == PID_WATER_FLASK) then begin
+            give_pid_qty(dude_obj, PID_EMPTY_WATER_FLASK, 1)
+         end
+
+      end else if (pid_is_snack_pid(item_pid)) then begin
+         dude_eat_food(snack_meal);
+         remove_pid_qty(dude_obj, item_pid, 1)
+      end else if (pid_is_light_meal_pid(item_pid)) then begin
+         dude_eat_food(light_meal);
+         remove_pid_qty(dude_obj, item_pid, 1)
+      end else if (pid_is_medium_meal(item_pid)) then begin
+         dude_eat_food(medium_meal);
+         remove_pid_qty(dude_obj, item_pid, 1)
+      end else if (pid_is_large_meal(item_pid)) then begin
+         dude_eat_food(large_meal);
+         remove_pid_qty(dude_obj, item_pid, 1)
+      end else if (pid_is_huge_meal(item_pid)) then begin
+         dude_eat_food(huge_meal);
+         remove_pid_qty(dude_obj, item_pid, 1)
+      end
+      else if (item_pid == PID_MAGIC_8_BALL) then begin
+         script_overrides;
+         if (dude_luck <= 3) then
+            temp := random( 199, 228 );
+         else if (dude_luck < 9) then
+            temp := random( 200, 228 );
+         else if ( dude_luck >= 9 ) then
+            temp := random( 200, 254 );
+         script_overrides;
+         display_msg(message_str(SCRIPT_ZI8BALL, temp));
+         scr_return(0);
+      end
+
+      //fix for items that have scripts attached - believed that this is the cause of the "too many items bug" - killap
+      if (not(combat_is_initialized)) then begin
+         if (item_pid == PID_CATS_PAW_ISSUE_5) then begin
+            script_overrides;
+            gfade_out(ONE_GAME_SECOND);
+               critter_mod_skill(dude_obj, SKILL_ENERGY_WEAPONS, 10);
+               display_msg(message_str(SCRIPT_NICATPW5, 100));
+            gfade_in(ONE_GAME_SECOND);
+            script_overrides;
+            scr_return(1);
+         end
+      end
+   end
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   if (
+   (action_being_used == SKILL_REPAIR) and
+   not(combat_is_initialized)
+   ) then begin
+      script_overrides;
+      if (obj_is_carrying_obj_pid(dude_obj, PID_LIL_PIP_3000)) then
+         call batch_init;
+      else
+         display_msg(mstr_misc(7000));
+   end
+end
+
+procedure toggle_sneaking begin
+   if(dude_is_sneaking and not(get_flags(dude_obj) BWAND FLAG_TRANSSTEAM)) then begin
+      set_flags(dude_obj, get_flags(dude_obj) BWOR FLAG_TRANSSTEAM);
+      reg_anim_clear(dude_obj);
+      reg_anim_begin();
+      animate_stand;
+      reg_anim_end();
+   end else if(not(dude_is_sneaking) and get_flags(dude_obj) BWAND FLAG_TRANSSTEAM) then begin
+      set_flags(dude_obj, get_flags(dude_obj) - FLAG_TRANSSTEAM);
+      reg_anim_clear(dude_obj);
+      reg_anim_begin();
+      animate_stand;
+      reg_anim_end();
+   end
+end
+
+procedure combat_is_over_p_proc begin
+   if (has_fake_trait(TRAIT_rabid)) then begin
+      set_global_var(GVAR_TRAIT_RABID_KILL_COUNTER, 0);
+      set_pc_extra_stat(STAT_max_move_points, global_var(GVAR_TRAIT_RABID_ORIG_AP));
+   end
+
+   if (global_var(GVAR_TRAIT_GRACE_UNDER_FIRE_BONUS) == 1) then begin
+      call remove_grace_under_fire_bonus;
+  end
+end
+
+procedure check_shader begin
+   variable map = cur_map_index;
+   if (
+      (global_var(GVAR_SHADER_ID) > 0) and
+      not(has_fake_trait(TRAIT_color_blind)) and
+      not(
+         (map == MAP_BOMBED_OUT_CITY) or
+         (map == MAP_VAULT_8) or
+         (map == MAP_MAXSON_BUNKER) or
+         (map == MAP_SCRAPHEAP) or
+         (map == MAP_NY_EAST) or
+         (map == MAP_NY_WEST) or
+         (map == MAP_NY_FARM) or
+         (map == MAP_NY_LIBRARY_EXTERIOR) or
+         (map == MAP_NY_LIBRARY_INTERIOR) or
+         (map == MAP_NY_POWERPLANT)
+      )) then begin
+      deactivate_shader(global_var(GVAR_SHADER_ID));
+   end
+end
+
+procedure map_exit_p_proc begin
+   if (has_fake_perk(PERK_bonsai) and (random(1, 100) == 1)) then begin
+      give_pid_qty(dude_obj, PID_MUTATED_FRUIT, 1)
+      display_mstr(1102);
+   end
+
+   if (has_fake_trait(TRAIT_ascetic) and (dude_caps > global_var(GVAR_TRAIT_ASCETIC_CAPS))) then begin
+      variable new_caps_lose = (dude_caps - global_var(GVAR_TRAIT_ASCETIC_CAPS)) / 10;
+      if (new_caps_lose >= 1) then begin
+         item_caps_adjust(dude_obj, -new_caps_lose);
+      end
+   end
+
+   call delete_button;
+end
+
+procedure damage_p_proc begin
+   if (has_fake_trait(TRAIT_mutation_acid_blood)) then begin
+      if (tile_distance(dude_tile, tile_num(source_obj)) <= 1) then begin
+         critter_dmg(source_obj, random(1, 2), DMG_plasma BWOR DMG_NOANIMATE);
+      end
+   end
+
+   if (has_fake_trait(TRAIT_mutation_skin_of_thorns)) then begin
+      if (tile_distance(dude_tile, tile_num(source_obj)) <= 1) then begin
+         critter_dmg(source_obj, random(1, 2), DMG_explosion BWOR DMG_NOANIMATE);
+      end
+   end
+end

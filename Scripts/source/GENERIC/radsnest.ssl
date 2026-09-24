@@ -1,0 +1,170 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_RADSNEST
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+#define LVAR_Max_Radscorpions (8)
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+    variable rpid, r, rad;
+    script_overrides;
+
+
+    fadeout(1);
+
+    if(random(1, 10) == 10) then begin
+        set_local_var(LVAR_Max_Radscorpions, 1);
+    end
+
+    if(local_var(LVAR_Max_Radscorpions) == 1) then begin
+        display_mstr(100);
+        fadein(1);
+    end
+    else begin
+
+        if(random(0,1) == 1) then begin
+            r := random(1,5);
+
+            if(r == 1) then begin
+                rpid := 16777221;
+            end else if (r == 2) then begin
+                rpid := 16777222;
+            end else if (r == 3) then begin
+                rpid := 16777380;
+            end else if (r == 4) then begin
+                rpid := 16777571;
+            end else if (r == 5) then begin
+                rpid := 16777572;
+            end
+
+            rad := create_object(rpid, dude_tile, dude_elevation);
+            critter_attempt_placement(rad, dude_tile, dude_elevation);
+
+            display_mstr(101);
+
+        end else begin
+            display_mstr(102);
+        end
+
+        fadein(1);
+    end
+
+end
+
+procedure use_obj_on_p_proc begin
+    variable obj, buried;
+      script_overrides;
+
+    fadeout(1);
+
+      obj := obj_pid(obj_being_used_with);
+   if (obj == PID_SHOVEL) then begin
+       buried := 1;
+       game_time_advance(ONE_GAME_MINUTE * 30);
+        play_sfx("iccntnre");
+   end else if (obj == PID_DYNAMITE or obj == PID_ACTIVE_DYNAMITE or
+   obj == PID_PLASTIC_EXPLOSIVES or obj == PID_ACTIVE_PLASTIC_EXPLOSIVE or
+   obj == PID_FRAG_GRENADE ) then begin
+       play_sfx("WHP1XXX1");
+        remove_pid_qty(dude_obj, obj, 1)
+        buried := 1;
+   end
+
+    if(buried == 1) then begin
+
+        display_mstr(103);
+        give_xp(200);
+        inc_general_rep(10);
+        set_obj_visibility(self_obj, 1);
+
+    end
+
+    fadein(1);
+
+
+    if(buried == 1) then begin
+        set_obj_visibility(self_obj, 1);
+       destroy_object(self_obj);
+    end
+
+
+end
+
+procedure use_skill_on_p_proc begin
+
+   if (
+      (action_being_used == SKILL_SCIENCE) and
+      is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, 0))
+   ) then begin
+      script_overrides;
+      display_mstr(104);
+   end else if (
+      (action_being_used == SKILL_REPAIR) and
+      is_success(roll_vs_skill(source_obj, SKILL_REPAIR, 0))
+   ) then begin
+      script_overrides;
+      display_mstr(105);
+   end else if (
+      (action_being_used == SKILL_TRAPS)
+   ) then begin
+      script_overrides;
+
+      fadeout(1);
+
+        if(is_success(roll_vs_skill(source_obj, SKILL_TRAPS, -30))) then begin
+            display_mstr(106);
+            give_xp(200);
+            inc_general_rep(10);
+            set_obj_visibility(self_obj, 1);
+               fadein(1);
+                destroy_object(self_obj);
+        end else begin
+            display_mstr(107);
+            fadein(1);
+        end
+
+   end
+end

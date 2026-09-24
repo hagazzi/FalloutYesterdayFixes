@@ -1,0 +1,54 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+   Hoover Dam S1C
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_HDS1C
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if (
+      not(is_loading_game) and
+      map_first_run and
+      (global_var(GVAR_QUEST_DISCOVER_SL1C) == QUEST_NONE)
+      ) then begin
+         variable armor;
+
+         display_mstr(100);
+         set_global_var(GVAR_QUEST_DISCOVER_SL1C, QUEST_COMPLETED);
+         give_xp(3000);
+         armor = create_object_sid(PID_DAMAGED_HEI_GUI_ARMOR, 9519, dude_elevation, SCRIPT_HDS1CHGA);
+         armor = create_object_sid(PID_DAMAGED_HEI_GUI_ARMOR, 18263, dude_elevation, SCRIPT_HDS1CHGA);
+         armor = create_object_sid(PID_DAMAGED_HEI_GUI_ARMOR, 25300, dude_elevation, SCRIPT_HDS1CHGA);
+   end
+
+   fadein(1);
+   Scum_Pits_Lighting;
+
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_S1C), 1);
+end
+
+procedure map_update_p_proc begin
+   Scum_Pits_Lighting;
+end
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   fadeout(1);
+end

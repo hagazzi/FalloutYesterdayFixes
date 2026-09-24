@@ -1,0 +1,85 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/* Random Encounter scripts. These will be filled in more once they
+   have been designed.
+*/
+
+procedure start;
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_ECDTHCLW
+
+#include "..\headers\command.h"
+#include "..\headers\party.h"
+
+procedure start;
+procedure critter_p_proc;
+procedure map_enter_p_proc;
+procedure combat_p_proc;
+procedure destroy_p_proc;
+procedure map_exit_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+
+variable starttile := 0;
+
+procedure map_enter_p_proc begin
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_DEATHCLAW);
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_GENERIC_DEATH_CLAW);
+   starttile := self_tile;
+   reg_anim_clear(self_obj);
+   reg_anim_begin();
+   animate_rotation(Random(0, 5));
+   reg_anim_end();
+end
+
+procedure start begin
+end
+
+procedure critter_p_proc begin
+   if (self_can_see_dude) then begin
+      self_attack_dude;
+   end
+
+   if (not anim_busy(self_obj)) then begin
+      reg_anim_clear(self_obj);
+      reg_anim_begin();
+      animate_move_to_tile(tile_num_in_direction(starttile, Random(0, 5), Random(3, 10)));
+      reg_anim_end();
+   end
+end
+
+procedure combat_p_proc begin
+/*   if (fixed_param == COMBAT_SUBTYPE_HIT_SUCCEEDED) then begin
+      if (target_obj == dude_obj) then begin
+         if (not(is_success(do_check(target_obj,STAT_lu,-1)))) then begin
+            radiation_inc(target_obj,random(10,40));
+         end
+      end
+   end
+*/end
+
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_neutral_critter
+
+
+
+/* Set global_variable for Enemy status*/
+end
+
+procedure description_p_proc begin
+   call BeastlordPossess;
+end
+
+procedure map_exit_p_proc begin
+   call BeastlordUnpossess(TEAM_DEATH_CLAW);
+end
+
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end

@@ -1,0 +1,32 @@
+# Grammar pass done
+
+{100}{}{Faint, sporadic noises echo from below, suggesting unseen movement in the depths.}
+{101}{}{The temple stretches vast and silent, its shadows twisting and shifting as if alive, testing your perception.}
+{102}{}{Beyond the flickering torchlight down below, a dark pool gleams ominously.}
+{103}{}{The overwhelming stench of blood and rotting flesh churns your stomach, assaulting your senses with every breath.}
+{104}{}{A compartment in the eastern wall holds a few flares.}
+{105}{}{Shouts and laughter from the patients fill the air around the hospital.}
+{106}{}{You step into a secluded clearing, encircled by sheer mountain cliffs. A timeworn road stretches toward derelict buildings in the distance.}
+{107}{}{The thick steel door doesn't seem to have any discernible mechanism to open it.}
+{108}{}{The cave twists southward, leading to an imposing, sealed bunker door.}
+{109}{}{These crates likely store the Commander's provisions. A surveillance camera mounted nearby scans the area.}
+{110}{}{At the end of the hallway, a flickering monitor lists Davis Hewitt as the sole prisoner in the brig.}
+{111}{}{A large truck obstructs the side tunnel. With the right tools - or allies - you might clear the path.}
+{112}{}{The tunnel ahead is a chaotic mess of wrecked vehicles, completely blocking the way forward. You'll need to find another route.}
+{113}{}{Someone tortured and murdered this tribal using a knife.}
+{114}{}{Signs of a recent and brutal death linger here.}
+{115}{}{Desecrated graves mar the ground, their disturbances too recent to be accidents.}
+{116}{}{The brahma pen emits a stench so potent it's unlike anything you've ever experienced in your Vault.}
+{117}{}{The decommissioned walls and stripped floors of this Vault-like facility speak of abandonment, yet faint sounds whisper from below.}
+{118}{}{A long, curved hallway of missile silos ends abruptly at a broken access door. Another route must exist to traverse the space station.}
+{119}{}{Your attempt to board the train is thwarted by an advanced biometric system. Only "Dr. Victor Presper" and his associates have clearance.}
+{120}{}{Heavy construction debris blocks further Rim access, the area scarred by structural damage from failed repair efforts.}
+{121}{}{You've entered the Operations and Communications building. The building's low power supply appears to be sustained by backup generators located outside.}
+{122}{}{The backup generators hum faintly. Someone managed to kickstart them, restoring power to the Operations and Communications building.}
+{123}{}{Water trickles steadily through a breached wall, slowly flooding the surrounding area in a persistent flow.}
+{124}{}{Mutated leeches and fish teem in the water pooling here, thriving through the breach and feeding the ecosystem of this corrupted habitat.}
+{125}{}{A quaint memorial garden graces this spot.}
+{126}{}{The ground near this hole is heavily worn, the tracks of mole rats and humans mingling in a chaotic trail.}
+{127}{}{The nearby cliff face appears dangerously unstable, its loose rocks a silent warning.}
+{128}{}{Supplies of food and water sit organized in these carts, their contents vital for the camp's survival.}
+{129}{}{You descend into a 20-foot-deep pit, its walls adorned with intricate paintings and carvings of mathematical formulas and schematics. Time has taken its toll, leaving many of the designs faded and worn with age.}

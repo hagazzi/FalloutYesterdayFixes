@@ -1,0 +1,20 @@
+// Saves current vehicle's World Map coordinates
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\sfall.h"
+
+procedure start;
+procedure outta_gas_handler;
+
+procedure start begin
+   if (game_loaded) then begin
+      register_hook_proc(HOOK_CARTRAVEL, outta_gas_handler);
+   end
+end
+
+procedure outta_gas_handler begin
+   // the +15 offset is required due to a delay in reporting of the actual XY position
+   set_global_var(GVAR_VEHICLE_LAST_X, (worldmap_xpos + 15));
+   set_global_var(GVAR_VEHICLE_LAST_Y, (worldmap_ypos + 15));
+end

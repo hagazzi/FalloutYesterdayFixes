@@ -1,0 +1,591 @@
+/*
+
+        Name:           Franklin
+        Location:       CotC
+        Description:    Dialogue for Franklin
+
+           Created: 07/10/2020 18:45:18
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_TBWROX
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_TIBBETS)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Helper macros */
+
+variable temp;
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+procedure first;
+procedure First2;
+procedure Suitlie2;
+procedure Suitlie22;
+procedure SuitorA2;
+procedure SuitA2B;
+procedure SuitorC;
+procedure suitper;
+procedure suit3A;
+procedure suitlend;
+procedure Dumb1;
+procedure Dumb2;
+procedure Dumb3;
+procedure Dumbsec;
+procedure dumb4;
+procedure dumb5;
+procedure firstA;
+procedure firstB;
+procedure firstcut;
+procedure firstchu;
+procedure firstgut;
+procedure first3;
+procedure fistdate;
+procedure why;
+procedure thenX;
+procedure secenc;
+procedure PrettyNatty;
+procedure Asked;
+procedure PrettyNattyBeaten;
+procedure Accuse;
+procedure Thorough;
+procedure Jumpy;
+procedure StupidAccuse;
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+
+
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+   call new_plague_check(self_obj, LVAR_Herebefore);
+
+end
+
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and (self_can_see_dude)) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+
+
+
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+
+if (local_var(LVAR_Herebefore)==0) then begin
+       call first;
+end else if (local_var(LVAR_Herebefore)==1) then begin
+   if(global_var(GVAR_PRETTY_NATTY_BEATEN) > 0) then
+      call PrettyNattyBeaten;
+   else if(global_var(GVAR_PRETTY_NATTY_DATE) > 0) then
+      call why;
+   else if(dude_is_stupid) then
+      call Dumbsec;
+   else
+       call secenc;
+end
+
+       gSay_End;
+       end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+
+   add_timer_event(self_obj,game_ticks(random(3, 5)),0);
+
+    if (random(0, 30) == 1) then begin
+       if(global_var(GVAR_PRETTY_NATTY_BEATEN) > 0) then
+          floater_sad_rand(230, 232);
+       else
+          floater_rand(200, 202);
+   end
+
+
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+ inc_evil_critter
+/* Set global_variable for Enemy status*/
+
+if(global_var(GVAR_QUEST_KILL_PATIENTS) != 20) then
+   inc_global_var(GVAR_QUEST_KILL_PATIENTS);
+
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure first
+begin
+Reply(320);
+NOption(321,firstA,4);
+NOption(322,firstB,4);
+NOption(323,Node999,4);
+NOption(324,Dumb1,-3);
+NOption(325,dumb4,-3);
+NOption(326,Node999,-3);
+end
+
+procedure First2
+begin
+Reply(350);
+NOption(351,firstB,4);
+NOption(352,Node999,4);
+end
+
+procedure Suitlie2
+begin
+Reply(380);
+NOption(381,SuitorC,4);
+// NOTE: This can't be availabe to female PC
+NOption(382,Suitlie22,4);
+NOption(383,suitlend,4);
+end
+
+procedure Suitlie22
+begin
+Reply(410);
+NOption(411,Node999,4);
+NOption(412,SuitorC,4);
+end
+
+procedure SuitorA2
+begin
+Reply(440);
+// NOTE: There needs to be variable so that if player hasn't lied to Jimmy, Franklin believes him --> buylie
+NOption(441,Suitlie2,4);
+NOption(442,SuitA2B,4);
+NOption(443,SuitorC,4);
+NOption(444,suitlend,4);
+end
+
+procedure SuitA2B
+begin
+Reply(470);
+NOption(471,suitper,4);
+NOption(472,SuitorC,4);
+end
+
+// Node SuitorC
+//
+// Notes:
+//
+// Both options: Pretty-Natty's secret revealed
+
+procedure SuitorC
+begin
+Reply(500);
+NOption(501,suit3A,4);
+NOption(502,Node999,4);
+end
+
+procedure suitper
+begin
+Reply(530);
+NOption(531,Node999,4);
+NOption(412,SuitorC,4);
+end
+
+procedure suit3A
+begin
+Reply(560);
+NOption(561,Node999,4);
+NOption(562,Node999,4);
+end
+
+// Node suitlend
+//
+// Notes:
+//
+// Both options lead to Pretty-Natty' secret revealed.
+
+procedure suitlend
+begin
+Reply(590);
+NOption(591,Node999,4);
+NOption(592,Node999,4);
+end
+
+procedure Dumb1
+begin
+Reply(620);
+NOption(621,Dumb2,-3);
+NOption(622,Node999,-3);
+end
+
+procedure Dumb2
+begin
+Reply(650);
+NOption(651,Dumb3,-3);
+NOption(652,Node999,-3);
+end
+
+procedure Dumb3
+begin
+Reply(680);
+NOption(681,Node999,-3);
+end
+
+// Node Dumbsec
+//
+// Notes:
+//
+// Second encounter with dumb PC.
+
+procedure Dumbsec
+begin
+Reply(710);
+NOption(711,Node999,-3);
+end
+
+procedure dumb4
+begin
+Reply(740);
+NOption(741,dumb5,-3);
+NOption(742,Node999,-3);
+end
+
+procedure dumb5
+begin
+Reply(770);
+NOption(771,Dumb2,-3);
+NOption(772,Node999,-3);
+end
+
+procedure firstA
+begin
+Reply(800);
+NOption(351,firstB,4);
+NOption(801,Node999,4);
+end
+
+procedure firstB
+begin
+Reply(830);
+// NOTE: This needs to be available only this time and not in the First3 if chosen now.
+NOption(831,firstcut,4);
+// NOTE: This needs to be available only this time and not in the First3 if chosen now.
+NOption(832,firstchu,4);
+// NOTE: This needs to be available only this time and not in the First3 if chosen now.
+NOption(833,firstgut,4);
+end
+
+procedure firstcut
+begin
+   set_global_var(GVAR_ASYLUM_WORK, 1);
+Reply(860);
+NOption(861,PrettyNatty,4);
+NOption(862,first3,4);
+NOption(863,Node999,4);
+end
+
+procedure firstchu
+begin
+Reply(890);
+NOption(891,first3,4);
+NOption(892,Node999,4);
+end
+
+procedure firstgut
+begin
+Reply(920);
+NOption(921,first3,4);
+NOption(922,Node999,4);
+end
+
+procedure first3
+begin
+Reply(950);
+NOption(831,firstcut,4);
+NOption(832,firstchu,4);
+NOption(833,firstgut,4);
+end
+
+// Node fistdate
+//
+// Notes:
+//
+// 1) adds quest to index if not already there
+
+procedure fistdate
+begin
+
+set_global_var(GVAR_PRETTY_NATTY_DATE, 1);
+
+Reply(980);
+NOption(981,Node999,4);
+NOption(982,first3,4);
+end
+
+// Node why
+//
+// Notes:
+//
+// 1) available if player knows Pretty-Natty's secret
+
+procedure why
+begin
+Reply(1010);
+if(global_var(GVAR_PRETTY_NATTY_DATE) == 2) or has_fake_trait(TRAIT_big_liar) then
+NOption(1011,Asked,4);
+NOption(1012,thenX,4);
+NOption(1013,Node999,4);
+end
+
+procedure thenX
+begin
+Reply(1040);
+NOption(1041,Node999,4);
+NOption(1042,Node999,4);
+end
+
+procedure secenc
+begin
+Reply(1070);
+NOption(1071,first3,4);
+NOption(1072,firstA,4);
+NOption(1073,Node999,4);
+end
+
+// Node Pretty-Natty
+//
+// Notes:
+//
+// 1) available if player knows secret
+
+procedure PrettyNatty
+begin
+Reply(1100);
+NOption(1101,SuitorC,4);
+NOption(1102,fistdate,4);
+NOption(862,first3,4);
+end
+
+procedure Asked
+begin
+Reply(1130);
+NOption(1131,SuitorA2,4);
+NOption(1132,SuitorC,4);
+NOption(1133,Suitlie2,4);
+end
+
+// Node Pretty-NattyDead
+//
+// Notes:
+//
+// 1) or 4) available if player has received "who killed Pretty-Natty" quest
+
+procedure PrettyNattyBeaten
+begin
+Reply(1160);
+NOption(1161,Accuse,4);
+NOption(1162,Node999,4);
+NOption(1163,StupidAccuse,-3);
+NOption(1164,Node999,-3);
+end
+
+procedure Accuse
+begin
+Reply(1190);
+NOption(1191,Thorough,4);
+NOption(1192,Node999,4);
+end
+
+procedure Thorough
+begin
+Reply(1220);
+NOption(1221,Jumpy,4);
+NOption(1222,Node999,4);
+NOption(1223,Node999,4);
+end
+
+procedure Jumpy
+begin
+Reply(1250);
+NOption(1251,Node999,4);
+NOption(1252,Node999,4);
+end
+
+procedure StupidAccuse
+begin
+Reply(1280);
+NOption(1281,Node999,-3);
+NOption(1282,Node999,-3);
+end
+
+
+
+//xxxxxxxxxxxxxxxxxxxx

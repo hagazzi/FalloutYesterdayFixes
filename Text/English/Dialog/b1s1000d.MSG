@@ -1,0 +1,2 @@
+
+{100}{}{This is a brainbot with two maintenance arms and two laser gun arms.}

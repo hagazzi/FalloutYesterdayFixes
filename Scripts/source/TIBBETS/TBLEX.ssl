@@ -1,0 +1,567 @@
+/*
+
+        Fan Made Fallout NPC Script
+
+        Name:           ##NAME##
+        Location:       ##LOCATION##
+        Description:    ##DESCRIPTION##
+
+           Created: ##CREATIONDATE##
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+#define NPC_REACTION_TYPE       REACTION_C /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+
+#define NAME                    SCRIPT_TBLEX
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+#include "..\HEADERS\party.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+procedure push_p_proc;
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+procedure Lex00;
+procedure Lex01;
+procedure Lex02;
+procedure Lex03;
+procedure Lex04;
+procedure Lex05;
+procedure Lex06;
+procedure Lex07;
+procedure Lex08;
+procedure Lex09;
+procedure Lex10;
+procedure Lex11;
+procedure Lex12;
+procedure Lex13;
+procedure Lex14;
+procedure Lex15;
+procedure Lex16;
+procedure Lex17;
+procedure Lex18;
+procedure Lex19;
+procedure Lex20;
+procedure Lex21;
+procedure Node999;
+procedure LexCombat;
+procedure LexJoins;
+procedure follow_player;
+procedure leave_player_angry;
+procedure leave_player;
+procedure Lex22;
+procedure Lex23;
+procedure GiveBook;
+
+/* User defined variables */
+
+import variable know_crypts;
+import variable know_fools;
+import variable know_power;
+import variable is_crypt;
+import variable is_fool;
+import variable broken_gen;
+import variable Fool_Counter;
+import variable Crypt_Counter;
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Follow_Dude                (8)
+#define LVAR_Reward                     (9)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+procedure start begin
+end
+
+/* This procedure will get called each time that the map is first entered. It will
+   set up the Team number and AI packet for this critter. This will override the
+   default from the prototype, and needs to be set in scripts. */
+procedure map_enter_p_proc begin
+   Only_Once:=0;
+   switch_team(self_obj,TEAM_SCRAPHEAP)
+//   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
+   if(cur_map_index != MAP_SCRAPHEAP) then
+      call leave_player;
+end
+
+procedure map_exit_p_proc begin
+   call leave_player;
+end
+
+/* Every heartbeat that the critter gets, this procedure will be called. Anything from
+   Movement to attacking the player on sight can be placed in here.*/
+procedure critter_p_proc begin
+
+/* If the critter is mad at the player for any reason, it will attack and remember to attack
+   the player should the game be saved and loaded repeatedly. Additionally, if any special
+   actions need to be taken by the critter based on previous combat, the critter will remember
+   this as well. */
+
+   if ((local_var(LVAR_Hostile) != 0) and self_can_see_dude) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+       //Macro made by Tom to keep the critter fleeing.
+   end
+   else if (self_can_see_dude and not(local_var(LVAR_Herebefore)) and (Current_Distance_From_Obj(dude_obj) < 12)) then begin
+      dialogue_system_enter;
+   end
+   else if (local_var(LVAR_Follow_Dude) == 1) then begin
+      if (tile_distance(self_tile, dude_tile) > 6) then begin
+         animate_move_to_tile(tile_num_in_direction(dude_tile, random(0, 5), 1));
+      end
+   end//follow
+
+end
+
+/* Whenever the critter takes damage of any type, this procedure will be called. Things
+   like setting ENEMY_ and LVAR_Personal_Enemy can be set here. */
+procedure damage_p_proc begin
+
+/* If the player causes damage to this critter, then he will instantly consider the player
+   his personal enemy. In Critter_Proc or through dialog, actions will be taken against
+   the player for his evil acts. */
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       call leave_player_angry;
+   end
+
+end
+
+/* Any time that the player is caught stealing from this critter, Pickup_proc will be called.
+   In here, various things can happen. The most common response is instant hostility which
+   will be remembered. */
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+       call leave_player_angry;
+   end
+end
+
+/* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
+   written by designers are placed in here. Additionally, Reactions are generated and
+   stored which affects player interactions. */
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_INTOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   call set_idiot_savant_int;
+
+   start_gdialog(NAME, self_obj, 4, -1, -1);
+   gSay_Start;
+
+   if (not(local_var(LVAR_Herebefore))) then begin
+      call Lex00();
+   end
+   else begin
+      if (broken_gen) then begin
+         call Lex09();
+      end
+      else begin
+         if (global_var(GVAR_GANG_WAR) == 1) then begin
+            call Lex12();
+         end
+         else begin
+            if ((Fool_counter <= 1) and (Crypt_counter <= 1)) then begin
+               if (local_var(LVAR_Reward) == 1) then
+                  floater_good(153);
+               else
+                  call Lex22();
+            end
+            else if (is_fool or is_crypt) then begin
+               call Lex14();
+            end
+            else begin
+               call Lex17();
+            end
+         end
+      end
+   end
+
+   gSay_End;
+   end_dialogue;
+
+   call restore_idiot_savant_int;
+
+end
+
+procedure timed_event_p_proc begin
+end
+
+/* This procedure gets called only on the death of this NPC. Special things like
+   incrementing the death count for reputation purposes and Enemy Counters are placed
+   in here. */
+procedure destroy_p_proc begin
+
+/* Increment the aligned critter counter*/
+   inc_good_critter
+/* Set global_variable for Enemy status*/
+end
+
+/* Look_at_p_proc gets called any time that the player passes the cursor over any object.
+   This should only hold the most cursory of glances for the player. */
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+      display_mstr(101);
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(300); //Changed to new description, was initially set to 102 "[CONTINUE]" - GoatBoy
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+procedure use_skill_on_p_proc begin
+   call injure_with_skill;
+end
+
+procedure push_p_proc begin
+end
+
+/* Should the Player ever cause the NPC too much discomfort that he desires to attack the player,
+   this call will be made. Essentially, it stores the Hostile vaule so that the critter remembers
+   he was once hostile towards the player.*/
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+/* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
+   exit from the dialog system without any reprisals from the NPC. */
+procedure Node999 begin
+debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+if (local_var(LVAR_Herebefore)==0) then
+begin
+set_local_var(LVAR_Herebefore,1);
+end
+end
+
+// Skill checks and miscellaneous procedures
+
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+
+procedure Lex00 begin
+   Reply(104);
+   NOption(105,Lex01,4);
+   NOption(106,Lex07,4);
+   NOption(205,Lex01,-3);
+   NOption(206,Lex07,-3);
+end
+
+procedure Lex01 begin
+   know_crypts := 1;
+   Reply(107);
+   NOption(108,Lex02,4);
+   NOption(109,Node999,4);
+   NOption(208,Lex02,-3);
+   NOption(209,Node999,-3);
+end
+
+procedure Lex02 begin
+   Reply(110);
+   NOption(111,Lex03,4);
+   NOption(211,Lex03,-3);
+end
+
+procedure Lex03 begin
+   set_global_var(GVAR_GANG_2, 1);
+   know_fools := 1;
+   Reply(112);
+   NOption(113,Lex04,4);
+   NOption(213,Lex04,-3);
+end
+
+procedure Lex04 begin
+   Reply(114);
+   NOption(115,Lex05,4);
+   NOption(215,Lex05,-3);
+end
+
+procedure Lex05 begin
+   Reply(116);
+   NOption(117,Lex06,4);
+   NOption(217,Lex06,-3);
+end
+
+procedure Lex06 begin
+   Reply(118);
+   NOption(119,Node999,4);
+   NOption(120,Lex17,4);
+   NOption(219,Node999,-3);
+   NOption(220,Lex17,-3);
+end
+
+procedure Lex07 begin
+   Reply(121);
+   NOption(122,Lex08,4);
+   NOption(222,Lex08,-3);
+end
+
+procedure Lex08 begin
+   Reply(123);
+   NOption(124,Node999,4);
+   NOption(120,Lex17,4);
+   NOption(224,Node999,-3);
+   NOption(220,Lex17,-3);
+
+end
+
+procedure Lex09 begin
+   set_global_var(GVAR_GENERATOR_1, 1);
+   Reply(125);
+   NOption(126,Lex10,4);
+   NOption(127,Lex11,4);
+   NOption(226,Lex10,-3);
+   NOption(227,Lex11,-3);
+end
+
+procedure Lex10 begin
+   Reply(128);
+   NOption(103,Node999,1);
+end
+
+procedure Lex11 begin
+   set_local_var(LVAR_Reward, 1);
+   Reply(129);
+   NOption(103,GiveBook,1);
+end
+
+procedure Lex12 begin
+   Reply(130);
+   NOption(131,Lex13,4);
+   NOption(132,Node999,4);
+   NOption(231,Lex13,-3);
+   NOption(232,Node999,-3);
+end
+
+procedure Lex13 begin
+   Reply(133);
+   NOption(134,LexJoins,4);
+   NOption(135,Node999,4);
+   NOption(234,LexJoins,-3);
+   NOption(235,Node999,-3);
+end
+
+procedure Lex14 begin
+   Reply(136);
+   NOption(137,Lex15,4);
+   NOption(138,Lex16,4);
+   NOption(139,Node999,4);
+   NOption(237,Lex15,-3);
+   NOption(238,Lex16,-3);
+   NOption(239,Node999,-3);
+end
+
+procedure Lex15 begin
+   Reply(140);
+   BOption(103,Node998,1);
+end
+
+procedure Lex16 begin
+   Reply(141);
+   NOption(142,Node999,4);
+   NOption(120,Lex17,4);
+   NOption(242,Node999,-3);
+   NOption(220,Lex17,-3);
+end
+
+procedure Lex17 begin
+   Reply(143);
+   if (know_power) then begin
+      NOption(144,Lex19,4);
+      NOption(244,Lex19,-3);
+   end
+   if (know_crypts) then begin
+      NOption(145,Lex20,4);
+      NOption(245,Lex20,-3);
+   end
+   if (know_fools) then begin
+      NOption(146,Lex21,4);
+      NOption(246,Lex21,-3);
+   end
+   NOption(147,Lex18,4);
+   NOption(148,Node999,4);
+   NOption(247,Lex18,-3);
+   NOption(248,Node999,-3);
+end
+
+procedure Lex18 begin
+   Reply(149);
+   if (know_power) then begin
+      NOption(144,Lex19,4);
+      NOption(244,Lex19,-3);
+   end
+   if (know_crypts) then begin
+      NOption(145,Lex20,4);
+      NOption(245,Lex20,-3);
+   end
+   if (know_fools) then begin
+      NOption(146,Lex21,4);
+      NOption(246,Lex21,-3);
+   end
+   NOption(148,Node999,4);
+   NOption(248,Node999,-3);
+end
+
+procedure Lex19 begin
+   set_global_var(GVAR_GENERATOR_2, 1);
+   set_global_var(GVAR_GANG_2, 1);
+   Reply(150);
+   if (know_crypts) then begin
+         NOption(145,Lex20,4);
+         NOption(245,Lex20,-3);
+   end
+   if (know_fools) then begin
+         NOption(146,Lex21,4);
+         NOption(246,Lex21,-3);
+   end
+
+   NOption(147,Lex18,4);
+   NOption(148,Node999,4);
+   NOption(247,Lex18,-3);
+   NOption(248,Node999,-3);
+end
+
+procedure Lex20 begin
+   Reply(151);
+   if (know_power) then begin
+      NOption(144,Lex19,4);
+      NOption(244,Lex19,-3);
+   end
+   if (know_fools) then begin
+      NOption(146,Lex21,4);
+      NOption(246,Lex21,-3);
+   end
+   NOption(147,Lex18,4);
+   NOption(148,Node999,4);
+   NOption(247,Lex18,-3);
+   NOption(248,Node999,-3);
+end
+
+procedure Lex21 begin
+   know_power := 1;
+   Reply(152);
+   if (know_power) then begin
+      NOption(144,Lex19,4);
+      NOption(244,Lex19,-3);
+   end
+   if (know_crypts) then begin
+      NOption(145,Lex20,4);
+      NOption(245,Lex20,-3);
+   end
+   NOption(147,Lex18,4);
+   NOption(148,Node999,4);
+   NOption(247,Lex18,-3);
+   NOption(248,Node999,-3);
+end
+
+procedure LexJoins begin
+   set_local_var(LVAR_Follow_Dude, 1);
+   switch_team(self_obj,TEAM_PLAYER)
+   call Node999;
+end
+
+procedure follow_player begin
+   if (tile_distance_objs(dude_obj, self_obj) > 3) then begin
+      animate_move_obj_to_tile(self_obj, tile_num_in_direction(tile_num(dude_obj), 1, 1), 0);
+   end
+end
+
+procedure leave_player_angry begin
+   call leave_player;
+   floater_bad(136);
+end
+
+procedure leave_player begin
+   if (local_var(LVAR_Follow_Dude) == 1) then begin
+      switch_team(self_obj,TEAM_SCRAPHEAP)
+      set_local_var(LVAR_Follow_Dude, 0);
+   end
+end
+
+procedure Lex22 begin
+   set_local_var(LVAR_Reward, 1);
+   Reply(153);
+   NOption(154,Lex10,4);
+   NOption(155,Node999,4);
+   NOption(254,Lex10,-3);
+   NOption(255,Node999,-3);
+end
+
+procedure Lex23 begin
+   Reply(156);
+   NOption(157,Node999,4);
+   NOption(158,GiveBook,4);
+   NOption(159,Node999,4);
+   NOption(257,Node999,-3);
+   NOption(258,GiveBook,-3);
+   NOption(259,Node999,-3);
+end
+
+procedure GiveBook begin
+   give_pid_qty(dude_obj, PID_SCOUT_HANDBOOK, 1)
+   call Node999;
+end
+
+//xxxxxxxxxxxxxxxxxxxx

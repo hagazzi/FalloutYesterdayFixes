@@ -1,0 +1,26 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_V13ELEV
+#include "..\headers\command.h"
+
+procedure spatial_p_proc;
+procedure start;
+
+procedure start begin
+end
+
+procedure spatial_p_proc begin
+   if(global_var(GVAR_ENTERED_GUARDIAN) == 1) then begin
+      gfade_out(600);
+      move_to(dude_obj, 16293, 0);
+      critter_attempt_placement(dude_obj, 16293, 0);
+      anim( dude_obj, ANIMATE_ROTATION, 5 );
+      set_map_music(cur_map_index, "36fsauce");
+      gfade_in(600);
+      display_mstr(100);
+   end
+end

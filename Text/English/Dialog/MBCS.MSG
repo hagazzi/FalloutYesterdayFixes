@@ -1,0 +1,5 @@
+
+{100}{}{Surveillance System access denied. Invalid code.}
+{101}{}{*beep*}
+{102}{}{You hack the Surveillance System's security chip.}
+{103}{}{You hack the Surveillance System's security software.}

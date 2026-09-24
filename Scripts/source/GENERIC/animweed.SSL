@@ -1,0 +1,45 @@
+/*
+	Animate weed
+*/
+
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_ANIMWEED
+
+procedure start;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+
+variable once = 0;
+
+procedure start begin
+   if (once == 0) then begin
+      once = 1;
+      rm_timer_event(self_obj);
+      add_timer_event(self_obj, game_ticks(random(1, 5)), 1);
+   end
+end
+
+procedure map_enter_p_proc begin
+   add_timer_event(self_obj, game_ticks(random(1, 5)), 1);
+end
+
+procedure timed_event_p_proc begin
+   if (fixed_param == 1) then begin
+      if (
+         obj_on_screen(self_obj) and
+         (not(anim_busy(self_obj))) and
+         (not(combat_is_initialized)) and
+         (self_elevation == dude_elevation)
+      ) then begin
+         reg_anim_clear(self_obj);
+         animate_set_frame(0);
+         reg_anim_begin();
+         reg_anim_animate(self_obj, ANIM_stand, -1);
+         reg_anim_end();
+      end
+      add_timer_event(self_obj, game_ticks(random(1, 5)), 1);
+   end
+end

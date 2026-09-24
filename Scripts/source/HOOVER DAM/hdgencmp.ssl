@@ -1,0 +1,173 @@
+/*
+
+        Name:
+        Location:
+        Description:
+
+           Created: 19.12.2023. 8:15:34
+
+*/
+
+/* Include Files */
+
+
+//Overrides the pickup p proc.
+//#define NPC_REACTION_TYPE       REACTION_TC /* REACTION_TC REACTION_TG REACTION_C REACTION_G */
+#define NPC_REACTION_VAR        7 /* same as thief variable */
+
+#include "..\HEADERS\define.h"
+//#include "..\HEADERS\<TownName.h>"
+
+#define NAME                    SCRIPT_HDGENCMP
+
+// NOTE: This is set to 0 by default
+#define TOWN_REP_VAR            (0)
+
+#include "..\HEADERS\command.h"
+#include "..\HEADERS\ModReact.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+
+/* Script Specific Procedure Calls */
+
+
+
+
+
+/* User defined variables */
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Recalibrate_Science               (8)
+#define LVAR_Recalibrate_Repair               (9)
+#define LVAR_Reward               (10)
+
+/* Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_) */
+
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+
+
+procedure use_p_proc begin
+   display_mstr(100);
+end
+
+procedure start begin
+   if (script_action == use_skill_on_proc) then begin
+      call use_skill_on_p_proc();
+  end
+end
+
+/* The player will see more indepth descriptions from this procedure. They are actively
+   looking at the critter and want more information. Things like names can be added here
+   if the critter is known to the player. */
+procedure description_p_proc begin
+   script_overrides;
+
+   variable gen_num;
+   gen_num = 3;
+   if (self_tile == 21113) then begin
+      gen_num = 6;
+   end
+
+   display_msg(mstr(100) + " " + gen_num + ".");
+
+end
+
+/* Any time a skill is used on a critter this call is made. This can be to give examinations
+   for things like Doctor skill or messages for various other skills. */
+
+procedure use_skill_on_p_proc begin
+
+   if (
+      (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_ACCEPTED) and
+      (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_PAST_PART_1)
+      ) then begin
+         variable gen_num;
+         gen_num = 3;
+         if (self_tile == 21113) then begin
+            gen_num = 6;
+         end
+
+         fadeout(1);
+         game_time_advance(ONE_GAME_DAY);
+
+      if (action_being_used == SKILL_SCIENCE) then begin
+         script_overrides;
+         if (is_success(roll_vs_skill(source_obj, SKILL_SCIENCE, -50))) then begin
+            display_msg(mstr(102) + " " + gen_num + mstr(103));
+            set_local_var(LVAR_Recalibrate_Science, 1);
+         end
+         else begin
+            display_msg(mstr(104) + " " + gen_num + mstr(105));
+         end
+      end else if (action_being_used == SKILL_REPAIR) then begin
+         script_overrides;
+            if(is_success(roll_vs_skill(source_obj, SKILL_REPAIR, -50))) then begin
+               display_msg(mstr(106) + " " + gen_num +  mstr(107));
+               set_local_var(LVAR_Recalibrate_Repair, 1);
+            end
+            else begin
+               display_msg(mstr(104) + " " + gen_num + mstr(105));
+            end
+      end
+
+      if (
+         (local_var(LVAR_Recalibrate_Science) == 1) and
+         (local_var(LVAR_Recalibrate_Science) == 1) and
+         (local_var(LVAR_Reward) == 0)
+         ) then begin
+            give_xp(250);
+            display_msg(mstr(108) + " " + gen_num + ".");
+
+            set_local_var(LVAR_Reward, 1);
+
+            if (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_ACCEPTED) then begin
+               set_global_var(GVAR_QUEST_RECALIBRATE_GENERATORS, QUEST_PAST_PART_1);
+            end
+            else if (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_PAST_PART_1) then begin
+               set_global_var(GVAR_QUEST_RECALIBRATE_GENERATORS, QUEST_PAST_PART_2);
+            end
+
+      end
+
+      fadein(1);
+   end else begin
+      display_mstr(109);
+   end
+
+end
+
+
+// Skill checks and miscellaneous procedures
+
+
+
+// Not lines are allowed to be added below here
+// The Following lines are from the Design Tool
+//~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
+
+//xxxxxxxxxxxxxxxxxxxx

@@ -1,0 +1,7 @@
+
+{100}{}{You see: T6 Fusion Generator.}
+{101}{}{This appears to be a sixth generation Trident class fusion generator from Poseidon Energy. It is relatively large and inefficient, mostly used for the powering of vaults and other small, isolated settlements.}
+{102}{}{You not only successfully repair the malfunctioning generator but also optimize its performance.}
+{103}{}{You successfully repair the malfunctioning generator.}
+{104}{}{You critically fail to repair the generator and suffer an electrical injury.}
+{105}{}{You fail to repair the generator.}
