@@ -654,13 +654,17 @@ procedure BoSLeave begin
 end
 
 procedure StatProcedure(variable days, variable cost, variable stat) begin
-
-   fadeout(1);
+   variable i;
+   variable daynumber;
+   daynumber := ( days / ONE_GAME_WEEK ) * 7;
+   gfade_out(1);
    // do this first so we get around players cheating by using drugs
-   game_time_advance(ONE_GAME_DAY * days);
+   for (i := 0; i < daynumber; i += 1) begin
+	game_time_advance(ONE_GAME_DAY);
+   end
    item_caps_adjust(dude_obj, cost);
    call set_dude_attr(stat, get_dude_attr(stat) + 1);
-   fadein(1);
+   gfade_in(1);
 
 end
 
