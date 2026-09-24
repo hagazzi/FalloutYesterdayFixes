@@ -155,7 +155,8 @@ end
 *                           PROCEDURES                             *
 *******************************************************************/
 procedure start begin
-    BeatriceBouncer := self_obj;
+	if (cur_map_index == MAP_HOOVER_DAM_DOWNTOWN_NORTHEAST) then
+		BeatriceBouncer := self_obj;
 end
 
 procedure map_enter_p_proc begin
@@ -164,6 +165,7 @@ procedure map_enter_p_proc begin
        default from the prototype, and needs to be set in scripts. */
     if (Beatrice_In_Party) then
 	    add_timer_event(self_obj, 15, 1);
+	if (cur_map_index == MAP_HOOVER_DAM_DOWNTOWN_NORTHEAST) then	   
 		BeatriceBouncer := self_obj;
    //party_member_map_enter;
 
@@ -184,7 +186,8 @@ procedure map_enter_p_proc begin
 end
 
 procedure map_update_p_proc begin
-    BeatriceBouncer := self_obj;
+	if (cur_map_index == MAP_HOOVER_DAM_DOWNTOWN_NORTHEAST) then
+		BeatriceBouncer := self_obj;
  end
 
 procedure timed_event_p_proc begin
@@ -335,8 +338,8 @@ procedure destroy_p_proc begin
    /* This procedure gets called only on the death of this NPC. Special things like
        incrementing the death count for reputation purposes and Enemy Counters are placed
        in here. */
-
-       BeatriceBouncer := 0;
+		if (cur_map_index == MAP_HOOVER_DAM_DOWNTOWN_NORTHEAST) then
+			BeatriceBouncer := 0;
 
        if (
           (global_var(GVAR_QUEST_HELP_BEATRICE) == HELP_BEATRICE_BAR_FIGHT_IS_ON) and
