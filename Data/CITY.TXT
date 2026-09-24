@@ -56,11 +56,21 @@ start_state=On
 size=Large
 townmap_art_idx=579
 townmap_label_art_idx=565
-entrance_0=On,309,203,Dogtown Brewery,-1,-1,0
-entrance_1=Off,309,203,Dogtown The Box,-1,-1,0
-entrance_2=Off,309,203,Dogtown The Box Ground Level,-1,-1,0
-entrance_3=Off,309,203,Dogtown The Box Sewers,-1,-1,0
-entrance_4=Off,309,203,Dogtown Bombay Jack Canyon,-1,-1,0
+entrance_0=On,159,203,Dogtown Brewery,-1,-1,0
+entrance_1=Off,159,283,Dogtown The Box,-1,-1,0
+entrance_2=Off,159,323,Dogtown The Box Ground Level,-1,-1,0
+entrance_3=Off,259,203,Dogtown The Box Sewers,-1,-1,0
+entrance_4=Off,259,283,Dogtown Bombay Jack Canyon,-1,-1,0
+;adding these
+entrance_5=On,259,323,Dogtown Old Camp,-1,-1,0
+entrance_6=On,359,203,Dogtown Union Station,-1,-1,0
+entrance_7=On,359,283,Dogtown Skyscraper,-1,-1,0
+entrance_8=On,359,353,Dogtown Caesars Legion,-1,-1,0
+
+;Dogtown New Camp East Skyscraper Exterior
+;Dogtown New Camp West Skyscraper Exterior
+;Dogtown New Camp East Skyscraper Interior
+;Dogtown New Camp West Skyscraper Interior
 
 [Area 03]                ; Circle Junction
 area_name=Circle Junction
@@ -91,17 +101,17 @@ size=Large
 townmap_art_idx=588
 townmap_label_art_idx=576
 entrance_0=On,51,169,Blackfoot Village,0,29695,5
-entrance_1=Off,51,169,Hangdogs New Village,0,29777,0
-entrance_2=Off,51,169,Hangdogs New Village East,0,21739,1
-entrance_3=Off,51,169,Hangdogs New Village West,0,25958,0
-entrance_4=Off,51,169,Hangdogs New Village West,1,33702,5
-entrance_5=Off,51,169,Hangdogs New Village West,2,35295,5
-entrance_6=Off,51,169,Hangdogs New Village North,0,28711,5
-entrance_7=Off,51,169,Hangdogs New Village South,0,8107,2
-entrance_8=Off,51,169,Blackfoot Mine Big Entrance,0,18258,3
-entrance_9=Off,51,169,Blackfoot Mine Small Entrance,0,26084,3
-entrance_10=Off,51,169,Blackfoot Mine Big,0,18258,3
-entrance_11=Off,51,169,Blackfoot Mine Small,0,26084,3
+entrance_1=Off,101,169,Hangdogs New Village,0,29777,0
+entrance_2=Off,51,119,Hangdogs New Village East,0,21739,1
+entrance_3=Off,101,119,Hangdogs New Village West,0,25958,0
+entrance_4=Off,151,169,Hangdogs New Village West,1,33702,5
+entrance_5=Off,151,119,Hangdogs New Village West,2,35295,5
+entrance_6=Off,51,69,Hangdogs New Village North,0,28711,5
+entrance_7=Off,101,69,Hangdogs New Village South,0,8107,2
+entrance_8=Off,201,69,Blackfoot Mine Big Entrance,0,18258,3
+entrance_9=Off,201,119,Blackfoot Mine Small Entrance,0,26084,3
+entrance_10=Off,201,169,Blackfoot Mine Big,0,18258,3
+entrance_11=Off,251,169,Blackfoot Mine Small,0,26084,3
 
 [Area 06]                ; Mesa Verde
 area_name=Mesa Verde
@@ -160,7 +170,7 @@ size=Large
 townmap_art_idx=583
 townmap_label_art_idx=574
 entrance_0=On,240,125,Ouroboros Gate,-1,-1,0
-entrance_1=Off,240,125,Ouroboros Junkyard,-1,-1,0
+entrance_1=Off,290,125,Ouroboros Junkyard,-1,-1,0
 
 [Area 11]                ; The Reservation
 area_name=Reservation
@@ -312,7 +322,11 @@ start_state=On
 size=Medium
 townmap_art_idx=581
 townmap_label_art_idx=571
-entrance_0=Off,350,150,Moletown Entrance, 1, 20709, 3
+entrance_0=On,350,150,Moletown Entrance, -1, 20709, 3
+entrance_1=Off,300,150,Moletown West Tunnels,-1,-1,3
+entrance_2=Off,300,100,Moletown East Tunnels,-1,-1,3
+
+
 
 [Area 26]                ; Random Encounter Desert
 area_name=Random
