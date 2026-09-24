@@ -16,6 +16,8 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * copy content in Fallout 2 Folder after having installed Fallout Yesterday, remove / backup the .int script from Fallout2/Data/Scripts/ folder (they should be in patch001.dat already, repeat from disclaimer)
 * in Fallout2/patch001.dat/Scripts/Source/ use buildall.bat it comes with the 0.65.1 install and will compile all script to .int 
 
+### made a clean install to test and it compiles and i can still load my old saves so i think it can be tested 
+
 ## Fixes
 * Make both hoover dam safes from caravan merchant unlockable, error in condition prevented that to happen if LCK < 9<br/>
 * Adding Extra way to complete Miracle Wheat quest from Mesa Verde, include changes to Denom (MV) and Pierre (HD) nodes<br/> 
@@ -38,6 +40,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Frieda Restock<br/>
 * Milko Restock<br/>
 * Add Caps to Skill Book Vendor<br/>
+* Diane now can upgrade Vehicle for efficiency, speed, trunk storage and super_car once all the other are done, outside of caps cost requirement includes NCR quest advancement
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -50,7 +53,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 ## TODO Adds maybe (?)
 * TMP501 	(Blackfoot vendor - some of what milko currently restocked moved here like broc / xander / powder, also adding in tribal chems)
 * TMP502 	(NCR vendor - Restock big guns and ammos also some gauss guns)
-* Diane  	(Selling car upgrades at various NCR quest advancement (including car storage upgrade at the same time (?)))
+* ̶D̶i̶a̶n̶e̶ ̶ ̶	̶(̶S̶e̶l̶l̶i̶n̶g̶ ̶c̶a̶r̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶t̶ ̶v̶a̶r̶i̶o̶u̶s̶ ̶N̶C̶R̶ ̶q̶u̶e̶s̶t̶ ̶a̶d̶v̶a̶n̶c̶e̶m̶e̶n̶t̶ ̶(̶i̶n̶c̶l̶u̶d̶i̶n̶g̶ ̶c̶a̶r̶ ̶s̶t̶o̶r̶a̶g̶e̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶a̶t̶ ̶t̶h̶e̶ ̶s̶a̶m̶e̶ ̶t̶i̶m̶e̶ ̶(̶?̶)̶)̶)̶
 * MrFixit	(Extra Recipes => for AdvPA and AdvPA mkII - Lore wise NCR and BoS salvaged the enclave so Adv PA should be known to BoS)
 * Random loot based on container type for flavour container (most are empty right now)
 
@@ -66,7 +69,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 
 ## Changes i made for myself that im not porting
 * changes to gl_stealing_mod.ssl so that i never ever see a message such as you need 450 steal skill to steal that item even tho everyone got PER == 1 since i've spammed beer on them
-* changes to VEHICLES.H so that GVAR upgrades aren't reset each time, will port it if i make changes to Diane.
+*  ̶c̶h̶a̶n̶g̶e̶s̶ ̶t̶o̶ ̶V̶E̶H̶I̶C̶L̶E̶S̶.̶H̶ ̶s̶o̶ ̶t̶h̶a̶t̶ ̶G̶V̶A̶R̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶r̶e̶n̶'̶t̶ ̶r̶e̶s̶e̶t̶ ̶e̶a̶c̶h̶ ̶t̶i̶m̶e̶,̶ ̶w̶i̶l̶l̶ ̶p̶o̶r̶t̶ ̶i̶t̶ ̶i̶f̶ ̶i̶ ̶m̶a̶k̶e̶ ̶c̶h̶a̶n̶g̶e̶s̶ ̶t̶o̶ ̶D̶i̶a̶n̶e̶.̶= DONE
 
 
 ## Incomplete
