@@ -22,7 +22,7 @@
 #ifndef DEBUG
 #define DEBUGMSG(x)
 #else
-#define DEBUGMSG(x)  debug_msg(x);
+#define DEBUGMSG(x)  //debug_msg(x);
 #endif
 
 procedure start;
@@ -219,7 +219,7 @@ procedure start begin
 
          if (displayName) then begin
             variable nameTag := add_iface_tag;
-            debug_msg("NPC control - added new box: " + nameTag);
+            //debug_msg("NPC control - added new box: " + nameTag);
             if (nameTag <= 0) then begin // box added?
                variable maxBoxCount := get_ini_setting("ddraw.ini|Misc|BoxBarCount");
                if (maxBoxCount < 0) then maxBoxCount := 9;

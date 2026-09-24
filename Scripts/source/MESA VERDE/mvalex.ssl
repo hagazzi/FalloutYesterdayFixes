@@ -312,7 +312,7 @@ procedure critter_p_proc begin
 
       if (check_general_rep <= KARMA_SWORD_OF_DESPAIR) then begin
          call Abandon_Party;
-         debug_msg("Alexandra Bad Player Rep");
+         //debug_msg("Alexandra Bad Player Rep");
          if (dude_is_male) then begin
             floater_bad_rand(5361, 5365);
          end else begin
@@ -321,12 +321,12 @@ procedure critter_p_proc begin
       end
       else if (has_rep_childkiller) then begin
          call Abandon_Party;
-         debug_msg("Alexandra: Child Killer");
+         //debug_msg("Alexandra: Child Killer");
          floater_bad_rand(5360, 5365);
       end
       else if (has_rep_berserker) then begin
          call Abandon_Party;
-         debug_msg("Alexandra: Berserker");
+         //debug_msg("Alexandra: Berserker");
          floater_bad_rand(5360, 5365);
       end
       else if (party_is_waiting == false) then begin

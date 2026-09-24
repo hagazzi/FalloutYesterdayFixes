@@ -257,7 +257,7 @@ procedure Node999w begin
 end
 
 procedure Node999 begin
-   debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+   //debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
    if (local_var(LVAR_Herebefore)==0) then begin
       set_local_var(LVAR_Herebefore,1);
    end

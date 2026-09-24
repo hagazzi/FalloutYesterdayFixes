@@ -42,7 +42,7 @@ procedure description_p_proc;
 #define set_gave_xp                          if (gave_xp == false) then begin          \
                                                 give_xp(UNLOCK_EXP);                   \
                                              end                                       \
-                                             set_lvar_bit_on(LVAR_Flags, gave_xp_bit)
+                                             set_lvar_bit_on(LVAR_Flags, gave_xp_bit);
 
 #define gave_warning                         ((lvar_bit(LVAR_Flags, gave_warning_bit)) or (SKIP_WARNING))
 #ifndef do_warning_action
@@ -143,47 +143,48 @@ import variable EXPORT_VAR;
 
 #define lock_success_msg                     if (user_obj == dude_obj) then begin               \
                                                 display_mstr(102);                              \
-                                                set_gave_xp;                                    \
+                                                set_gave_xp                                     \
                                              end else if (user_obj != 0) then begin             \
                                                 display_msg(obj_name(user_obj) + mstr(202));    \
-                                                set_gave_xp;                                    \
+                                                set_gave_xp                                     \
                                              end                                                \
-                                             debug_msg("lock_success_msg")
+                                             //debug_msg("lock_success_msg");
 #define lock_fail_msg                        if (user_obj == dude_obj) then begin               \
                                                 display_mstr(103);                              \
                                              end else if (user_obj != 0) then begin             \
                                                 display_msg(obj_name(user_obj) + mstr(203));    \
                                              end                                                \
-                                             debug_msg("lock_fail_msg")
+                                             //debug_msg("lock_fail_msg");
 #define unlock_success_msg                   if (user_obj == dude_obj) then begin               \
                                                 display_mstr(100);                              \
-                                                set_gave_xp;                                    \
+                                                set_gave_xp                                     \
                                              end else if (user_obj != 0) then begin             \
                                                 display_msg(obj_name(user_obj) + mstr(200));    \
-                                                set_gave_xp;                                    \
+                                                set_gave_xp                                     \
                                              end                                                \
-                                             debug_msg("unlock_success_msg")
+                                             //debug_msg("unlock_success_msg");
 #define unlock_fail_msg                      if (user_obj == dude_obj) then begin               \
                                                 display_mstr(101);                              \
                                              end else if (user_obj != 0) then begin             \
                                                 display_msg(obj_name(user_obj) + mstr(201));    \
                                              end                                                \
-                                             debug_msg("unlock_fail_msg")
+                                             //debug_msg("unlock_fail_msg");
+											 //up till there it works
 
 #define pry_success_msg                      if (user_obj == dude_obj) then begin               \
                                                 display_mstr(400);                              \
-                                                set_gave_xp;                                    \
+                                                set_gave_xp                                     \
                                              end else if (user_obj != 0) then begin             \
                                                 display_msg(obj_name(user_obj) + mstr(500));    \
-                                                set_gave_xp;                                    \
+                                                set_gave_xp                                     \
                                              end                                                \
-                                             debug_msg("pry_success_msg")
+                                             debug_msg("pry_success_msg");
 #define pry_fail_msg                         if (user_obj == dude_obj) then begin               \
                                                 display_mstr(401);                              \
                                              end else if (user_obj != 0) then begin             \
                                                 display_msg(obj_name(user_obj) + mstr(501));    \
                                              end                                                \
-                                             debug_msg("pry_fail_msg")
+                                             debug_msg("pry_fail_msg");
 
 #define gave_exp                             lvar_bit(LVAR_Flags, gave_exp_bit)
 #define set_gave_exp                         if (gave_exp == false) then begin            \
@@ -193,21 +194,21 @@ import variable EXPORT_VAR;
 #define attempt_unlock(x)                    if (LOCKER_LOCKABLE) then begin                                                  \
                                                 if (is_success(roll_vs_skill(user_obj, SKILL_LOCKPICK, x))) then begin        \
                                                    script_overrides;                                                          \
-                                                   unlock_success_msg;                                                        \
+                                                   unlock_success_msg                                                        \
                                                    obj_unlock(self_obj);                                                      \
                                                 end else begin                                                                \
                                                    script_overrides;                                                          \
-                                                   unlock_fail_msg;                                                           \
+                                                   unlock_fail_msg                                                           \
                                                 end                                                                           \
                                              end
 #define attempt_lock(x)                      if (LOCKER_LOCKABLE) then begin                                                  \
                                                 if (is_success(roll_vs_skill(user_obj, SKILL_LOCKPICK, x))) then begin        \
                                                    script_overrides;                                                          \
-                                                   lock_success_msg;                                                          \
+                                                   lock_success_msg                                                          \
                                                    obj_lock(self_obj);                                                        \
                                                 end else begin                                                                \
                                                    script_overrides;                                                          \
-                                                   lock_fail_msg;                                                             \
+                                                   lock_fail_msg                                                             \
                                                 end                                                                           \
                                              end
 #define explosion_open_locker                if (EXPLOSION_SUCCESS_CHECK) then begin   \
@@ -217,10 +218,10 @@ import variable EXPORT_VAR;
                                                 display_mstr(301);                     \
                                              end
 #define attempt_pry(the_mod)                 if (is_success(do_check(user_obj, STAT_st, the_mod))) then begin  \
-                                                pry_success_msg;                                               \
+                                                pry_success_msg                                                \
                                                 obj_unlock(self_obj);                                          \
                                              end else begin                                                    \
-                                                pry_fail_msg;                                                  \
+                                                pry_fail_msg                                                  \
                                              end
 
 variable caught_tamper;

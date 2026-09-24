@@ -52,7 +52,7 @@ procedure start begin
          ammoSection := get_ini_section(ammoIni, "" + i);
       end
       call map_enter_p_proc;
-      debug_msg("Ammo INI Loader mod: " + ammoIni + " - set " + (i - 1) + " ammo protos.");
+      //debug_msg("Ammo INI Loader mod: " + ammoIni + " - set " + (i - 1) + " ammo protos.");
    end
 end
 

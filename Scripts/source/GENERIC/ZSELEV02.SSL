@@ -32,7 +32,7 @@ procedure spatial_p_proc begin
    if(source_obj == dude_obj) then begin
       // Unless we know the Waste Disposal code, we cannot travel using this elevator
       if ((cur_map_index == MAP_TIBBETS_SECURITY_HUB) and (global_var(GVAR_KNOW_WASTE_DISPOSAL) < 2)) then begin
-         debug_msg("ELEVATOR IS OUT OF ACTION");
+         //debug_msg("ELEVATOR IS OUT OF ACTION");
       end else begin
          elevator(-1);
          /*

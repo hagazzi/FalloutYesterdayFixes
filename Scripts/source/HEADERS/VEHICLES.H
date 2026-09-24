@@ -255,45 +255,45 @@ procedure SetupCurrentVehicleType begin
     type = 0;
     wm_art = 433;
 
-    debug("vehicle pid " + self_pid)
+    //debug("vehicle pid " + self_pid)
 
     if (self_is_motorcycle) then begin
         type = VEHICLE_TYPE_MOTORCYCLE;
         wm_art = 695;
-        debug("Setting motorcycle")
+        //debug("Setting motorcycle")
     end
     else if (self_is_dune_buggy) then begin
         type = VEHICLE_TYPE_DUNE_BUGGY;
         wm_art = 696;
-        debug("Setting dune buggy")
+        //debug("Setting dune buggy")
     end
     else if (self_is_cop_car) then begin
         type = VEHICLE_TYPE_COP_CAR;
         wm_art = 697;
-        debug("Setting cop car")
+        //debug("Setting cop car")
     end
     else if (self_is_semi_truck) then begin
         type = VEHICLE_TYPE_SEMI_TRUCK;
         wm_art = 698;
-        debug("Setting semi-truck")
+        //debug("Setting semi-truck")
     end
     else if (self_is_train) then begin
         type = VEHICLE_TYPE_TRAIN;
-        debug("Setting train")
+        //debug("Setting train")
     end
     else if (self_is_car) then begin
         type = VEHICLE_TYPE_HIGHWAYMAN;
-        debug("Setting car")
+        //debug("Setting car")
     end
     else if (self_is_bicycle) then begin
         type = VEHICLE_TYPE_BICYCLE;
         wm_art = 699;
-        debug("Setting bicycle")
+        //debug("Setting bicycle")
     end
 
     // We need to save the previous vehicle's status
     if ((current_vehicle_type != 0) and (type != current_vehicle_type)) then begin
-        debug("Switching vehicle from " + current_vehicle_type + " to " + type)
+        //debug("Switching vehicle from " + current_vehicle_type + " to " + type)
         call SwitchVehicle(type);
     end
 
@@ -307,25 +307,25 @@ procedure SetupVehicleSpeed (variable speed) begin
     variable upgrade, blower, super;
 
     if (speed == VEHICLE_SPEED_NORMAL) then begin
-        debug("SPEED NORMAL")
+        //debug("SPEED NORMAL")
         upgrade = 0;
         blower = 0;
         super = 0;
     end
     else if (speed == VEHICLE_SPEED_FAST) then begin
-        debug("SPEED FAST")
+        //debug("SPEED FAST")
         upgrade = 1;
         blower = 0;
         super = 0;
     end
     else if (speed == VEHICLE_SPEED_FASTER) then begin
-        debug("SPEED FASTER")
+        //debug("SPEED FASTER")
         upgrade = 1;
         blower = 1;
         super = 0;
     end
     else if (speed == VEHICLE_SPEED_WTF) then begin
-        debug("SPEED WTF")
+        //debug("SPEED WTF")
         upgrade = 1;
         blower = 1;
         super = 1;
@@ -470,7 +470,7 @@ procedure GasAmountInfo begin
     // for the current vehicle, we must return the latest amount, not the one from GVAR
     if (type == current_vehicle_type) then begin
         gas_amount = car_gas_amount;
-        debug("current vehicle gas " + gas_amount)
+        //debug("current vehicle gas " + gas_amount)
     end
 
     str = VehicleName(type);
@@ -500,9 +500,9 @@ procedure Drive begin
             script_overrides;
             call GasAmountInfo;
         end else begin
-            debug("current vehicle type " + current_vehicle_type)
-            debug("party size " + party_size)
-            debug("vehicle passengers " + vehicle_passengers)
+            //debug("current vehicle type " + current_vehicle_type)
+            //debug("party size " + party_size)
+            //debug("vehicle passengers " + vehicle_passengers)
 
             if (passengers_have_enough_room) then begin
                 call SetupVehicleUpgrades(current_vehicle_type);
@@ -520,7 +520,7 @@ procedure Drive begin
 end
 
 #define Create_Motorcycle(tile, elev)           if (not (tile_contains_pid_obj(tile, elev, PID_DRIVABLE_MOTORCYCLE) != 0)) then begin                 \
-                                                    debug("Create_Motorcycle(" + tile + "," + elev + ")")                                                                   \
+                                                    /*debug("Create_Motorcycle(" + tile + "," + elev + ")")*/                                                                   \
                                                     Scenery_Creation:=create_object_sid(PID_DRIVABLE_MOTORCYCLE, tile, elev, SCRIPT_ZVEHICLE);      \
                                                     Scenery_Creation_Hex:=tile;                                                                   \
                                                     Blocking_Cycle(1,1,elev)                                                                       \
@@ -529,7 +529,7 @@ end
                                                     Blocking_Cycle(5,1,elev)                                                                       \
                                                 end
 
-#define Destroy_Motorcycle(tile, elev)          debug("Destroy_Motorcycle(" + tile + "," + elev + ")")                                \
+#define Destroy_Motorcycle(tile, elev)          /*debug("Destroy_Motorcycle(" + tile + "," + elev + ")")*/                                \
                                                 Scenery_Creation_Ptr:=tile_contains_pid_obj(tile, elev, PID_DRIVABLE_MOTORCYCLE);         \
                                                 if (Scenery_Creation_Ptr != 0) then begin                                                \
                                                     Scenery_Creation_Hex:=tile;                                                           \
@@ -541,7 +541,7 @@ end
                                                 end
 
 #define Create_Dune_Buggy(tile, elev)           if (not (tile_contains_pid_obj(tile, elev, PID_DRIVABLE_BUGGY) != 0)) then begin                 \
-                                                    debug("Create_Dune_Buggy(" + tile + "," + elev + ")")                                               \
+                                                    /*debug("Create_Dune_Buggy(" + tile + "," + elev + ")")*/                                               \
                                                     Scenery_Creation:=create_object_sid(PID_DRIVABLE_BUGGY, tile, elev, SCRIPT_ZVEHICLE);      \
                                                     Scenery_Creation_Hex:=tile;                                                                   \
                                                     Blocking_Cycle(2,1,elev)                                                                       \
@@ -575,7 +575,7 @@ end
                                                 end
 
 #define Create_Cop_Car(tile, elev)              if (not (tile_contains_pid_obj(tile, elev, PID_DRIVABLE_COP_CAR) != 0)) then begin                 \
-                                                    debug("Create_Cop_Car(" + tile + "," + elev + ")")                                               \
+                                                    /*debug("Create_Cop_Car(" + tile + "," + elev + ")")*/                                               \
                                                     Scenery_Creation:=create_object_sid(PID_DRIVABLE_COP_CAR, tile, elev, SCRIPT_ZVEHICLE);      \
                                                     Scenery_Creation_Hex:=tile;                                                                   \
                                                     Blocking_Cycle(2,1,elev)                                                                       \
@@ -599,7 +599,7 @@ end
                                                 end
 
 #define Create_Cop_Car_Trunk(tile, elev)         if (not (tile_contains_pid_obj(tile_num_in_direction(tile_num_in_direction(tile, 0, 1), 5, 3), elev, PID_COP_CAR_TRUNK) != 0)) then begin \
-                                                   debug("placing cop car trunk:")                                                        \
+                                                   /*debug("placing cop car trunk:")*/                                                        \
                                                    Scenery_Creation_Ptr := 0;                                                          \
                                                    if (CopTrunk_Ptr != 0) then begin                                                      \
                                                       Scenery_Creation_Ptr := CopTrunk_Ptr;                                               \
@@ -611,11 +611,11 @@ end
                                                         Scenery_Creation_Hex := tile_num_in_direction(tile_num_in_direction(tile, 0, 1), 5, 3); \
                                                         move_to(Scenery_Creation_Ptr, Scenery_Creation_Hex, elev);                  \
                                                    end else begin                                                                      \
-                                                      debug("WE HAD AN ERROR WITH THE COP CAR TRUNK PTR, OHHH FUCK")                      \
+                                                      /*debug("WE HAD AN ERROR WITH THE COP CAR TRUNK PTR, OHHH FUCK")*/                      \
                                                    end                                                                                 \
                                                 end
 
-#define Destroy_Cop_Car(tile, elev)          debug("Destroy_Cop_Car(" + tile + "," + elev + ")")                                \
+#define Destroy_Cop_Car(tile, elev)          /*debug("Destroy_Cop_Car(" + tile + "," + elev + ")")*/                                \
                                                 Scenery_Creation_Ptr:=tile_contains_pid_obj(tile, elev, PID_DRIVABLE_COP_CAR);         \
                                                 if (Scenery_Creation_Ptr != 0) then begin                                                \
                                                     Scenery_Creation_Hex:=tile;                                                           \
@@ -637,7 +637,7 @@ end
                                                     destroy_object(self_obj);                                                 \
                                                 end
 
-#define Create_Car(tile, elev)          debug_msg("Place_Car(" + tile + "," + elev + ")");                                \
+#define Create_Car(tile, elev)          /*debug_msg("Place_Car(" + tile + "," + elev + ")");*/                                \
                                         if (not (tile_contains_pid_obj(tile, elev, PID_DRIVABLE_CAR) != 0)) then begin \
                                             Scenery_Creation:=create_object_sid(PID_DRIVABLE_CAR,tile,elev, SCRIPT_ZVEHICLE); \
                                             Scenery_Creation_Hex:=tile;                                                      \
@@ -663,7 +663,7 @@ end
                                         end
 
 #define Create_Car_Trunk(tile, elev)        if (not (tile_contains_pid_obj(tile_num_in_direction(tile_num_in_direction(tile, 5, 2), 4, 1), elev, PID_CAR_TRUNK) != 0)) then begin \
-                                                debug_msg("placing trunk:");                                                        \
+                                                /*debug_msg("placing trunk:");*/                                                        \
                                                 Scenery_Creation_Ptr := 0;                                                          \
                                                 if (Trunk_Ptr != 0) then begin                                                      \
                                                     Scenery_Creation_Ptr := Trunk_Ptr;                                               \
@@ -677,11 +677,11 @@ end
                                                     Blocking_Cycle(1,1,elev)                                                    \
                                                     Blocking_Cycle(2,1,elev)                                                    \
                                                 end else begin                                                                      \
-                                                    debug_msg("WE HAD AN ERROR WITH THE TRUNK PTR, OHHH FUCK");                      \
+                                                    /*debug_msg("WE HAD AN ERROR WITH THE TRUNK PTR, OHHH FUCK");*/                      \
                                                 end                                                                                 \
                                             end
 
-#define Destroy_Car(tile, elev)             debug_msg("Dest_Car_Loc(" + tile + "," + elev + ")");                            \
+#define Destroy_Car(tile, elev)             /*debug_msg("Dest_Car_Loc(" + tile + "," + elev + ")");*/                            \
                                             Scenery_Creation_Ptr:=tile_contains_pid_obj(tile,elev,PID_DRIVABLE_CAR);         \
                                             if (Scenery_Creation_Ptr != 0) then begin                                                \
                                                 Scenery_Creation_Hex:=tile;                                                        \
@@ -707,7 +707,7 @@ end
                                             end
 
 #define Create_Semi_Truck(tile, elev)           if (not (tile_contains_pid_obj(tile, elev, PID_DRIVABLE_SEMI_TRUCK) != 0)) then begin                 \
-                                                    debug("Create_Semi_Truck(" + tile + "," + elev + ")")                                               \
+                                                    /*debug("Create_Semi_Truck(" + tile + "," + elev + ")")*/                                               \
                                                     Scenery_Creation:=create_object_sid(PID_DRIVABLE_SEMI_TRUCK, tile, elev, SCRIPT_ZVEHICLE);      \
                                                     Scenery_Creation_Hex:=tile;                                                                   \
                                                     Blocking_Cycle(0,1,elev)                                                                       \
@@ -732,7 +732,7 @@ end
                                                 end
 
 #define Create_Semi_Truck_Trunk(tile, elev)         if (not (tile_contains_pid_obj(tile_num_in_direction(tile_num_in_direction(tile, 0, 4), 1, 1), elev, PID_SEMI_TRUCK_TRUNK) != 0)) then begin \
-                                                   debug("placing semi-truck trunk:")                                                        \
+                                                   /*debug("placing semi-truck trunk:")*/                                                        \
                                                    Scenery_Creation_Ptr := 0;                                                          \
                                                    if (SemiTruckTrunk_Ptr != 0) then begin                                                      \
                                                       Scenery_Creation_Ptr := SemiTruckTrunk_Ptr;                                               \
@@ -744,12 +744,12 @@ end
                                                         Scenery_Creation_Hex := tile_num_in_direction(tile_num_in_direction(tile, 0, 4), 1, 1); \
                                                         move_to(Scenery_Creation_Ptr, Scenery_Creation_Hex, elev);                  \
                                                    end else begin                                                                      \
-                                                      debug("WE HAD AN ERROR WITH THE SEMI-TRUCK TRUNK PTR, OHHH FUCK")                      \
+                                                      /*debug("WE HAD AN ERROR WITH THE SEMI-TRUCK TRUNK PTR, OHHH FUCK")*/                      \
                                                    end                                                                                 \
                                                 end
 
 
-#define Destroy_Semi_Truck(tile, elev)      debug("Destroy_Semi_Truck(" + tile + "," + elev + ")")                                \
+#define Destroy_Semi_Truck(tile, elev)      /*debug("Destroy_Semi_Truck(" + tile + "," + elev + ")")*/                                \
                                             Scenery_Creation_Ptr:=tile_contains_pid_obj(tile, elev, PID_DRIVABLE_SEMI_TRUCK);         \
                                             if (Scenery_Creation_Ptr != 0) then begin                                                \
                                                 Scenery_Creation_Hex:=tile;                                                           \
@@ -773,13 +773,13 @@ end
                                             end
 
 #define Create_Bicycle(tile, elev)              if (not (tile_contains_pid_obj(tile, elev, PID_DRIVABLE_BICYCLE) != 0)) then begin                 \
-                                                    debug("Create_Bicycle(" + tile + "," + elev + ")")                                               \
+                                                    /*debug("Create_Bicycle(" + tile + "," + elev + ")")*/                                               \
                                                     Scenery_Creation:=create_object_sid(PID_DRIVABLE_BICYCLE, tile, elev, SCRIPT_ZVEHICLE);      \
                                                     Scenery_Creation_Hex:=tile;                                                                   \
                                                     Blocking_Cycle(2,1,elev)                                                                       \
                                                 end
 
-#define Destroy_Bicycle(tile, elev)          debug("Destroy_Bicycle(" + tile + "," + elev + ")")                                \
+#define Destroy_Bicycle(tile, elev)          /*debug("Destroy_Bicycle(" + tile + "," + elev + ")")*/                                \
                                                 Scenery_Creation_Ptr:=tile_contains_pid_obj(tile, elev, PID_DRIVABLE_BICYCLE);         \
                                                 if (Scenery_Creation_Ptr != 0) then begin                                                \
                                                     Scenery_Creation_Hex:=tile;                                                           \
@@ -880,11 +880,11 @@ end
                                                 end else if (cur_map_index == MAP_RND_COAST_12) then begin                 \
                                                     tile := CAR_RND_COAST12_HEX;                                           \
                                                 end else begin                                                              \
-                                                    debug("ERROR! Tile not found for " + cur_map_index + "! Picking random")        \
+                                                    /*debug("ERROR! Tile not found for " + cur_map_index + "! Picking random")*/        \
                                                     tile := tile_num_in_direction(dude_tile, random(0, 5), random(5, 7));            \
                                                 end
 
-#define GetMotorcycleTileElev(tile, elev)   debug("GetMotorcycleTileElev cur_map_index " + cur_map_index)               \
+#define GetMotorcycleTileElev(tile, elev)   /*debug("GetMotorcycleTileElev cur_map_index " + cur_map_index)*/               \
                                             elev = 0;                                                                    \
                                             if (cur_map_index == MAP_THE_RESERVATION_GATE) then begin                 \
                                                 tile = MOTORCYCLE_THE_RESERVATION_HEX;                                  \
@@ -1006,7 +1006,7 @@ end
                                                 GetRandomEncounterTileElev(tile)                                         \
                                             end
 
-#define GetDuneBuggyTileElev(tile, elev)   debug("GetDuneBuggyTileElev cur_map_index " + cur_map_index)               \
+#define GetDuneBuggyTileElev(tile, elev)   /*debug("GetDuneBuggyTileElev cur_map_index " + cur_map_index)*/               \
                                             elev = 0;                                                                    \
                                             if (cur_map_index == MAP_THE_RESERVATION_GATE) then begin                 \
                                                 tile = DUNE_BUGGY_THE_RESERVATION_HEX;                                  \
@@ -1128,7 +1128,7 @@ end
                                                 GetRandomEncounterTileElev(tile)                                         \
                                             end
 
-#define GetCopCarTileElev(tile, elev)       debug("GetCopCarTileElev cur_map_index " + cur_map_index)               \
+#define GetCopCarTileElev(tile, elev)       /*debug("GetCopCarTileElev cur_map_index " + cur_map_index)*/               \
                                             elev = 0;                                                                    \
                                             if (cur_map_index == MAP_THE_RESERVATION_GATE) then begin                 \
                                                 tile = COP_CAR_THE_RESERVATION_HEX;                                  \
@@ -1250,7 +1250,7 @@ end
                                                 GetRandomEncounterTileElev(tile)                                         \
                                             end
 
-#define GetSemiTruckTileElev(tile, elev)    debug("GetSemiTruckTileElev cur_map_index " + cur_map_index)               \
+#define GetSemiTruckTileElev(tile, elev)    /*debug("GetSemiTruckTileElev cur_map_index " + cur_map_index)*/               \
                                             elev = 0;                                                                    \
                                             if (cur_map_index == MAP_THE_RESERVATION_GATE) then begin                 \
                                                 tile = SEMI_TRUCK_THE_RESERVATION_HEX;                                  \
@@ -1372,7 +1372,7 @@ end
                                                 GetRandomEncounterTileElev(tile)                                         \
                                             end
 
-#define GetBicycleTileElev(tile, elev)      debug("GetBicycleTileElev cur_map_index " + cur_map_index)               \
+#define GetBicycleTileElev(tile, elev)      /*debug("GetBicycleTileElev cur_map_index " + cur_map_index)*/               \
                                             elev = 0;                                                                    \
                                             if (cur_map_index == MAP_THE_RESERVATION_GATE) then begin                 \
                                                 tile = BICYCLE_THE_RESERVATION_HEX;                                  \
@@ -1494,7 +1494,7 @@ end
                                                 GetRandomEncounterTileElev(tile)                                         \
                                             end
 
-#define GetCarTileElev(tile, elev)          debug("GetCarTileElev cur_map_index " + cur_map_index)               \
+#define GetCarTileElev(tile, elev)          /*debug("GetCarTileElev cur_map_index " + cur_map_index)*/               \
                                             elev = 0;                                                                    \
                                             if (cur_map_index == MAP_THE_RESERVATION_GATE) then begin                 \
                                                 tile = CAR_THE_RESERVATION_HEX;                                  \
@@ -1632,7 +1632,7 @@ procedure Check_Create_Vehicle begin
 
             if (current_vehicle_type == VEHICLE_TYPE_MOTORCYCLE) then begin
 
-                debug("Moto C1 " +
+                /*debug("Moto C1 " +
                 (not(car_out_of_fuel) and (
                         (global_var(GVAR_VEHICLE_TOWN_MOTORCYCLE) != AREA_MOTORCYCLE_ABANDONED) and
                         not(abandoned_current_vehicle)
@@ -1643,6 +1643,7 @@ procedure Check_Create_Vehicle begin
                 debug("Moto C3 " + (car_out_of_fuel and (cur_town == AREA_VEHICLE_OUTTA_GAS)))
                 debug("Moto C4 " + (cur_town == AREA_MOTORCYCLE_ABANDONED))
                 debug("Moto C5 " + (car_out_of_fuel and (car_current_town >= 0) and (car_current_town == cur_town)))
+				*/
 
                 if (
                     // we have fuel AND we didn't abandon it in desert or town
@@ -1770,11 +1771,11 @@ procedure Check_Create_Vehicle begin
 
             if (current_vehicle_type == VEHICLE_TYPE_SEMI_TRUCK) then begin
 
-                debug("Semi C1 " + ((not(car_out_of_fuel) and (global_var(GVAR_VEHICLE_TOWN_SEMI_TRUCK) != AREA_SEMI_TRUCK_ABANDONED)) and not(abandoned_current_vehicle)))
+                /*debug("Semi C1 " + ((not(car_out_of_fuel) and (global_var(GVAR_VEHICLE_TOWN_SEMI_TRUCK) != AREA_SEMI_TRUCK_ABANDONED)) and not(abandoned_current_vehicle)))
                 debug("Semi C2 " + (not(car_out_of_fuel) and (cur_town == car_current_town) and abandoned_current_vehicle))
                 debug("Semi C3 " + (car_out_of_fuel and (cur_town == AREA_VEHICLE_OUTTA_GAS)))
                 debug("Semi C4 " + (cur_town == AREA_SEMI_TRUCK_ABANDONED))
-                debug("Semi C5 " + (car_out_of_fuel and (car_current_town >= 0) and (car_current_town == cur_town)))
+                debug("Semi C5 " + (car_out_of_fuel and (car_current_town >= 0) and (car_current_town == cur_town)))*/
 
                 if (
                     // we have fuel AND we didn't abandon it in desert or town
@@ -1792,7 +1793,7 @@ procedure Check_Create_Vehicle begin
                 end
             end
             else begin
-                debug("SEMI AT " + global_var(GVAR_VEHICLE_TOWN_SEMI_TRUCK) + " WHILE CURRENT IS " + cur_town)
+                //debug("SEMI AT " + global_var(GVAR_VEHICLE_TOWN_SEMI_TRUCK) + " WHILE CURRENT IS " + cur_town)
                 // we drove on something else but our semi truck is here
                 if (
                     (global_var(GVAR_VEHICLE_TOWN_SEMI_TRUCK) == cur_town) or
@@ -1893,7 +1894,7 @@ procedure Check_Create_Vehicle begin
             end
         end
     end else begin
-        debug("Can't place the vehicle, the game's loading")
+        //debug("Can't place the vehicle, the game's loading")
     end
 end
 
@@ -1990,7 +1991,7 @@ procedure AbandonCurrentVehicle(variable on_world_map) begin
     // We need to mark the abandoned area on the world map
     if (on_world_map) then begin
         vehicle_area = VehicleAbandonedArea(current_vehicle_type);
-        debug("setting vehicle WM area for " + current_vehicle_type)
+        //debug("setting vehicle WM area for " + current_vehicle_type)
         wm_area_set_pos(vehicle_area, global_var(GVAR_VEHICLE_LAST_X), global_var(GVAR_VEHICLE_LAST_Y));
         mark_on_map(vehicle_area)
         set_car_current_town(vehicle_area);
@@ -2118,15 +2119,15 @@ procedure Check_Create_Trunk begin
 
     if (ptr != 0) then begin
         if (global_var(visibility_gvar) == 0) then begin
-           debug("hiding trunk pid " + obj_pid(ptr))
+           //debug("hiding trunk pid " + obj_pid(ptr))
            check_set_obj_visibility(self_obj, true);
         end
         else begin
-           debug("displaying trunk pid " + obj_pid(ptr))
+           //debug("displaying trunk pid " + obj_pid(ptr))
            check_set_obj_visibility(self_obj, false);
         end
      end else begin
-        debug("Adding trunk to party pid " + obj_pid(self_obj))
+        //debug("Adding trunk to party pid " + obj_pid(self_obj))
         party_add(self_obj);
      end
 
@@ -2260,7 +2261,7 @@ procedure CheckOuttaGasOnTown begin
 
          // Need to change our town if it's visible
          if ((my_new_town != -1) and town_visible_on_map(my_new_town)) then begin
-            debug("FIXING VEHICLE OUTTA GAS")
+            //debug("FIXING VEHICLE OUTTA GAS")
 
             set_car_current_town(my_new_town);
             call AbandonCurrentVehicle(false);

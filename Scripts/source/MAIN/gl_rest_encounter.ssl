@@ -51,7 +51,7 @@ procedure encounter_handler begin
       end
       else begin
          mapsList := [MAP_RND_DESERT_1];
-         debug_msg("!!! COULDN'T DETECT TERRAIN TYPE !!!");
+         //debug_msg("!!! COULDN'T DETECT TERRAIN TYPE !!!");
       end
 
       mapID := array_random_value(mapsList);

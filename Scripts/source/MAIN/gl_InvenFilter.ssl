@@ -9,7 +9,7 @@
 #define SFALL_SC_EVALUATION   (true)
 
 #if TRACE
-#define DTRACE(name)          debug_msg("Trace: " #name);
+#define DTRACE(name)          //debug_msg("Trace: " #name);
 #else
 #define DTRACE(name)
 #endif
@@ -284,7 +284,7 @@ procedure start begin
 
      #if DEBUG // test items
         foreach (pid in toolGroupPids) begin
-            debug_msg("ToolPid: " + pid);
+            //debug_msg("ToolPid: " + pid);
         end
         item_caps_adjust(dude_obj, 1000);
         add_mult_objs_to_inven(dude_obj, create_object(PID_BAG, 0, 0), 1);
@@ -485,7 +485,7 @@ procedure CreateInvenFilterRightMenu(variable isLoot) begin
 end
 
 procedure DestroyFilterWin begin
-   debug_msg("Inventory filter windows destroy.");
+   //debug_msg("Inventory filter windows destroy.");
 
    set_global_script_repeat(0);
    IsCreated := false;
@@ -520,7 +520,7 @@ procedure DestroyFilterWin begin
 
           if (isPartyBarter) then begin
             if (partyExtraWeightStat != -1) then begin
-               debug_msg("Filter: Restore party member carry stat.");
+               //debug_msg("Filter: Restore party member carry stat.");
                set_critter_extra_stat(dialogCritter, STAT_carry_amt, partyExtraWeightStat);
                partyExtraWeightStat = -1;
             end
@@ -529,13 +529,13 @@ procedure DestroyFilterWin begin
           end
       end
       if (swapMaxWeight != -1) then begin
-         debug_msg("Filter: Restore dude carry stats.");
+         //debug_msg("Filter: Restore dude carry stats.");
          set_pc_base_stat(STAT_carry_amt, dudeBaseMaxWeight);
          set_pc_extra_stat(STAT_carry_amt, dudeExtraMaxWeight);
          swapMaxWeight := -1;
       end
       if (npcExtraWeightStat != -1) then begin
-         debug_msg("Filter: Restore critter carry stat.");
+         //debug_msg("Filter: Restore critter carry stat.");
          set_critter_extra_stat(lootObject, STAT_carry_amt, npcExtraWeightStat);
          npcExtraWeightStat = -1;
       end
@@ -787,7 +787,7 @@ end
 
 procedure filter_remove_items(variable source_objptr, variable dest_objptr, variable item, variable item_pid) begin
    variable items := rm_mult_objs_from_inven(source_objptr, item, obj_is_carrying_obj(source_objptr, item));
-   //debug_msg("item remove count " + count + " removed " + items);
+   ////debug_msg("item remove count " + count + " removed " + items);
 
    // обход бага в функции add_mult_objs_to_inven для монет если количество превышает 99999
    if (item_pid == PID_BOTTLE_CAPS) then
@@ -1612,7 +1612,7 @@ procedure SwappingParty(variable type, variable value) begin
       dudeEquipItemsWeight := who_carry_amount(dude_obj);  // вес экипированных вещей
    end
 
-   debug_msg("Filter: Swapping with " + name);
+   //debug_msg("Filter: Swapping with " + name);
 
    if (swap_ptr != 0) then begin
       if (swap_ptr == dude_obj and ptr != dude_obj) then begin
@@ -1876,10 +1876,10 @@ procedure ShowSize begin
    selectWin("tipw");
    FillWin(0, 0, 0);
    ShowWin;
-   debug_msg("ShowSize");
+   //debug_msg("ShowSize");
 end
 
 procedure HideSize begin
    DeleteWin("tipw");
-   debug_msg("HideSize");
+   //debug_msg("HideSize");
 end

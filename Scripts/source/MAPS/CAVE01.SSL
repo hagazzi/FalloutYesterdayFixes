@@ -146,7 +146,7 @@ procedure LoadCritterPos begin
    variable obj;
 
    count := total_encounter_mobs;
-   debug_msg("CAVE01: count " + count);
+   //debug_msg("CAVE01: count " + count);
    while (count > 0) do begin
       call Choose_Pid;
       call placeCritter(choose_enc_pid, choose_enc_sid, AREA_1);
@@ -206,7 +206,7 @@ end
 procedure LoadChests begin
    variable obj;
 
-   debug_msg("Making Chests.");
+   //debug_msg("Making Chests.");
 
    obj := create_object(PID_CHEST, CHEST_1, 1);
    if (obj) then begin

@@ -301,7 +301,7 @@ end
 //~~~~~~~~~~~~~~~~ DESIGN TOOL STARTS HERE
 
 procedure Node001 begin
-   debug_msg("Node001");
+   //debug_msg("Node001");
    Reply(110);
 
    NLowOption(111,Node004);

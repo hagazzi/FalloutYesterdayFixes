@@ -31,7 +31,7 @@ procedure map_exit_p_proc begin
 end
 
 procedure map_update_p_proc begin
-   debug("trunk: map_update_p_proc")
+   //debug("trunk: map_update_p_proc")
 
    call Check_Create_Trunk;
 

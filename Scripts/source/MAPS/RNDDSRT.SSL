@@ -65,7 +65,7 @@ procedure map_enter_p_proc begin
    call Check_Create_Vehicle;
 
    fadein(1);
-   debug_msg("RNDDSRT map_enter_p_proc == " + cur_map_index);
+   //debug_msg("RNDDSRT map_enter_p_proc == " + cur_map_index);
    set_map_exit_tiles(0,0);
    Lighting;
 

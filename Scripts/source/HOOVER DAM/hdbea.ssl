@@ -227,19 +227,19 @@ procedure critter_p_proc begin
    else if (Beatrice_In_Party) then begin
       if (global_var(GVAR_PLAYER_REPUTATION) < Beatrice_Bad_Karma) then begin
          call Abandon_Party;
-         debug_msg("Beatrice Bad Player Rep");
+         //debug_msg("Beatrice Bad Player Rep");
       end
       else if (has_rep_childkiller) then begin
          call Abandon_Party;
-         debug_msg("Beatrice: Child Killer");
+         //debug_msg("Beatrice: Child Killer");
       end
       else if (has_rep_berserker) then begin
          call Abandon_Party;
-         debug_msg("Beatrice: Berserker");
+         //debug_msg("Beatrice: Berserker");
       end
       else if (has_rep_slaver) then begin
          call Abandon_Party;
-         debug_msg("Beatrice: Slaver Rep");
+         //debug_msg("Beatrice: Slaver Rep");
       end*/
 
 end
@@ -406,7 +406,7 @@ end
 /* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
    exit from the dialog system without any reprisals from the NPC. */
    procedure Node999 begin
-      debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+      //debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
       if (local_var(LVAR_Herebefore)==0) then
       begin
       set_local_var(LVAR_Herebefore,1);
