@@ -83,6 +83,7 @@ procedure Node015;
 procedure Node016;
 procedure Node017;
 procedure Node018;
+procedure Node018a;
 procedure Node019;
 procedure Node019a;
 procedure Node020;
@@ -378,6 +379,9 @@ if ((global_var(GVAR_QUEST_RESTORE_CIPHERS_CROPS) == QUEST_ACCEPTED) and dude_it
    NOption(295,Node019,4);
    NOption(296,Node019,-3);
 end
+if (global_var(GVAR_QUEST_RESTORE_CIPHERS_CROPS) == QUEST_KNOWN) and (global_var(GVAR_QUEST_DENOM_CROPS) >= QUEST_PAST_PART_1) then begin
+   NOption(622,Node018a,4);
+end
 NOption(297,Node999,4);
 NOption(298,Node999,-3);
 end
@@ -498,6 +502,15 @@ procedure Node018
 begin
    set_global_var(GVAR_QUEST_RESTORE_CIPHERS_CROPS, QUEST_ACCEPTED);
 Reply(710);
+NOption(801,Node999,1);
+end
+
+procedure Node018a
+begin
+   set_global_var(GVAR_QUEST_RESTORE_CIPHERS_CROPS, QUEST_ACCEPTED);
+Reply(710);
+NOption(295,Node019,4);
+NOption(296,Node019,-3);
 NOption(801,Node999,1);
 end
 

@@ -340,7 +340,9 @@ begin
 Reply(320);
 if (has_skill(dude_obj,SKILL_SCIENCE)>=99) then
 NOption(321,Node046,4);
-NOption(322,Node038,4);
+if (global_var(GVAR_QUEST_UPGRADE_FILTER) == QUEST_NONE) then begin
+	NOption(322,Node038,4);
+end
 NOption(323,Node053,4);
 end
 
@@ -393,7 +395,7 @@ procedure Node002
 begin
 Reply(560);
 NOption(561,Node026,4);
-if (global_var(GVAR_QUEST_UPGRADE_FILTER) == QUEST_NONE) then
+//if (global_var(GVAR_QUEST_UPGRADE_FILTER) == QUEST_NONE) or (global_var(GVAR_QUEST_UPGRADE_FILTER) == FILTRATION_SCHEMATICS_FOUND)  then
 NOption(562,Node025,4);
 if ((global_var(GVAR_QUEST_DISCOVER_SL1C) == QUEST_COMPLETED) and (global_var(GVAR_PIERRE_KNOWS_S1C) == 0)) then
 NOption(563,Node022,4);
