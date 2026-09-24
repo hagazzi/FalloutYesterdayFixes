@@ -134,10 +134,12 @@ procedure Node074;
 procedure Node075;
 procedure Node076;
 procedure Node077;
+procedure Node077b;
 procedure Node078;
 procedure Node079;
 procedure Node079a;
 procedure Node079b;
+procedure Node079c;
 procedure Node080;
 procedure Node081;
 procedure assassinate_frag;
@@ -161,6 +163,7 @@ procedure assassinate_dodge(variable assassination_type);
 #define LVAR_Caught_Thief               (7)
 #define LVAR_Ledger_Once               (8)
 #define LVAR_Discussed_Pierre          (9)
+#define LVAR_Peace_Reward 			  (10)
 
 /* Imported variables from the Map scripts. These should only be
    pointers and variables that need not be saved. If a variable
@@ -653,7 +656,7 @@ end
 procedure Node043
 begin
 Reply(1460);
-NOption(1461,Node044,-3);
+NOption(1461,Node044,4);
 end
 
 procedure Node044
@@ -789,7 +792,7 @@ end
 procedure Node064
 begin
 Reply(mstr(2090)+dude_name+mstr(2091));
-if (global_var(GVAR_QUEST_CITY_COUNCIL) >= 6) then
+if (global_var(GVAR_QUEST_CITY_COUNCIL) >= 6) and (global_var(GVAR_QUEST_CITY_COUNCIL) < 99) then
 NOption(2092,Node067,4);
 if (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_KNOWN) then
 NOption(205,Node068,4);
@@ -798,7 +801,12 @@ if ((global_var(GVAR_QUEST_HOOVER_PEACE) == QUEST_COMPLETED) and (global_var(GVA
    NOption(203,Node019,4);
 else if ((global_var(GVAR_QUEST_HOOVER_PEACE) == QUEST_ACCEPTED) and (global_var(GVAR_QUEST_CITY_COUNCIL) == 0)) then
    NOption(210,Node019,4);
-
+//else if ((global_var(GVAR_QUEST_HOOVER_PEACE) == QUEST_ACCEPTED) and (global_var(GVAR_QUEST_CITY_COUNCIL) == 99) and (global_var(GVAR_QUEST_OPERATION_PEACEMAKER) == QUEST_ACCEPTED))  then 
+else if ((global_var(GVAR_QUEST_HOOVER_PEACE) == QUEST_ACCEPTED) and (global_var(GVAR_QUEST_CITY_COUNCIL) == 99) and (global_var(GVAR_QUEST_OPERATION_PEACEMAKER) == QUEST_ACCEPTED))  then
+   GOption(211,Node077b,4);
+else if ((global_var(GVAR_QUEST_HOOVER_PEACE) == QUEST_COMPLETED) and (global_var(GVAR_QUEST_CITY_COUNCIL) == 99) and (global_var(GVAR_QUEST_OPERATION_PEACEMAKER) == QUEST_COMPLETED) and (local_var(LVAR_Peace_Reward) < 99))  then begin
+   GOption(212,Node079c,4);
+end
 NOption(204,Node002,4);
 NOption(206,Node999,4);
 if (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_PAST_PART_2) then
@@ -843,14 +851,15 @@ end
 procedure Node067
 begin
 
-   if (global_var(GVAR_QUEST_CITY_COUNCIL) == 9) then begin
-      give_xp(800);
-   end
-   else begin
-      give_xp(400);
-   end
-
-   set_global_var(GVAR_QUEST_CITY_COUNCIL, 99);
+	if (global_var(GVAR_QUEST_CITY_COUNCIL) < 99) then begin
+	   if (global_var(GVAR_QUEST_CITY_COUNCIL) >= 9) then begin
+		  give_xp((global_var(GVAR_QUEST_CITY_COUNCIL)-1) *10);
+	   end
+	   else begin
+		  give_xp(400);
+	   end   
+	end
+    set_global_var(GVAR_QUEST_CITY_COUNCIL, 99);
 
 Reply(2180);
 NOption(2181,Node999,4);
@@ -958,6 +967,12 @@ Reply(str);
 NOption(2181,Node999,4);
 end
 
+procedure Node077b begin
+	Reply(2060);
+	set_global_var(GVAR_QUEST_HOOVER_PEACE, QUEST_COMPLETED);
+	NOption(2001,Node999,4);
+end
+
 procedure Node078
 begin
    set_global_var(GVAR_QUEST_HOOVER_PEACE, QUEST_ACCEPTED);
@@ -992,6 +1007,26 @@ begin
    give_pid_qty(dude_obj, PID_M72_GAUSS_RIFLE, 1)
    call Node999;
 end
+
+procedure Node079c
+begin
+   if local_var(LVAR_Peace_Reward) < 99 then begin
+     set_local_var(LVAR_Peace_Reward, 99);
+	 //debug("LVAR was set to 1 through Node079c")
+   end
+   set_global_var(GVAR_QUEST_HOOVER_PEACE, QUEST_COMPLETED);
+   set_global_var(GVAR_DUDE_OWNS_FANCY_PAD, 1);
+   give_xp(3000);
+   display_msg(g_mstr(1000));
+   inc_hoover_dam_rep(50);
+
+   Reply(2545);
+   if (dude_has_ncr_connection) then
+     NOption(mstr(2541) + " " + mstr(2542),Node079a,4);
+     NOption(mstr(2541) + " " + mstr(2543),Node079b,4);
+   NOption(2544,Node079b,1);
+end
+
 
 procedure Node080
 begin

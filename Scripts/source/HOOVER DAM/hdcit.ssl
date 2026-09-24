@@ -232,7 +232,8 @@ procedure talk_p_proc begin
    end
    else if (
       (local_var(LVAR_City_Council) == 0) and
-      (cur_map_index == MAP_HOOVER_DAM_RIM) and
+      //(cur_map_index == MAP_HOOVER_DAM_RIM) and
+	  (cur_town == AREA_HOOVER_DAM) and // there not 9 hdcit in rim
       (global_var(GVAR_QUEST_CITY_COUNCIL) >= 1) and
       (global_var(GVAR_QUEST_CITY_COUNCIL) < 99)
    ) then begin

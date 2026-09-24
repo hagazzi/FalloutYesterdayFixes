@@ -24,6 +24,8 @@
 {208}{}{Beneath the Scum Pits, I stumbled upon a pre-war science lab. The catch? It's infested with hostile mutated creatures.}
 {209}{}{I've successfully cleared out the pre-war science lab beneath the Scum Pits. The mutants have been eradicated, and the facility is now secure.}
 {210}{}{If you don't mind, I'd like to actually get some power over the city I'm trying to save...}
+{211}{}{Governor, the Brotherhood petition for peace. they ask for a ceasefire!}
+{212}{}{Governor, it is now official. the war has ended!}
 
 # Node002
 {230}{}{Oh, in that case you must speak with Major Fleming, he'll handle that.}
@@ -259,8 +261,9 @@
 {1430}{}{With the settlers' enthusiastic cooperation, we fortified the dam's perimeter, instilling a sense of security among them. Swift action against raiders bolstered their confidence in our leadership.}
 {1431}{}{You certainly made an impact.}
 
-# Node043
+# Node042b
 {1460}{}{As the Hoover Dam community flourished, it began to develop its own social structure. The Dam became divided into two distinct areas: the Rim, where government officials and affluent businesspersons resided, and Downtown, home to the hardworking construction laborers and farmers. Naturally, my NCR troops and I settled in the Rim, where I earned the title of Governor among the people of Hoover Dam. I was honored as a just and upright leader who ushered the settlers into an era of enlightenment and self-worth.}
+{1463}{}{As the Hoover Dam community flourished, it began to develop its own social structure. The Dam became divided into two distinct areas: the Rim, where government officials and affluent businesspersons resided, and Downtown, home to the hardworking construction laborers and farmers. Naturally, my NCR troops and I settled in the Rim, where I earned the title of Governor among the people of Hoover Dam. I was honored as a just and upright leader who ushered the settlers into an era of enlightenment and self-worth.}
 {1461}{}{An intriguing development.}
 
 # Node044
@@ -425,6 +428,7 @@
 {2542}{}{And I'll unleash Bozar on our foes with pride, knowing its bullet hell symbolizes our victory and the peace we've worked so hard to achieve together.}
 {2543}{}{A Gauss rifle will be a perfect addition to my justice arsenal.}
 {2544}{}{[Leave him to his own business.]}
+{2545}{}{[His jaw drops in utter shock.] You did what?! Are you saying our tormentors calls for a ceasefire? The war is truly ended? The NCR emerged triumphant in the end? [He gazes into the distance, overwhelmed.] I can't believe I've witnessed this day. This new found peace is a testament to my leadership, and your remarkable "problem-solving" abilities, hero. You are the hero. You. [He jabs his finger towards you, reminiscent of the gesture you've seen in pre-war military posters with some old man.] And a hero deserves nothing less than the tools of a hero. I'll arrange for a Gauss rifle or a Bozar to be sent to you immediately. And a nice shack on the Rim. What a day. Historic. A day that our forefathers dreamt of, a day that our children's children will remember, a day... [He disappears from the monitor's screen.]}
 
 {2570}{}{, your discovery is intriguing. We cannot allow such a valuable resource to remain overrun. Your task is clear: eliminate any threats lurking within. I regret to inform you that I cannot dispatch any troopers to assist you, as we've already suffered significant losses in the Scum Pits. The safety and prosperity of our citizens depend on your success. Your bravery will not go unnoticed.}
 {2571}{}{Thank you, Governor. I'll see you later after the area is secured.}

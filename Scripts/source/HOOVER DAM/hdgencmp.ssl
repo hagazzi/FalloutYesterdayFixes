@@ -103,8 +103,8 @@ end
 procedure use_skill_on_p_proc begin
 
    if (
-      (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_ACCEPTED) and
-      (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) == QUEST_PAST_PART_1)
+      (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) >= QUEST_ACCEPTED) and
+      (global_var(GVAR_QUEST_RECALIBRATE_GENERATORS) <= QUEST_PAST_PART_1)
       ) then begin
          variable gen_num;
          gen_num = 3;
@@ -137,7 +137,7 @@ procedure use_skill_on_p_proc begin
 
       if (
          (local_var(LVAR_Recalibrate_Science) == 1) and
-         (local_var(LVAR_Recalibrate_Science) == 1) and
+         (local_var(LVAR_Recalibrate_Repair) == 1) and
          (local_var(LVAR_Reward) == 0)
          ) then begin
             give_xp(250);
