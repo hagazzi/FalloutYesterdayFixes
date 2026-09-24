@@ -162,8 +162,9 @@ procedure map_enter_p_proc begin
    /*  This procedure will get called each time that the map is first entered. It will
        set up the Team number and AI packet for this critter. This will override the
        default from the prototype, and needs to be set in scripts. */
-    BeatriceBouncer := self_obj;
-
+    if (Beatrice_In_Party) then
+	    add_timer_event(self_obj, 15, 1);
+		BeatriceBouncer := self_obj;
    //party_member_map_enter;
 
    critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_PARTY_BEATRICE_CUSTOM);
@@ -187,6 +188,13 @@ procedure map_update_p_proc begin
  end
 
 procedure timed_event_p_proc begin
+   if (fixed_param == 1) then begin 
+		variable extra_health;
+		if (dude_level > 1)  then begin
+			extra_health := ((floor(self_endurance/2) + 2) * (dude_level-1));
+			set_critter_extra_stat(self_obj, STAT_max_hp, extra_health);
+		end
+   end
    call critter_setup_footsteps_timed_event(self_obj, WALKING_TICKS_SLOWER, RUNNING_TICKS_DEFAULT, SFX_FOOTSTEP_HARD_SHOE);
 end
 

@@ -124,7 +124,8 @@ end
 procedure map_enter_p_proc begin
 
    //party_member_map_enter;
-
+   if (Hanged_Man_In_Party) then
+    add_timer_event(self_obj, 15, 1);
    if (not(Hanged_Man_In_Party)) then begin
       critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_FORT_ABANDON);
    end
@@ -294,6 +295,13 @@ end
 
 
 procedure timed_event_p_proc begin
+   if (fixed_param == 1) then begin 
+		variable extra_health;
+		if (dude_level > 1)  then begin
+			extra_health := ((floor(self_endurance/2) + 2) * (dude_level-1));
+			set_critter_extra_stat(self_obj, STAT_max_hp, extra_health);
+		end
+   end
    if (fixed_param == 0) then begin
       variable critters, critter, ai, team;
       add_timer_event(self_obj,game_ticks(random(1,5)),0);

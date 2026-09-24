@@ -242,6 +242,8 @@ procedure map_enter_p_proc begin
        default from the prototype, and needs to be set in scripts. */
 
    //party_member_map_enter;
+   if (Alexandra_In_Party) then
+    add_timer_event(self_obj, 15, 1);
    if not(Alexandra_In_Party) then begin
       critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_TEAM_NUM,TEAM_ALEXANDRA);
    end
@@ -291,6 +293,13 @@ end
 
 procedure timed_event_p_proc begin
    call critter_setup_footsteps_timed_event(self_obj, WALKING_TICKS_DEFAULT, RUNNING_TICKS_DEFAULT, SFX_FOOTSTEP_SOFT_SHOE);
+   if (fixed_param == 1) then begin 
+		variable extra_health;
+		if (dude_level > 1)  then begin
+			extra_health := ((floor(self_endurance/2) + 2) * (dude_level-1));
+			set_critter_extra_stat(self_obj, STAT_max_hp, extra_health);
+		end
+   end
 end
 
 /* Every heartbeat that the critter gets, this procedure will be called. Anything from

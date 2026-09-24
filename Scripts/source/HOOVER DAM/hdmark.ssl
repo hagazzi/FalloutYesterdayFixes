@@ -245,7 +245,9 @@ procedure map_enter_p_proc begin
        default from the prototype, and needs to be set in scripts. */
 
    //party_member_map_enter;
-
+   if (Mark_In_Party) then begin
+	  add_timer_event(self_obj, 15, 1);
+   end
    // TODO Swap this for collapsed parking location when finished
    if (
       (cur_map_index == MAP_BLOOMFIELD_CONTROL_CENTER_NORTH) and
@@ -283,6 +285,13 @@ procedure map_enter_p_proc begin
 end
 
 procedure timed_event_p_proc begin
+   if (fixed_param == 1) then begin 
+		variable extra_health;
+		if (dude_level > 1)  then begin
+			extra_health := ((floor(self_endurance/2) + 2) * (dude_level-1));
+			set_critter_extra_stat(self_obj, STAT_max_hp, extra_health);
+		end		
+   end
    call critter_setup_footsteps_timed_event(self_obj, WALKING_TICKS_DEFAULT, RUNNING_TICKS_DEFAULT, SFX_FOOTSTEP_MEDIUM_SHOE);
 end
 
