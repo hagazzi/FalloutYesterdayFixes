@@ -179,9 +179,9 @@ variable luck_chance;
    end else begin
       game_time_advance(ONE_GAME_MINUTE * 15);
       if ((dude_is_stupid) or (has_skill(dude_obj, SKILL_LOCKPICK) < 50)) then begin
-         luck_chance := (5 * (dude_luck >= 9)) + (5 * (dude_luck == 10));
+         luck_chance := (5 * (dude_luck <= 9)) + (5 * (dude_luck == 10));
       end else begin
-         luck_chance := (10 * (dude_luck >= 9)) + (15 * (dude_luck == 10));
+         luck_chance := (10 * (dude_luck <= 9)) + (15 * (dude_luck == 10));
       end
       if (random(1,100) <= luck_chance) then begin
 //         Dialog_Node := 7;
