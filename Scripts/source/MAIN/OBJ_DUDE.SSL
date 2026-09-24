@@ -183,8 +183,11 @@ procedure night_person begin
 end
 
 procedure code_phobia begin
-   if ((global_var(GVAR_CODE_STATUS) >= 50) and (random(0, 100) <= 5)) then begin
-      display_mstr_rand(200, 213);
+   variable codephobia := get_ini_setting("mods\\FalloutYesterday.ini|FalloutYesterday|code_phobia");
+   if codephobia == 1 then begin
+	   if ((global_var(GVAR_CODE_STATUS) >= 50) and (random(0, 100) <= 5)) then begin
+		  display_mstr_rand(200, 213);
+	   end
    end
 end
 

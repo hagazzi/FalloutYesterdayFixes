@@ -1339,16 +1339,17 @@ procedure dude_wielding_big_gun begin
 end
 
 procedure new_plague_check(variable who, variable lvar_herebefore) begin
-
+   variable allowplague := get_ini_setting("mods\\FalloutYesterday.ini|FalloutYesterday|allow_plage");
    // Only affects humans and non-mutated animals, those we talked to, not wearing PA or EA
-   if (
-      ((is_human(who) == true) or (critter_kill_type(who) == KILL_TYPE_dog_kills)) and
-      (local_var(lvar_herebefore) > 0) and
-      ((dude_wearing_power_armor == false) and (dude_wearing_environmental_armor == false) and (self_wearing_power_armor == false) and (self_wearing_environmental_armor == false))
-      ) then begin
-         // 10% - EN chance of dying
-         variable max;
-         max = 10 - get_critter_stat(who, STAT_en);
+	if (allowplague == 1) then begin   
+	   if (
+		  ((is_human(who) == true) or (critter_kill_type(who) == KILL_TYPE_dog_kills)) and
+		  (local_var(lvar_herebefore) > 0) and
+		  ((dude_wearing_power_armor == false) and (dude_wearing_environmental_armor == false) and (self_wearing_power_armor == false) and (self_wearing_environmental_armor == false))
+		  ) then begin
+			 // 10% - EN chance of dying
+			 variable max;
+			 max = 10 - get_critter_stat(who, STAT_en);
 
          // After ACT I, the FoA makes sure people survive
          if (global_var(GVAR_ACT) >= 2) then
@@ -1361,6 +1362,7 @@ procedure new_plague_check(variable who, variable lvar_herebefore) begin
             end
          end
       end
+end
 end
 
 // can we attack the critter?
