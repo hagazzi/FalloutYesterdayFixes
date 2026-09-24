@@ -43,6 +43,7 @@ procedure use_skill_on_p_proc;
 procedure damage_p_proc;
 procedure map_enter_p_proc;
 procedure timed_event_p_proc;
+procedure restock_merchant_box;
 
 
 /* Script Specific Procedure Calls */
@@ -84,9 +85,33 @@ procedure Node012;
 #define LVAR_Personal_Enemy             (6)
 #define LVAR_Caught_Thief               (7)
 #define LVAR_Pissed                     (8)
+#define LVAR_Restock_Stuff				(9)
 
 
+#define restock_caps(obj)		stock_pid_qty(obj, PID_BOTTLE_CAPS, random(2000,5000))
 
+#define restock_stim(obj)		stock_pid_qty(obj, PID_STIMPAK, random(2,5)) \
+								stock_pid_qty(obj, PID_SUPER_STIMPAK, random(1,2)) \
+								stock_pid_qty(obj, PID_MENTATS, random(1,2)) \
+								stock_pid_qty(obj, PID_HYPODERMIC_NEEDLE, random(5,10)) \
+								stock_pid_qty(obj, PID_BROC_FLOWER, random(5,10)) \
+								stock_pid_qty(obj, PID_XANDER_ROOT, random(5,10)) \
+								stock_pid_qty(obj, PID_MUTATED_FRUIT, random(5,10)) \
+								stock_pid_qty(obj, PID_HEALING_POWDER, random(2,5)) \
+								stock_pid_qty(obj, PID_NUKA_COLA, random(5,10)) 
+								
+#define restock_tools(obj)		stock_pid_qty(obj, PID_MEDICAL_SUPPLIES, random(0,1)) \
+								stock_pid_qty(obj, PID_PARAMEDICS_BAG, random(0,1)) \
+								stock_pid_qty(obj, PID_FIELD_MEDIC_KIT, random(0,1)) \
+								stock_pid_qty(obj, PID_FIRST_AID_KIT, random(0,1)) \
+								stock_pid_qty(obj, PID_MULTI_TOOL, random(0,1)) \
+								stock_pid_qty(obj, PID_SUPER_TOOL_KIT, random(0,1)) \
+								stock_pid_qty(obj, PID_ROPE, random(2,4)) \
+								stock_pid_qty(obj, PID_PLASTIC_EXPLOSIVES, random(0,1)) \
+								stock_pid_qty(obj, PID_DYNAMITE, random(1,3)) \
+								stock_pid_qty(obj, PID_EXP_LOCKPICK_SET, random(0,1)) \
+								stock_pid_qty(obj, PID_LOCKPICKS, random(0,1)) 
+								
 /* Imported variables from the Map scripts. These should only be
    pointers and variables that need not be saved. If a variable
    Needs to be saved, make it a map variable (MVAR_) */
@@ -97,6 +122,17 @@ variable Only_Once:=0;
 
 procedure start begin
 end
+procedure restock_merchant_box begin
+    variable box_obj;
+	box_obj := tile_contains_pid_obj(32751, self_elevation, PID_FOOTLOCKER_RUSTY_LEFT);
+	if (game_time >= local_var(LVAR_Restock_Stuff)) then begin
+		restock_tools(box_obj)
+		restock_stim(box_obj)
+		restock_caps(box_obj)		
+		/*restock_food(box_obj) //can razorblades cheese */
+		set_local_var(LVAR_Restock_Stuff , (game_time + ONE_GAME_DAY) );
+	end	
+end
 
 /* This procedure will get called each time that the map is first entered. It will
    set up the Team number and AI packet for this critter. This will override the
@@ -105,7 +141,7 @@ procedure map_enter_p_proc begin
    Only_Once:=0;
    critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_HOOVER_DAM);
 //   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
-
+	call restock_merchant_box;
    if (milko_dead) then begin
       set_obj_visibility(self_obj, 1);
       destroy_object(self_obj);
