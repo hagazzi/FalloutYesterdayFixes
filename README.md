@@ -80,15 +80,15 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Bloomfield Hook talk about with float text someone fixing thing in the basement, theres noone there
 
 ### i don't think these quest can be completed (there might be some other but i checked the script for these) :
-Tibbets - prologue :<br/>
-* Locate the rare .50 Magnum Revolver<br/>
-Tibbets :<br/>
-* Find a new "home" for the Vault Boy hologram<br/>
-Mesa Verde :<br/>
-* Ask the Ciphers to process ZAX's raw data<br/>
-* Forge an alliance between the Brotherhood and the Ciphers<br/>
-* Rescue Cyphers<br/>
-Hoover Dam :<br/>
-* Any Bounty Quests?<br/>
-* Theres also a ranger quest to join them that requires a legion flag but noone loot it right now (according to design document a vexillarius (flag bearer) should be in dogtown)<br/>
+1. Tibbets - prologue :<br/>
+	* Locate the rare .50 Magnum Revolver<br/>
+2. Tibbets :<br/>
+	* Find a new "home" for the Vault Boy hologram<br/>
+3. Mesa Verde :<br/>
+	* Ask the Ciphers to process ZAX's raw data<br/>
+	* Forge an alliance between the Brotherhood and the Ciphers<br/>
+	* Rescue Cyphers<br/>
+4. Hoover Dam :<br/>
+	* Any Bounty Quests?<br/>
+	* Theres also a ranger quest to join them that requires a legion flag but noone loot it right now (according to design document a vexillarius (flag bearer) should be in dogtown)<br/>
 
