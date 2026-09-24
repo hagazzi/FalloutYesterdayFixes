@@ -31,7 +31,7 @@ end
 
 procedure map_enter_p_proc begin
 
-   if (map_first_run) then begin
+   if ( (map_first_run) and (not (GVAR_QUEST_FIND_PRISONERS >=1)) )  then begin
       override_map_start_hex(9114, 0, 2);
       game_ui_disable;
       set_map_var(MVAR_CellIntro, 1);
