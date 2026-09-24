@@ -256,13 +256,14 @@ procedure map_enter_p_proc begin
       (global_var(GVAR_MARK_GANNON_BETRAY) == 0)
    ) then begin
       set_global_var(GVAR_MARK_GANNON_BETRAY, 1);
-      set_obj_visibility(self_obj, 1);
+      //set_obj_visibility(self_obj, 1); //can't stay it is needed but without it Mark doesnt show up in bloomfield east for me
       dude_floater(206);
       call Abandon_Party;
       destroy_object(self_obj);
    end
    else if (
       (cur_map_index == MAP_BLOOMFIELD_CONTROL_CENTER_EAST) and
+	  (global_var(GVAR_ACT) == 2) and
       (global_var(GVAR_MARK_GANNON_BETRAY) == 1) and
       not(Mark_In_Party)
    ) then begin
@@ -487,7 +488,7 @@ end
 procedure Node999 begin
    /* Anytime that there is a need for an ending to dialog, this node is to be called. It will just
        exit from the dialog system without any reprisals from the NPC. */
-       debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
+       //debug_msg("LVAR_Herebefore == "+local_var(LVAR_Herebefore));
 if (local_var(LVAR_Herebefore)==0) then
 begin
 set_local_var(LVAR_Herebefore,1);
