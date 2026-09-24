@@ -37,6 +37,7 @@
 {202}{}{What are you doing here?}
 {203}{}{Would you be interested in going on a date with me?}
 {204}{}{Please continue with your work. Goodbye.}
+{205}{}{Do you know of a mechanic that could work on Pre-war Vehicles ?}
 
 # Node002
 {230}{}{Currently, I'm collaborating with Otto and Pierre on solving the water filtration problem. Our aim is to make filtered water drinkable.}
@@ -102,3 +103,44 @@
 # Node014
 {590}{}{[Accepting your hand.] Certainly. My name's Dianne, by the way. }
 {591}{}{[Walk into the night with your date.]}
+
+# Node020
+{650}{}{In a pinch, i could probably do something about it, then adding in some of our engineers, I have some Dean's Electronics in the backroom, just wait for a bit....}
+{651}{}{[Continue]}
+
+# Node021
+{652}{}{Well it seems i could work on increasing the fuel efficiency, increasing the engine power, or its suspension... }
+{653}{}{Fuel Efficiency?} # Readily available
+{654}{}{Engine Power?} 	  # After Jericho Schematics Quest Complete and then Dodge
+{655}{}{Suspension?}	  # 1 Upgrade readily available, 2 upgrade Jericho Schematics, 3 upgrade meet Dodge, 4 upgrade NCR Peace
+{656}{}{I want all of the above.}  # NCR Peace 
+{657}{}{You know what, forget about car upgrades.}
+
+# Node021a
+{680}{}{I can do this on my own, this wasnt a common need before the war but with resources diverted for the war effort, fuel became expensive for the individual household apparently, a fuel controller would drastically reduce the draw... according to the cost in material and the time expenditure i would say 4000 caps would do it}
+{681}{}{Sold!}
+{682}{}{You drive a hard bargain woman! I can't get it just now, i'll come back later.}
+
+
+# Node021b
+{720}{}{A more powerful engine would increase the speed of your vehicle consistently, i heard back then people drove them for leisure, can you imagine it ? Successive upgrades of 8000 and 12000 can be done.}
+{721}{}{Deal!} # Car Blower
+{722}{}{Deal!} # NR Car Upgrade
+{723}{}{The cost is too steep.}
+{724}{}{All our engineers are focused on the filtration system, as of right now its impossible}
+{725}{}{[end]}
+
+
+# Node021c
+{760}{}{It's said that an efficient suspension can even increase the speed of your vehicles, people had car that like rode on air, i can't quite divert manpower for that. However improvement in suspension would increase the amount it can carry, successful upgrades of 6000, 8000 and 12000 caps what say you ?}
+{761}{}{First Upgrade} # 6000 caps
+{762}{}{Second Upgrade} # 8000 caps, first update done and Jericho Plans
+{763}{}{Third Upgrade} # 12000 caps and Dodge access
+{764}{}{What other update were you talking about?}
+
+# Node021d
+{800}{}{With war at an end, we can finally breath again, i heard it was mostly thanks to you, we will still ask you for wages, but all of our engineer are ready for one final upgrade, 20000 caps would do it.}
+{801}{}{That'd be great!}
+{802}{}{Don't have quite enough just yet.}
+
+

@@ -40,6 +40,10 @@
 #define VEHICLE_DEFAULT_SPEED_HIGHWAYMAN        (VEHICLE_SPEED_NORMAL)
 #define VEHICLE_DEFAULT_SPEED_BICYCLE           (VEHICLE_SPEED_NORMAL)
 
+#define upgraded_for_fast			((get_sfall_global_int("car_blow") == 1) and (get_sfall_global_int("car_nrup")== 0) and (get_sfall_global_int("car_nrsu") == 0))
+#define upgraded_for_faster			((get_sfall_global_int("car_blow") == 1) and (get_sfall_global_int("car_nrup")== 1) and (get_sfall_global_int("car_nrsu") == 0))
+#define upgraded_for_wtf			((get_sfall_global_int("car_blow") == 1) and (get_sfall_global_int("car_nrup")== 1) and (get_sfall_global_int("car_nrsu") == 1))
+
 #define TOWN_CIRCLE_LARGE                       (50)
 #define TOWN_CIRCLE_MEDIUM                      (22)
 #define TOWN_CIRCLE_SMALL                       (11)
@@ -330,18 +334,17 @@ procedure SetupVehicleSpeed (variable speed) begin
         blower = 1;
         super = 1;
     end
-
     set_global_var(GVAR_NEW_RENO_CAR_UPGRADE, upgrade);
     set_global_var(GVAR_CAR_BLOWER, blower);
-    set_global_var(GVAR_NEW_RENO_SUPER_CAR, super);
+    set_global_var(GVAR_NEW_RENO_SUPER_CAR, super);	
 end
 
 procedure SetupVehicleUpgrades (variable type) begin
     if (type == VEHICLE_TYPE_MOTORCYCLE) then begin
-        if (get_vehicle_flag(vehicle_upgrade_faster, GVAR_VEHICLE_UPGRADES_MOTORCYCLE)) then begin
+        if (upgraded_for_faster) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_FASTER);
         end
-        else if (get_vehicle_flag(vehicle_upgrade_wtf, GVAR_VEHICLE_UPGRADES_MOTORCYCLE)) then begin
+        else if (upgraded_for_wtf) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_WTF);
         end
         else begin
@@ -349,10 +352,10 @@ procedure SetupVehicleUpgrades (variable type) begin
         end
     end
     else if (type == VEHICLE_TYPE_DUNE_BUGGY) then begin
-        if (get_vehicle_flag(vehicle_upgrade_fast, GVAR_VEHICLE_UPGRADES_DUNE_BUGGY)) then begin
+        if (upgraded_for_fast) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_FAST);
         end
-        else if (get_vehicle_flag(vehicle_upgrade_faster, GVAR_VEHICLE_UPGRADES_DUNE_BUGGY)) then begin
+        else if (upgraded_for_faster) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_FASTER);
         end
         else begin
@@ -360,10 +363,10 @@ procedure SetupVehicleUpgrades (variable type) begin
         end
     end
     else if (type == VEHICLE_TYPE_COP_CAR) then begin
-        if (get_vehicle_flag(vehicle_upgrade_faster, GVAR_VEHICLE_UPGRADES_COP_CAR)) then begin
+        if (upgraded_for_faster) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_FASTER);
         end
-        else if (get_vehicle_flag(vehicle_upgrade_wtf, GVAR_VEHICLE_UPGRADES_COP_CAR)) then begin
+        else if (upgraded_for_wtf) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_WTF);
         end
         else begin
@@ -371,7 +374,7 @@ procedure SetupVehicleUpgrades (variable type) begin
         end
     end
     else if (type == VEHICLE_TYPE_SEMI_TRUCK) then begin
-        if (get_vehicle_flag(vehicle_upgrade_fast, GVAR_VEHICLE_UPGRADES_SEMI_TRUCK)) then begin
+        if (upgraded_for_fast) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_FAST);
         end
         else begin
@@ -379,7 +382,7 @@ procedure SetupVehicleUpgrades (variable type) begin
         end
     end
     else if (type == VEHICLE_TYPE_TRAIN) then begin
-        if (get_vehicle_flag(vehicle_upgrade_fast, GVAR_VEHICLE_UPGRADES_TRAIN)) then begin
+        if (upgraded_for_fast) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_FAST);
         end
         else begin
@@ -387,13 +390,13 @@ procedure SetupVehicleUpgrades (variable type) begin
         end
     end
     else if (type == VEHICLE_TYPE_HIGHWAYMAN) then begin
-        if (get_vehicle_flag(vehicle_upgrade_fast, GVAR_VEHICLE_UPGRADES_HIGHWAYMAN)) then begin
+        if (upgraded_for_fast) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_FAST);
         end
-        else if (get_vehicle_flag(vehicle_upgrade_faster, GVAR_VEHICLE_UPGRADES_HIGHWAYMAN)) then begin
+        else if (upgraded_for_faster) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_FASTER);
         end
-        else if (get_vehicle_flag(vehicle_upgrade_wtf, GVAR_VEHICLE_UPGRADES_HIGHWAYMAN)) then begin
+        else if (upgraded_for_wtf) then begin
             call SetupVehicleSpeed(VEHICLE_SPEED_WTF);
         end
         else begin
