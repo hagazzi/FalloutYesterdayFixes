@@ -607,7 +607,8 @@ procedure nonparty_npc_skill_up begin
    variable party_member_extra_skill2;
    variable counter;
    variable counter2;
-   foreach party_member in party_member_list(1) begin
+   //foreach party_member in party_member_list(1) begin
+   foreach party_member in party_member_list(0) begin
       if party_member != real_dude_obj then begin
          party_member_level = get_npc_level(obj_pid(party_member));
          if party_member_level < 0 then party_member_level = 0;
