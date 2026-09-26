@@ -40,7 +40,19 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Frieda Restock<br/>
 * Milko Restock<br/>
 * Add Caps to Skill Book Vendor<br/>
-* Diane now can upgrade Vehicle for efficiency, speed, trunk storage and super_car once all the other are done, outside of caps cost requirement includes NCR quest advancement
+* Diane now can upgrade Vehicle for efficiency, speed, trunk storage and super_car once all the other are done, outside of caps cost requirement includes NCR quest advancement<br />
+* Kind of a big one wanted to only add a couple recipes but it was bugging on me so i ended up redoing it in google spreadsheet, so that the index might be freely moved around without having to type each index one by one
+	* from that google sheet i've created a template for mrfixit made into an ods file in a template folder
+	* as a result i've reordered category a bit, would need to be ordered a bit better but from brotherhood armor, its like newly added armor > Endgame (recipes from ciphers) > tools > survival (food) > books.
+	* new recipes includes advanced power armor, adv power armor mkII, combat armor mkII and combat armor mkIII, im making use of these recipes to craft it up to adv power armor mkII that can be used for athena power armor, makes full use of TMP500 (the new bos quartermaster selling combat armors, that has a change to stockup some mkII or mkIII rarely) 
+		* combat armor mkII need 2x combat armor mkI (otto does it with only one combat armor i think)
+		* combat armor mkIII need 2x combat armor  mkII
+		* adv PA need 3x combat armor mkII and 1x hardened power armor
+		* adv PA mk II need 3x combat armor mkIII and 1x adv PA		
+	* added 3 pcx, to cover for the icons of these in mrfixit (adv Pa mkII has the same inventory appearance as mkI)
+	* wasnt intended at the start but i ended up reducing books crafting to 3 days instead of 2 weeks
+	* all the new recipes are unlocked from the "library" in maxson bunker lv3, when unlocking Hardened Power Armor, one gets both Adv PA, when unlocking Brotherhood combat armor, one get both MkII and MkIII
+
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -54,7 +66,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * TMP501 	(Blackfoot vendor - some of what milko currently restocked moved here like broc / xander / powder, also adding in tribal chems)
 * TMP502 	(NCR vendor - Restock big guns and ammos also some gauss guns)
 * ̶D̶i̶a̶n̶e̶ ̶ ̶	̶(̶S̶e̶l̶l̶i̶n̶g̶ ̶c̶a̶r̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶t̶ ̶v̶a̶r̶i̶o̶u̶s̶ ̶N̶C̶R̶ ̶q̶u̶e̶s̶t̶ ̶a̶d̶v̶a̶n̶c̶e̶m̶e̶n̶t̶ ̶(̶i̶n̶c̶l̶u̶d̶i̶n̶g̶ ̶c̶a̶r̶ ̶s̶t̶o̶r̶a̶g̶e̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶a̶t̶ ̶t̶h̶e̶ ̶s̶a̶m̶e̶ ̶t̶i̶m̶e̶ ̶(̶?̶)̶)̶)̶
-* MrFixit	(Extra Recipes => for AdvPA and AdvPA mkII - Lore wise NCR and BoS salvaged the enclave so Adv PA should be known to BoS)
+*  ̶M̶r̶F̶i̶x̶i̶t̶	̶(̶E̶x̶t̶r̶a̶ ̶R̶e̶c̶i̶p̶e̶s̶ ̶=̶>̶ ̶f̶o̶r̶ ̶A̶d̶v̶P̶A̶ ̶a̶n̶d̶ ̶A̶d̶v̶P̶A̶ ̶m̶k̶I̶I̶ ̶-̶ ̶L̶o̶r̶e̶ ̶w̶i̶s̶e̶ ̶N̶C̶R̶ ̶a̶n̶d̶ ̶B̶o̶S̶ ̶s̶a̶l̶v̶a̶g̶e̶d̶ ̶t̶h̶e̶ ̶e̶n̶c̶l̶a̶v̶e̶ ̶s̶o̶ ̶A̶d̶v̶ ̶P̶A̶ ̶s̶h̶o̶u̶l̶d̶ ̶b̶e̶ ̶k̶n̶o̶w̶n̶ ̶t̶o̶ ̶B̶o̶S̶)̶
 * Random loot based on container type for flavour container (most are empty right now)
 
 ## TODO Change maybe (?)

@@ -98,106 +98,163 @@
 
 # items for batch
 
+
 {500}{}{[ITEM]}
-{501}{}{280}                               # PID_SHARP_SPEAR
+{501}{}{280}# PID_SHARP_SPEAR
 {502}{}{pcx/items/spear2.pcx}
 {503}{}{159039}
 {504}{}{111}
-{505}{}{27000}                             # 45 m
+{505}{}{27000}# 45 m
 {506}{}{NO}
 {507}{}{[TOOLS]}
-{508}{}{278}                               # PID_FLINT
+{508}{}{278}# PID_FLINT
 {509}{}{[SKILLS]}
 {510}{}{SKILL_MELEE_WEAPONS:40}
 {511}{}{SKILL_THROWING:40}
 {512}{}{[COMPONENTS]}
-{513}{}{7:1}                               # PID_SPEAR
+{513}{}{7:1}# PID_SPEAR
+
+
+
+
+
+
+
+
+
+
 
 {525}{}{[ITEM]}
-{526}{}{159}                               # PID_MOLOTOV_COCKTAIL
+{526}{}{159}# PID_MOLOTOV_COCKTAIL
 {527}{}{pcx/items/mola.pcx}
 {528}{}{23060}
 {529}{}{112}
-{530}{}{54000}                             # 1 h 30 m
+{530}{}{54000}# 1 h 30 m
 {531}{}{NO}
 {532}{}{[TOOLS]}
-{533}{}{75}                                # PID_MULTI_TOOL
+{533}{}{75}# PID_MULTI_TOOL
 {534}{}{[SKILLS]}
 {535}{}{SKILL_REPAIR:30}
 {536}{}{SKILL_TRAPS:40}
 {537}{}{SKILL_THROWING:40}
 {538}{}{[COMPONENTS]}
-{539}{}{79:2}                              # PID_FLARE
-{540}{}{125:1}                             # PID_BOOZE
+{539}{}{79:2}# PID_FLARE
+{540}{}{125:1}# PID_BOOZE
+
+
+
+
+
+
+
+
 
 {550}{}{[ITEM]}
-{551}{}{51}                                # PID_DYNAMITE
+{551}{}{51}# PID_DYNAMITE
 {552}{}{pcx/items/dynamit.pcx}
 {553}{}{94060}
 {554}{}{113}
-{555}{}{117000}                            # 3 h 15 m
+{555}{}{117000}# 3 h 15 m
 {556}{}{NO}
 {557}{}{[TOOLS]}
-{558}{}{75}                                # PID_MULTI_TOOL
-{559}{}{237}                               # PID_CHEMISTRY_MANUAL
+{558}{}{75}# PID_MULTI_TOOL
+{559}{}{237}# PID_CHEMISTRY_MANUAL
 {560}{}{[SKILLS]}
 {561}{}{SKILL_REPAIR:60}
 {562}{}{SKILL_TRAPS:80}
 {563}{}{[COMPONENTS]}
-{564}{}{85:1}                              # PID_PLASTIC_EXPLOSIVES
-{565}{}{98:1}                              # PID_PUMP_PARTS
+{564}{}{85:1}# PID_PLASTIC_EXPLOSIVES
+{565}{}{98:1}# PID_PUMP_PARTS
+
+
+
+
+
+
+
+
 
 {575}{}{[ITEM]}
-{576}{}{74}                                # PID_LEATHER_JACKET
+{576}{}{74}# PID_LEATHER_JACKET
 {577}{}{pcx/items/maxinv.pcx}
 {578}{}{62060}
 {579}{}{114}
-{580}{}{231000}                            # 6 h 25 m
+{580}{}{231000}# 6 h 25 m
 {581}{}{YES}
 {582}{}{[TOOLS]}
-{583}{}{4|45|236|714}                          # PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
+{583}{}{4|45|236|714}# PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
 {584}{}{[SKILLS]}
 {585}{}{SKILL_REPAIR:60}
 {586}{}{[COMPONENTS]}
-{587}{}{127:1}                             # PID_ROPE
-{588}{}{276:4}                             # PID_GECKO_PELT
+{587}{}{127:1}# PID_ROPE
+{588}{}{276:4}# PID_GECKO_PELT
+
+
+
+
+
+
+
+
+
+
 
 {600}{}{[ITEM]}
-{601}{}{1}                                 # PID_LEATHER_ARMOR
+{601}{}{1}# PID_LEATHER_ARMOR
 {602}{}{pcx/items/ltharmor.pcx}
 {603}{}{88055}
 {604}{}{115}
-{605}{}{243000}                            # 6 h 45 m
+{605}{}{243000}# 6 h 45 m
 {606}{}{YES}
 {607}{}{[TOOLS]}
-{608}{}{4|45|236|714}                          # PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
+{608}{}{4|45|236|714}# PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
 {609}{}{[SKILLS]}
 {610}{}{SKILL_REPAIR:80}
 {611}{}{[COMPONENTS]}
-{612}{}{127:1}                             # PID_ROPE
-{613}{}{276:6}                             # PID_GECKO_PELT
+{612}{}{127:1}# PID_ROPE
+{613}{}{276:6}# PID_GECKO_PELT
+
+
+
+
+
+
+
+
+
+
 
 {625}{}{[ITEM]}
-{626}{}{379}                               # PID_LEATHER_ARMOR_MK_II
+{626}{}{379}# PID_LEATHER_ARMOR_MK_II
 {627}{}{pcx/items/ltharmr2.pcx}
 {628}{}{88055}
 {629}{}{116}
-{630}{}{291000}                            # 8 h 5 m
+{630}{}{291000}# 8 h 5 m
 {631}{}{YES}
 {632}{}{[TOOLS]}
-{633}{}{4|45|236|714}                          # PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
+{633}{}{4|45|236|714}# PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
 {634}{}{[SKILLS]}
 {635}{}{SKILL_REPAIR:120}
 {636}{}{[COMPONENTS]}
-{637}{}{127:1}                             # PID_ROPE
-{638}{}{277:6}                             # PID_GOLDEN_GECKO_PELT
+{637}{}{127:1}# PID_ROPE
+{638}{}{277:6}# PID_GOLDEN_GECKO_PELT
+
+
+
+
+
+
+
+
+
+
 
 {650}{}{[ITEM]}
-{651}{}{273}                               # PID_HEALING_POWDER
+{651}{}{273}# PID_HEALING_POWDER
 {652}{}{pcx/items/healpwdr.pcx}
 {653}{}{47060}
 {654}{}{117}
-{655}{}{30000}                             # 50 m
+{655}{}{30000}# 50 m
 {656}{}{NO}
 {657}{}{[TOOLS]}
 {658}{}{[SKILLS]}
@@ -205,15 +262,24 @@
 {660}{}{SKILL_OUTDOORSMAN:65}
 {661}{}{SKILL_SCIENCE:20}
 {662}{}{[COMPONENTS]}
-{663}{}{271:1}                             # PID_BROC_FLOWER
-{664}{}{272:1}                             # PID_XANDER_ROOT
+{663}{}{271:1}# PID_BROC_FLOWER
+{664}{}{272:1}# PID_XANDER_ROOT
+
+
+
+
+
+
+
+
+
 
 {675}{}{[ITEM]}
-{676}{}{49}                                # PID_ANTIDOTE
+{676}{}{49}# PID_ANTIDOTE
 {677}{}{pcx/items/drug_bot.pcx}
 {678}{}{90060}
 {679}{}{118}
-{680}{}{30000}                             # 50 m
+{680}{}{30000}# 50 m
 {681}{}{NO}
 {682}{}{[TOOLS]}
 {683}{}{[SKILLS]}
@@ -221,113 +287,174 @@
 {685}{}{SKILL_OUTDOORSMAN:65}
 {686}{}{SKILL_SCIENCE:20}
 {687}{}{[COMPONENTS]}
-{688}{}{92:1}                              # PID_SCORPION_TAIL
+{688}{}{92:1}# PID_SCORPION_TAIL
+
+
+
+
+
+
+
+
+
+
 
 {700}{}{[ITEM]}
-{701}{}{40}                                # PID_STIMPAK
+{701}{}{40}# PID_STIMPAK
 {702}{}{pcx/items/stimx.pcx}
 {703}{}{89060}
 {704}{}{119}
-{705}{}{51000}                             # 1 h 25 m
+{705}{}{51000}# 1 h 25 m
 {706}{}{NO}
 {707}{}{[TOOLS]}
-{708}{}{408}                               # PID_FIELD_MEDIC_KIT
+{708}{}{408}# PID_FIELD_MEDIC_KIT
 {709}{}{[SKILLS]}
 {710}{}{SKILL_DOCTOR:60}
 {711}{}{[COMPONENTS]}
-{712}{}{271:1}                             # PID_BROC_FLOWER
-{713}{}{272:1}                             # PID_XANDER_ROOT
-{714}{}{318:1}                             # PID_HYPODERMIC_NEEDLE
+{712}{}{271:1}# PID_BROC_FLOWER
+{713}{}{272:1}# PID_XANDER_ROOT
+{714}{}{318:1}# PID_HYPODERMIC_NEEDLE
+
+
+
+
+
+
+
+
+
 
 {725}{}{[ITEM]}
-{726}{}{144}                               # PID_SUPER_STIMPAK
+{726}{}{144}# PID_SUPER_STIMPAK
 {727}{}{pcx/items/stimpak.pcx}
 {728}{}{88059}
 {729}{}{120}
-{730}{}{93000}                             # 2 h 35 m
+{730}{}{93000}# 2 h 35 m
 {731}{}{NO}
 {732}{}{[TOOLS]}
-{733}{}{408}                               # PID_FIELD_MEDIC_KIT
+{733}{}{408}# PID_FIELD_MEDIC_KIT
 {734}{}{[SKILLS]}
 {735}{}{SKILL_DOCTOR:80}
 {736}{}{[COMPONENTS]}
-{737}{}{71:1}                              # PID_MUTATED_FRUIT
-{738}{}{106:1}                             # PID_NUKA_COLA
-{739}{}{40:1}                              # PID_STIMPAK
+{737}{}{71:1}# PID_MUTATED_FRUIT
+{738}{}{106:1}# PID_NUKA_COLA
+{739}{}{40:1}# PID_STIMPAK
+
+
+
+
+
+
+
+
+
 
 {750}{}{[ITEM]}
-{751}{}{110}                               # PID_PSYCHO
+{751}{}{110}# PID_PSYCHO
 {752}{}{pcx/items/lastdrug.pcx}
 {753}{}{77060}
 {754}{}{121}
-{755}{}{360000}                            # 10 h
+{755}{}{360000}# 10 h
 {756}{}{NO}
 {757}{}{[TOOLS]}
-{758}{}{408}                               # PID_FIELD_MEDIC_KIT
+{758}{}{408}# PID_FIELD_MEDIC_KIT
 {759}{}{[SKILLS]}
 {760}{}{SKILL_DOCTOR:100}
 {761}{}{[COMPONENTS]}
-{762}{}{53:1}                              # PID_MENTATS
-{763}{}{87:1}                              # PID_BUFFOUT
-{764}{}{71:2}                              # PID_MUTATED_FRUIT
-{765}{}{125:1}                             # PID_BOOZE
-{766}{}{144:1}                             # PID_SUPER_STIMPAK
+{762}{}{53:1}# PID_MENTATS
+{763}{}{87:1}# PID_BUFFOUT
+{764}{}{71:2}# PID_MUTATED_FRUIT
+{765}{}{125:1}# PID_BOOZE
+{766}{}{144:1}# PID_SUPER_STIMPAK
+
+
+
+
+
+
+
 
 {775}{}{[ITEM]}
-{776}{}{77}                                # PID_ELECTRONIC_LOCKPICKS
+{776}{}{77}# PID_ELECTRONIC_LOCKPICKS
 {777}{}{pcx/items/elecpic.pcx}
 {778}{}{91060}
 {779}{}{122}
-{780}{}{450000}                            # 12 h 30 m
+{780}{}{450000}# 12 h 30 m
 {781}{}{NO}
 {782}{}{[TOOLS]}
-{783}{}{228}                               # PID_TECHNICAL_MANUAL
-{784}{}{75}                                # PID_MULTI_TOOL
+{783}{}{228}# PID_TECHNICAL_MANUAL
+{784}{}{75}# PID_MULTI_TOOL
 {785}{}{[SKILLS]}
 {786}{}{SKILL_REPAIR:60}
 {787}{}{SKILL_SCIENCE:60}
 {788}{}{SKILL_LOCKPICK:40}
 {789}{}{[COMPONENTS]}
-{790}{}{59:1}                              # PID_MOTION_SENSOR
-{791}{}{52:1}                              # PID_GEIGER_COUNTER
+{790}{}{59:1}# PID_MOTION_SENSOR
+{791}{}{52:1}# PID_GEIGER_COUNTER
+
+
+
+
+
+
+
 
 {800}{}{[ITEM]}
-{801}{}{411}                               # PID_ELEC_LOCKPICK_MKII
+{801}{}{411}# PID_ELEC_LOCKPICK_MKII
 {802}{}{pcx/items/elockpk2.pcx}
 {803}{}{86056}
 {804}{}{123}
-{805}{}{324000}                            # 9 h
+{805}{}{324000}# 9 h
 {806}{}{NO}
 {807}{}{[TOOLS]}
-{808}{}{228}                               # PID_TECHNICAL_MANUAL
-{809}{}{308}                               # PID_SUPER_TOOL_KIT
+{808}{}{228}# PID_TECHNICAL_MANUAL
+{809}{}{308}# PID_SUPER_TOOL_KIT
 {810}{}{[SKILLS]}
 {811}{}{SKILL_REPAIR:100}
 {812}{}{SKILL_SCIENCE:100}
 {813}{}{SKILL_LOCKPICK:80}
 {814}{}{[COMPONENTS]}
-{815}{}{77:1}                              # PID_ELECTRONIC_LOCKPICKS
+{815}{}{77:1}# PID_ELECTRONIC_LOCKPICKS
+
+
+
+
+
+
+
+
 
 {825}{}{[ITEM]}
-{826}{}{626}                               # WOOD PLANKS
+{826}{}{626}# WOOD PLANKS
 {827}{}{pcx/items/woodplnr.pcx}
 {828}{}{64050}
 {829}{}{166}
-{830}{}{18000}                            # 30 min
+{830}{}{18000}# 30 min
 {831}{}{YES}
 {832}{}{[TOOLS]}
 {833}{}{[SKILLS]}
 {834}{}{SKILL_REPAIR:30}
 {835}{}{[COMPONENTS]}
-{836}{}{625:1}                              # WOOD PLANKS
-{837}{}{127:1}                              # ROPE
+{836}{}{625:1}# WOOD PLANKS
+{837}{}{127:1}# ROPE
+
+
+
+
+
+
+
+
+
+
+
 
 {850}{}{[ITEM]}
-{851}{}{621}                               # PID_GREATER_HEALING_POWDER
+{851}{}{621}# PID_GREATER_HEALING_POWDER
 {852}{}{pcx/items/grheal.pcx}
 {853}{}{48049}
 {854}{}{157}
-{855}{}{30000}                             # 50 m
+{855}{}{30000}# 50 m
 {856}{}{NO}
 {857}{}{[TOOLS]}
 {858}{}{[SKILLS]}
@@ -335,44 +462,74 @@
 {860}{}{SKILL_OUTDOORSMAN:65}
 {861}{}{SKILL_SCIENCE:20}
 {862}{}{[COMPONENTS]}
-{863}{}{271:1}                             # PID_BROC_FLOWER
-{864}{}{272:1}                             # PID_XANDER_ROOT
-{865}{}{624:2}                             # DARKA
+{863}{}{271:1}# PID_BROC_FLOWER
+{864}{}{272:1}# PID_XANDER_ROOT
+{865}{}{624:2}# DARKA
+
+
+
+
+
+
+
+
 
 {875}{}{[ITEM]}
-{876}{}{641}                               # PID_RAT_TAIL_LUCKY_CHARM
+{876}{}{641}# PID_RAT_TAIL_LUCKY_CHARM
 {877}{}{pcx/items/ratcharm.pcx}
 {878}{}{55029}
 {879}{}{186}
-{880}{}{12000}                             # 20 m
+{880}{}{12000}# 20 m
 {881}{}{NO}
 {882}{}{[TOOLS]}
 {883}{}{[SKILLS]}
 {884}{}{SKILL_OUTDOORSMAN:50}
 {885}{}{[COMPONENTS]}
-{886}{}{632:4}                             # PID_RAT_TAIL
+{886}{}{632:4}# PID_RAT_TAIL
+
+
+
+
+
+
+
+
+
+
+
+
 
 {900}{}{[ITEM]}
-{901}{}{16}                                # PID_LASER_PISTOL
+{901}{}{16}# PID_LASER_PISTOL
 {902}{}{pcx/items/LASERGUN.pcx}
 {903}{}{75060}
 {904}{}{188}
-{905}{}{360000}                            # 10h
+{905}{}{360000}# 10h
 {906}{}{NO}
 {907}{}{[TOOLS]}
-{908}{}{75}                                # PID_MULTI_TOOL
+{908}{}{75}# PID_MULTI_TOOL
 {909}{}{[SKILLS]}
 {910}{}{SKILL_SCIENCE:75}
 {911}{}{[COMPONENTS]}
-{912}{}{8:1}                               # PID_10MM_PISTOL
-{913}{}{119:1}                             # PID_NECKLACE
+{912}{}{8:1}# PID_10MM_PISTOL
+{913}{}{119:1}# PID_NECKLACE
+
+
+
+
+
+
+
+
+
+
 
 {925}{}{[ITEM]}
-{926}{}{644}                               # PID_POISONED_STIMPAK
+{926}{}{644}# PID_POISONED_STIMPAK
 {927}{}{pcx/items/STIMX.pcx}
 {928}{}{89060}
 {929}{}{190}
-{930}{}{36000}                             # 1h
+{930}{}{36000}# 1h
 {931}{}{NO}
 {932}{}{[TOOLS]}
 {933}{}{[SKILLS]}
@@ -380,15 +537,24 @@
 {935}{}{SKILL_OUTDOORSMAN:30}
 {936}{}{SKILL_SCIENCE:20}
 {937}{}{[COMPONENTS]}
-{938}{}{40:1}                             # PID_STIMPAK
-{939}{}{92:1}                             # PID_SCORPION_TAIL
+{938}{}{40:1}# PID_STIMPAK
+{939}{}{92:1}# PID_SCORPION_TAIL
+
+
+
+
+
+
+
+
+
 
 {950}{}{[ITEM]}
-{951}{}{645}                              # PID_POISONED_SUPER_STIMPAK
+{951}{}{645}# PID_POISONED_SUPER_STIMPAK
 {952}{}{pcx/items/STIMPAK.pcx}
 {953}{}{88059}
 {954}{}{191}
-{955}{}{36000}                            # 1h
+{955}{}{36000}# 1h
 {956}{}{NO}
 {957}{}{[TOOLS]}
 {958}{}{[SKILLS]}
@@ -396,767 +562,1328 @@
 {960}{}{SKILL_OUTDOORSMAN:60}
 {961}{}{SKILL_SCIENCE:40}
 {962}{}{[COMPONENTS]}
-{963}{}{144:1}                             # PID_SUPER_STIMPAK
-{964}{}{92:1}                              # PID_SCORPION_TAIL
+{963}{}{144:1}# PID_SUPER_STIMPAK
+{964}{}{92:1}# PID_SCORPION_TAIL
+
+
+
+
+
+
+
+
+
 
 {975}{}{[ITEM]}
-{976}{}{402}                               # PID_MAGNETO_LASER_PISTOL
+{976}{}{402}# PID_MAGNETO_LASER_PISTOL
 {977}{}{pcx/items/MLASPIST.pcx}
 {978}{}{75060}
 {979}{}{312}
-{980}{}{360000}                            # 10h
+{980}{}{360000}# 10h
 {981}{}{NO}
 {982}{}{[TOOLS]}
-{983}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{984}{}{308}                               # PID_SUPER_TOOL_KIT
+{983}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{984}{}{308}# PID_SUPER_TOOL_KIT
 {985}{}{[SKILLS]}
 {986}{}{SKILL_ENERGY_WEAPONS:80}
 {987}{}{SKILL_REPAIR:60}
 {988}{}{SKILL_SCIENCE:40}
 {989}{}{[COMPONENTS]}
-{990}{}{16:1}                              # PID_LASER_PISTOL
-{991}{}{100:2}                             # PID_RADIO
+{990}{}{16:1}# PID_LASER_PISTOL
+{991}{}{100:2}# PID_RADIO
+
+
+
+
+
+
+
 
 {1000}{}{[ITEM]}
-{1001}{}{401}                               # PID_LASER_RIFLE_EXT_CAP
-{1002}{}{pcx/items/LRIFLE2.pcx}
-{1003}{}{184062}
-{1004}{}{313}
-{1005}{}{504000}                            # 14h
+{1001}{}{402}# PID_MAGNETO_LASER_PISTOL
+{1002}{}{pcx/items/MLASPIST.pcx}
+{1003}{}{75060}
+{1004}{}{312}
+{1005}{}{360000}# 10h
 {1006}{}{NO}
 {1007}{}{[TOOLS]}
-{1008}{}{102}                               # PID_GUNS_AND_BULLETS
-{1009}{}{308}                               # PID_SUPER_TOOL_KIT
+{1008}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1009}{}{308}# PID_SUPER_TOOL_KIT
 {1010}{}{[SKILLS]}
-{1011}{}{SKILL_ENERGY_WEAPONS:100}
-{1012}{}{SKILL_REPAIR:80}
-{1013}{}{SKILL_SCIENCE:60}
+{1011}{}{SKILL_ENERGY_WEAPONS:80}
+{1012}{}{SKILL_REPAIR:60}
+{1013}{}{SKILL_SCIENCE:40}
 {1014}{}{[COMPONENTS]}
-{1015}{}{118:1}                             # PID_LASER_RIFLE
-{1016}{}{55:1}                              # PID_WATER_CHIP
+{1015}{}{16:1}# PID_LASER_PISTOL
+{1016}{}{100:2}# PID_RADIO
+
+
+
+
+
+
+
 
 {1025}{}{[ITEM]}
-{1026}{}{406}                               # PID_PLASMA_PISTOL_EXT_CART
-{1027}{}{pcx/items/plaspst2.pcx}
-{1028}{}{66058}
-{1029}{}{314}
-{1030}{}{360000}                            # 10h
+{1026}{}{401}# PID_LASER_RIFLE_EXT_CAP
+{1027}{}{pcx/items/LRIFLE2.pcx}
+{1028}{}{184062}
+{1029}{}{313}
+{1030}{}{504000}# 14h
 {1031}{}{NO}
 {1032}{}{[TOOLS]}
-{1033}{}{102}                               # PID_GUNS_AND_BULLETS
-{1034}{}{308}                               # PID_SUPER_TOOL_KIT
+{1033}{}{102}# PID_GUNS_AND_BULLETS
+{1034}{}{308}# PID_SUPER_TOOL_KIT
 {1035}{}{[SKILLS]}
-{1036}{}{SKILL_ENERGY_WEAPONS:80}
-{1037}{}{SKILL_REPAIR:60}
-{1038}{}{SKILL_SCIENCE:40}
+{1036}{}{SKILL_ENERGY_WEAPONS:100}
+{1037}{}{SKILL_REPAIR:80}
+{1038}{}{SKILL_SCIENCE:60}
 {1039}{}{[COMPONENTS]}
-{1040}{}{24:1}                              # PID_PLASMA_PISTOL
+{1040}{}{118:1}# PID_LASER_RIFLE
+{1041}{}{55:1}# PID_WATER_CHIP
+
+
+
+
+
+
+
 
 {1050}{}{[ITEM]}
-{1051}{}{353}                               # PID_INDEPENDENT XL70E3
-{1052}{}{pcx/items/INDWEAP.pcx}
-{1053}{}{144056}
-{1054}{}{315}
-{1055}{}{6048000}                            # 1 week
+{1051}{}{406}# PID_PLASMA_PISTOL_EXT_CART
+{1052}{}{pcx/items/plaspst2.pcx}
+{1053}{}{66058}
+{1054}{}{314}
+{1055}{}{360000}# 10h
 {1056}{}{NO}
 {1057}{}{[TOOLS]}
-{1058}{}{102}                               # PID_GUNS_AND_BULLETS
-{1059}{}{308}                               # PID_SUPER_TOOL_KIT
+{1058}{}{102}# PID_GUNS_AND_BULLETS
+{1059}{}{308}# PID_SUPER_TOOL_KIT
 {1060}{}{[SKILLS]}
-{1061}{}{SKILL_SMALL_GUNS:80}
+{1061}{}{SKILL_ENERGY_WEAPONS:80}
 {1062}{}{SKILL_REPAIR:60}
-{1063}{}{[COMPONENTS]}
-{1064}{}{23:1}                              # PID_ASSAULT_RIFLE
-{1065}{}{98:2}                              # PID_JUNK
+{1063}{}{SKILL_SCIENCE:40}
+{1064}{}{[COMPONENTS]}
+{1065}{}{24:1}# PID_PLASMA_PISTOL
+
+
+
+
+
+
+
+
 
 {1075}{}{[ITEM]}
-{1076}{}{240}                               # PID_TESLA_ARMOR
-{1077}{}{pcx/items/TESLA.pcx}
-{1078}{}{79063}
-{1079}{}{316}
-{1080}{}{6048000}                           # 1 week
+{1076}{}{353}# PID_INDEPENDENT XL70E3
+{1077}{}{pcx/items/INDWEAP.pcx}
+{1078}{}{144056}
+{1079}{}{315}
+{1080}{}{6048000}# 1 week
 {1081}{}{NO}
 {1082}{}{[TOOLS]}
-{1083}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1084}{}{76}                                # PID_DEANS_ELECTRONICS
-{1085}{}{308}                               # PID_SUPER_TOOL_KIT
-{1086}{}{[SKILLS]}
-{1087}{}{SKILL_REPAIR:75}
-{1088}{}{SKILL_SCIENCE:100}
-{1089}{}{[COMPONENTS]}
-{1090}{}{2:1}                               # PID_METAL_ARMOR
+{1083}{}{102}# PID_GUNS_AND_BULLETS
+{1084}{}{308}# PID_SUPER_TOOL_KIT
+{1085}{}{[SKILLS]}
+{1086}{}{SKILL_SMALL_GUNS:80}
+{1087}{}{SKILL_REPAIR:60}
+{1088}{}{[COMPONENTS]}
+{1089}{}{23:1}# PID_ASSAULT_RIFLE
+{1090}{}{98:2}# PID_JUNK
+
+
+
+
+
+
+
+
 
 {1100}{}{[ITEM]}
-{1101}{}{239}                               # PID_BROTHERHOOD_COMBAT_ARMOR
-{1102}{}{pcx/items/COMBA2A.pcx}
-{1103}{}{83065}
-{1104}{}{317}
-{1105}{}{6048000}                           # 1 week
+{1101}{}{240}# PID_TESLA_ARMOR
+{1102}{}{pcx/items/TESLA.pcx}
+{1103}{}{79063}
+{1104}{}{316}
+{1105}{}{6048000}# 1 week
 {1106}{}{NO}
 {1107}{}{[TOOLS]}
-{1108}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1109}{}{308}                               # PID_SUPER_TOOL_KIT
-{1110}{}{[SKILLS]}
-{1111}{}{SKILL_REPAIR:100}
-{1112}{}{SKILL_SCIENCE:100}
-{1113}{}{[COMPONENTS]}
-{1114}{}{17:1}                              # PID_COMBAT_ARMOR
+{1108}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1109}{}{76}# PID_DEANS_ELECTRONICS
+{1110}{}{308}# PID_SUPER_TOOL_KIT
+{1111}{}{[SKILLS]}
+{1112}{}{SKILL_REPAIR:75}
+{1113}{}{SKILL_SCIENCE:100}
+{1114}{}{[COMPONENTS]}
+{1115}{}{2:1}# PID_METAL_ARMOR
+
+
+
+
+
+
+
+
 
 {1125}{}{[ITEM]}
-{1126}{}{232}                               # PID_HARDENED_POWER_ARMOR
-{1127}{}{pcx/items/PWRARMOR.pcx}
-{1128}{}{68064}
-{1129}{}{318}
-{1130}{}{864000}                            # 24h
+{1126}{}{239}# PID_BROTHERHOOD_COMBAT_ARMOR
+{1127}{}{pcx/items/COMBA2A.pcx}
+{1128}{}{83065}
+{1129}{}{317}
+{1130}{}{6048000}# 1 week
 {1131}{}{NO}
 {1132}{}{[TOOLS]}
-{1133}{}{237}                               # PID_CHEMISTRY_MANUAL
-{1134}{}{308}                               # PID_SUPER_TOOL_KIT
+{1133}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1134}{}{308}# PID_SUPER_TOOL_KIT
 {1135}{}{[SKILLS]}
-{1136}{}{SKILL_REPAIR:150}
-{1137}{}{SKILL_SCIENCE:150}
+{1136}{}{SKILL_REPAIR:100}
+{1137}{}{SKILL_SCIENCE:100}
 {1138}{}{[COMPONENTS]}
-{1139}{}{3:1}                               # PID_POWERED_ARMOR
-# TODO
+{1139}{}{17:1}# PID_COMBAT_ARMOR
+
+
+
+
+
+
+
+
+
+
 {1150}{}{[ITEM]}
-{1151}{}{744}                               # PID_FLOATING_EYE_BOT
-{1152}{}{pcx/items/MAFEYE.pcx}
-{1153}{}{32059}
-{1154}{}{366}
-{1155}{}{12096000}                          # 2 weeks
+{1151}{}{232}# PID_HARDENED_POWER_ARMOR
+{1152}{}{pcx/items/PWRARMOR.pcx}
+{1153}{}{68064}
+{1154}{}{318}
+{1155}{}{864000}# 24h
 {1156}{}{NO}
 {1157}{}{[TOOLS]}
-{1158}{}{76}                                # PID_DEANS_ELECTRONICS
-{1159}{}{308}                               # PID_SUPER_TOOL_KIT
+{1158}{}{237}# PID_CHEMISTRY_MANUAL
+{1159}{}{308}# PID_SUPER_TOOL_KIT
 {1160}{}{[SKILLS]}
-{1161}{}{SKILL_REPAIR:100}
-{1162}{}{SKILL_SCIENCE:100}
+{1161}{}{SKILL_REPAIR:150}
+{1162}{}{SKILL_SCIENCE:150}
 {1163}{}{[COMPONENTS]}
-{1164}{}{269:1}                               # PID_ROBOT_PARTS
-{1165}{}{160:1}                               # PID_CATTLE_PROD
+{1164}{}{3:1}# PID_POWERED_ARMOR
+
+
+
+
+
+
+
+
+
 
 {1175}{}{[ITEM]}
-{1176}{}{73}                               # PID_BIG_BOOK_OF_SCIENCE
-{1177}{}{pcx/items/SCIENCE.pcx}
-{1178}{}{58065}
-{1179}{}{378}
-{1180}{}{12096000}                          # 2 weeks
+{1176}{}{348}# PID_ADVANCED_POWER_ARMOR
+{1177}{}{pcx/items/PARMOR2.pcx}
+{1178}{}{39055}
+{1179}{}{318}
+{1180}{}{864000}# 24h
 {1181}{}{NO}
 {1182}{}{[TOOLS]}
-{1183}{}{898}                                # PID_QUILL
-{1184}{}{[SKILLS]}
-{1185}{}{SKILL_SCIENCE:100}
-{1186}{}{[COMPONENTS]}
-{1187}{}{897:1}                               # PID_BLANK_BOOK
+{1183}{}{76}# PID_DEANS_ELECTRONICS
+{1184}{}{308}# PID_SUPER_TOOL_KIT
+{1185}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1186}{}{[SKILLS]}
+{1187}{}{SKILL_SCIENCE:200}
+{1188}{}{SKILL_REPAIR:200}
+{1189}{}{[COMPONENTS]}
+{1190}{}{232:1}# PID_HARDENED_POWER_ARMOR
+{1191}{}{381:3}
+
+
+
+
+
+
+
 
 {1200}{}{[ITEM]}
-{1201}{}{76}                               # PID_DEANS_ELECTRONICS
-{1202}{}{pcx/items/DEANS.pcx}
-{1203}{}{82063}
-{1204}{}{380}
-{1205}{}{12096000}                          # 2 weeks
+{1201}{}{349}# PID_ADVANCED_POWER_ARMOR_MK2
+{1202}{}{pcx/items/PARMOR2.pcx}
+{1203}{}{39055}
+{1204}{}{318}
+{1205}{}{864000}# 24h
 {1206}{}{NO}
 {1207}{}{[TOOLS]}
-{1208}{}{898}                                # PID_QUILL
-{1209}{}{[SKILLS]}
-{1210}{}{SKILL_REPAIR:100}
-{1211}{}{[COMPONENTS]}
-{1212}{}{897:1}                               # PID_BLANK_BOOK
+{1208}{}{76}# PID_DEANS_ELECTRONICS
+{1209}{}{308}# PID_SUPER_TOOL_KIT
+{1210}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1211}{}{[SKILLS]}
+{1212}{}{SKILL_SCIENCE:200}
+{1213}{}{SKILL_REPAIR:200}
+{1214}{}{[COMPONENTS]}
+{1215}{}{348:1}# PID_ADVANCED_POWER_ARMOR
+{1216}{}{908:3}
+
+
+
+
+
+
+
 
 {1225}{}{[ITEM]}
-{1226}{}{80}                               # PID_FIRST_AID_BOOK
-{1227}{}{pcx/items/FRST_BK.pcx}
-{1228}{}{92061}
-{1229}{}{381}
-{1230}{}{12096000}                          # 2 weeks
+{1226}{}{381}# PID_COMBAT_ARMOR_MK_II
+{1227}{}{pcx/items/CBTARMR2.pcx}
+{1228}{}{83065}
+{1229}{}{317}
+{1230}{}{864000}# 24h
 {1231}{}{NO}
 {1232}{}{[TOOLS]}
-{1233}{}{898}                                # PID_QUILL
-{1234}{}{[SKILLS]}
-{1235}{}{SKILL_FIRST_AID:100}
-{1236}{}{[COMPONENTS]}
-{1237}{}{897:1}                               # PID_BLANK_BOOK
+{1233}{}{76}# PID_DEANS_ELECTRONICS
+{1234}{}{308}# PID_SUPER_TOOL_KIT
+{1235}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1236}{}{[SKILLS]}
+{1237}{}{SKILL_SCIENCE:200}
+{1238}{}{SKILL_REPAIR:200}
+{1239}{}{[COMPONENTS]}
+{1240}{}{17:2}
+
+
+
+
+
+
+
+
 
 {1250}{}{[ITEM]}
-{1251}{}{86}                               # PID_SCOUT_HANDBOOK
-{1252}{}{pcx/items/SCOUT.pcx}
-{1253}{}{80062}
-{1254}{}{382}
-{1255}{}{12096000}                          # 2 weeks
+{1251}{}{908}# PID_COMBAT_ARMOR_MK_III
+{1252}{}{pcx/items/cmbmk3.pcx}
+{1253}{}{91065}
+{1254}{}{317}
+{1255}{}{864000}# 24h
 {1256}{}{NO}
 {1257}{}{[TOOLS]}
-{1258}{}{898}                                # PID_QUILL
-{1259}{}{[SKILLS]}
-{1260}{}{SKILL_OUTDOORSMAN:100}
-{1261}{}{[COMPONENTS]}
-{1262}{}{897:1}                               # PID_BLANK_BOOK
+{1258}{}{76}# PID_DEANS_ELECTRONICS
+{1259}{}{308}# PID_SUPER_TOOL_KIT
+{1260}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1261}{}{[SKILLS]}
+{1262}{}{SKILL_SCIENCE:200}
+{1263}{}{SKILL_REPAIR:200}
+{1264}{}{[COMPONENTS]}
+{1265}{}{381:2}
+
+
+
+
+
+
+
+
 
 {1275}{}{[ITEM]}
-{1276}{}{102}                               # PID_GUNS_AND_BULLETS
-{1277}{}{pcx/items/G&A.pcx}
-{1278}{}{93065}
-{1279}{}{383}
-{1280}{}{12096000}                          # 2 weeks
-{1281}{}{NO}
+{1276}{}{265}# PID_CURED_LEATHER_ARMOR
+{1277}{}{pcx/items/SPLEATHR.pcx}
+{1278}{}{62063}
+{1279}{}{140}
+{1280}{}{231000}# 6 h 25 m
+{1281}{}{YES}
 {1282}{}{[TOOLS]}
-{1283}{}{898}                                # PID_QUILL
+{1283}{}{4|45|236|714}# PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
 {1284}{}{[SKILLS]}
-{1285}{}{SKILL_SMALL_GUNS:100}
+{1285}{}{SKILL_REPAIR:80}
 {1286}{}{[COMPONENTS]}
-{1287}{}{897:1}                               # PID_BLANK_BOOK
+{1287}{}{127:1}# PID_ROPE
+{1288}{}{276:6}# PID_GECKO_PELT
+
+
+
+
+
+
+
+
+
+
 
 {1300}{}{[ITEM]}
-{1301}{}{739}                               # PID_HEI_GUI_ARMOR
+{1301}{}{739}# PID_HEI_GUI_ARMOR
 {1302}{}{pcx/items/arekzo.pcx}
 {1303}{}{63048}
 {1304}{}{713}
-{1305}{}{12096000}                          # 2 weeks
+{1305}{}{12096000}# 2 weeks
 {1306}{}{NO}
 {1307}{}{[TOOLS]}
-{1308}{}{76}                                # PID_DEANS_ELECTRONICS
-{1309}{}{308}                               # PID_SUPER_TOOL_KIT
-{1310}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
+{1308}{}{76}# PID_DEANS_ELECTRONICS
+{1309}{}{308}# PID_SUPER_TOOL_KIT
+{1310}{}{73}# PID_BIG_BOOK_OF_SCIENCE
 {1311}{}{[SKILLS]}
 {1312}{}{SKILL_REPAIR:125}
 {1313}{}{SKILL_SCIENCE:125}
 {1314}{}{[COMPONENTS]}
-{1315}{}{738:3}                             # PID_DAMAGED_HEI_GUI_ARMOR
-{1316}{}{54:1}                              # PID_STEALTH_BOY
-{1317}{}{649:1}                             # PID_NIGHT_VISION_GOGGLES
+{1315}{}{738:3}# PID_DAMAGED_HEI_GUI_ARMOR
+{1316}{}{54:1}# PID_STEALTH_BOY
+{1317}{}{649:1}# PID_NIGHT_VISION_GOGGLES
+
+
+
+
+
+
 
 {1325}{}{[ITEM]}
-{1326}{}{126}                               # PID_WATER_FLASK
-{1327}{}{pcx/items/FLASK.pcx}
-{1328}{}{55064}
-{1329}{}{}
-{1330}{}{36000}                            # 1 hour
+{1326}{}{725}# PID_APOLLO_LASER_PISTOL
+{1327}{}{pcx/items/apollo.pcx}
+{1328}{}{120060}
+{1329}{}{342}
+{1330}{}{12096000}# 2 weeks
 {1331}{}{NO}
 {1332}{}{[TOOLS]}
-{1333}{}{895|101}                               # PID_WATER_PURIFICATION_TABLETS or PID_LIGHTER
-{1334}{}{[SKILLS]}
-{1335}{}{SKILL_OUTDOORSMAN:20}
-{1336}{}{[COMPONENTS]}
-{1337}{}{896:1}                               # PID_EMPTY_WATER_FLASK
+{1333}{}{76}# PID_DEANS_ELECTRONICS
+{1334}{}{308}# PID_SUPER_TOOL_KIT
+{1335}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1336}{}{[SKILLS]}
+{1337}{}{SKILL_REPAIR:150}
+{1338}{}{SKILL_SCIENCE:150}
+{1339}{}{[COMPONENTS]}
+{1340}{}{402:1}# PID_MAGNETO_LASER_PISTOL
+
+
+
+
+
+
+
+
 
 {1350}{}{[ITEM]}
-{1351}{}{767}                               # PID_HOW_TO_BE_A_WORLD_CLASS_TRIATHLETE
-{1352}{}{pcx/items/TRIATH.pcx}
-{1353}{}{68059}
-{1354}{}{773}
-{1355}{}{12096000}                          # 2 weeks
+{1351}{}{743}# PID_ARES_PLASMA_SPEAR
+{1352}{}{pcx/items/wpnKnf07.pcx}
+{1353}{}{162040}
+{1354}{}{346}
+{1355}{}{12096000}# 2 weeks
 {1356}{}{NO}
 {1357}{}{[TOOLS]}
-{1358}{}{898}                                # PID_QUILL
-{1359}{}{[SKILLS]}
-{1360}{}{SKILL_THROWING:100}
-{1361}{}{[COMPONENTS]}
-{1362}{}{897:1}                               # PID_BLANK_BOOK
+{1358}{}{76}# PID_DEANS_ELECTRONICS
+{1359}{}{308}# PID_SUPER_TOOL_KIT
+{1360}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1361}{}{[SKILLS]}
+{1362}{}{SKILL_REPAIR:150}
+{1363}{}{SKILL_SCIENCE:150}
+{1364}{}{[COMPONENTS]}
+{1365}{}{402:1}# PID_PLASMA_PISTOL
+{1366}{}{7:1}# PID_SPEAR
+
+
+
+
+
+
+
 
 {1375}{}{[ITEM]}
-{1376}{}{768}                               # PID_US_ARMY_30_HANDY_FLAMETHROWER_RECIPES
-{1377}{}{pcx/items/usarmy.pcx}
-{1378}{}{59059}
-{1379}{}{774}
-{1380}{}{12096000}                          # 2 weeks
+{1376}{}{719}# PID_15MM_ARTEMIS_RAIL_GUN
+{1377}{}{pcx/items/artemis.pcx}
+{1378}{}{124061}
+{1379}{}{343}
+{1380}{}{24192000}# 4 weeks
 {1381}{}{NO}
 {1382}{}{[TOOLS]}
-{1383}{}{898}                                # PID_QUILL
-{1384}{}{[SKILLS]}
-{1385}{}{SKILL_BIG_GUNS:100}
-{1386}{}{[COMPONENTS]}
-{1387}{}{897:1}                               # PID_BLANK_BOOK
+{1383}{}{76}# PID_DEANS_ELECTRONICS
+{1384}{}{308}# PID_SUPER_TOOL_KIT
+{1385}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1386}{}{[SKILLS]}
+{1387}{}{SKILL_REPAIR:200}
+{1388}{}{SKILL_SCIENCE:200}
+{1389}{}{[COMPONENTS]}
+{1390}{}{13:1}# PID_ROCKET_LAUNCHER
+{1391}{}{392:1}# PID_M72_GAUSS_RIFLE
+
+
+
+
+
+
+
 
 {1400}{}{[ITEM]}
-{1401}{}{769}                               # PID_NIKOLA_TESLA_AND_YOU
-{1402}{}{pcx/items/teslayou.pcx}
-{1403}{}{54058}
-{1404}{}{775}
-{1405}{}{12096000}                          # 2 weeks
+{1401}{}{653}# PID_ATHENA_POWER_ARMOR
+{1402}{}{pcx/items/ardfnder.pcx}
+{1403}{}{57051}
+{1404}{}{337}
+{1405}{}{48384000}# 8 weeks
 {1406}{}{NO}
 {1407}{}{[TOOLS]}
-{1408}{}{898}                                # PID_QUILL
-{1409}{}{[SKILLS]}
-{1410}{}{SKILL_ENERGY_WEAPONS:100}
-{1411}{}{[COMPONENTS]}
-{1412}{}{897:1}                               # PID_BLANK_BOOK
+{1408}{}{76}# PID_DEANS_ELECTRONICS
+{1409}{}{308}# PID_SUPER_TOOL_KIT
+{1410}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1411}{}{[SKILLS]}
+{1412}{}{SKILL_REPAIR:200}
+{1413}{}{SKILL_SCIENCE:200}
+{1414}{}{[COMPONENTS]}
+{1415}{}{349:1}# PID_ADVANCED_POWER_ARMOR_MK2
+
+
+
+
+
+
+
+
 
 {1425}{}{[ITEM]}
-{1426}{}{770}                               # PID_MEDICAL_ENCYCLOPEDIA
-{1427}{}{pcx/items/MEDENC.pcx}
-{1428}{}{54052}
-{1429}{}{776}
-{1430}{}{12096000}                          # 2 weeks
+{1426}{}{394}# PID_PK12_GAUSS_PISTOL
+{1427}{}{pcx/items/GAUSSPTL.pcx}
+{1428}{}{65053}
+{1429}{}{375}
+{1430}{}{12096000}# 2 weeks
 {1431}{}{NO}
 {1432}{}{[TOOLS]}
-{1433}{}{898}                                # PID_QUILL
-{1434}{}{[SKILLS]}
-{1435}{}{SKILL_DOCTOR:100}
-{1436}{}{[COMPONENTS]}
-{1437}{}{897:1}                               # PID_BLANK_BOOK
+{1433}{}{76}# PID_DEANS_ELECTRONICS
+{1434}{}{308}# PID_SUPER_TOOL_KIT
+{1435}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1436}{}{[SKILLS]}
+{1437}{}{SKILL_REPAIR:150}
+{1438}{}{SKILL_SCIENCE:150}
+{1439}{}{[COMPONENTS]}
+{1440}{}{402:3}# PID_MAGNETO_LASER_PISTOL
+
+
+
+
+
+
+
+
 
 {1450}{}{[ITEM]}
-{1451}{}{771}                               # PID_GROGNAK_THE_BARBARIAN
-{1452}{}{pcx/items/grognak.pcx}
-{1453}{}{70058}
-{1454}{}{777}
-{1455}{}{12096000}                          # 2 weeks
+{1451}{}{392}# PID_M72_GAUSS_RIFLE
+{1452}{}{pcx/items/M72GAUSS.pcx}
+{1453}{}{174054}
+{1454}{}{376}
+{1455}{}{24192000}# 4 weeks
 {1456}{}{NO}
 {1457}{}{[TOOLS]}
-{1458}{}{898}                                # PID_QUILL
-{1459}{}{[SKILLS]}
-{1460}{}{SKILL_MELEE_WEAPONS:100}
-{1461}{}{[COMPONENTS]}
-{1462}{}{897:1}                               # PID_BLANK_BOOK
+{1458}{}{76}# PID_DEANS_ELECTRONICS
+{1459}{}{308}# PID_SUPER_TOOL_KIT
+{1460}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1461}{}{[SKILLS]}
+{1462}{}{SKILL_REPAIR:150}
+{1463}{}{SKILL_SCIENCE:150}
+{1464}{}{[COMPONENTS]}
+{1465}{}{394:2}# PID_PK12_GAUSS_PISTOL
+
+
+
+
+
+
+
+
 
 {1475}{}{[ITEM]}
-{1476}{}{772}                               # PID_MAKING_FRIENDS_WITH_BIG_FAT_LIARS
-{1477}{}{pcx/items/bigfat.pcx}
-{1478}{}{68059}
-{1479}{}{778}
-{1480}{}{12096000}                          # 2 weeks
+{1476}{}{696}# PID_MEC_GAUSS_MINIGUN
+{1477}{}{pcx/items/TGATGAU1.pcx}
+{1478}{}{129054}
+{1479}{}{371}
+{1480}{}{48384000}# 8 weeks
 {1481}{}{NO}
 {1482}{}{[TOOLS]}
-{1483}{}{898}                                # PID_QUILL
-{1484}{}{[SKILLS]}
-{1485}{}{SKILL_SPEECH:100}
-{1486}{}{[COMPONENTS]}
-{1487}{}{897:1}                               # PID_BLANK_BOOK
+{1483}{}{76}# PID_DEANS_ELECTRONICS
+{1484}{}{308}# PID_SUPER_TOOL_KIT
+{1485}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1486}{}{[SKILLS]}
+{1487}{}{SKILL_REPAIR:200}
+{1488}{}{SKILL_SCIENCE:200}
+{1489}{}{[COMPONENTS]}
+{1490}{}{392:5}# PID_M72_GAUSS_RIFLE
+{1491}{}{395:1}# PID_VINDICATOR_MINIGUN
+
+
+
+
+
+
+
 
 {1500}{}{[ITEM]}
-{1501}{}{773}                               # PID_CHINESE_ARMY_SPECIAL_OPS_TRAINING_MANUAL
-{1502}{}{pcx/items/chinaops.pcx}
-{1503}{}{71060}
-{1504}{}{779}
-{1505}{}{12096000}                          # 2 weeks
+{1501}{}{741}# PID_HERAKLES_POWER_FIST
+{1502}{}{pcx/items/herakles.pcx}
+{1503}{}{123056}
+{1504}{}{344}
+{1505}{}{12096000}# 2 weeks
 {1506}{}{NO}
 {1507}{}{[TOOLS]}
-{1508}{}{898}                                # PID_QUILL
-{1509}{}{[SKILLS]}
-{1510}{}{SKILL_SNEAK:100}
-{1511}{}{[COMPONENTS]}
-{1512}{}{897:1}                               # PID_BLANK_BOOK
+{1508}{}{76}# PID_DEANS_ELECTRONICS
+{1509}{}{308}# PID_SUPER_TOOL_KIT
+{1510}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1511}{}{[SKILLS]}
+{1512}{}{SKILL_REPAIR:150}
+{1513}{}{SKILL_SCIENCE:150}
+{1514}{}{[COMPONENTS]}
+{1515}{}{407:1}# PID_MEGA_POWER_FIST
+{1516}{}{875:1}# PID_MICRO_SLEDGE
+
+
+
+
+
+
+
 
 {1525}{}{[ITEM]}
-{1526}{}{774}                               # PID_HOME_SECURITY
-{1527}{}{pcx/items/homesecu.pcx}
-{1528}{}{65052}
-{1529}{}{780}
-{1530}{}{12096000}                          # 2 weeks
+{1526}{}{746}# PID_HERMES_ARMOR
+{1527}{}{pcx/items/hermes.pcx}
+{1528}{}{56060}
+{1529}{}{345}
+{1530}{}{48384000}# 8 weeks
 {1531}{}{NO}
 {1532}{}{[TOOLS]}
-{1533}{}{898}                                # PID_QUILL
-{1534}{}{[SKILLS]}
-{1535}{}{SKILL_LOCKPICK:100}
-{1536}{}{[COMPONENTS]}
-{1537}{}{897:1}                               # PID_BLANK_BOOK
+{1533}{}{76}# PID_DEANS_ELECTRONICS
+{1534}{}{308}# PID_SUPER_TOOL_KIT
+{1535}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1536}{}{[SKILLS]}
+{1537}{}{SKILL_REPAIR:150}
+{1538}{}{SKILL_SCIENCE:150}
+{1539}{}{[COMPONENTS]}
+{1540}{}{381:2}# PID_COMBAT_ARMOR_MK_II
+
+
+
+
+
+
+
+
 
 {1550}{}{[ITEM]}
-{1551}{}{775}                               # PID_MADDOCKS_TRICKS_TRAPS
-{1552}{}{pcx/items/maddock.pcx}
-{1553}{}{96053}
-{1554}{}{781}
-{1555}{}{12096000}                          # 2 weeks
+{1551}{}{390}# PID_SOLAR_SCORCHER
+{1552}{}{pcx/items/SOLARSCR.pcx}
+{1553}{}{97052}
+{1554}{}{373}
+{1555}{}{12096000}# 2 weeks
 {1556}{}{NO}
 {1557}{}{[TOOLS]}
-{1558}{}{898}                                # PID_QUILL
-{1559}{}{[SKILLS]}
-{1560}{}{SKILL_TRAPS:100}
-{1561}{}{[COMPONENTS]}
-{1562}{}{897:1}                               # PID_BLANK_BOOK
+{1558}{}{76}# PID_DEANS_ELECTRONICS
+{1559}{}{308}# PID_SUPER_TOOL_KIT
+{1560}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1561}{}{[SKILLS]}
+{1562}{}{SKILL_REPAIR:150}
+{1563}{}{SKILL_SCIENCE:150}
+{1564}{}{[COMPONENTS]}
+{1565}{}{396:1}# PID_YK32_PULSE_PISTOL
+
+
+
+
+
+
+
+
 
 {1575}{}{[ITEM]}
-{1576}{}{776}                               # PID_DONT_STEAL_THIS_BOOK
-{1577}{}{pcx/items/dontstea.pcx}
-{1578}{}{68059}
-{1579}{}{782}
-{1580}{}{12096000}                          # 2 weeks
+{1576}{}{536}# PID_DOCKING_CLAMP_CHIP
+{1577}{}{pcx/items/ovrchip.pcx}
+{1578}{}{121060}
+{1579}{}{793}
+{1580}{}{12096000}# 2 weeks
 {1581}{}{NO}
 {1582}{}{[TOOLS]}
-{1583}{}{898}                                # PID_QUILL
-{1584}{}{[SKILLS]}
-{1585}{}{SKILL_STEAL:100}
-{1586}{}{[COMPONENTS]}
-{1587}{}{897:1}                               # PID_BLANK_BOOK
+{1583}{}{76}# PID_DEANS_ELECTRONICS
+{1584}{}{308}# PID_SUPER_TOOL_KIT
+{1585}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1586}{}{[SKILLS]}
+{1587}{}{SKILL_REPAIR:150}
+{1588}{}{SKILL_SCIENCE:150}
+{1589}{}{[COMPONENTS]}
+{1590}{}{55:1}# PID_WATER_CHIP
+
+
+
+
+
+
+
+
 
 {1600}{}{[ITEM]}
-{1601}{}{777}                               # PID_PUGILISM_ILLUSTRATED
-{1602}{}{pcx/items/pugilism.pcx}
-{1603}{}{59059}
-{1604}{}{783}
-{1605}{}{12096000}                          # 2 weeks
+{1601}{}{59}# PID_MOTION_SENSOR
+{1602}{}{pcx/items/MOTION.pcx}
+{1603}{}{90065}
+{1604}{}{168}
+{1605}{}{6048000}# 1 week
 {1606}{}{NO}
 {1607}{}{[TOOLS]}
-{1608}{}{898}                                # PID_QUILL
+{1608}{}{75}# PID_MULTI_TOOL
 {1609}{}{[SKILLS]}
-{1610}{}{SKILL_UNARMED:100}
-{1611}{}{[COMPONENTS]}
-{1612}{}{897:1}                               # PID_BLANK_BOOK
+{1610}{}{SKILL_REPAIR:75}
+{1611}{}{SKILL_SCIENCE:75}
+{1612}{}{[COMPONENTS]}
+{1613}{}{100:1}# PID_RADIO
+
+
+
+
+
+
+
+
+
+
 
 {1625}{}{[ITEM]}
-{1626}{}{847}                               # PID_TALES_OF_A_JUNKTOWN_JERKY_VENDOR
-{1627}{}{pcx/items/junktown.pcx}
-{1628}{}{56058}
-{1629}{}{784}
-{1630}{}{12096000}                          # 2 weeks
+{1626}{}{52}# PID_GEIGER_COUNTER
+{1627}{}{pcx/items/GEIGER4.pcx}
+{1628}{}{73063}
+{1629}{}{370}
+{1630}{}{6048000}# 1 week
 {1631}{}{NO}
 {1632}{}{[TOOLS]}
-{1633}{}{898}                                # PID_QUILL
+{1633}{}{75}# PID_MULTI_TOOL
 {1634}{}{[SKILLS]}
-{1635}{}{SKILL_BARTER:100}
-{1636}{}{[COMPONENTS]}
-{1637}{}{897:1}                               # PID_BLANK_BOOK
+{1635}{}{SKILL_REPAIR:75}
+{1636}{}{SKILL_SCIENCE:75}
+{1637}{}{[COMPONENTS]}
+{1638}{}{893:1}# PID_GAS_TANK
+
+
+
+
+
+
+
+
+
+
 
 {1650}{}{[ITEM]}
-{1651}{}{848}                               # PID_ZEN_GAMBLING
-{1652}{}{pcx/items/zen.pcx}
-{1653}{}{65051}
-{1654}{}{785}
-{1655}{}{12096000}                          # 2 weeks
+{1651}{}{160}# PID_CATTLE_PROD
+{1652}{}{pcx/items/CPROD3.pcx}
+{1653}{}{91063}
+{1654}{}{374}
+{1655}{}{864000}# 24h
 {1656}{}{NO}
 {1657}{}{[TOOLS]}
-{1658}{}{898}                               # PID_QUILL
+{1658}{}{75}# PID_MULTI_TOOL
 {1659}{}{[SKILLS]}
-{1660}{}{SKILL_GAMBLING:100}
-{1661}{}{[COMPONENTS]}
-{1662}{}{897:1}                               # PID_BLANK_BOOK
+{1660}{}{SKILL_REPAIR:50}
+{1661}{}{SKILL_SCIENCE:50}
+{1662}{}{[COMPONENTS]}
+{1663}{}{5:1}# PID_CLUB
+{1664}{}{38:1}# PID_SMALL_ENERGY_CELL
+{1665}{}{100:1}# PID_RADIO
+
+
+
+
+
+
+
+
 
 {1675}{}{[ITEM]}
-{1676}{}{900}                               # PID_GUTS_STEW
-{1677}{}{pcx/items/food08.pcx}
-{1678}{}{69052}
-{1679}{}{786}
-{1680}{}{72000}                            # 2 h
+{1676}{}{584}# PID_DANGEROUS_POISON
+{1677}{}{pcx/items/MUTASYRM.pcx}
+{1678}{}{84059}
+{1679}{}{828}
+{1680}{}{36000}# 1h
 {1681}{}{NO}
 {1682}{}{[TOOLS]}
-{1683}{}{101}                               # PID_LIGHTER
+{1683}{}{4|45|236|714}# PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
 {1684}{}{[SKILLS]}
-{1685}{}{SKILL_OUTDOORSMAN:20}
+{1685}{}{SKILL_OUTDOORSMAN:25}
 {1686}{}{[COMPONENTS]}
-{1687}{}{634:1}                               # PID_GUTS
+{1687}{}{318:1}# PID_HYPODERMIC_NEEDLE
+{1688}{}{92:1}# PID_SCORPION_TAIL
+
+
+
+
+
+
+
+
+
+
 
 {1700}{}{[ITEM]}
-{1701}{}{901}                               # PID_LIVER_CHOPS
-{1702}{}{pcx/items/food07.pcx}
-{1703}{}{85051}
-{1704}{}{787}
-{1705}{}{72000}                            # 2 h
+{1701}{}{334}# PID_POWERFUL_POISON
+{1702}{}{pcx/items/POISON.pcx}
+{1703}{}{84059}
+{1704}{}{829}
+{1705}{}{36000}# 1h
 {1706}{}{NO}
 {1707}{}{[TOOLS]}
-{1708}{}{101}                               # PID_LIGHTER
+{1708}{}{4|45|236|714}# PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
 {1709}{}{[SKILLS]}
-{1710}{}{SKILL_OUTDOORSMAN:20}
+{1710}{}{SKILL_OUTDOORSMAN:25}
 {1711}{}{[COMPONENTS]}
-{1712}{}{635:1}                               # PID_LIVER
+{1712}{}{318:1}# PID_HYPODERMIC_NEEDLE
+{1713}{}{601:1}# PID_STINGER
+
+
+
+
+
+
+
+
+
+
 
 {1725}{}{[ITEM]}
-{1726}{}{902}                               # PID_MUSHROOM_CLOUDS
-{1727}{}{pcx/items/mushclou.pcx}
-{1728}{}{42054}
-{1729}{}{788}
-{1730}{}{108000}                            # 3 h
+{1726}{}{744}# PID_FLOATING_EYE_BOT
+{1727}{}{pcx/items/MAFEYE.pcx}
+{1728}{}{32059}
+{1729}{}{366}
+{1730}{}{12096000}# 2 weeks
 {1731}{}{NO}
 {1732}{}{[TOOLS]}
-{1733}{}{101}                               # PID_LIGHTER
-{1734}{}{[SKILLS]}
-{1735}{}{SKILL_OUTDOORSMAN:30}
-{1736}{}{[COMPONENTS]}
-{1737}{}{623:1}                               # PID_CANNED_FOOD
+{1733}{}{76}# PID_DEANS_ELECTRONICS
+{1734}{}{308}# PID_SUPER_TOOL_KIT
+{1735}{}{[SKILLS]}
+{1736}{}{SKILL_REPAIR:100}
+{1737}{}{SKILL_SCIENCE:100}
+{1738}{}{[COMPONENTS]}
+{1739}{}{269:1}# PID_ROBOT_PARTS
+{1740}{}{160:1}# PID_CATTLE_PROD
+
+
+
+
+
+
+
+
 
 {1750}{}{[ITEM]}
-{1751}{}{903}                               # PID_DESERT_SALAD
-{1752}{}{pcx/items/dsrtsald.pcx}
-{1753}{}{74053}
-{1754}{}{789}
-{1755}{}{36000}                            # 1 h
+{1751}{}{900}# PID_GUTS_STEW
+{1752}{}{pcx/items/food08.pcx}
+{1753}{}{69052}
+{1754}{}{786}
+{1755}{}{72000}# 2 h
 {1756}{}{NO}
 {1757}{}{[TOOLS]}
-{1758}{}{101}                               # PID_LIGHTER
+{1758}{}{101}# PID_LIGHTER
 {1759}{}{[SKILLS]}
-{1760}{}{SKILL_OUTDOORSMAN:30}
+{1760}{}{SKILL_OUTDOORSMAN:20}
 {1761}{}{[COMPONENTS]}
-{1762}{}{284:1}                               # PID_MEAT_JERKY
-{1763}{}{272:1}                               # PID_XANDER_ROOT
-{1764}{}{646:1}                               # PID_CHEESE
+{1762}{}{634:1}# PID_GUTS
+
+
+
+
+
+
+
+
+
+
+
 
 {1775}{}{[ITEM]}
-{1776}{}{536}                               # PID_DOCKING_CLAMP_CHIP
-{1777}{}{pcx/items/ovrchip.pcx}
-{1778}{}{121060}
-{1779}{}{793}
-{1780}{}{12096000}                          # 2 weeks
+{1776}{}{901}# PID_LIVER_CHOPS
+{1777}{}{pcx/items/food07.pcx}
+{1778}{}{85051}
+{1779}{}{787}
+{1780}{}{72000}# 2 h
 {1781}{}{NO}
 {1782}{}{[TOOLS]}
-{1783}{}{76}                                # PID_DEANS_ELECTRONICS
-{1784}{}{308}                               # PID_SUPER_TOOL_KIT
-{1785}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1786}{}{[SKILLS]}
-{1787}{}{SKILL_REPAIR:150}
-{1788}{}{SKILL_SCIENCE:150}
-{1789}{}{[COMPONENTS]}
-{1790}{}{55:1}                              # PID_WATER_CHIP
+{1783}{}{101}# PID_LIGHTER
+{1784}{}{[SKILLS]}
+{1785}{}{SKILL_OUTDOORSMAN:20}
+{1786}{}{[COMPONENTS]}
+{1787}{}{635:1}# PID_LIVER
+
+
+
+
+
+
+
+
+
+
+
 
 {1800}{}{[ITEM]}
-{1801}{}{725}                               # PID_APOLLO_LASER_PISTOL
-{1802}{}{pcx/items/apollo.pcx}
-{1803}{}{120060}
-{1804}{}{342}
-{1805}{}{12096000}                          # 2 weeks
+{1801}{}{902}# PID_MUSHROOM_CLOUDS
+{1802}{}{pcx/items/mushclou.pcx}
+{1803}{}{42054}
+{1804}{}{788}
+{1805}{}{108000}# 3 h
 {1806}{}{NO}
 {1807}{}{[TOOLS]}
-{1808}{}{76}                                # PID_DEANS_ELECTRONICS
-{1809}{}{308}                               # PID_SUPER_TOOL_KIT
-{1810}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1811}{}{[SKILLS]}
-{1812}{}{SKILL_REPAIR:150}
-{1813}{}{SKILL_SCIENCE:150}
-{1814}{}{[COMPONENTS]}
-{1815}{}{402:1}                             # PID_MAGNETO_LASER_PISTOL
+{1808}{}{101}# PID_LIGHTER
+{1809}{}{[SKILLS]}
+{1810}{}{SKILL_OUTDOORSMAN:30}
+{1811}{}{[COMPONENTS]}
+{1812}{}{623:1}# PID_CANNED_FOOD
+
+
+
+
+
+
+
+
+
+
+
 
 {1825}{}{[ITEM]}
-{1826}{}{743}                               # PID_ARES_PLASMA_SPEAR
-{1827}{}{pcx/items/wpnKnf07.pcx}
-{1828}{}{162040}
-{1829}{}{346}
-{1830}{}{12096000}                          # 2 weeks
+{1826}{}{903}# PID_DESERT_SALAD
+{1827}{}{pcx/items/dsrtsald.pcx}
+{1828}{}{74053}
+{1829}{}{789}
+{1830}{}{36000}# 1 h
 {1831}{}{NO}
 {1832}{}{[TOOLS]}
-{1833}{}{76}                                # PID_DEANS_ELECTRONICS
-{1834}{}{308}                               # PID_SUPER_TOOL_KIT
-{1835}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1836}{}{[SKILLS]}
-{1837}{}{SKILL_REPAIR:150}
-{1838}{}{SKILL_SCIENCE:150}
-{1839}{}{[COMPONENTS]}
-{1840}{}{402:1}                             # PID_PLASMA_PISTOL
-{1841}{}{7:1}                               # PID_SPEAR
+{1833}{}{101}# PID_LIGHTER
+{1834}{}{[SKILLS]}
+{1835}{}{SKILL_OUTDOORSMAN:30}
+{1836}{}{[COMPONENTS]}
+{1837}{}{284:1}# PID_MEAT_JERKY
+{1838}{}{272:1}# PID_XANDER_ROOT
+{1839}{}{646:1}# PID_CHEESE
+
+
+
+
+
+
+
+
+
 
 {1850}{}{[ITEM]}
-{1851}{}{719}                               # PID_15MM_ARTEMIS_RAIL_GUN
-{1852}{}{pcx/items/artemis.pcx}
-{1853}{}{124061}
-{1854}{}{343}
-{1855}{}{24192000}                          # 4 weeks
+{1851}{}{73}# PID_BIG_BOOK_OF_SCIENCE
+{1852}{}{pcx/items/SCIENCE.pcx}
+{1853}{}{58065}
+{1854}{}{378}
+{1855}{}{2592000}# 3 days
 {1856}{}{NO}
 {1857}{}{[TOOLS]}
-{1858}{}{76}                                # PID_DEANS_ELECTRONICS
-{1859}{}{308}                               # PID_SUPER_TOOL_KIT
-{1860}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1861}{}{[SKILLS]}
-{1862}{}{SKILL_REPAIR:200}
-{1863}{}{SKILL_SCIENCE:200}
-{1864}{}{[COMPONENTS]}
-{1865}{}{13:1}                               # PID_ROCKET_LAUNCHER
-{1866}{}{392:1}                              # PID_M72_GAUSS_RIFLE
+{1858}{}{898}# PID_QUILL
+{1859}{}{[SKILLS]}
+{1860}{}{SKILL_SCIENCE:100}
+{1861}{}{[COMPONENTS]}
+{1862}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {1875}{}{[ITEM]}
-{1876}{}{653}                               # PID_ATHENA_POWER_ARMOR
-{1877}{}{pcx/items/ardfnder.pcx}
-{1878}{}{57051}
-{1879}{}{337}
-{1880}{}{48384000}                          # 8 weeks
+{1876}{}{76}# PID_DEANS_ELECTRONICS
+{1877}{}{pcx/items/DEANS.pcx}
+{1878}{}{82063}
+{1879}{}{380}
+{1880}{}{2592000}# 3 days
 {1881}{}{NO}
 {1882}{}{[TOOLS]}
-{1883}{}{76}                                # PID_DEANS_ELECTRONICS
-{1884}{}{308}                               # PID_SUPER_TOOL_KIT
-{1885}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1886}{}{[SKILLS]}
-{1887}{}{SKILL_REPAIR:200}
-{1888}{}{SKILL_SCIENCE:200}
-{1889}{}{[COMPONENTS]}
-{1890}{}{349:1}                             # PID_ADVANCED_POWER_ARMOR_MK2
+{1883}{}{898}# PID_QUILL
+{1884}{}{[SKILLS]}
+{1885}{}{SKILL_REPAIR:100}
+{1886}{}{[COMPONENTS]}
+{1887}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {1900}{}{[ITEM]}
-{1901}{}{394}                               # PID_PK12_GAUSS_PISTOL
-{1902}{}{pcx/items/GAUSSPTL.pcx}
-{1903}{}{65053}
-{1904}{}{375}
-{1905}{}{12096000}                          # 2 weeks
+{1901}{}{80}# PID_FIRST_AID_BOOK
+{1902}{}{pcx/items/FRST_BK.pcx}
+{1903}{}{92061}
+{1904}{}{381}
+{1905}{}{2592000}# 3 days
 {1906}{}{NO}
 {1907}{}{[TOOLS]}
-{1908}{}{76}                                # PID_DEANS_ELECTRONICS
-{1909}{}{308}                               # PID_SUPER_TOOL_KIT
-{1910}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1911}{}{[SKILLS]}
-{1912}{}{SKILL_REPAIR:150}
-{1913}{}{SKILL_SCIENCE:150}
-{1914}{}{[COMPONENTS]}
-{1915}{}{402:3}                               # PID_MAGNETO_LASER_PISTOL
+{1908}{}{898}# PID_QUILL
+{1909}{}{[SKILLS]}
+{1910}{}{SKILL_FIRST_AID:100}
+{1911}{}{[COMPONENTS]}
+{1912}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {1925}{}{[ITEM]}
-{1926}{}{392}                               # PID_M72_GAUSS_RIFLE
-{1927}{}{pcx/items/M72GAUSS.pcx}
-{1928}{}{174054}
-{1929}{}{376}
-{1930}{}{24192000}                          # 4 weeks
+{1926}{}{86}# PID_SCOUT_HANDBOOK
+{1927}{}{pcx/items/SCOUT.pcx}
+{1928}{}{80062}
+{1929}{}{382}
+{1930}{}{2592000}# 3 days
 {1931}{}{NO}
 {1932}{}{[TOOLS]}
-{1933}{}{76}                                # PID_DEANS_ELECTRONICS
-{1934}{}{308}                               # PID_SUPER_TOOL_KIT
-{1935}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1936}{}{[SKILLS]}
-{1937}{}{SKILL_REPAIR:150}
-{1938}{}{SKILL_SCIENCE:150}
-{1939}{}{[COMPONENTS]}
-{1940}{}{394:2}                             # PID_PK12_GAUSS_PISTOL
+{1933}{}{898}# PID_QUILL
+{1934}{}{[SKILLS]}
+{1935}{}{SKILL_OUTDOORSMAN:100}
+{1936}{}{[COMPONENTS]}
+{1937}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {1950}{}{[ITEM]}
-{1951}{}{696}                               # PID_MEC_GAUSS_MINIGUN
-{1952}{}{pcx/items/TGATGAU1.pcx}
-{1953}{}{129054}
-{1954}{}{371}
-{1955}{}{48384000}                          # 8 weeks
+{1951}{}{102}# PID_GUNS_AND_BULLETS
+{1952}{}{pcx/items/G&A.pcx}
+{1953}{}{93065}
+{1954}{}{383}
+{1955}{}{2592000}# 3 days
 {1956}{}{NO}
 {1957}{}{[TOOLS]}
-{1958}{}{76}                                # PID_DEANS_ELECTRONICS
-{1959}{}{308}                               # PID_SUPER_TOOL_KIT
-{1960}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1961}{}{[SKILLS]}
-{1962}{}{SKILL_REPAIR:200}
-{1963}{}{SKILL_SCIENCE:200}
-{1964}{}{[COMPONENTS]}
-{1965}{}{392:5}                               # PID_M72_GAUSS_RIFLE
-{1966}{}{395:1}                               # PID_VINDICATOR_MINIGUN
+{1958}{}{898}# PID_QUILL
+{1959}{}{[SKILLS]}
+{1960}{}{SKILL_SMALL_GUNS:100}
+{1961}{}{[COMPONENTS]}
+{1962}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {1975}{}{[ITEM]}
-{1976}{}{741}                               # PID_HERAKLES_POWER_FIST
-{1977}{}{pcx/items/herakles.pcx}
-{1978}{}{123056}
-{1979}{}{344}
-{1980}{}{12096000}                          # 2 weeks
+{1976}{}{767}# PID_HOW_TO_BE_A_WORLD_CLASS_TRIATHLETE
+{1977}{}{pcx/items/TRIATH.pcx}
+{1978}{}{68059}
+{1979}{}{773}
+{1980}{}{2592000}# 3 days
 {1981}{}{NO}
 {1982}{}{[TOOLS]}
-{1983}{}{76}                                # PID_DEANS_ELECTRONICS
-{1984}{}{308}                               # PID_SUPER_TOOL_KIT
-{1985}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{1986}{}{[SKILLS]}
-{1987}{}{SKILL_REPAIR:150}
-{1988}{}{SKILL_SCIENCE:150}
-{1989}{}{[COMPONENTS]}
-{1990}{}{407:1}                               # PID_MEGA_POWER_FIST
-{1991}{}{875:1}                               # PID_MICRO_SLEDGE
+{1983}{}{898}# PID_QUILL
+{1984}{}{[SKILLS]}
+{1985}{}{SKILL_THROWING:100}
+{1986}{}{[COMPONENTS]}
+{1987}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {2000}{}{[ITEM]}
-{2001}{}{746}                               # PID_HERMES_ARMOR
-{2002}{}{pcx/items/hermes.pcx}
-{2003}{}{56060}
-{2004}{}{345}
-{2005}{}{48384000}                          # 8 weeks
+{2001}{}{768}# PID_US_ARMY_30_HANDY_FLAMETHROWER_RECIPES
+{2002}{}{pcx/items/usarmy.pcx}
+{2003}{}{59059}
+{2004}{}{774}
+{2005}{}{2592000}# 3 days
 {2006}{}{NO}
 {2007}{}{[TOOLS]}
-{2008}{}{76}                                # PID_DEANS_ELECTRONICS
-{2009}{}{308}                               # PID_SUPER_TOOL_KIT
-{2010}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{2011}{}{[SKILLS]}
-{2012}{}{SKILL_REPAIR:150}
-{2013}{}{SKILL_SCIENCE:150}
-{2014}{}{[COMPONENTS]}
-{2015}{}{381:2}                             # PID_COMBAT_ARMOR_MK_II
+{2008}{}{898}# PID_QUILL
+{2009}{}{[SKILLS]}
+{2010}{}{SKILL_BIG_GUNS:100}
+{2011}{}{[COMPONENTS]}
+{2012}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {2025}{}{[ITEM]}
-{2026}{}{390}                               # PID_SOLAR_SCORCHER
-{2027}{}{pcx/items/SOLARSCR.pcx}
-{2028}{}{97052}
-{2029}{}{373}
-{2030}{}{12096000}                          # 2 weeks
+{2026}{}{769}# PID_NIKOLA_TESLA_AND_YOU
+{2027}{}{pcx/items/teslayou.pcx}
+{2028}{}{54058}
+{2029}{}{775}
+{2030}{}{2592000}# 3 days
 {2031}{}{NO}
 {2032}{}{[TOOLS]}
-{2033}{}{76}                                # PID_DEANS_ELECTRONICS
-{2034}{}{308}                               # PID_SUPER_TOOL_KIT
-{2035}{}{73}                                # PID_BIG_BOOK_OF_SCIENCE
-{2036}{}{[SKILLS]}
-{2037}{}{SKILL_REPAIR:150}
-{2038}{}{SKILL_SCIENCE:150}
-{2039}{}{[COMPONENTS]}
-{2040}{}{396:1}                             # PID_YK32_PULSE_PISTOL
+{2033}{}{898}# PID_QUILL
+{2034}{}{[SKILLS]}
+{2035}{}{SKILL_ENERGY_WEAPONS:100}
+{2036}{}{[COMPONENTS]}
+{2037}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {2050}{}{[ITEM]}
-{2051}{}{59}                               # PID_MOTION_SENSOR
-{2052}{}{pcx/items/MOTION.pcx}
-{2053}{}{90065}
-{2054}{}{168}
-{2055}{}{6048000}                          # 1 week
+{2051}{}{770}# PID_MEDICAL_ENCYCLOPEDIA
+{2052}{}{pcx/items/MEDENC.pcx}
+{2053}{}{54052}
+{2054}{}{776}
+{2055}{}{2592000}# 3 days
 {2056}{}{NO}
 {2057}{}{[TOOLS]}
-{2058}{}{75}                                # PID_MULTI_TOOL
+{2058}{}{898}# PID_QUILL
 {2059}{}{[SKILLS]}
-{2060}{}{SKILL_REPAIR:75}
-{2061}{}{SKILL_SCIENCE:75}
-{2062}{}{[COMPONENTS]}
-{2063}{}{100:1}                             # PID_RADIO
+{2060}{}{SKILL_DOCTOR:100}
+{2061}{}{[COMPONENTS]}
+{2062}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {2075}{}{[ITEM]}
-{2076}{}{52}                               # PID_GEIGER_COUNTER
-{2077}{}{pcx/items/GEIGER4.pcx}
-{2078}{}{73063}
-{2079}{}{370}
-{2080}{}{6048000}                          # 1 week
+{2076}{}{771}# PID_GROGNAK_THE_BARBARIAN
+{2077}{}{pcx/items/grognak.pcx}
+{2078}{}{70058}
+{2079}{}{777}
+{2080}{}{2592000}# 3 days
 {2081}{}{NO}
 {2082}{}{[TOOLS]}
-{2083}{}{75}                                # PID_MULTI_TOOL
+{2083}{}{898}# PID_QUILL
 {2084}{}{[SKILLS]}
-{2085}{}{SKILL_REPAIR:75}
-{2086}{}{SKILL_SCIENCE:75}
-{2087}{}{[COMPONENTS]}
-{2088}{}{893:1}                             # PID_GAS_TANK
+{2085}{}{SKILL_MELEE_WEAPONS:100}
+{2086}{}{[COMPONENTS]}
+{2087}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {2100}{}{[ITEM]}
-{2101}{}{160}                               # PID_CATTLE_PROD
-{2102}{}{pcx/items/CPROD3.pcx}
-{2103}{}{91063}
-{2104}{}{374}
-{2105}{}{864000}                            # 24h
+{2101}{}{772}# PID_MAKING_FRIENDS_WITH_BIG_FAT_LIARS
+{2102}{}{pcx/items/bigfat.pcx}
+{2103}{}{68059}
+{2104}{}{778}
+{2105}{}{2592000}# 3 days
 {2106}{}{NO}
 {2107}{}{[TOOLS]}
-{2108}{}{75}                                # PID_MULTI_TOOL
+{2108}{}{898}# PID_QUILL
 {2109}{}{[SKILLS]}
-{2110}{}{SKILL_REPAIR:50}
-{2111}{}{SKILL_SCIENCE:50}
-{2112}{}{[COMPONENTS]}
-{2113}{}{5:1}                              # PID_CLUB
-{2114}{}{38:1}                             # PID_SMALL_ENERGY_CELL
-{2115}{}{100:1}                            # PID_RADIO
+{2110}{}{SKILL_SPEECH:100}
+{2111}{}{[COMPONENTS]}
+{2112}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {2125}{}{[ITEM]}
-{2126}{}{584}                               # PID_DANGEROUS_POISON
-{2127}{}{pcx/items/MUTASYRM.pcx}
-{2128}{}{84059}
-{2129}{}{828}
-{2130}{}{36000}                             # 1h
+{2126}{}{773}# PID_CHINESE_ARMY_SPECIAL_OPS_TRAINING_MANUAL
+{2127}{}{pcx/items/chinaops.pcx}
+{2128}{}{71060}
+{2129}{}{779}
+{2130}{}{2592000}# 3 days
 {2131}{}{NO}
 {2132}{}{[TOOLS]}
-{2133}{}{4|45|236|714}                      # PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
+{2133}{}{898}# PID_QUILL
 {2134}{}{[SKILLS]}
-{2135}{}{SKILL_OUTDOORSMAN:25}
+{2135}{}{SKILL_SNEAK:100}
 {2136}{}{[COMPONENTS]}
-{2137}{}{318:1}                             # PID_HYPODERMIC_NEEDLE
-{2138}{}{92:1}                              # PID_SCORPION_TAIL
+{2137}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {2150}{}{[ITEM]}
-{2151}{}{334}                               # PID_POWERFUL_POISON
-{2152}{}{pcx/items/POISON.pcx}
-{2153}{}{84059}
-{2154}{}{829}
-{2155}{}{36000}                             # 1h
+{2151}{}{774}# PID_HOME_SECURITY
+{2152}{}{pcx/items/homesecu.pcx}
+{2153}{}{65052}
+{2154}{}{780}
+{2155}{}{2592000}# 3 days
 {2156}{}{NO}
 {2157}{}{[TOOLS]}
-{2158}{}{4|45|236|714}                      # PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
+{2158}{}{898}# PID_QUILL
 {2159}{}{[SKILLS]}
-{2160}{}{SKILL_OUTDOORSMAN:25}
+{2160}{}{SKILL_LOCKPICK:100}
 {2161}{}{[COMPONENTS]}
-{2162}{}{318:1}                             # PID_HYPODERMIC_NEEDLE
-{2163}{}{601:1}                             # PID_STINGER
+{2162}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
 
 {2175}{}{[ITEM]}
-{2176}{}{265}                                # PID_CURED_LEATHER_ARMOR
-{2177}{}{pcx/items/SPLEATHR.pcx}
-{2178}{}{62063}
-{2179}{}{140}
-{2180}{}{231000}                            # 6 h 25 m
-{2181}{}{YES}
+{2176}{}{775}# PID_MADDOCKS_TRICKS_TRAPS
+{2177}{}{pcx/items/maddock.pcx}
+{2178}{}{96053}
+{2179}{}{781}
+{2180}{}{2592000}# 3 days
+{2181}{}{NO}
 {2182}{}{[TOOLS]}
-{2183}{}{4|45|236|714}                          # PID_KNIFE|PID_THROWING_KNIFE|PID_COMBAT_KNIFE|PID_SHARPENED_KNIFE
+{2183}{}{898}# PID_QUILL
 {2184}{}{[SKILLS]}
-{2185}{}{SKILL_REPAIR:80}
+{2185}{}{SKILL_TRAPS:100}
 {2186}{}{[COMPONENTS]}
-{2187}{}{127:1}                             # PID_ROPE
-{2188}{}{276:6}                             # PID_GECKO_PELT
+{2187}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
+
+{2200}{}{[ITEM]}
+{2201}{}{776}# PID_DONT_STEAL_THIS_BOOK
+{2202}{}{pcx/items/dontstea.pcx}
+{2203}{}{68059}
+{2204}{}{782}
+{2205}{}{2592000}# 3 days
+{2206}{}{NO}
+{2207}{}{[TOOLS]}
+{2208}{}{898}# PID_QUILL
+{2209}{}{[SKILLS]}
+{2210}{}{SKILL_STEAL:100}
+{2211}{}{[COMPONENTS]}
+{2212}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
+
+{2225}{}{[ITEM]}
+{2226}{}{777}# PID_PUGILISM_ILLUSTRATED
+{2227}{}{pcx/items/pugilism.pcx}
+{2228}{}{59059}
+{2229}{}{783}
+{2230}{}{2592000}# 3 days
+{2231}{}{NO}
+{2232}{}{[TOOLS]}
+{2233}{}{898}# PID_QUILL
+{2234}{}{[SKILLS]}
+{2235}{}{SKILL_UNARMED:100}
+{2236}{}{[COMPONENTS]}
+{2237}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
+
+{2250}{}{[ITEM]}
+{2251}{}{847}# PID_TALES_OF_A_JUNKTOWN_JERKY_VENDOR
+{2252}{}{pcx/items/junktown.pcx}
+{2253}{}{56058}
+{2254}{}{784}
+{2255}{}{2592000}# 3 days
+{2256}{}{NO}
+{2257}{}{[TOOLS]}
+{2258}{}{898}# PID_QUILL
+{2259}{}{[SKILLS]}
+{2260}{}{SKILL_BARTER:100}
+{2261}{}{[COMPONENTS]}
+{2262}{}{897:1}# PID_BLANK_BOOK
+
+
+
+
+
+
+
+
+
+
+
+
+{2275}{}{[ITEM]}
+{2276}{}{848}# PID_ZEN_GAMBLING
+{2277}{}{pcx/items/zen.pcx}
+{2278}{}{65051}
+{2279}{}{785}
+{2280}{}{2592000}# 3 days
+{2281}{}{NO}
+{2282}{}{[TOOLS]}
+{2283}{}{898}# PID_QUILL
+{2284}{}{[SKILLS]}
+{2285}{}{SKILL_GAMBLING:100}
+{2286}{}{[COMPONENTS]}
+{2287}{}{897:1}# PID_BLANK_BOOK
