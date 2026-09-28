@@ -44,6 +44,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Very Basic changes to Hangdman so that he stops trying to attack any tribals<br/>
 * Possibly Unneeded fix for Mark in Bloomfield, was bugging for me<br/>
 * Changes on CITY.TXT so that all tp arent stack on each other for Blackfoot, Dogtown, Ouroboros and Moletown Elevation typo<br/>
+* not quite a fix per se, but some check used old Fallout2_enclave_destroyed check which i think doesnt work here, so i decided to "fix" that using a gvar that is set once finishing act3, some date with a Hoover Dam critter might be hanging on that change<br/>
 
 
 ## Added
@@ -64,6 +65,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* wasnt intended at the start but i ended up reducing books crafting to 3 days instead of 2 weeks
 	* all the new recipes are unlocked from the "library" in maxson bunker lv3, when unlocking Hardened Power Armor, one gets both Adv PA, when unlocking Brotherhood combat armor, one get both MkII and MkIII
 * TMP502 (NCR Ranger quartermaster) will restock "Big" weapons, some gauss rifle and ammunition, i made the weapon possibly not restocking so might have to wait some more for it to restock
+* TMP501 (Blackfoot general vendor) will restock some unarmed / melee weapons, healing powder and some chems including strange poultice, also will stock up one time some ammo for pistols and one leather vest, included with it is a change to strange poultice proto, i had a much higher price than psycho yet being in a way the tribal psycho, move its price more in line with usual chems price <br/>
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
