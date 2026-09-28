@@ -1089,7 +1089,8 @@ variable removed_qty;
 #define Fallout2_fix_tanker                           get_f2(f2_state_fix_tanker)
 #define Fallout2_tanker_known                         get_f2(f2_state_tanker_fix_known)
 #define Fallout2_tanker_fixed                         get_f2(f2_state_tanker_fixed)
-#define Fallout2_enclave_destroyed                    get_f2(f2_state_enclave_destroyed)
+#define Fallout2_enclave_destroyed                    (global_var(GVAR_ASTRONAUT) == 1)
+//#define Fallout2_enclave_destroyed                    get_f2(f2_state_enclave_destroyed)
 
 
 // Info relating to carry weight, how much something costs, and weights
