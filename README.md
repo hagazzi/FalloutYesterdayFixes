@@ -67,6 +67,10 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * TMP502 (NCR Ranger quartermaster) will restock "Big" weapons, some gauss rifle and ammunition, i made the weapon possibly not restocking so might have to wait some more for it to restock
 * TMP501 (Blackfoot general vendor) will restock some unarmed / melee weapons, healing powder and some chems including strange poultice, also will stock up one time some ammo for pistols and one leather vest, included with it is a change to strange poultice proto, i had a much higher price than psycho yet being in a way the tribal psycho, move its price more in line with usual chems price <br/>
 * Big Talbot and Grandma Spider now can point you toward new location, Big Talbot knows Hoover Dam, while Grandma Spider knows Blackfoot and The Reservation
+* Added some quest to Chagas in Blackfoot, i intend for Blackfoot to be a stop just before Mesa Verde, Chagas will also teach you Gecko Skinning (Drake would do that too, but it felt wasteful that going up to drake would unavoidably make you kill gecko that you wouldnt be able to skin later) fixed the mine relocating you to Tibbets when you left it, well not really fixed but i've managed to relocate you back to Blackfoot to do that i had to make a change to the map in order to give it the TMP503 script.<br/>
+	* As a result of needing to change the map, i've added some loot to the empty container, might have been heavy handed on the loot but should be fine
+	* I've added the medimatrix part in one of the containers, i'd prolly just add it on a science check to the nearby autodoc at a later time
+	* Since it now has a script i'm thinking of using it for one of Bob's bounty target that are currently missing.
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -89,7 +93,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * some alternate way to progress without combat should reward xp especially if it kill things similar to MVCANNON therefore griefing you from their combined xp
 * a̶d̶d̶i̶n̶g̶ ̶L̶e̶g̶i̶o̶n̶ ̶f̶l̶a̶g̶ ̶t̶o̶ ̶s̶o̶m̶e̶ ̶l̶e̶g̶i̶o̶n̶ ̶n̶p̶c̶ ̶i̶n̶ ̶D̶o̶g̶t̶o̶w̶n̶ ̶V̶i̶l̶l̶a̶
 *  ̶m̶a̶k̶i̶n̶g̶ ̶s̶o̶m̶e̶ ̶n̶p̶c̶ ̶f̶r̶o̶m̶ ̶t̶i̶b̶b̶e̶t̶s̶ ̶t̶o̶ ̶g̶e̶t̶ ̶y̶o̶u̶ ̶l̶o̶c̶a̶t̶i̶o̶n̶ ̶f̶r̶o̶m̶ ̶o̶u̶t̶s̶i̶d̶e̶ ̶(̶b̶i̶g̶ ̶t̶a̶l̶b̶o̶t̶ ̶=̶>̶ ̶H̶o̶o̶v̶e̶r̶ ̶D̶a̶m̶)̶ ̶(̶G̶r̶a̶n̶d̶m̶o̶t̶h̶e̶r̶ ̶S̶p̶i̶d̶e̶r̶ ̶=̶>̶ ̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶+̶ ̶R̶e̶s̶e̶r̶v̶a̶t̶i̶o̶n̶)̶
-* some npc from Blackfoot could mark Mesa Verde
+*  ̶s̶o̶m̶e̶ ̶n̶p̶c̶ ̶f̶r̶o̶m̶ ̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶c̶o̶u̶l̶d̶ ̶m̶a̶r̶k̶ ̶M̶e̶s̶a̶ ̶V̶e̶r̶d̶e̶
 
 # OTHER
 
@@ -116,7 +120,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 3. Mesa Verde :<br/>
 	* Ask the Ciphers to process ZAX's raw data<br/>
 	* Forge an alliance between the Brotherhood and the Ciphers<br/>
-	* Rescue Cyphers<br/>
+	* Rescue Ciphers<br/>
 4. Hoover Dam :<br/>
 	* Any Bounty Quests?<br/>
 	* Theres also a ranger quest to join them that requires a legion flag but noone loot it right now (according to design document a vexillarius (flag bearer) should be in dogtown)<br/>

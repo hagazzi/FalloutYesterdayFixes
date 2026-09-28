@@ -51,3 +51,15 @@
 # Node010
 {470}{}{That's right. But that won't stop me from fighting for our tribe.}
 {471}{}{Spoken like a true leader. Goodbye, Chagas.}
+
+#Node020
+{520}{}{I need some protective gear to survive out here. Can you sell me some?}
+{521}{}{Sell you gear? I am not a vendor, for us Blackfoot it's something you have to make for yourself. It's a matter of hunter's pride. You know what i could teach you but knowledge isn't free . As you can see, this sickness has me grounded. There's a cave to the east clear them out to prove yourself, and I'll teach you the art of skinning geckos.}
+{522}{}{Consider that East cave cleared. I'll be back.}
+{523}{}{Sounds like too much work. Forget it.}
+{524}{}{I've done it! They are all dead!}
+{525}{}{Well look at that... you actually survived. A deal's a deal. Watch closely, you slice along the belly, avoid the scent glands, and peel it back in one smooth motion....[You learned how to skin gecko]}
+{526}{}{[end]}
+{527}{}{Where can i find the best hides ?}
+{528}{}{Well, every hunter has their secret spot, i'll let you find your own, but i can point you in the right direction...[Chagas adds the location on your pipboy]}
+{529}{}{Thank you, Chagas. Take care of yourself.}

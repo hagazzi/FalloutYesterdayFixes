@@ -68,6 +68,10 @@ procedure Node007;
 procedure Node008;
 procedure Node009;
 procedure Node010;
+procedure Node020;
+procedure Node021;
+procedure Node022;
+procedure Node023;
 
 
 //~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
@@ -81,6 +85,7 @@ procedure Node010;
 #define LVAR_Hostile                    (5)
 #define LVAR_Personal_Enemy             (6)
 #define LVAR_Caught_Thief               (7)
+#define LVAR_Clear_Cave					(8)
 
 
 
@@ -302,6 +307,12 @@ NOption(231,Node003,4);
 NOption(232,Node008,4);
 NOption(381,Node999,4);
 NOption(382,Node999,-3);
+if (local_var(LVAR_Clear_Cave) < 10) then
+	NOption(520,Node020,4);
+if ((local_var(LVAR_Clear_Cave) == 10) and (global_var(GVAR_PLACEHOLDER500) >= 23)) then
+	NOption(524,Node022,4);
+if (local_var(LVAR_Clear_Cave) == 99) then
+	NOption(527,Node023,4);
 end
 
 procedure Node008
@@ -321,6 +332,43 @@ begin
 Reply(470);
 NOption(471,Node999,4);
 end
+
+procedure Node020
+begin
+Reply(521);
+NOption(522,Node021,4);
+NOption(523,Node999,4);
+end
+
+procedure Node021
+begin
+	set_local_var(LVAR_Clear_Cave,10);
+	call Node999;
+end
+
+
+procedure Node022
+begin
+	Reply(525);
+	//perk gecko skin
+    critter_add_trait(dude_obj, TRAIT_PERK, PERK_gecko_skinning_perk, 1);
+    give_xp(500);	
+	set_local_var(LVAR_Clear_Cave,99);
+	NOption(526,Node999,4);
+end
+
+procedure Node023
+begin
+   Reply(528);
+   if(not(town_known(AreaNukeStatus(AREA_MESA_VERDE)))) then begin
+      give_xp(500);
+      mark_on_map(AreaNukeStatus(AREA_MESA_VERDE))
+      //display_msg(g_mstr(1008) + " " + mstr_map(1510) + ".");
+   end	
+   NOption(529,Node999,4);
+end
+
+
 
 
 

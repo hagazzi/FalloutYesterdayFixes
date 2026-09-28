@@ -1,0 +1,42 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+   Map for Vault13 Fake entrance
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_TMP503
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+
+procedure start begin
+end
+
+
+procedure map_enter_p_proc begin
+   fadein(1);
+   Cavern_Lighting;
+   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_MOUNTAIN_CAVE_WIND), 1);
+end
+
+procedure map_update_p_proc begin
+   Cavern_Lighting;
+end
+
+
+procedure map_exit_p_proc begin
+   stop_sfall_sound(ambient_sfx);
+   set_world_map_pos(1423, 1622);
+   set_viewport_x(1000);
+   set_viewport_y(1200);
+   fadeout(1);
+end

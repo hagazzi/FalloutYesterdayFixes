@@ -60,6 +60,10 @@ procedure critter_p_proc begin
 end
 
 procedure destroy_p_proc begin
+  if (cur_map_index == 185) then begin
+	 //MAP_BLACKFOOT_MINE_BIG 185
+     set_global_var(GVAR_PLACEHOLDER500,global_var(GVAR_PLACEHOLDER500)+1);
+  end
 
    /* Increment the aligned critter counter*/
    inc_neutral_critter
