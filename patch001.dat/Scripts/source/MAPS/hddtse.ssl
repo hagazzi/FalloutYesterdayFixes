@@ -25,6 +25,8 @@ procedure map_exit_p_proc;
 /* Defines */
 #define NAME                  SCRIPT_HDDTSE
 
+#define LVAR_Replace_Store	                (0)
+
 
 /*****************************************************************
    Local Variables which are saved.
@@ -50,6 +52,18 @@ procedure start begin
 end
 
 procedure map_enter_p_proc begin
+   //24351
+   //260
+	variable init_obj;
+	variable general_store_ptr;
+	if ((global_var(GVAR_ELISE_TEST) == QUEST_COMPLETED) and (local_var(LVAR_Replace_Store) < 99)) then begin
+		init_obj := tile_contains_pid_obj(24351, dude_elevation, PID_MALE_NCR_RANGER);
+		destroy_object(init_obj);
+		set_local_var(LVAR_Replace_Store, 99);
+		general_store_ptr = create_object_sid(PID_MALE_NCR_RANGER,24351,dude_elevation,SCRIPT_TMP502); //actual spot
+		anim(general_store_ptr, 1000, 5); 
+		arm_obj(general_store_ptr, PID_SUPER_SLEDGE, 1, 0, 0) 
+	end
 
    if (not(is_loading_game) and map_first_run) then
       display_mstr(100);

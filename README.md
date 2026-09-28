@@ -7,6 +7,17 @@ Here's their Patreon https://www.patreon.com/fallouty
 
 ## Disclaimer
 * some changes were made to the MAIN category scripts therefore to see these changes appear one need to remove data/Scripts/*.int scripts which shouldnt be an issue since they are also in patch001.dat/Scripts
+* changes were made to 0.65.1 so depending on changes to later version this will become obsolete
+
+## Provision
+* in order to be able to match it to actual save rather than new save, i've made the choice to use placeholder values as such i'm using:
+	* GVAR_PLACEHOLDER500 (Blackfoot "quest")
+	* TMP_500			  (Bos Quartermaster)
+	* TMP_501			  (Blackfoot General Store Vendor)
+	* TMP_502			  (NCR Ranger Vendor)
+	* TMP_503			  (BHMINE2 map script)
+* didnt want to initially since it might then requires deleting save values, but i had to modify some maps to add some items and fix ai, team / fix an exit grid behavior that kept returning me to Tibbets
+* if you need to, for having already entered said maps, using editors such as F12se will let delete the particular map.sav for these zones
 
 ## Advice(?)
 * had maps reset on me several time during my playthrough im reading fallout 2 not really made for multi-core and in the process of saving its possible for some of the map.sav to be lost in the process
@@ -52,7 +63,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* added 3 pcx, to cover for the icons of these in mrfixit (adv Pa mkII has the same inventory appearance as mkI)
 	* wasnt intended at the start but i ended up reducing books crafting to 3 days instead of 2 weeks
 	* all the new recipes are unlocked from the "library" in maxson bunker lv3, when unlocking Hardened Power Armor, one gets both Adv PA, when unlocking Brotherhood combat armor, one get both MkII and MkIII
-
+* TMP502 (NCR Ranger quartermaster) will restock "Big" weapons, some gauss rifle and ammunition, i made the weapon possibly not restocking so might have to wait some more for it to restock
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
