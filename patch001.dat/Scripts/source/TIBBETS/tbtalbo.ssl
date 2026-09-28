@@ -79,6 +79,8 @@ procedure D3_1;
 procedure D4_5;
 procedure D5_10;
 procedure D6_5;
+procedure Node020;
+procedure Node021;
 procedure Node999_1;
 
 //~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
@@ -94,6 +96,7 @@ procedure Node999_1;
 #define LVAR_Caught_Thief               (7)
 #define LVAR_Pissed               (8)
 #define LVAR_Caps_Given               (9)
+#define LVAR_Told_Story					(10)
 
 
 
@@ -165,6 +168,8 @@ end
 /* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
    written by designers are placed in here. Additionally, Reactions are generated and
    stored which affects player interactions. */
+   
+//block 19
 procedure talk_p_proc begin
 
 
@@ -308,6 +313,8 @@ if (dude_caps>=1) then
 NOption(321,C1_1,4);
 NOption(322,E1,4);
 NOption(323,Node999,4);
+if ((dude_caps>=250) and (local_var(LVAR_Told_Story) == 99) and (not(town_known(AreaNukeStatus(AREA_HOOVER_DAM))))) then
+	NOption(820,Node020,4);
 // NOTE: -1 cap
 if (dude_caps>=1) then
 NOption(mstr(295)+dude_name+mstr(296),D2_1,-3);
@@ -315,6 +322,23 @@ NOption(mstr(324)+dude_name+mstr(325),E3,-3);
 // NOTE: -1 karma
 NOption(326,Node999_1,-3);
 end
+
+
+procedure Node020
+begin
+Reply(821);
+NOption(822,Node021,4);
+NOption(823,Node999,4);
+end
+
+procedure Node021
+begin 
+Reply(824);
+give_xp(250);
+mark_on_map(AreaNukeStatus(AREA_HOOVER_DAM))
+NOption(825,Node999,4);	
+end
+
 
 procedure B1
 begin
@@ -388,6 +412,8 @@ end
 procedure E1
 begin
 Reply(560);
+if (local_var(LVAR_Told_Story) < 99) then
+	set_local_var(LVAR_Told_Story,99);
 NOption(561,F1,4);
 NOption(562,F1,4);
 end

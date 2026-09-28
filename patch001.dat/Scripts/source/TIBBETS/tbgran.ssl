@@ -83,6 +83,8 @@ procedure Node023;
 procedure Node024;
 procedure Node025;
 procedure Node026;
+procedure Node026a;
+procedure Node026b;
 procedure Node027;
 procedure Node028;
 procedure Node029;
@@ -114,6 +116,7 @@ procedure Node043;
 #define LVAR_Hostile                    (5)
 #define LVAR_Personal_Enemy             (6)
 #define LVAR_Caught_Thief               (7)
+#define LVAR_Told_Story					(8)
 
 
 
@@ -182,6 +185,7 @@ end
 /* The dialog system is setup and prepares the player to talk to this NPC. Where To Go
    written by designers are placed in here. Additionally, Reactions are generated and
    stored which affects player interactions. */
+//cellblock 18
 procedure talk_p_proc begin
 
 
@@ -540,15 +544,37 @@ end
 procedure Node026
 begin
 Reply(950);
+//debug_msg("Told Story: "+local_var(LVAR_Told_Story));
 NOption(951,Node006,4);
 NOption(204,Node013,4);
 NOption(952,Node027,4);
+if (local_var(LVAR_Told_Story) == 99) then begin
+	if (not(town_known(AreaNukeStatus(AREA_BLACKFOOT)))) then
+		NOption(1502,Node026a,4);
+    if (not(town_known(AreaNukeStatus(AREA_THE_RESERVATION)))) then		
+		NOption(1503,Node026b,4);
+end
 if (obj_is_carrying_obj_pid(dude_obj,PID_BROC_FLOWER)>0) and (obj_is_carrying_obj_pid(dude_obj,PID_XANDER_ROOT)>0) and (global_var(GVAR_CRAFT_HEALING_POWDER) == 0) then
 NOption(953,start_teaching,4);
 if (obj_is_carrying_obj_pid(dude_obj,PID_BROC_FLOWER)>0) and (obj_is_carrying_obj_pid(dude_obj,PID_XANDER_ROOT)>0) and (obj_is_carrying_obj_pid(dude_obj,PID_DARKA_MUSHROOM)>0) and (global_var(GVAR_CRAFT_GREATER_HEALING_POWDER) == 0) then
 NOption(954,start_teaching,4);
 NOption(955,Node999,4);
 end
+
+procedure Node026a
+begin
+give_xp(250);
+mark_on_map(AreaNukeStatus(AREA_BLACKFOOT))
+call Node999;
+end
+
+procedure Node026b
+begin
+give_xp(250);
+mark_on_map(AreaNukeStatus(AREA_THE_RESERVATION))
+call Node999;
+end
+
 
 procedure Node027
 begin
@@ -568,6 +594,8 @@ end
 procedure Node029
 begin
 Reply(1040);
+if (local_var(LVAR_Told_Story) < 99) then
+	set_local_var(LVAR_Told_Story,99);
 if (global_var(GVAR_CRAFT_HEALING_POWDER)==0) or (global_var(GVAR_CRAFT_GREATER_HEALING_POWDER)==0) then
 NOption(1041,Node021,4);
 if (global_var(GVAR_CRAFT_HEALING_POWDER)==1) or (global_var(GVAR_CRAFT_GREATER_HEALING_POWDER)==1) then

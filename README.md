@@ -66,6 +66,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* all the new recipes are unlocked from the "library" in maxson bunker lv3, when unlocking Hardened Power Armor, one gets both Adv PA, when unlocking Brotherhood combat armor, one get both MkII and MkIII
 * TMP502 (NCR Ranger quartermaster) will restock "Big" weapons, some gauss rifle and ammunition, i made the weapon possibly not restocking so might have to wait some more for it to restock
 * TMP501 (Blackfoot general vendor) will restock some unarmed / melee weapons, healing powder and some chems including strange poultice, also will stock up one time some ammo for pistols and one leather vest, included with it is a change to strange poultice proto, i had a much higher price than psycho yet being in a way the tribal psycho, move its price more in line with usual chems price <br/>
+* Big Talbot and Grandma Spider now can point you toward new location, Big Talbot knows Hoover Dam, while Grandma Spider knows Blackfoot and The Reservation
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -76,8 +77,8 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 # TODO
 
 ## TODO Adds maybe (?)
-* TMP501 	(Blackfoot vendor - some of what milko currently restocked moved here like broc / xander / powder, also adding in tribal chems)
-* TMP502 	(NCR vendor - Restock big guns and ammos also some gauss guns)
+*  ̶T̶M̶P̶5̶0̶1̶ ̶	̶(̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶v̶e̶n̶d̶o̶r̶ ̶-̶ ̶s̶o̶m̶e̶ ̶o̶f̶ ̶w̶h̶a̶t̶ ̶m̶i̶l̶k̶o̶ ̶c̶u̶r̶r̶e̶n̶t̶l̶y̶ ̶r̶e̶s̶t̶o̶c̶k̶e̶d̶ ̶m̶o̶v̶e̶d̶ ̶h̶e̶r̶e̶ ̶l̶i̶k̶e̶ ̶b̶r̶o̶c̶ ̶/̶ ̶x̶a̶n̶d̶e̶r̶ ̶/̶ ̶p̶o̶w̶d̶e̶r̶,̶ ̶a̶l̶s̶o̶ ̶a̶d̶d̶i̶n̶g̶ ̶i̶n̶ ̶t̶r̶i̶b̶a̶l̶ ̶c̶h̶e̶m̶s̶)̶
+*  ̶T̶M̶P̶5̶0̶2̶ ̶	̶(̶N̶C̶R̶ ̶v̶e̶n̶d̶o̶r̶ ̶-̶ ̶R̶e̶s̶t̶o̶c̶k̶ ̶b̶i̶g̶ ̶g̶u̶n̶s̶ ̶a̶n̶d̶ ̶a̶m̶m̶o̶s̶ ̶a̶l̶s̶o̶ ̶s̶o̶m̶e̶ ̶g̶a̶u̶s̶s̶ ̶g̶u̶n̶s̶)̶
 * ̶D̶i̶a̶n̶e̶ ̶ ̶	̶(̶S̶e̶l̶l̶i̶n̶g̶ ̶c̶a̶r̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶t̶ ̶v̶a̶r̶i̶o̶u̶s̶ ̶N̶C̶R̶ ̶q̶u̶e̶s̶t̶ ̶a̶d̶v̶a̶n̶c̶e̶m̶e̶n̶t̶ ̶(̶i̶n̶c̶l̶u̶d̶i̶n̶g̶ ̶c̶a̶r̶ ̶s̶t̶o̶r̶a̶g̶e̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶a̶t̶ ̶t̶h̶e̶ ̶s̶a̶m̶e̶ ̶t̶i̶m̶e̶ ̶(̶?̶)̶)̶)̶
 *  ̶M̶r̶F̶i̶x̶i̶t̶	̶(̶E̶x̶t̶r̶a̶ ̶R̶e̶c̶i̶p̶e̶s̶ ̶=̶>̶ ̶f̶o̶r̶ ̶A̶d̶v̶P̶A̶ ̶a̶n̶d̶ ̶A̶d̶v̶P̶A̶ ̶m̶k̶I̶I̶ ̶-̶ ̶L̶o̶r̶e̶ ̶w̶i̶s̶e̶ ̶N̶C̶R̶ ̶a̶n̶d̶ ̶B̶o̶S̶ ̶s̶a̶l̶v̶a̶g̶e̶d̶ ̶t̶h̶e̶ ̶e̶n̶c̶l̶a̶v̶e̶ ̶s̶o̶ ̶A̶d̶v̶ ̶P̶A̶ ̶s̶h̶o̶u̶l̶d̶ ̶b̶e̶ ̶k̶n̶o̶w̶n̶ ̶t̶o̶ ̶B̶o̶S̶)̶
 * Random loot based on container type for flavour container (most are empty right now)
@@ -86,8 +87,8 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * add some xp to quests that didnt have any (MVCANNON.SSL no xp from hound kill / MVNEMONK.SSL no xp from computer quest / MVAKZEE.SSL no xp from hound quest / HDPABLO.SSL some xp for that hard speech check i think) 
 * balance xp amount depending on game progression Tibbets < Mesa Verde < Hoover Dam < Maxson Bunker ?
 * some alternate way to progress without combat should reward xp especially if it kill things similar to MVCANNON therefore griefing you from their combined xp
-* adding Legion flag to some legion npc in Dogtown Villa
-* making some npc from tibbets to get you location from outside (big talbot => Hoover Dam) (Grandmother Spider => Blackfoot + Reservation)
+* a̶d̶d̶i̶n̶g̶ ̶L̶e̶g̶i̶o̶n̶ ̶f̶l̶a̶g̶ ̶t̶o̶ ̶s̶o̶m̶e̶ ̶l̶e̶g̶i̶o̶n̶ ̶n̶p̶c̶ ̶i̶n̶ ̶D̶o̶g̶t̶o̶w̶n̶ ̶V̶i̶l̶l̶a̶
+*  ̶m̶a̶k̶i̶n̶g̶ ̶s̶o̶m̶e̶ ̶n̶p̶c̶ ̶f̶r̶o̶m̶ ̶t̶i̶b̶b̶e̶t̶s̶ ̶t̶o̶ ̶g̶e̶t̶ ̶y̶o̶u̶ ̶l̶o̶c̶a̶t̶i̶o̶n̶ ̶f̶r̶o̶m̶ ̶o̶u̶t̶s̶i̶d̶e̶ ̶(̶b̶i̶g̶ ̶t̶a̶l̶b̶o̶t̶ ̶=̶>̶ ̶H̶o̶o̶v̶e̶r̶ ̶D̶a̶m̶)̶ ̶(̶G̶r̶a̶n̶d̶m̶o̶t̶h̶e̶r̶ ̶S̶p̶i̶d̶e̶r̶ ̶=̶>̶ ̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶+̶ ̶R̶e̶s̶e̶r̶v̶a̶t̶i̶o̶n̶)̶
 * some npc from Blackfoot could mark Mesa Verde
 
 # OTHER

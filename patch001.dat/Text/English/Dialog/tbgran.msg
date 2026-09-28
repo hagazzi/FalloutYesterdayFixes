@@ -266,3 +266,7 @@
 {1460}{}{Sulik-n-Kurisu, mi pickney dem.}
 {1461}{}{Alright, I'll write that down. Tell me something else.}
 {1462}{}{Got it. Farewell.}
+
+# Node044
+{1502}{}{Can you show me where you're from on that Pip-Boy}
+{1503}{}{Are there areas to avoid ?}

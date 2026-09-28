@@ -127,3 +127,11 @@
 {742}{}{That's what you get for moonlighting and slacking, I guess. Goodbye.}
 {743}{}{That sad. Me hope it all get better - bye bye.}
 {744}{}{Sound to me like you deserve what happen. Me go.}
+
+# Node020
+{820}{}{You mentionned earlier coming from Hoover Dam, would you be willing to show me where it is on my Pip-boy?}
+{821}{}{Well you know my plight, if you could help with some caps i'd be willing to do so, What about 250 caps}
+{822}{}{Sure, Big Talbot, you do need it after all!}
+{823}{}{That's too expensive, Sorry.}
+{824}{}{Alright, here's where it is....}
+{825}{}{Thanks.}
