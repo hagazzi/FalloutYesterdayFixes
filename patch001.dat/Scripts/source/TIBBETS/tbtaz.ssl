@@ -266,6 +266,8 @@ procedure destroy_p_proc begin
 /* Increment the aligned critter counter*/
  inc_neutral_critter
 /* Set global_variable for Enemy status*/
+ set_global_var(GVAR_TAZ_DEAD,1);
+
 end
 
 /* Look_at_p_proc gets called any time that the player passes the cursor over any object.

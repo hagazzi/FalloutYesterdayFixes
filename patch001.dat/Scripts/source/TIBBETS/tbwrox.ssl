@@ -226,14 +226,12 @@ end
    incrementing the death count for reputation purposes and Enemy Counters are placed
    in here. */
 procedure destroy_p_proc begin
+	/* Increment the aligned critter counter*/
+	inc_evil_critter
+	/* Set global_variable for Enemy status*/
 
-/* Increment the aligned critter counter*/
- inc_evil_critter
-/* Set global_variable for Enemy status*/
-
-if(global_var(GVAR_QUEST_KILL_PATIENTS) != 20) then
-   inc_global_var(GVAR_QUEST_KILL_PATIENTS);
-
+	if(global_var(GVAR_QUEST_KILL_PATIENTS) != 20) then
+	   inc_global_var(GVAR_QUEST_KILL_PATIENTS);
 end
 
 /* Look_at_p_proc gets called any time that the player passes the cursor over any object.

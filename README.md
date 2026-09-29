@@ -50,6 +50,8 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Didnt know Dr Davide had pretty much the same issue as Dr Tobillo, I guess i always got the right roll.
 * Weird condition on Dr Nora that prevented radscorpion nest completion if done on your own, through unmet some condition prevented to get into the procedure that was setting the gvar, and through met the setting was missing<br/>
 	* i've also added some xp reward i've choose to make it +500xp, if not doing on your own through Dr Nora help one would get 500 cap and 250xp, on your own if it had worked that would have been 1000 cap and 0xp, in my book more effort is more reward <br/>
+* Fixing the issue about this quest reveal another issue, changed the GVAR setting so that the quest isnt "reset" and therefore an infinite cap chain for 1000 cap, kind of fixing my fix
+* Fixed a probably planned but unfinished quest intended for an evil playthrough, here Dr Nora ask to kill her patient, it start by killing Taz, the issue after that being that unlike Taz pretty much all the target for that quest are in the generic Tibbets Prisoner Team, so i made all the target in TEAM_TAZ, also blocked added a check to Nora so that it doesnt auto complete without doing anything, some of the intended target were also missing the line that incremented the quest counter, it should be all of them, some of the target will increase karma but there aren't enough target that does, so it should be a net negative even without including the -50 karma from the quest reward<br/>
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
