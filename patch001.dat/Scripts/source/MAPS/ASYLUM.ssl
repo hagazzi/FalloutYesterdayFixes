@@ -23,6 +23,8 @@ procedure map_exit_p_proc;
 /* Defines */
 #define NAME                  SCRIPT_ASYLUM
 
+#define LVAR_Fridge_Locked		(0)
+
 
 /*****************************************************************
    Local Variables which are saved.
@@ -52,12 +54,38 @@ procedure map_enter_p_proc begin
    fadein(1);
    Lighting;
    ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_ASYLUM), 1);
+	if (local_var(LVAR_Fridge_Locked) <= 99) then begin
+		variable object;
+		variable allobjects;
+		variable pid;
 
-   if (not(is_loading_game)) then begin
-      if (map_first_run) then begin
-         display_mstr(100);
-      end
-   end
+		allobjects := list_as_array(LIST_GROUNDITEMS);
+		foreach(object in allobjects) begin
+			pid := obj_pid(object);
+			if 
+			(
+				(proto_data(pid, 9) == 1)  and
+				(obj_is_locked(object)) and
+				(obj_name(object) == "Fridge") and
+				(obj_carrying_pid_obj(object, PID_PSYCHO) != 0)
+			) 	
+			then begin
+				obj_unlock(object);
+			end
+		end
+		set_local_var(LVAR_Fridge_Locked,100);
+	end
+	fadein(1);
+	Lighting;
+	ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_ASYLUM), 1);
+
+	if (not(is_loading_game)) then begin
+		if (map_first_run) then begin
+			display_mstr(100);
+		end
+	end
+
+
 
 end
 
