@@ -490,7 +490,7 @@ begin
 Reply(680);
 if(global_var(GVAR_ASYLUM_WORK) == 1) then
 NOption(261,Nora_job,4);
-if(nest_destroyed) then
+if ((nest_destroyed) and (global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS) != 1001)) then
 NOption(681,Nora_radscorpions6,4);
 if(not(nest_destroyed)) then
 NOption(262,Nora_radscorpions,4);
