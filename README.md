@@ -56,6 +56,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* Prevented that quest from completing without doing anything <br/>
 	* Some of the intended target were also missing the line that incremented the quest counter, it should now be all of them<br/> 
 	* Some of the target will increase karma but there aren't enough that does, so it should be a net negative even without including the -50 karma from the quest reward<br/>
+* Small fix to the fridge container in the asylum, can't quite have it being unlockable without changing the map files, but unlocking it from the map script was doable at least <br/>
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
