@@ -45,6 +45,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Possibly Unneeded fix for Mark in Bloomfield, was bugging for me<br/>
 * Changes on CITY.TXT so that all tp arent stack on each other for Blackfoot, Dogtown, Ouroboros and Moletown Elevation typo<br/>
 * not quite a fix per se, but some check used old Fallout2_enclave_destroyed check which i think doesnt work here, so i decided to "fix" that using a gvar that is set once finishing act3, some date with a Hoover Dam critter might be hanging on that change<br/>
+* in Tibbets Salem's routine about tipping off about Sol was breaking dialog, can be fixed my moving to timed event instead, made the fix but decided to disable it, and change it for simply exiting dialog, it looks like it was intended for Salem to be killed by Sol too? doesnt make much sense in my playthrough since she's dead.	
 
 
 ## Added

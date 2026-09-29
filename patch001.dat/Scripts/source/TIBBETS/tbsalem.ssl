@@ -189,6 +189,12 @@ end
 end
 
 procedure timed_event_p_proc begin
+	if fixed_param == 1 then begin
+		fadeout(1);
+		set_obj_visibility(self_obj, 1);
+		fadein(1);
+		destroy_object(self_obj);
+	end
    add_timer_event(self_obj,game_ticks(random(1,5)),0);
 
     if (random(1, 30) == 1) then begin
@@ -389,8 +395,9 @@ set_global_var(GVAR_TIPOFF_KILLER, 2);
 
 
 Reply(409);
-NOption(411,Node999a,4);
-NOption(412,Node999a,4);
+//add_timer_event(self_obj,0,1);
+NOption(411,Node999,4);
+NOption(412,Node999,4);
 end
 
 procedure PayOut_smuggler begin
