@@ -47,6 +47,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * not quite a fix per se, but some check used old Fallout2_enclave_destroyed check which i think doesnt work here, so i decided to "fix" that using a gvar that is set once finishing act3, some date with a Hoover Dam critter might be hanging on that change<br/>
 * in Tibbets Salem's routine about tipping off about Sol was breaking dialog, can be fixed my moving to timed event instead, made the fix but decided to disable it, and change it for simply exiting dialog, it looks like it was intended for Salem to be killed by Sol too? doesnt make much sense in my playthrough since she's dead.
 * Dr Tobillo is supposed to be on the move but ended up disappearing and never reappearing, script correctly made him disappear but forgot about making him reappear this should fix it
+* Didnt know Dr Davide had pretty much the same issue as Dr Tobillo, I guess i always got the right roll.
 
 
 ## Added
