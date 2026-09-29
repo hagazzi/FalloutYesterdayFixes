@@ -105,12 +105,16 @@ end
    default from the prototype, and needs to be set in scripts. */
 procedure map_enter_p_proc begin
    Only_Once:=0;
+   variable roll;
+   roll := random(1,2);
    critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_TIBBETS_PRISONERS);
 //   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
 call new_plague_check(self_obj, LVAR_Herebefore);
 
-   if(random(1,2) == 1) then begin
-      set_obj_visibility(self_obj, 1);
+   if (roll == 1) then begin
+	  set_obj_visibility(self_obj, 1);   
+   end else begin
+      set_obj_visibility(self_obj, 0);
    end
 end
 
