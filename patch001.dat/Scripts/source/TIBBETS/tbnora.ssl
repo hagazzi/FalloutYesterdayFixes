@@ -356,7 +356,7 @@ if (has_skill(dude_obj,SKILL_CONVERSANT)>=50) then
 BOption(232,Nora_impatient,4);
 if(global_var(GVAR_ASYLUM_WORK) == 1) then
 NOption(mstr(233)+dude_name+mstr(234),Nora_job,4);
-if(not(nest_destroyed)) then
+//if(not(nest_destroyed)) then
 NOption(235,Nora_radscorpions,4);
 BOption(236,Nora_stupid,-3);
 BOption(237,Node998,4);
@@ -368,7 +368,7 @@ begin
 Reply(260);
 if(global_var(GVAR_ASYLUM_WORK) == 1) then
 NOption(261,Nora_job,4);
-if(not(nest_destroyed)) then
+//if(not(nest_destroyed)) then
 NOption(262,Nora_radscorpions,4);
 BOption(263,Nora_crossroadsno,4);
 NOption(264,Node999,4);
@@ -425,7 +425,7 @@ NOption(471,Nora_job4,4);
 NOption(472,Node999,4);
 end
 
-procedure Nora_radscorpions
+procedure Nora_radscorpions //nest destroyed loop only through unmet
 begin
 if (dude_is_male) then Reply(500); else
 if (dude_is_female) then Reply(501);
@@ -435,9 +435,12 @@ else
    NOption(503,Nora_radscorpions3,4);
 end
 
-procedure Nora_radscorpions2
+procedure Nora_radscorpions2 //only through unmet
 begin
-   set_global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS, 1000);
+if global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS) < 500 then begin
+	give_xp(500);
+    set_global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS, 1000);
+end
 Reply(530);
 NOption(531,Node999,4);
 end
@@ -472,8 +475,12 @@ Reply(620);
 NOption(621,Node999,4);
 end
 
-procedure Nora_radscorpions6
+procedure Nora_radscorpions6 //through met and nest destroyed
 begin
+if global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS) < 500 then begin
+	give_xp(500);
+	set_global_var(GVAR_QUEST_ASYLUM_RADSCORPIONS, 1000);
+end
 Reply(650);
 NOption(531,Node999,4);
 end

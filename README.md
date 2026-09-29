@@ -48,7 +48,8 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * in Tibbets Salem's routine about tipping off about Sol was breaking dialog, can be fixed my moving to timed event instead, made the fix but decided to disable it, and change it for simply exiting dialog, it looks like it was intended for Salem to be killed by Sol too? doesnt make much sense in my playthrough since she's dead.
 * Dr Tobillo is supposed to be on the move but ended up disappearing and never reappearing, script correctly made him disappear but forgot about making him reappear this should fix it
 * Didnt know Dr Davide had pretty much the same issue as Dr Tobillo, I guess i always got the right roll.
-
+* Weird condition on Dr Nora that prevented radscorpion nest completion if done on your own, through unmet some condition prevented to get into the procedure that was setting the gvar, and through met the setting was missing<br/>
+	* i've also added some xp reward i've choose to make it +500xp, if not doing on your own through Dr Nora help one would get 500 cap and 250xp, on your own if it had worked that would have been 1000 cap and 0xp, in my book more effort is more reward <br/>
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
