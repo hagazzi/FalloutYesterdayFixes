@@ -23,7 +23,7 @@ procedure map_exit_p_proc;
 /* Defines */
 #define NAME                  SCRIPT_ASYLUM
 
-#define LVAR_Fridge_Locked		(0)
+#define MVAR_Fridge_Locked		(0)
 
 
 /*****************************************************************
@@ -51,10 +51,7 @@ procedure start begin
 end
 
 procedure map_enter_p_proc begin
-   fadein(1);
-   Lighting;
-   ambient_sfx := play_sfall_sound(AmbientTrack(AMBIENT_ASYLUM), 1);
-	if (local_var(LVAR_Fridge_Locked) <= 99) then begin
+	if (map_var(MVAR_Fridge_Locked) <= 99) then begin
 		variable object;
 		variable allobjects;
 		variable pid;
@@ -73,7 +70,7 @@ procedure map_enter_p_proc begin
 				obj_unlock(object);
 			end
 		end
-		set_local_var(LVAR_Fridge_Locked,100);
+		set_map_var(MVAR_Fridge_Locked,100);
 	end
 	fadein(1);
 	Lighting;

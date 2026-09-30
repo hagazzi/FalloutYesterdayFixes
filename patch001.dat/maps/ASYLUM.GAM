@@ -1,0 +1,4 @@
+MAP_GLOBAL_VARS:
+//MAP VAR                              NUMBER
+
+MVAR_Fridge_Locked	     := 0;           // (0)
