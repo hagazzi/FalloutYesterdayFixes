@@ -57,6 +57,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* Some of the intended target were also missing the line that incremented the quest counter, it should now be all of them<br/> 
 	* Some of the target will increase karma but there aren't enough that does, so it should be a net negative even without including the -50 karma from the quest reward<br/>
 * Small fix to the fridge container in the asylum, can't quite have it being unlockable without changing the map files, but unlocking it from the map script was doable at least <br/>
+* Weird set of condition was preventing Grandma Spider from teaching Healing Powder and wasting materials, also it was never creating any items, changed that
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
@@ -82,6 +83,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* As a result of needing to change the map, i've added some loot to the empty container, might have been heavy handed on the loot but should be fine
 	* I've added the medimatrix part in one of the containers, i'd prolly just add it on a science check to the nearby autodoc at a later time
 	* Since it now has a script i'm thinking of using it for one of Bob's bounty target that are currently missing.
+* Now akin to Hakunin in Fallout 2, Grandma Spider can craft Healing Powder / Greater Healing Powder for you as long as you've learned how to craft Healing Powder and Greater Healing Powder, she batch them too
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde

@@ -270,3 +270,8 @@
 # Node044
 {1502}{}{Can you show me where you're from on that Pip-Boy}
 {1503}{}{Are there areas to avoid ?}
+
+
+# Node026
+{1522}{}{I have some broc flowers and xander roots. Can you help me create healing powders?}
+{1523}{}{I have broc flowers, xander roots, and darka mushrooms. Can you help me create greater healing powders?}
