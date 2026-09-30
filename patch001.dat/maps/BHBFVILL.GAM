@@ -1,0 +1,5 @@
+MAP_GLOBAL_VARS:
+//MAP VAR                              NUMBER
+
+MVAR_Replace_Store  := 0;           // (0)
+
