@@ -58,6 +58,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* Some of the target will increase karma but there aren't enough that does, so it should be a net negative even without including the -50 karma from the quest reward<br/>
 * Small fix to the fridge container in the asylum, can't quite have it being unlockable without changing the map files, but unlocking it from the map script was doable at least <br/>
 * Weird set of condition was preventing Grandma Spider from teaching Healing Powder and wasting materials, also it was never creating any items, changed that
+* Made a workaround to be able to complete Sheriff Carmichael quest, the violent way isnt working / doing anything, and the other way was missing CODE flags that are not set anywhere to begin with, i've also made them being removed from your inventory
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>

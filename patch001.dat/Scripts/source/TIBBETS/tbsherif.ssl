@@ -225,9 +225,9 @@ procedure talk_p_proc begin
 
       if(global_var(GVAR_QUEST_CULL_CRIMINALS) == 2) then
          call NodeF;
-      else if(global_var(GVAR_QUEST_KNOW_CODE) == 3) then
+      else if(dude_item_count(PID_INFRASONIC_PIP_BOY_2000_CHIP)>=12) then
          call NodeE;
-      else if(global_var(GVAR_QUEST_KNOW_CODE) == 2) then
+      else if(dude_item_count(PID_INFRASONIC_PIP_BOY_2000_CHIP)>0) then
          call NodeD;
       else if(global_var(GVAR_QUEST_CULL_CRIMINALS) == 1) then
          call NodeC;
@@ -669,6 +669,7 @@ end
 
 procedure Surrenderedtwelve
 begin
+remove_pid_qty(dude_obj, PID_INFRASONIC_PIP_BOY_2000_CHIP, 12)
 item_caps_adjust(dude_obj, 2000);
 set_global_var(GVAR_QUEST_CULL_CRIMINALS, 2);
 give_xp(2000);
