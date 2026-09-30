@@ -27,7 +27,7 @@ procedure timed_event_p_proc;
 
 /* Defines */
 #define NAME                  SCRIPT_MAXBUNKR
-#define LVAR_QM_Created 	(5)
+#define MVAR_QM_Created 	(12)
 
 variable p1, p2, s1, s2, andrea, traci, glenn, reggie, jerry, ed, sarah, jon, tamara;
 
@@ -35,8 +35,8 @@ export variable Reggie_Ptr;
 
 procedure map_enter_p_proc begin
 	variable qm_ptr;
-	if (global_var(GVAR_QUEST_FIND_POISONER) == 3) and (local_var(LVAR_QM_Created) < 99) then begin
-		set_local_var(LVAR_QM_Created, 99);
+	if (global_var(GVAR_QUEST_FIND_POISONER) == 3) and (map_var(MVAR_QM_Created) < 99) then begin
+		set_map_var(MVAR_QM_Created, 99);
 		qm_ptr = create_object_sid(PID_APPRENTICE_KNIGHT_MALE,25327,dude_elevation,SCRIPT_TMP500); //actual spot
 		anim(qm_ptr, 1000, 5); 
 	end 

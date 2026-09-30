@@ -1,0 +1,16 @@
+MAP_GLOBAL_VARS:
+//MAP VAR                              NUMBER
+
+MVAR_KICK_PLAYER     := 0;           // (0)
+MVAR_ROOM_ONCE       := 0;           // (1)
+MVAR_WARN_ARMORY     := 0;           // (2)
+MVAR_KNOW_ED         := 0;           // (3)
+MVAR_BRIG_ACCESS     := 0;           // (4)
+MVAR_KNOW_POISONER_STIMPAK := 0      // (5)
+MVAR_KNOW_POISONER_VIDEO := 0        // (6)
+MVAR_VIDEO_ACCESS    := 0            // (7)
+MVAR_KNOW_COMMANDER_BEER := 0        // (8)
+MVAR_KNOW_CAMERA    := 0        // (9)
+MVAR_DL_MEDICAL_RECORD := 0       // (10)
+MVAR_SENIOR_CUTSCENE := 0       // (11)
+MVAR_QM_Created := 0			// (12)
