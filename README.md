@@ -59,6 +59,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Small fix to the fridge container in the asylum, can't quite have it being unlockable without changing the map files, but unlocking it from the map script was doable at least <br/>
 * Weird set of condition was preventing Grandma Spider from teaching Healing Powder and wasting materials, also it was never creating any items, changed that
 * Made a workaround to be able to complete Sheriff Carmichael quest, the violent way isnt working / doing anything, and the other way was missing CODE flags that are not set anywhere to begin with, i've also made them being removed from your inventory
+* Changed yet another Proto, Greater Healing Powder according to its description was Healing Powder without the sleepiness component, yet the proto still included the PE debuff, i've removed that, heal value are the same
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
