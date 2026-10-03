@@ -95,7 +95,7 @@ procedure Skill_Check_001_Gamble;
 procedure repair_time;
 procedure Skill_Check_001_Gambling;
 procedure mark_vault29;
-//procedure mark_vault70;
+procedure mark_vault70;
 
 //~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
 // The Following lines are for anything that is not needed to be
@@ -358,7 +358,7 @@ procedure Node016
 begin
 Reply(650);
 NOption(651,mark_vault29,1);
-//NOption(652,mark_vault70,1);
+NOption(652,mark_vault70,1);
 NOption(653,Node018,1);
 NOption(503,Node999,1);
 end
@@ -619,19 +619,20 @@ procedure repair_time begin
     game_time_advance(ONE_GAME_HOUR);
     fadein(1);
 end
-/*
-procedure mark_vault70() begin
 
-   if(not(town_known(AREA_SALT_LAKE_CITY))) then begin
-      give_xp(500);
-      mark_on_map(AREA_SALT_LAKE_CITY)
-      display_msg("You have discovered the location of Vault 70.");
-   end
+
+procedure mark_vault70() begin
+	give_xp(500);
+	display_msg("You have learned about Vault 70.");
+   // if(not(town_known(AREA_SALT_LAKE_CITY))) then begin      
+      // mark_on_map(AREA_SALT_LAKE_CITY)
+      // display_msg("You have discovered the location of Vault 70.");
+   // end
 
    call Node017;
 
 end
-*/
+
 procedure mark_vault29() begin
 
    if(not(town_known(AreaNukeStatus(AREA_TWIN_MOTHERS)))) then begin
