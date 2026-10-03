@@ -61,6 +61,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Made a workaround to be able to complete Sheriff Carmichael quest, the violent way isnt working / doing anything, and the other way was missing CODE flags that are not set anywhere to begin with, i've also made them being removed from your inventory
 * Changed yet another Proto, Greater Healing Powder according to its description was Healing Powder without the sleepiness component, yet the proto still included the PE debuff, i've removed that, heal value are the same
 * Pugilism Illustrated (Unarmed Skillbooks) weren't working since they share id with Nikola Tesla and You (Energy Weapon Skillbooks) fixed by shifting id by one for each skillbook after.
+* VACS guardman was giving you the password to the door but this didnt result in GVAR state change, this way you can bypass the door with luck <=5
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
