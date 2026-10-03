@@ -324,7 +324,8 @@ if dude_is_male then
    Reply(124);
 else
    Reply(125);
-
+if (dude_caps>=5) then
+   NOption(430,node003,4);
 NOption(127,node007,4);
 NOption(126,node999,4);
 
@@ -341,7 +342,8 @@ if dude_is_male then
 Reply(129);
 else
 Reply(130);
-
+if (dude_caps>=15) then
+   NOption(430,node004,4);
 NOption(127,node007,4);
 NOption(126,node999,4);
 end
@@ -356,7 +358,8 @@ if dude_is_male then
 Reply(131);
 else
 Reply(132);
-
+if (dude_caps>=4) then
+   NOption(430,node005,4);
 NOption(127,node007,4);
 NOption(126,node999,4);
 end
@@ -388,8 +391,12 @@ begin
 
 item_caps_adjust(dude_obj,-20);
 give_pid_qty(dude_obj,PID_IGUANA_ON_A_STICK,1)
-
-call node001;
+Reply(145);
+if (dude_caps>=20) then
+   NOption(431,node012,4);
+NOption(146,node001,4);
+NOption(147,node999,4);
+//call node001;
 end
 
 procedure node009
@@ -408,8 +415,12 @@ begin
 
 item_caps_adjust(dude_obj,-10);
 give_pid_qty(dude_obj,PID_MEAT_JERKY,1)
-
-call node001;
+Reply(145);
+if (dude_caps>=10) then
+   NOption(431,node013,4);
+NOption(146,node001,4);
+NOption(147,node999,4);
+//call node001;
 end
 
 procedure node010
@@ -427,6 +438,8 @@ item_caps_adjust(dude_obj,-50);
 give_pid_qty(dude_obj,PID_COOKIE,1)
 
 Reply(145);
+if (dude_caps>=50) then
+   NOption(431,node014,4);
 NOption(156,node001,4);
 NOption(155,node999,4);
 
@@ -448,8 +461,12 @@ begin
 
    item_caps_adjust(dude_obj,-4);
    give_pid_qty(dude_obj,PID_MUTATED_FRUIT,1)
-
-call node001;
+Reply(145);
+if (dude_caps>=4) then
+   NOption(431,node015,4);
+NOption(146,node001,4);
+NOption(147,node999,4);
+//call node001;
 end
 
 procedure node007
@@ -645,6 +662,8 @@ give_pid_qty(dude_obj,PID_BEER,1)
 
 
 Reply(204);
+if (dude_caps>=10) then
+   NOption(430,node030,4);
 NOption(205,node001,4);
 if (dude_is_married) then
    NOption(206,node999,4);

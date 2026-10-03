@@ -224,3 +224,6 @@
 {405}{}{Thanks for the tip!}
 {406}{}{Owner's always right. Disagree? Take it up with Big Bea.}
 {407}{}{So, what's your story?}
+
+{430}{}{One more, please!}
+{431}{}{I'll take one more for the road.}
