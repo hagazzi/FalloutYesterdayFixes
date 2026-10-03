@@ -88,6 +88,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* Since it now has a script i'm thinking of using it for one of Bob's bounty target that are currently missing.
 * Now akin to Hakunin in Fallout 2, Grandma Spider can craft Healing Powder / Greater Healing Powder for you as long as you've learned how to craft Healing Powder and Greater Healing Powder, she batch them too
 * Added a repeat option to Dusty in Hoover Dam, it just loop into the last called node so you can buy multiple beer, cookie...etc without having to return to that node each time<br/>
+* Added an xp reward from convincing 3some company to supply Pablo (500xp)
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde

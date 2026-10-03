@@ -389,7 +389,7 @@ end
 procedure Node009
 begin
    set_global_var(GVAR_QUEST_HELP_PABLO_RIVIERA, 3);
-
+   give_xp(500);
 Reply(500);
 NOption(501,Node010,4);
 end
