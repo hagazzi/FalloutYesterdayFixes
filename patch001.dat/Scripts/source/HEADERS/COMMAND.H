@@ -1093,6 +1093,7 @@ variable removed_qty;
 //#define Fallout2_enclave_destroyed                    get_f2(f2_state_enclave_destroyed)
 
 
+
 // Info relating to carry weight, how much something costs, and weights
 #define pid_weight(x)                                   proto_data(x,it_weight)
 #define obj_weight(x)                                   pid_weight(obj_pid(x))
@@ -1340,7 +1341,7 @@ procedure dude_wielding_big_gun begin
 end
 
 procedure new_plague_check(variable who, variable lvar_herebefore) begin
-   variable allowplague := get_ini_setting("mods\\FalloutYesterday.ini|FalloutYesterday|allow_plage");
+   variable allowplague := get_ini_setting("mods\\FalloutYesterday.ini|FalloutYesterday|allow_plague");
    // Only affects humans and non-mutated animals, those we talked to, not wearing PA or EA
 	if (allowplague == 1) then begin   
 	   if (
