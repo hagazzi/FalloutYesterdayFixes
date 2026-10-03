@@ -89,6 +89,9 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Now akin to Hakunin in Fallout 2, Grandma Spider can craft Healing Powder / Greater Healing Powder for you as long as you've learned how to craft Healing Powder and Greater Healing Powder, she batch them too
 * Added a repeat option to Dusty in Hoover Dam, it just loop into the last called node so you can buy multiple beer, cookie...etc without having to return to that node each time<br/>
 * Added an xp reward from convincing 3some company to supply Pablo (500xp)
+* Added an xp reward from fixing (100xp 2 times) / "scienc-ing" the cannons (50xp) / using it, 1000xp might be too much but i've counted about 1750xp from killing Drake and the hounds / lastly an xp reward from quest completion (500xp)<br/>
+	* recognized and used myself the exploit that would be killing most but not all and then using cannon, could perfect it with a global thats incremented on hounds kills that would reduce the cannon use xp
+	* i think i could consider incrementing the good kills from using that cannon too
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -106,7 +109,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Random loot based on container type for flavour container (most are empty right now)
 
 ## TODO Change maybe (?)
-* add some xp to quests that didnt have any (MVCANNON.SSL no xp from hound kill / MVNEMONK.SSL no xp from computer quest / MVAKZEE.SSL no xp from hound quest / HDPABLO.SSL some xp for that hard speech check i think) 
+*  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/MVNEMONK.SSL no xp from computer quest /̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶
 * balance xp amount depending on game progression Tibbets < Mesa Verde < Hoover Dam < Maxson Bunker ?
 * some alternate way to progress without combat should reward xp especially if it kill things similar to MVCANNON therefore griefing you from their combined xp
 * a̶d̶d̶i̶n̶g̶ ̶L̶e̶g̶i̶o̶n̶ ̶f̶l̶a̶g̶ ̶t̶o̶ ̶s̶o̶m̶e̶ ̶l̶e̶g̶i̶o̶n̶ ̶n̶p̶c̶ ̶i̶n̶ ̶D̶o̶g̶t̶o̶w̶n̶ ̶V̶i̶l̶l̶a̶

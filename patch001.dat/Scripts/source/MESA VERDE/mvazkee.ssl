@@ -460,6 +460,7 @@ procedure end_hounds_siege begin
    give_pid_qty(dude_obj, PID_10MM_JHP, 1)
    give_pid_qty(dude_obj, PID_10MM_AP, 1)
    give_pid_qty(dude_obj, PID_HEALING_POWDER, 3)
+   give_xp(500);
 end
 
 procedure Node012

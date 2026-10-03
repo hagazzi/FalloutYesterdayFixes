@@ -24,6 +24,7 @@ procedure use_p_proc begin
          fadein(1);
          display_mstr(103);
          sfx := play_sfall_sound("data\\sound\\SFX\\laser_cannon.wav", 0);
+		 give_xp(1000);
       end
       else begin
          display_mstr(108);
@@ -63,7 +64,7 @@ procedure use_skill_on_p_proc begin
                   remove_pid_qty(dude_obj, PID_CAPACITATOR, 1)
                   fadein(1);
                   sfx := play_sfall_sound("data\\sound\\SFX\\install_capacitator.wav", 0);
-
+				  give_xp(100);
                   if (map_var(MVAR_Capacitators) == 1) then begin
                      display_mstr(101);
                   end
@@ -71,6 +72,7 @@ procedure use_skill_on_p_proc begin
                      display_mstr(102);
                      variable sfx2 := play_sfall_sound("data\\sound\\SFX\\laser_cannon_constructed.wav", 0);
                      set_global_var(GVAR_CIPHER_CANNON, CIPHER_CANNON_FINISHED);
+					 give_xp(100);
                   end
                end
                else begin
@@ -93,6 +95,7 @@ procedure use_skill_on_p_proc begin
          if(skill_success(source_obj, SKILL_SCIENCE, -50)) then begin
             if (global_var(GVAR_CIPHER_CANNON) == CIPHER_CANNON_UNFINISHED) then begin
                set_global_var(GVAR_CIPHER_CANNON, CIPHER_CANNON_INSPECTED);
+			   give_xp(50);
                display_mstr(104);
             end else if (global_var(GVAR_CIPHER_CANNON) == CIPHER_CANNON_INSPECTED) then begin
                display_mstr(104);
