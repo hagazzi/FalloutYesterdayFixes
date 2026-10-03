@@ -63,6 +63,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Pugilism Illustrated (Unarmed Skillbooks) weren't working since they share id with Nikola Tesla and You (Energy Weapon Skillbooks) fixed by shifting id by one for each skillbook after.
 * VACS guardman was giving you the password to the door but this didnt result in GVAR state change, this way you can bypass the door with luck <=5<br/>
 * Not really a fix since Vault 70 area appears non existing right now, but i wanted the xp reward for it, so i made a generic message like your learn of it and it gives the same xp discovering it would<br/>
+* Kind of a fix, i don't think you can get the Particle Matrix item currently, but if you have it from F12se or change i made to Blackfoot cave, going the repair route leave you with less than just delivering and then getting Otto, Diane or Pierre to fix it, also wasnt removing the Particle Matrix from inventory.
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>

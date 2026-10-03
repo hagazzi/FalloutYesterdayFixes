@@ -1235,7 +1235,10 @@ NOption(1704,Node999,4);
 end
 
 procedure Node051Reward begin
-   give_xp(500);
+   give_pid_qty(dude_obj, PID_STIMPAK, 1)
+   give_pid_qty(dude_obj, PID_SUPER_STIMPAK, 1)
+   remove_pid_qty(dude_obj, PID_MEDIMATRIX_PARTICLE_COMPOSER, 1)
+   give_xp(1000);
    display_mstr(160);
    call Node051;
 end
