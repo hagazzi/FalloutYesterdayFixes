@@ -110,6 +110,13 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * ̶D̶i̶a̶n̶e̶ ̶ ̶	̶(̶S̶e̶l̶l̶i̶n̶g̶ ̶c̶a̶r̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶t̶ ̶v̶a̶r̶i̶o̶u̶s̶ ̶N̶C̶R̶ ̶q̶u̶e̶s̶t̶ ̶a̶d̶v̶a̶n̶c̶e̶m̶e̶n̶t̶ ̶(̶i̶n̶c̶l̶u̶d̶i̶n̶g̶ ̶c̶a̶r̶ ̶s̶t̶o̶r̶a̶g̶e̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶a̶t̶ ̶t̶h̶e̶ ̶s̶a̶m̶e̶ ̶t̶i̶m̶e̶ ̶(̶?̶)̶)̶)̶
 *  ̶M̶r̶F̶i̶x̶i̶t̶	̶(̶E̶x̶t̶r̶a̶ ̶R̶e̶c̶i̶p̶e̶s̶ ̶=̶>̶ ̶f̶o̶r̶ ̶A̶d̶v̶P̶A̶ ̶a̶n̶d̶ ̶A̶d̶v̶P̶A̶ ̶m̶k̶I̶I̶ ̶-̶ ̶L̶o̶r̶e̶ ̶w̶i̶s̶e̶ ̶N̶C̶R̶ ̶a̶n̶d̶ ̶B̶o̶S̶ ̶s̶a̶l̶v̶a̶g̶e̶d̶ ̶t̶h̶e̶ ̶e̶n̶c̶l̶a̶v̶e̶ ̶s̶o̶ ̶A̶d̶v̶ ̶P̶A̶ ̶s̶h̶o̶u̶l̶d̶ ̶b̶e̶ ̶k̶n̶o̶w̶n̶ ̶t̶o̶ ̶B̶o̶S̶)̶
 * Random loot based on container type for flavour container (most are empty right now)
+* Restock for Dr Yuri (also Jet antidote maybe(?))
+* Rethink Armor progression, from armored vault suit to leather armor mkII goes well then theres not much more reservation has some metal armor but thats about it short of stealing Mark Tesla Armor rest is Isaac PA or ranger guard armor
+	* Combat armor used as stepstool to get into adv PA is possibly working but to into combat armor itself comes a bit late (?)
+	* Metal Armor could be craftable from regular gecko hide + junk + gas tank
+	* Metal Armor mkII from gold gecko hide + junk + metal armor mkI (?)
+	* Could get Metal Armor recipes from Mesa Verde recipes like maybe Geiger counter one
+	* Combat Armor MkI recipe could be Leather Armor MkII + Metal Armor MkII + Combat Leather Vest, would be inefficient to build multiple but could get one before getting into HD, and Otto would be able to get it MkII after Jericho, after that getting more from MaxsonB and/or possibly adding it to Ranger Vendor
 
 ## TODO Change maybe (?)
 *  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/MVNEMONK.SSL no xp from computer quest /̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶
