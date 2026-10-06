@@ -853,7 +853,7 @@ begin
 
 	if (global_var(GVAR_QUEST_CITY_COUNCIL) < 99) then begin
 	   if (global_var(GVAR_QUEST_CITY_COUNCIL) >= 9) then begin
-		  give_xp((global_var(GVAR_QUEST_CITY_COUNCIL)-1) *10);
+		  give_xp((global_var(GVAR_QUEST_CITY_COUNCIL)-1) *100);
 	   end
 	   else begin
 		  give_xp(400);

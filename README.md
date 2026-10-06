@@ -50,7 +50,6 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Didnt know Dr Davide had pretty much the same issue as Dr Tobillo, I guess i always got the right roll.
 * Weird condition on Dr Nora that prevented radscorpion nest completion if done on your own, through unmet some condition prevented to get into the procedure that was setting the gvar, and through met the setting was missing<br/>
 	* i've also added some xp reward i've choose to make it +500xp, if not doing on your own through Dr Nora help one would get 500 cap and 250xp, on your own if it had worked that would have been 1000 cap and 0xp, in my book more effort is more reward <br/>
-* Fixing the issue about this quest reveal another issue, changed the GVAR setting so that the quest isnt "reset" and therefore an infinite cap chain for 1000 cap, kind of fixing my fix
 * Fixed a probably planned but unfinished quest intended for an evil playthrough, here Dr Nora ask to kill her patient, it start by killing Taz <br/>
 	* The issue was that unlike Taz, pretty much all the target for that quest are in the generic Tibbets Prisoner Team, so instead i made all the target in TEAM_TAZ. <br/>
 	* Prevented that quest from completing without doing anything <br/>
@@ -65,6 +64,15 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Not really a fix since Vault 70 area appears non existing right now, but i wanted the xp reward for it, so i made a generic message like your learn of it and it gives the same xp discovering it would<br/>
 * Kind of a fix, i don't think you can get the Particle Matrix item currently, but if you have it from F12se or change i made to Blackfoot cave, going the repair route leave you with less than just delivering and then getting Otto, Diane or Pierre to fix it, also wasnt removing the Particle Matrix from inventory.
 * Noticed as i was using big book of science craft gvar, that it was not used likely due to a copy pasta error, fixed that in gl_pipwake
+
+## Fixes to my Fixes
+* DTCL was fixed a second time to make caesar legion critter actually having equipped weapons, was using the left slot also in some case weapon the sprite appear to not being able to use.
+* TMP501 was pointing to TMP502 and therefore had ranger weapon instead of tribal weapons
+* Was using LVAR on map script, which obviously didnt work, moved them to MVAR
+* Made a typo in my added settings which prevented effectively the new plague to ever do something since it was checking for allow_plage instead of allow_plague
+* There were 2 magneto laser pistol as a result of my MrFixit changes, shifted by one recipe to fix that
+* Fixing the issue about the radscorpion nest quest reveal another issue, changed the GVAR setting so that the quest isnt "reset" and therefore an infinite cap chain for 1000 cap, kind of fixing my fix
+* Forgot a zero when i redid dodge's council quest reward, made the success worse than the failure
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
@@ -122,7 +130,8 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Since i'm thinking about adding Kyle's Head to one of the Hook and considering the number of Hook, maybe other bounty target should be accompanied by a huge number of subordinates as well
 * Give MBED (Maxson Bunker's Edward Whatley) all of Diane and Otto specialized nodes, Diane being the car upgrades ones, and Otto the weapon / armor upgrades, conditionned upon having completed all the maintenance tasks
 	* possibly having car upgrades dependent of current BoS rank, could possibly be free from Senior rank onward since losing all of the merchants from HD (?)
-* Add PCX for technical manual	
+* Add PCX for technical manual
+* Thinking of preventing Mark GVAR to be set prior to Act2 in Bloomfield in the offchance you got the location from Pierce
 
 ## TODO Change maybe (?)
 *  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/MVNEMONK.SSL no xp from computer quest /̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶
