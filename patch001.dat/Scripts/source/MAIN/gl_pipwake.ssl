@@ -208,10 +208,10 @@ if (
 end
 
 if (
-   (global_var(GVAR_CRAFT_GUNS_AND_BULLETS) == 0) and
+   (global_var(GVAR_CRAFT_BIG_BOOK_OF_SCIENCE) == 0) and
    (dude_skill(SKILL_SCIENCE) >= 100)
    ) then begin
-   set_global_var(GVAR_CRAFT_GUNS_AND_BULLETS, 1);
+   set_global_var(GVAR_CRAFT_BIG_BOOK_OF_SCIENCE, 1);
 end
 
 if (

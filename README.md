@@ -64,6 +64,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * VACS guardman was giving you the password to the door but this didnt result in GVAR state change, this way you can bypass the door with luck <=5<br/>
 * Not really a fix since Vault 70 area appears non existing right now, but i wanted the xp reward for it, so i made a generic message like your learn of it and it gives the same xp discovering it would<br/>
 * Kind of a fix, i don't think you can get the Particle Matrix item currently, but if you have it from F12se or change i made to Blackfoot cave, going the repair route leave you with less than just delivering and then getting Otto, Diane or Pierre to fix it, also wasnt removing the Particle Matrix from inventory.
+* Noticed as i was using big book of science craft gvar, that it was not used likely due to a copy pasta error, fixed that in gl_pipwake
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
@@ -95,6 +96,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Added an xp reward from fixing (100xp 2 times) / "scienc-ing" the cannons (50xp) / using it, 1000xp might be too much but i've counted about 1750xp from killing Drake and the hounds / lastly an xp reward from quest completion (500xp)<br/>
 	* recognized and used myself the exploit that would be killing most but not all and then using cannon, could perfect it with a global thats incremented on hounds kills that would reduce the cannon use xp
 	* i think i could consider incrementing the good kills from using that cannon too
+* Added technical manual and chemistry manual to the list of craftable book, unlike other book they require 150% in a skill, technical manual being 150% repair and chemistry 150% science, reused the big book of science pcx for chemistry, used the repair one for technical manual, will get / change technical manual FRM into a pcx later
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -117,11 +119,15 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* Metal Armor mkII from gold gecko hide + junk + metal armor mkI (?)
 	* Could get Metal Armor recipes from Mesa Verde recipes like maybe Geiger counter one
 	* Combat Armor MkI recipe could be Leather Armor MkII + Metal Armor MkII + Combat Leather Vest, would be inefficient to build multiple but could get one before getting into HD, and Otto would be able to get it MkII after Jericho, after that getting more from MaxsonB and/or possibly adding it to Ranger Vendor
+* Since i'm thinking about adding Kyle's Head to one of the Hook and considering the number of Hook, maybe other bounty target should be accompanied by a huge number of subordinates as well
+* Give MBED (Maxson Bunker's Edward Whatley) all of Diane and Otto specialized nodes, Diane being the car upgrades ones, and Otto the weapon / armor upgrades, conditionned upon having completed all the maintenance tasks
+	* possibly having car upgrades dependent of current BoS rank, could possibly be free from Senior rank onward since losing all of the merchants from HD (?)
+* Add PCX for technical manual	
 
 ## TODO Change maybe (?)
 *  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/MVNEMONK.SSL no xp from computer quest /̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶
-* balance xp amount depending on game progression Tibbets < Mesa Verde < Hoover Dam < Maxson Bunker ?
-* some alternate way to progress without combat should reward xp especially if it kill things similar to MVCANNON therefore griefing you from their combined xp
+* b̶a̶l̶a̶n̶c̶e̶ ̶x̶p̶ ̶a̶m̶o̶u̶n̶t̶ ̶d̶e̶p̶e̶n̶d̶i̶n̶g̶ ̶o̶n̶ ̶g̶a̶m̶e̶ ̶p̶r̶o̶g̶r̶e̶s̶s̶i̶o̶n̶ ̶T̶i̶b̶b̶e̶t̶s̶ ̶<̶ ̶M̶e̶s̶a̶ ̶V̶e̶r̶d̶e̶ ̶<̶ ̶H̶o̶o̶v̶e̶r̶ ̶D̶a̶m̶ ̶<̶ ̶M̶a̶x̶s̶o̶n̶ ̶B̶u̶n̶k̶e̶r̶ ̶?̶
+*  ̶s̶o̶m̶e̶ ̶a̶l̶t̶e̶r̶n̶a̶t̶e̶ ̶w̶a̶y̶ ̶t̶o̶ ̶p̶r̶o̶g̶r̶e̶s̶s̶ ̶w̶i̶t̶h̶o̶u̶t̶ ̶c̶o̶m̶b̶a̶t̶ ̶s̶h̶o̶u̶l̶d̶ ̶r̶e̶w̶a̶r̶d̶ ̶x̶p̶ ̶e̶s̶p̶e̶c̶i̶a̶l̶l̶y̶ ̶i̶f̶ ̶i̶t̶ ̶k̶i̶l̶l̶ ̶t̶h̶i̶n̶g̶s̶ ̶s̶i̶m̶i̶l̶a̶r̶ ̶t̶o̶ ̶M̶V̶C̶A̶N̶N̶O̶N̶ ̶t̶h̶e̶r̶e̶f̶o̶r̶e̶ ̶g̶r̶i̶e̶f̶i̶n̶g̶ ̶y̶o̶u̶ ̶f̶r̶o̶m̶ ̶t̶h̶e̶i̶r̶ ̶c̶o̶m̶b̶i̶n̶e̶d̶ ̶x̶p̶
 * a̶d̶d̶i̶n̶g̶ ̶L̶e̶g̶i̶o̶n̶ ̶f̶l̶a̶g̶ ̶t̶o̶ ̶s̶o̶m̶e̶ ̶l̶e̶g̶i̶o̶n̶ ̶n̶p̶c̶ ̶i̶n̶ ̶D̶o̶g̶t̶o̶w̶n̶ ̶V̶i̶l̶l̶a̶
 *  ̶m̶a̶k̶i̶n̶g̶ ̶s̶o̶m̶e̶ ̶n̶p̶c̶ ̶f̶r̶o̶m̶ ̶t̶i̶b̶b̶e̶t̶s̶ ̶t̶o̶ ̶g̶e̶t̶ ̶y̶o̶u̶ ̶l̶o̶c̶a̶t̶i̶o̶n̶ ̶f̶r̶o̶m̶ ̶o̶u̶t̶s̶i̶d̶e̶ ̶(̶b̶i̶g̶ ̶t̶a̶l̶b̶o̶t̶ ̶=̶>̶ ̶H̶o̶o̶v̶e̶r̶ ̶D̶a̶m̶)̶ ̶(̶G̶r̶a̶n̶d̶m̶o̶t̶h̶e̶r̶ ̶S̶p̶i̶d̶e̶r̶ ̶=̶>̶ ̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶+̶ ̶R̶e̶s̶e̶r̶v̶a̶t̶i̶o̶n̶)̶
 *  ̶s̶o̶m̶e̶ ̶n̶p̶c̶ ̶f̶r̶o̶m̶ ̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶c̶o̶u̶l̶d̶ ̶m̶a̶r̶k̶ ̶M̶e̶s̶a̶ ̶V̶e̶r̶d̶e̶
@@ -130,16 +136,18 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 
 ## Changes i made for myself that im not porting
 * changes to gl_stealing_mod.ssl so that i never ever see a message such as you need 450 steal skill to steal that item even tho everyone got PER == 1 since i've spammed beer on them
+	* made sneak apply in full to steal skill
+	* disabled the bonus to critter steal skill given by many other being in the vicinity of the one who steal is being used on.
 *  ̶c̶h̶a̶n̶g̶e̶s̶ ̶t̶o̶ ̶V̶E̶H̶I̶C̶L̶E̶S̶.̶H̶ ̶s̶o̶ ̶t̶h̶a̶t̶ ̶G̶V̶A̶R̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶r̶e̶n̶'̶t̶ ̶r̶e̶s̶e̶t̶ ̶e̶a̶c̶h̶ ̶t̶i̶m̶e̶,̶ ̶w̶i̶l̶l̶ ̶p̶o̶r̶t̶ ̶i̶t̶ ̶i̶f̶ ̶i̶ ̶m̶a̶k̶e̶ ̶c̶h̶a̶n̶g̶e̶s̶ ̶t̶o̶ ̶D̶i̶a̶n̶e̶.̶= DONE
 
 
 ## Incomplete
-* several of what is alluded to be quests in Tibbets dialog actually aren't linked to actual quest
+* several of what is alluded to be quests in Tibbets dialog actually aren't linked to actual quest edit: [it looks that the content of some appear to have some weak link to the informant side quest]
 * Angela
 * Dr Siren
 * Seb
-* Taz(?)
-* Troposhere(?)
+*  ̶T̶a̶z̶(̶?̶)̶ Made the target of one evil playthrough quest
+*  ̶T̶r̶o̶p̶o̶s̶h̶e̶r̶e̶(̶?̶)̶ Made the target of one evil playthrough quest
 * There are no trigger to let you know to go and speak to Odysseus to start Act2 (?)
 * Bloomfield Hook talk about with float text someone fixing thing in the basement, theres noone there
 
@@ -156,3 +164,6 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* Any Bounty Quests?<br/>
 	* Theres also a ranger quest to join them that requires a legion flag but noone loot it right now (according to design document a vexillarius (flag bearer) should be in dogtown)<br/>
 
+### keeping previous category as such but i intend to tackle some of these
+1. Bounty Quests
+2. Ranger Quests already available through the changed dogtown maps
