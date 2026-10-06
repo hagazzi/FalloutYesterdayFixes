@@ -106,6 +106,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* i think i could consider incrementing the good kills from using that cannon too
 * Added technical manual and chemistry manual to the list of craftable book, unlike other book they require 150% in a skill, technical manual being 150% repair and chemistry 150% science, reused the big book of science pcx for chemistry, used the repair one for technical manual, will get / change technical manual FRM into a pcx later
 * Added extra settings to set restock time of each merchants one by one, was thinking of changing the makeinven function to use stock_pid_qty instead of adding things continuously to their inventory, but i think its mostly harmless 
+* Added both upgrades (Diane's upgrades and Otto's upgrades) to Ed Whatley(?), BoS mechanics, made very little change in the dialog, only toned down Otto lines since i don't want Ed to call himself Otto, made changes that should be ported later to Diane to make car upgrades more global so that one doesnt get upgrade twice, chose to use different breakpoint for BoS, GVAR quest wise, should let one not having to worry betraying / destroying Hoover Dam, since these upgrades are now available from Ed, having access to these upgrades in the first place requires dealing with all the repair work for Ed first, i also made Ed Car upgrades free for now, im not sure whether betraying HD cut access to merchant (design document mentionned destroying the dam)<br/>
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -133,6 +134,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* possibly having car upgrades dependent of current BoS rank, could possibly be free from Senior rank onward since losing all of the merchants from HD (?)
 * Add PCX for technical manual
 * Thinking of preventing Mark GVAR to be set prior to Act2 in Bloomfield in the offchance you got the location from Pierce
+* I've noticed that i understood set_car_carry_amount wrong, i thought it was using the baseline of 250 for each upgrades, but it appears its not the case so rather than having upgrade from 250> 300> 350> 400> 475, it instead gives me upgrade into 250> 300> 420> 672> 1276, kept it as such for now but to be congruent with fallout 2 mag plate 475 would need to be the max, might change it into a setting and fixing with flat values instead
 
 ## TODO Change maybe (?)
 *  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/MVNEMONK.SSL no xp from computer quest /̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶

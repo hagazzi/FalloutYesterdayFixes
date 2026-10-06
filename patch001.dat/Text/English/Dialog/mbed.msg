@@ -109,3 +109,139 @@
 {591}{}{A productive Sister is a satisfied one. We all have our duties to carry out, especially during these challenging times.}
 {592}{}{If you say so. Farewell for now.}
 {593}{}{Tell me something else then.}
+
+# Upgrades Nodes 23 - 49
+
+{613}{}{I've got to go.}
+{622}{}{Sure buddy. Anything. No charge, too. What do you have for Ed? A rifle, a pistol or revolver, an armor, a melee weapon, a heavy weapon?}
+{623}{}{A rifle.}
+{624}{}{A pistol or revolver.}
+{625}{}{An armor.}
+{626}{}{A melee weapon.}
+{627}{}{A heavy weapon.}
+{628}{}{Nothing right now.}
+{629}{}{OK, what rifle would it be? What's your wish?}
+{630}{}{Expand the magazine on my Assault Rifle.}
+{631}{}{Put a laser sight on my FN FAL.}
+{632}{}{Put a scope on my Hunting rifle.}
+{633}{}{Amplify the capacitors on my Laser Rifle.}
+{634}{}{Hotwire my Plasma Rifle.}
+{635}{}{Saw off my Shotgun.}
+{636}{}{OK, what pistol or revolver would it be? What's your wish?}
+{637}{}{Expand the magazine on my Desert Eagle.}
+{638}{}{Put a speed loader on my Magnum.}
+{639}{}{Put a magnetic chamber on my Laser Pistol.}
+{640}{}{Amplify the capacitors on my Plasma Glock.}
+{641}{}{OK, what armor would it be? What's your wish?}
+{642}{}{Brush up my Metal Armor.}
+{643}{}{Upgrade my Combat Armor.}
+{644}{}{Give a hardening treatment to my Powered Armor.}
+{645}{}{OK, what melee weapon would it be? What's your wish?}
+{646}{}{Uhm - could I have my Spear sharpened?}
+{647}{}{Upgrade this cattle prod.}
+{648}{}{Upgrade this Power Fist.}
+{649}{}{OK, what heavy weapon would it be? What's your wish?}
+{650}{}{I want you to give more punch to my flamethrower.}
+{651}{}{Here you go. It will now carry a hundred slugs in one mag. Hope it's enough.}
+{652}{}{Thanks! I'll try not to fire it all on one opponent.}
+{653}{}{Here you go. It should be much easier to target enemies in the dark now.}
+{654}{}{Thanks! Those tunnel rats better beware now.}
+{655}{}{I done it. Remember, it'll only be useful at long range.}
+{656}{}{Thanks! Hunting's never been so much fun.}
+{657}{}{Here. I made it so it'll now carry twice the charge before you need to reload.}
+{658}{}{Like a Vault Boy. Got it. Thanks!}
+{659}{}{I given it some extra kick, the plasma ought to be hotter and more damaging now.}
+{660}{}{Now they'll go down just like this: zap! Thanks.}
+{661}{}{Here. It'll be more effective at close quarters, but sacrificing the power at long range.}
+{662}{}{Whatever. It's the feel that counts. Thanks!}
+{663}{}{All done. Holds 20 bullets now.}
+{664}{}{There's never too many. Thanks!}
+{665}{}{There. It'll be twice as fast to replenish the ammunition.}
+{666}{}{It's feeling cool already. Thanks!}
+{667}{}{Ed really don't see how this could be useful.}
+{668}{}{It will come in handy, trust me. Bye.}
+{669}{}{Here. I refitted those crude linkings and polished it up a little.}
+{670}{}{Now that's what I call shiny. Thanks!}
+{671}{}{Here. I fitted it with additional plates and dissipater layers. Like to see anything pierce through that!}
+{672}{}{I know I wouldn't. Thanks!}
+{673}{}{Sure. Why not?}
+{674}{}{I don't know. It's a weapon. Thanks!}
+{675}{}{You planning to start a ranch?}
+{676}{}{Not at all. Thanks!}
+{677}{}{No problem. Just don't get carried away using that.}
+{678}{}{I'll be careful not to. Thanks!}
+{679}{}{Here. It'll be as deadly as ever.}
+{680}{}{I love the smell of kerosene in the morning. Thanks!}
+{681}{}{Ed would do it, but you need to bring some extra stuff.}
+{682}{}{I'll do it, what do you need?}
+{683}{}{Forget it.}
+{684}{}{A set of Chemistry Journals and a technical manual for the armor.}
+{685}{}{I'm yet to find those. Maybe I'll give you something else to upgrade.}
+{686}{}{I've got to go find them, then. Bye.}
+{687}{}{I've yet to find the journals. Bye.}
+{688}{}{I've got to find the manual. Bye.}
+{689}{}{I've got both right here.}
+{690}{}{Can you tinker with anything of mine?}
+{691}{}{Me dunno. You pick.}
+
+{732}{}{You do? You'll give it to Ed? Uhm... Listen, come back haben, Ed will give you a present too!}
+{733}{}{Me want prezunt!}
+{734}{}{You want me to upgrade something? What?}
+{735}{}{Me dunno. You pick.}
+{736}{}{I've upgraded your metal armor for you.}
+{737}{}{I've upgraded your combat armor for you.}
+{738}{}{I've sharpened your spear for you.}
+{739}{}{I've mega-strengthened your Power Fist for you.}
+{740}{}{I've hotwired that cattle prod for you.}
+{741}{}{I've expanded the clip on your Desert Eagle for you.}
+{742}{}{I've put a speed loader on your Magnum revolver for you.}
+{743}{}{I've added a scope for your hunting rifle.}
+{744}{}{I've put a night sight on your FN FAL.}
+{745}{}{I've expanded the magazine of your AK-112 machinegun.}
+{746}{}{I've given more power to your flamer.}
+{747}{}{I've put a magnetic chamber on your Wattz Civilian Pistol.}
+{748}{}{I've expanded the clip for your Plasma Pistol.}
+{749}{}{I've expanded the clip for your Laser Rifle.}
+{750}{}{I've refitted your regular Plasma into a Turbo Plasma.}
+{751}{}{Thankuuuu!}
+{752}{}{Sorry, I can do nothing for you, you've got nothing to upgrade.}
+
+# Node020
+{850}{}{In a pinch, i could probably do something about it, then adding in some of our engineers, I have some Dean's Electronics in the backroom, just wait for a bit....}
+{851}{}{[Continue]}
+
+# Node021
+{852}{}{Well it seems i could work on increasing the fuel efficiency, increasing the engine power, or its suspension... }
+{853}{}{Fuel Efficiency?} # Readily available
+{854}{}{Engine Power?} 	  # After Jericho Schematics Quest Complete and then Dodge
+{855}{}{Suspension?}	  # 1 Upgrade readily available, 2 upgrade Jericho Schematics, 3 upgrade meet Dodge, 4 upgrade NCR Peace
+{856}{}{I want all of the above.}  # NCR Peace 
+{857}{}{You know what, forget about car upgrades.}
+
+# Node021a
+{880}{}{I can do this on my own, this wasnt a common need before the war but with resources diverted for the war effort, fuel became expensive for the individual household apparently, a fuel controller would drastically reduce the draw... according to the cost in material and the time expenditure i would say 4000 caps would do it}
+{881}{}{Sold!}
+{882}{}{You drive a hard bargain woman! I can't get it just now, i'll come back later.}
+
+
+# Node021b
+{920}{}{A more powerful engine would increase the speed of your vehicle consistently, i heard back then people drove them for leisure, can you imagine it ? Successive upgrades of 8000 and 12000 can be done.}
+{921}{}{Deal!} # Car Blower
+{922}{}{Deal!} # NR Car Upgrade
+{923}{}{The cost is too steep.}
+{924}{}{All our engineers are focused on the filtration system, as of right now its impossible}
+{925}{}{[end]}
+
+
+# Node021c
+{960}{}{It's said that an efficient suspension can even increase the speed of your vehicles, people had car that like rode on air, i can't quite divert manpower for that. However improvement in suspension would increase the amount it can carry, successful upgrades of 6000, 8000 and 12000 caps what say you ?}
+{961}{}{First Upgrade} # 6000 caps
+{962}{}{Second Upgrade} # 8000 caps, first update done and Jericho Plans
+{963}{}{Third Upgrade} # 12000 caps and Dodge access
+{964}{}{What other update were you talking about?}
+
+# Node021d
+{1000}{}{With war at an end, we can finally breath again, i heard it was mostly thanks to you, we will still ask you for wages, but all of our engineer are ready for one final upgrade, 20000 caps would do it.}
+{1001}{}{That'd be great!}
+{1002}{}{Don't have quite enough just yet.}
+{1003}{}{Have you ever dealt with pre-war vehicles ?}
