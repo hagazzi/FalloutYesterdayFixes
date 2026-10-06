@@ -134,8 +134,21 @@ procedure Make_Inven;
 
 /* Local variables which do not need to be saved between map changes. */
 variable Only_Once:=0;
+variable vendorsettings;
+variable inidays;
+variable timeindays;
 
 procedure start begin
+end
+
+procedure set_time_indays begin
+	vendorsettings := get_ini_setting("mods\\FalloutYesterday.ini|FalloutYesterday|vendor_settings"); 								
+	inidays := get_ini_setting("mods\\FalloutYesterday.ini|Vendors|restock_bob");
+	if (inidays >= 1) and (vendorsettings == 1) then begin
+		timeindays := inidays;
+	end	else begin 
+		timeindays := 3;
+	end	
 end
 
 /* This procedure will get called each time that the map is first entered. It will
@@ -146,14 +159,19 @@ procedure map_enter_p_proc begin
    critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_HOOVER_DAM);
 //   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_);
 
+   call set_time_indays;
    if (((game_time) < 0) and (local_var(LVAR_Restock_Time_Fix) == 0)) then begin
       set_local_var(LVAR_Restock_Time, game_time - 1);
       set_local_var(LVAR_Restock_Time_Fix, 1);
    end
 
    if (local_var(LVAR_Restock_Time) < game_time) then begin
-      destroy_obj_inven(self_obj);
-      set_local_var(LVAR_Restock_Time, game_time + ONE_GAME_MONTH);
+      destroy_obj_inven(self_obj);      
+	  if (vendorsettings == 0) then begin
+		set_local_var(LVAR_Restock_Time, (random(7,14) * ONE_GAME_DAY) + game_time);		
+	  end else begin
+		set_local_var(LVAR_Restock_Time, (timeindays * ONE_GAME_DAY) + game_time);
+	  end	  
       set_local_var(LVAR_Made_Inven,0);
    end
 

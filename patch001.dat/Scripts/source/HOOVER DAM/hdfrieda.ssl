@@ -117,17 +117,32 @@ procedure restock_merchant_box;
 
 /* Local variables which do not need to be saved between map changes. */
 variable Only_Once:=0;
+variable vendorsettings;
+variable inidays;
+variable timeindays;
 
 procedure start begin
 end
+
+procedure set_time_indays begin
+	vendorsettings := get_ini_setting("mods\\FalloutYesterday.ini|FalloutYesterday|vendor_settings"); 								
+	inidays := get_ini_setting("mods\\FalloutYesterday.ini|Vendors|restock_frieda");
+	if (inidays >= 1) and (vendorsettings == 1) then begin
+		timeindays := inidays;
+	end	else begin 
+		timeindays := 3;
+	end	
+end
+
 procedure restock_merchant_box begin
-    variable box_obj;
+    variable box_obj;	
 	box_obj := tile_contains_pid_obj(33151, self_elevation, PID_FOOTLOCKER_RUSTY_LEFT);
+	call set_time_indays;
 	if (game_time >= local_var(LVAR_Restock_Stuff)) then begin
 		restock_fuel(box_obj)
 		restock_caps(box_obj)		
 		restock_ammo(box_obj)
-		set_local_var(LVAR_Restock_Stuff , (game_time + ONE_GAME_DAY) );
+		set_local_var(LVAR_Restock_Stuff , (game_time + (ONE_GAME_DAY* timeindays)) );
 	end	
 end
 

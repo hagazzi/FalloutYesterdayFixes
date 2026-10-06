@@ -99,11 +99,24 @@ procedure Node999;                                      // This Node is Always E
 
 /* Local variables which do not need to be saved between map changes. */
 variable Only_Once:=0;
+variable vendorsettings;
+variable inidays;
+variable timeindays;
 
 procedure start begin
 end
 
 import variable qm_ptr;
+
+procedure set_time_indays begin
+	vendorsettings := get_ini_setting("mods\\FalloutYesterday.ini|FalloutYesterday|vendor_settings"); 								
+	inidays := get_ini_setting("mods\\FalloutYesterday.ini|Vendors|restock_ranger");
+	if (inidays >= 1) and (vendorsettings == 1) then begin
+		timeindays := inidays;
+	end	else begin 
+		timeindays := 3;
+	end	
+end
 
 /* This procedure will get called each time that the map is first entered. It will
    set up the Team number and AI packet for this critter. This will override the
@@ -121,13 +134,13 @@ end
 
 procedure restock_merchant begin	
 	
-	
+	call set_time_indays;
 	if (game_time >= local_var(LVAR_Restock)) then begin
 		restock_caps(self_obj)
 		restock_misc(self_obj)
 		restock_ammo(self_obj)
 		restock_weapons(self_obj)
-		set_local_var(LVAR_Restock , (game_time + ONE_GAME_DAY) );
+		set_local_var(LVAR_Restock , (game_time + (ONE_GAME_DAY* timeindays)) );
 	end		
 	// if local_var(LVAR_Execute_Once) < 99 then begin
 	   // give_pid_qty(self_obj, PID_10MM_PISTOL , 1)

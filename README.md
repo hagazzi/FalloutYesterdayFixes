@@ -105,6 +105,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* recognized and used myself the exploit that would be killing most but not all and then using cannon, could perfect it with a global thats incremented on hounds kills that would reduce the cannon use xp
 	* i think i could consider incrementing the good kills from using that cannon too
 * Added technical manual and chemistry manual to the list of craftable book, unlike other book they require 150% in a skill, technical manual being 150% repair and chemistry 150% science, reused the big book of science pcx for chemistry, used the repair one for technical manual, will get / change technical manual FRM into a pcx later
+* Added extra settings to set restock time of each merchants one by one, was thinking of changing the makeinven function to use stock_pid_qty instead of adding things continuously to their inventory, but i think its mostly harmless 
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
