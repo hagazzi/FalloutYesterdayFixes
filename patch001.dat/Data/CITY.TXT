@@ -237,9 +237,9 @@ size=Large
 townmap_art_idx=591
 townmap_label_art_idx=569
 entrance_0=On,160,321,Jericho Train Station,-1,-1,0
-entrance_1=Off,160,321,Jericho Town East,-1,-1,0
-entrance_2=Off,160,321,Jericho Mormons,-1,-1,0
-entrance_3=Off,160,321,Jericho Town West,-1,-1,0
+entrance_1=Off,210,321,Jericho Town East,-1,-1,0
+entrance_2=Off,160,371,Jericho Mormons,-1,-1,0
+entrance_3=Off,210,371,Jericho Town West,-1,-1,0
 
 [Area 17]                ; New Canaan
 area_name=New Canaan
