@@ -122,12 +122,12 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 # TODO
 
 ## TODO Adds maybe (?)
-*  ̶T̶M̶P̶5̶0̶1̶ ̶	̶(̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶v̶e̶n̶d̶o̶r̶ ̶-̶ ̶s̶o̶m̶e̶ ̶o̶f̶ ̶w̶h̶a̶t̶ ̶m̶i̶l̶k̶o̶ ̶c̶u̶r̶r̶e̶n̶t̶l̶y̶ ̶r̶e̶s̶t̶o̶c̶k̶e̶d̶ ̶m̶o̶v̶e̶d̶ ̶h̶e̶r̶e̶ ̶l̶i̶k̶e̶ ̶b̶r̶o̶c̶ ̶/̶ ̶x̶a̶n̶d̶e̶r̶ ̶/̶ ̶p̶o̶w̶d̶e̶r̶,̶ ̶a̶l̶s̶o̶ ̶a̶d̶d̶i̶n̶g̶ ̶i̶n̶ ̶t̶r̶i̶b̶a̶l̶ ̶c̶h̶e̶m̶s̶)̶
-*  ̶T̶M̶P̶5̶0̶2̶ ̶	̶(̶N̶C̶R̶ ̶v̶e̶n̶d̶o̶r̶ ̶-̶ ̶R̶e̶s̶t̶o̶c̶k̶ ̶b̶i̶g̶ ̶g̶u̶n̶s̶ ̶a̶n̶d̶ ̶a̶m̶m̶o̶s̶ ̶a̶l̶s̶o̶ ̶s̶o̶m̶e̶ ̶g̶a̶u̶s̶s̶ ̶g̶u̶n̶s̶)̶
-* ̶D̶i̶a̶n̶e̶ ̶ ̶	̶(̶S̶e̶l̶l̶i̶n̶g̶ ̶c̶a̶r̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶t̶ ̶v̶a̶r̶i̶o̶u̶s̶ ̶N̶C̶R̶ ̶q̶u̶e̶s̶t̶ ̶a̶d̶v̶a̶n̶c̶e̶m̶e̶n̶t̶ ̶(̶i̶n̶c̶l̶u̶d̶i̶n̶g̶ ̶c̶a̶r̶ ̶s̶t̶o̶r̶a̶g̶e̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶a̶t̶ ̶t̶h̶e̶ ̶s̶a̶m̶e̶ ̶t̶i̶m̶e̶ ̶(̶?̶)̶)̶)̶
-*  ̶M̶r̶F̶i̶x̶i̶t̶	̶(̶E̶x̶t̶r̶a̶ ̶R̶e̶c̶i̶p̶e̶s̶ ̶=̶>̶ ̶f̶o̶r̶ ̶A̶d̶v̶P̶A̶ ̶a̶n̶d̶ ̶A̶d̶v̶P̶A̶ ̶m̶k̶I̶I̶ ̶-̶ ̶L̶o̶r̶e̶ ̶w̶i̶s̶e̶ ̶N̶C̶R̶ ̶a̶n̶d̶ ̶B̶o̶S̶ ̶s̶a̶l̶v̶a̶g̶e̶d̶ ̶t̶h̶e̶ ̶e̶n̶c̶l̶a̶v̶e̶ ̶s̶o̶ ̶A̶d̶v̶ ̶P̶A̶ ̶s̶h̶o̶u̶l̶d̶ ̶b̶e̶ ̶k̶n̶o̶w̶n̶ ̶t̶o̶ ̶B̶o̶S̶)̶
-* Random loot based on container type for flavour container (most are empty right now)
 * Restock for Dr Yuri (also Jet antidote maybe(?))
+* Barter / Restock from BoS Dr ?
+* Restock Fuel from Diane and Ed
+* Restock TMP500
+	* PA from Senior onward
+	* Technical Manual, Caseless, 2mmEC, rank for these TBD
 * Rethink Armor progression, from armored vault suit to leather armor mkII goes well then theres not much more reservation has some metal armor but thats about it short of stealing Mark Tesla Armor rest is Isaac PA or ranger guard armor
 	* Combat armor used as stepstool to get into adv PA is possibly working but to into combat armor itself comes a bit late (?)
 	* Metal Armor could be craftable from regular gecko hide + junk + gas tank
@@ -135,31 +135,49 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* Could get Metal Armor recipes from Mesa Verde recipes like maybe Geiger counter one
 	* Combat Armor MkI recipe could be Leather Armor MkII + Metal Armor MkII + Combat Leather Vest, would be inefficient to build multiple but could get one before getting into HD, and Otto would be able to get it MkII after Jericho, after that getting more from MaxsonB and/or possibly adding it to Ranger Vendor
 * Since i'm thinking about adding Kyle's Head to one of the Hook and considering the number of Hook, maybe other bounty target should be accompanied by a huge number of subordinates as well
-* Give MBED (Maxson Bunker's Edward Whatley) all of Diane and Otto specialized nodes, Diane being the car upgrades ones, and Otto the weapon / armor upgrades, conditionned upon having completed all the maintenance tasks
-	* possibly having car upgrades dependent of current BoS rank, could possibly be free from Senior rank onward since losing all of the merchants from HD (?)
+* Might add settings for Cargo upgrade breakpoint 
 * Add PCX for technical manual
 * Thinking of preventing Mark GVAR to be set prior to Act2 in Bloomfield in the offchance you got the location from Pierce
-* I've noticed that i understood set_car_carry_amount wrong, i thought it was using the baseline of 250 for each upgrades, but it appears its not the case so rather than having upgrade from 250> 300> 350> 400> 475, it instead gives me upgrade into 250> 300> 420> 672> 1276, kept it as such for now but to be congruent with fallout 2 mag plate 475 would need to be the max, might change it into a setting and fixing with flat values instead
-* Might add settings for Cargo upgrade breakpoint 
 
 ## TODO Change maybe (?)
-*  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/MVNEMONK.SSL no xp from computer quest /̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶
+* MVNEMONK.SSL no xp from computer quest
+* I'm thinking of making bounty targets and their cohort giving good kills not just to the one that kill them, thats a vanilla fallout 2 setting but i don't like that you aren't a berserker with a certain number of bad kill but then you start only doing good kill and you still become a berserker
+
+## Likely Will not do on 0.65.1
+* Random loot based on container type for flavour container (most are empty right now)
+	* using the same script i changed asylum container locked status, let me iterate through container and get container name so could easily use that for that purpose
+* I think it could possibly be doable to make the Sheriff Carmichael "violent" way doable using Dr Nora scripts used when you don't want to do the radscorpion nest on your own, the main issue being i don't know who are the prisoners that provoked his ire (i'm thinking either of the bar patrons + food dispenser ones, or alternatively the 2nd Bar in the vehicle bay )
+
+# DONE
+
+## Adds Maybe(?)
+*  ̶T̶M̶P̶5̶0̶1̶ ̶	̶(̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶v̶e̶n̶d̶o̶r̶ ̶-̶ ̶s̶o̶m̶e̶ ̶o̶f̶ ̶w̶h̶a̶t̶ ̶m̶i̶l̶k̶o̶ ̶c̶u̶r̶r̶e̶n̶t̶l̶y̶ ̶r̶e̶s̶t̶o̶c̶k̶e̶d̶ ̶m̶o̶v̶e̶d̶ ̶h̶e̶r̶e̶ ̶l̶i̶k̶e̶ ̶b̶r̶o̶c̶ ̶/̶ ̶x̶a̶n̶d̶e̶r̶ ̶/̶ ̶p̶o̶w̶d̶e̶r̶,̶ ̶a̶l̶s̶o̶ ̶a̶d̶d̶i̶n̶g̶ ̶i̶n̶ ̶t̶r̶i̶b̶a̶l̶ ̶c̶h̶e̶m̶s̶)̶
+*  ̶T̶M̶P̶5̶0̶2̶ ̶	̶(̶N̶C̶R̶ ̶v̶e̶n̶d̶o̶r̶ ̶-̶ ̶R̶e̶s̶t̶o̶c̶k̶ ̶b̶i̶g̶ ̶g̶u̶n̶s̶ ̶a̶n̶d̶ ̶a̶m̶m̶o̶s̶ ̶a̶l̶s̶o̶ ̶s̶o̶m̶e̶ ̶g̶a̶u̶s̶s̶ ̶g̶u̶n̶s̶)̶
+* ̶D̶i̶a̶n̶e̶ ̶ ̶	̶(̶S̶e̶l̶l̶i̶n̶g̶ ̶c̶a̶r̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶t̶ ̶v̶a̶r̶i̶o̶u̶s̶ ̶N̶C̶R̶ ̶q̶u̶e̶s̶t̶ ̶a̶d̶v̶a̶n̶c̶e̶m̶e̶n̶t̶ ̶(̶i̶n̶c̶l̶u̶d̶i̶n̶g̶ ̶c̶a̶r̶ ̶s̶t̶o̶r̶a̶g̶e̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶a̶t̶ ̶t̶h̶e̶ ̶s̶a̶m̶e̶ ̶t̶i̶m̶e̶ ̶(̶?̶)̶)̶)̶
+*  ̶M̶r̶F̶i̶x̶i̶t̶	̶(̶E̶x̶t̶r̶a̶ ̶R̶e̶c̶i̶p̶e̶s̶ ̶=̶>̶ ̶f̶o̶r̶ ̶A̶d̶v̶P̶A̶ ̶a̶n̶d̶ ̶A̶d̶v̶P̶A̶ ̶m̶k̶I̶I̶ ̶-̶ ̶L̶o̶r̶e̶ ̶w̶i̶s̶e̶ ̶N̶C̶R̶ ̶a̶n̶d̶ ̶B̶o̶S̶ ̶s̶a̶l̶v̶a̶g̶e̶d̶ ̶t̶h̶e̶ ̶e̶n̶c̶l̶a̶v̶e̶ ̶s̶o̶ ̶A̶d̶v̶ ̶P̶A̶ ̶s̶h̶o̶u̶l̶d̶ ̶b̶e̶ ̶k̶n̶o̶w̶n̶ ̶t̶o̶ ̶B̶o̶S̶)̶
+*  ̶G̶i̶v̶e̶ ̶M̶B̶E̶D̶ ̶(̶M̶a̶x̶s̶o̶n̶ ̶B̶u̶n̶k̶e̶r̶'̶s̶ ̶E̶d̶w̶a̶r̶d̶ ̶W̶h̶a̶t̶l̶e̶y̶)̶ ̶a̶l̶l̶ ̶o̶f̶ ̶D̶i̶a̶n̶e̶ ̶a̶n̶d̶ ̶O̶t̶t̶o̶ ̶s̶p̶e̶c̶i̶a̶l̶i̶z̶e̶d̶ ̶n̶o̶d̶e̶s̶,̶ ̶D̶i̶a̶n̶e̶ ̶b̶e̶i̶n̶g̶ ̶t̶h̶e̶ ̶c̶a̶r̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶o̶n̶e̶s̶,̶ ̶a̶n̶d̶ ̶O̶t̶t̶o̶ ̶t̶h̶e̶ ̶w̶e̶a̶p̶o̶n̶ ̶/̶ ̶a̶r̶m̶o̶r̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶,̶ ̶c̶o̶n̶d̶i̶t̶i̶o̶n̶n̶e̶d̶ ̶u̶p̶o̶n̶ ̶h̶a̶v̶i̶n̶g̶ ̶c̶o̶m̶p̶l̶e̶t̶e̶d̶ ̶a̶l̶l̶ ̶t̶h̶e̶ ̶m̶a̶i̶n̶t̶e̶n̶a̶n̶c̶e̶ ̶t̶a̶s̶k̶s̶
+	* p̶o̶s̶s̶i̶b̶l̶y̶ ̶h̶a̶v̶i̶n̶g̶ ̶c̶a̶r̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶d̶e̶p̶e̶n̶d̶e̶n̶t̶ ̶o̶f̶ ̶c̶u̶r̶r̶e̶n̶t̶ ̶B̶o̶S̶ ̶r̶a̶n̶k̶,̶ ̶c̶o̶u̶l̶d̶ ̶p̶o̶s̶s̶i̶b̶l̶y̶ ̶b̶e̶ ̶f̶r̶e̶e̶ ̶f̶r̶o̶m̶ ̶S̶e̶n̶i̶o̶r̶ ̶r̶a̶n̶k̶ ̶o̶n̶w̶a̶r̶d̶ ̶s̶i̶n̶c̶e̶ ̶l̶o̶s̶i̶n̶g̶ ̶a̶l̶l̶ ̶o̶f̶ ̶t̶h̶e̶ ̶m̶e̶r̶c̶h̶a̶n̶t̶s̶ ̶f̶r̶o̶m̶ ̶H̶D̶ ̶(̶?̶)̶
+*  ̶I̶'̶v̶e̶ ̶n̶o̶t̶i̶c̶e̶d̶ ̶t̶h̶a̶t̶ ̶i̶ ̶u̶n̶d̶e̶r̶s̶t̶o̶o̶d̶ ̶s̶e̶t̶_̶c̶a̶r̶_̶c̶a̶r̶r̶y̶_̶a̶m̶o̶u̶n̶t̶ ̶w̶r̶o̶n̶g̶,̶ ̶i̶ ̶t̶h̶o̶u̶g̶h̶t̶ ̶i̶t̶ ̶w̶a̶s̶ ̶u̶s̶i̶n̶g̶ ̶t̶h̶e̶ ̶b̶a̶s̶e̶l̶i̶n̶e̶ ̶o̶f̶ ̶2̶5̶0̶ ̶f̶o̶r̶ ̶e̶a̶c̶h̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶,̶ ̶b̶u̶t̶ ̶i̶t̶ ̶a̶p̶p̶e̶a̶r̶s̶ ̶i̶t̶s̶ ̶n̶o̶t̶ ̶t̶h̶e̶ ̶c̶a̶s̶e̶ ̶s̶o̶ ̶r̶a̶t̶h̶e̶r̶ ̶t̶h̶a̶n̶ ̶h̶a̶v̶i̶n̶g̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶f̶r̶o̶m̶ ̶2̶5̶0̶>̶ ̶3̶0̶0̶>̶ ̶3̶5̶0̶>̶ ̶4̶0̶0̶>̶ ̶4̶7̶5̶,̶ ̶i̶t̶ ̶i̶n̶s̶t̶e̶a̶d̶ ̶g̶i̶v̶e̶s̶ ̶m̶e̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶i̶n̶t̶o̶ ̶2̶5̶0̶>̶ ̶3̶0̶0̶>̶ ̶4̶2̶0̶>̶ ̶6̶7̶2̶>̶ ̶1̶2̶7̶6̶,̶ ̶k̶e̶p̶t̶ ̶i̶t̶ ̶a̶s̶ ̶s̶u̶c̶h̶ ̶f̶o̶r̶ ̶n̶o̶w̶ ̶b̶u̶t̶ ̶t̶o̶ ̶b̶e̶ ̶c̶o̶n̶g̶r̶u̶e̶n̶t̶ ̶w̶i̶t̶h̶ ̶f̶a̶l̶l̶o̶u̶t̶ ̶2̶ ̶m̶a̶g̶ ̶p̶l̶a̶t̶e̶ ̶4̶7̶5̶ ̶w̶o̶u̶l̶d̶ ̶n̶e̶e̶d̶ ̶t̶o̶ ̶b̶e̶ ̶t̶h̶e̶ ̶m̶a̶x̶,̶ ̶m̶i̶g̶h̶t̶ ̶c̶h̶a̶n̶g̶e̶ ̶i̶t̶ ̶i̶n̶t̶o̶ ̶a̶ ̶s̶e̶t̶t̶i̶n̶g̶ ̶a̶n̶d̶ ̶f̶i̶x̶i̶n̶g̶ ̶w̶i̶t̶h̶ ̶f̶l̶a̶t̶ ̶v̶a̶l̶u̶e̶s̶ ̶i̶n̶s̶t̶e̶a̶d̶ 
+	* (the crux of it was it wasnt setting the trunk upgrade correctly for non HWM trunk so it felt like i needed that much but actually it was still initial size)
+
+## Change Maybe(?)
+*  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶
 * b̶a̶l̶a̶n̶c̶e̶ ̶x̶p̶ ̶a̶m̶o̶u̶n̶t̶ ̶d̶e̶p̶e̶n̶d̶i̶n̶g̶ ̶o̶n̶ ̶g̶a̶m̶e̶ ̶p̶r̶o̶g̶r̶e̶s̶s̶i̶o̶n̶ ̶T̶i̶b̶b̶e̶t̶s̶ ̶<̶ ̶M̶e̶s̶a̶ ̶V̶e̶r̶d̶e̶ ̶<̶ ̶H̶o̶o̶v̶e̶r̶ ̶D̶a̶m̶ ̶<̶ ̶M̶a̶x̶s̶o̶n̶ ̶B̶u̶n̶k̶e̶r̶ ̶?̶
 *  ̶s̶o̶m̶e̶ ̶a̶l̶t̶e̶r̶n̶a̶t̶e̶ ̶w̶a̶y̶ ̶t̶o̶ ̶p̶r̶o̶g̶r̶e̶s̶s̶ ̶w̶i̶t̶h̶o̶u̶t̶ ̶c̶o̶m̶b̶a̶t̶ ̶s̶h̶o̶u̶l̶d̶ ̶r̶e̶w̶a̶r̶d̶ ̶x̶p̶ ̶e̶s̶p̶e̶c̶i̶a̶l̶l̶y̶ ̶i̶f̶ ̶i̶t̶ ̶k̶i̶l̶l̶ ̶t̶h̶i̶n̶g̶s̶ ̶s̶i̶m̶i̶l̶a̶r̶ ̶t̶o̶ ̶M̶V̶C̶A̶N̶N̶O̶N̶ ̶t̶h̶e̶r̶e̶f̶o̶r̶e̶ ̶g̶r̶i̶e̶f̶i̶n̶g̶ ̶y̶o̶u̶ ̶f̶r̶o̶m̶ ̶t̶h̶e̶i̶r̶ ̶c̶o̶m̶b̶i̶n̶e̶d̶ ̶x̶p̶
 * a̶d̶d̶i̶n̶g̶ ̶L̶e̶g̶i̶o̶n̶ ̶f̶l̶a̶g̶ ̶t̶o̶ ̶s̶o̶m̶e̶ ̶l̶e̶g̶i̶o̶n̶ ̶n̶p̶c̶ ̶i̶n̶ ̶D̶o̶g̶t̶o̶w̶n̶ ̶V̶i̶l̶l̶a̶
 *  ̶m̶a̶k̶i̶n̶g̶ ̶s̶o̶m̶e̶ ̶n̶p̶c̶ ̶f̶r̶o̶m̶ ̶t̶i̶b̶b̶e̶t̶s̶ ̶t̶o̶ ̶g̶e̶t̶ ̶y̶o̶u̶ ̶l̶o̶c̶a̶t̶i̶o̶n̶ ̶f̶r̶o̶m̶ ̶o̶u̶t̶s̶i̶d̶e̶ ̶(̶b̶i̶g̶ ̶t̶a̶l̶b̶o̶t̶ ̶=̶>̶ ̶H̶o̶o̶v̶e̶r̶ ̶D̶a̶m̶)̶ ̶(̶G̶r̶a̶n̶d̶m̶o̶t̶h̶e̶r̶ ̶S̶p̶i̶d̶e̶r̶ ̶=̶>̶ ̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶+̶ ̶R̶e̶s̶e̶r̶v̶a̶t̶i̶o̶n̶)̶
 *  ̶s̶o̶m̶e̶ ̶n̶p̶c̶ ̶f̶r̶o̶m̶ ̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶c̶o̶u̶l̶d̶ ̶m̶a̶r̶k̶ ̶M̶e̶s̶a̶ ̶V̶e̶r̶d̶e̶
-* I think it could possibly be doable to make the Sheriff Carmichael "violent" way doable using Dr Nora scripts used when you don't want to do the radscorpion nest on your own, the main issue being i don't know who are the prisoners that provoked his ire (i'm thinking either of the bar patrons + food dispenser ones, or alternatively the 2nd Bar in the vehicle bay )
-* I'm thinking of making bounty targets and their cohort giving good kills not just to the one that kill them, thats a vanilla fallout 2 setting but i don't like that you aren't a berserker with a certain number of bad kill but then you start only doing good kill and you still become a berserker
-* I think i saw a more complete highwayman model somewhere, might give it the highwayman script 
+*  ̶I̶ ̶t̶h̶i̶n̶k̶ ̶i̶ ̶s̶a̶w̶ ̶a̶ ̶m̶o̶r̶e̶ ̶c̶o̶m̶p̶l̶e̶t̶e̶ ̶h̶i̶g̶h̶w̶a̶y̶m̶a̶n̶ ̶m̶o̶d̶e̶l̶ ̶s̶o̶m̶e̶w̶h̶e̶r̶e̶,̶ ̶m̶i̶g̶h̶t̶ ̶g̶i̶v̶e̶ ̶i̶t̶ ̶t̶h̶e̶ ̶h̶i̶g̶h̶w̶a̶y̶m̶a̶n̶ ̶s̶c̶r̶i̶p̶t̶ ̶
+	* (made it in Jericho)
 
 # OTHER
 
 ## Changes i made for myself that im not porting
+*  ̶c̶h̶a̶n̶g̶e̶s̶ ̶t̶o̶ ̶V̶E̶H̶I̶C̶L̶E̶S̶.̶H̶ ̶s̶o̶ ̶t̶h̶a̶t̶ ̶G̶V̶A̶R̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶r̶e̶n̶'̶t̶ ̶r̶e̶s̶e̶t̶ ̶e̶a̶c̶h̶ ̶t̶i̶m̶e̶,̶ ̶w̶i̶l̶l̶ ̶p̶o̶r̶t̶ ̶i̶t̶ ̶i̶f̶ ̶i̶ ̶m̶a̶k̶e̶ ̶c̶h̶a̶n̶g̶e̶s̶ ̶t̶o̶ ̶D̶i̶a̶n̶e̶.̶ 
+	* (DONE)
 * changes to gl_stealing_mod.ssl so that i never ever see a message such as you need 450 steal skill to steal that item even tho everyone got PER == 1 since i've spammed beer on them
 	* made sneak apply in full to steal skill
 	* disabled the bonus to critter steal skill given by many other being in the vicinity of the one who steal is being used on.
-*  ̶c̶h̶a̶n̶g̶e̶s̶ ̶t̶o̶ ̶V̶E̶H̶I̶C̶L̶E̶S̶.̶H̶ ̶s̶o̶ ̶t̶h̶a̶t̶ ̶G̶V̶A̶R̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶r̶e̶n̶'̶t̶ ̶r̶e̶s̶e̶t̶ ̶e̶a̶c̶h̶ ̶t̶i̶m̶e̶,̶ ̶w̶i̶l̶l̶ ̶p̶o̶r̶t̶ ̶i̶t̶ ̶i̶f̶ ̶i̶ ̶m̶a̶k̶e̶ ̶c̶h̶a̶n̶g̶e̶s̶ ̶t̶o̶ ̶D̶i̶a̶n̶e̶.̶= DONE
 * made a change to dude_looks_like_bos specifically making a dude_wearing_power_armor_bos distinction, to only recognize regular PA and Hardened PA, while i can understand why making the choice of having all PA be recognized as BOS i think there are many other armor that could be shot on sight due to how foreign they look to both BoS and NCR, also like they can tell combat armor from bos combat armor, so i've decided to make it precise instead, for now i'm still conflicted, so im not sure whether porting it or not
 
 
