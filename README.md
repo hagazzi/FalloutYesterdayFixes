@@ -16,6 +16,7 @@ Here's their Patreon https://www.patreon.com/fallouty
 	* TMP_501			  (Blackfoot General Store Vendor)
 	* TMP_502			  (NCR Ranger Vendor)
 	* TMP_503			  (BHMINE2 map script)
+	* TMP_504			  (Car Battery script)
 * didnt want to initially since it might then requires deleting save values, but i had to modify some maps to add some items and fix ai, team / fix an exit grid behavior that kept returning me to Tibbets
 * if you need to, for having already entered said maps, using editors such as F12se will let delete the particular map.sav for these zones
 
@@ -113,6 +114,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
 * Change to companion so that they get extra health depending on their Endurance and your character (dude_obj) level, using the basic hp per level formula used for your own character Floor(END / 2) + 2
 * Dune Buggy trunk, theres no art for it currently therefore it wasnt added to this version, but since it was planned to have it theres a ptr therefore an inventory, i felt like adding it for extra storage space
+* Changed JRTOWNE.map to be able to get the Highwayman from Jericho if one get there first, included a change in car battery scenery proto to be able to pick it up, using TMP_504 script to destroy that obj and pick up a car battery, the type of car battery depends on dude luck made it to be a charged one on LCK >= 6, made no change to cocar.ssl so once repaired it teleports to tile 24106
 
 
 # TODO
@@ -146,6 +148,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 *  ̶s̶o̶m̶e̶ ̶n̶p̶c̶ ̶f̶r̶o̶m̶ ̶B̶l̶a̶c̶k̶f̶o̶o̶t̶ ̶c̶o̶u̶l̶d̶ ̶m̶a̶r̶k̶ ̶M̶e̶s̶a̶ ̶V̶e̶r̶d̶e̶
 * I think it could possibly be doable to make the Sheriff Carmichael "violent" way doable using Dr Nora scripts used when you don't want to do the radscorpion nest on your own, the main issue being i don't know who are the prisoners that provoked his ire (i'm thinking either of the bar patrons + food dispenser ones, or alternatively the 2nd Bar in the vehicle bay )
 * I'm thinking of making bounty targets and their cohort giving good kills not just to the one that kill them, thats a vanilla fallout 2 setting but i don't like that you aren't a berserker with a certain number of bad kill but then you start only doing good kill and you still become a berserker
+* I think i saw a more complete highwayman model somewhere, might give it the highwayman script 
 
 # OTHER
 
