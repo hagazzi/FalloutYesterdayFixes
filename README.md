@@ -153,6 +153,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* made sneak apply in full to steal skill
 	* disabled the bonus to critter steal skill given by many other being in the vicinity of the one who steal is being used on.
 *  ̶c̶h̶a̶n̶g̶e̶s̶ ̶t̶o̶ ̶V̶E̶H̶I̶C̶L̶E̶S̶.̶H̶ ̶s̶o̶ ̶t̶h̶a̶t̶ ̶G̶V̶A̶R̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶a̶r̶e̶n̶'̶t̶ ̶r̶e̶s̶e̶t̶ ̶e̶a̶c̶h̶ ̶t̶i̶m̶e̶,̶ ̶w̶i̶l̶l̶ ̶p̶o̶r̶t̶ ̶i̶t̶ ̶i̶f̶ ̶i̶ ̶m̶a̶k̶e̶ ̶c̶h̶a̶n̶g̶e̶s̶ ̶t̶o̶ ̶D̶i̶a̶n̶e̶.̶= DONE
+* made a change to dude_looks_like_bos specifically making a dude_wearing_power_armor_bos distinction, to only recognize regular PA and Hardened PA, while i can understand why making the choice of having all PA be recognized as BOS i think there are many other armor that could be shot on sight due to how foreign they look to both BoS and NCR, also like they can tell combat armor from bos combat armor, so i've decided to make it precise instead, for now i'm still conflicted, so im not sure whether porting it or not
 
 
 ## Incomplete
