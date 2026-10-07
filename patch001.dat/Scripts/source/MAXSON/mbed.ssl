@@ -112,6 +112,7 @@ procedure node046;
 procedure node047;
 procedure node048;
 procedure node049;
+procedure update_other_trunk;
 
 
 //~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
@@ -160,6 +161,18 @@ procedure node049;
 variable Only_Once:=0;
 
 procedure start begin
+end
+
+procedure update_other_trunk begin
+	variable cop_car_storage := get_proto_data(PID_COP_CAR_TRUNK,36);
+	variable dune_buggy_storage := get_proto_data(PID_DUNE_BUGGY_TRUNK,36);
+	variable semi_truck_storage := get_proto_data(PID_SEMI_TRUCK_TRUNK,36);
+	if (cop_car_storage < car_carry_amount) then
+		set_proto_data(PID_COP_CAR_TRUNK, 36, car_carry_amount);
+	if (dune_buggy_storage < car_carry_amount) then
+		set_proto_data(PID_DUNE_BUGGY_TRUNK, 36, car_carry_amount);
+	if (semi_truck_storage < car_carry_amount) then
+		set_proto_data(PID_SEMI_TRUCK_TRUNK, 36, car_carry_amount);
 end
 
 /* This procedure will get called each time that the map is first entered. It will
@@ -631,6 +644,7 @@ begin
 	//item_caps_adjust(dude_obj,-6000);
 	//set_local_var(LVAR_Cargo_Upgrades,10);
 	set_car_carry_amount((120*car_carry_amount) / 100); //should have just been set_car_carry_amount(300)
+	call update_other_trunk;
 	NOption(925,Node999,4);
 end
 
@@ -639,6 +653,7 @@ begin
 	//item_caps_adjust(dude_obj,-8000);
 	//set_local_var(LVAR_Cargo_Upgrades,20);
 	set_car_carry_amount((140*car_carry_amount) / 100); //should have just been set_car_carry_amount(350)
+	call update_other_trunk;
 	NOption(925,Node999,4);
 end
 
@@ -647,6 +662,7 @@ begin
 	//item_caps_adjust(dude_obj,-12000);
 	//set_local_var(LVAR_Cargo_Upgrades,30);
 	set_car_carry_amount((160*car_carry_amount) / 100); //should have just been set_car_carry_amount(400)
+	call update_other_trunk;
 	NOption(925,Node999,4);
 end
 
@@ -668,6 +684,7 @@ begin
 	//set_local_var(LVAR_NR_Super_Car,99);
 	//set_local_var(LVAR_Cargo_Upgrades,99);
 	set_car_carry_amount((190*car_carry_amount) / 100); //congruent with fallout 2 post oil rig mag/grav plates // currently not congruent should have just been set_car_carry_amount(475)
+	call update_other_trunk;
 	set_global_var(GVAR_NEW_RENO_SUPER_CAR,1);		
 	set_sfall_global("car_nrsu",1);
 	NOption(925,Node999,4);

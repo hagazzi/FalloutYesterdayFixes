@@ -1,0 +1,21 @@
+// Apply current car_carry_amount to other trunks on game load
+
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\sfall.h"
+
+procedure start;
+
+procedure start begin
+   if (game_loaded) then begin
+     variable cop_car_storage := get_proto_data(PID_COP_CAR_TRUNK,36);
+	 variable dune_buggy_storage := get_proto_data(PID_DUNE_BUGGY_TRUNK,36);
+	 variable semi_truck_storage := get_proto_data(PID_SEMI_TRUCK_TRUNK,36);
+	 if (cop_car_storage < car_carry_amount) then
+		set_proto_data(PID_COP_CAR_TRUNK, 36, car_carry_amount);
+	 if (dune_buggy_storage < car_carry_amount) then
+		set_proto_data(PID_DUNE_BUGGY_TRUNK, 36, car_carry_amount);
+	 if (semi_truck_storage < car_carry_amount) then
+		set_proto_data(PID_SEMI_TRUCK_TRUNK, 36, car_carry_amount);
+   end
+end

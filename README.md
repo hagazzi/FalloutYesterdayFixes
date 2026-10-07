@@ -73,6 +73,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * There were 2 magneto laser pistol as a result of my MrFixit changes, shifted by one recipe to fix that
 * Fixing the issue about the radscorpion nest quest reveal another issue, changed the GVAR setting so that the quest isnt "reset" and therefore an infinite cap chain for 1000 cap, kind of fixing my fix
 * Forgot a zero when i redid dodge's council quest reward, made the success worse than the failure
+* I thought set_car_carry_amount did more, happens its only for the highwayman trunk, successfully found a way to apply it to other trunk, modified both Diane and Ed to do just that, adding on top of that a global script that might be useless but does the same on game loaded, if set_proto_data is persistent on saved data its prolly unneeded, if its not persistent then its actually worth something
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
