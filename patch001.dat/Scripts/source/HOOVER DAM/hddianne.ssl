@@ -105,12 +105,12 @@ procedure update_other_trunk;
 #define LVAR_Seen_Tag               (9)
 #define LVAR_HomeTile               (10)
 
-#define LVAR_Fuel_Cell_Regulator	(11)
-#define LVAR_Car_Blower				(12)
-#define LVAR_Cargo_Upgrades			(13)
-#define LVAR_NR_Car_Upgrade			(14)
-#define LVAR_NR_Super_Car			(15)
-#define LVAR_Restock_Fuel			(16)
+// #define LVAR_Fuel_Cell_Regulator	(11)
+// #define LVAR_Car_Blower				(12)
+// #define LVAR_Cargo_Upgrades			(13)
+// #define LVAR_NR_Car_Upgrade			(14)
+// #define LVAR_NR_Super_Car			(15)
+// #define LVAR_Restock_Fuel			(16)
 
 
 #define dude_has_motorcycle                         (global_var(GVAR_PLAYER_GOT_MOTORCYCLE))
@@ -121,7 +121,29 @@ procedure update_other_trunk;
 #define dude_has_car                         (global_var(GVAR_PLAYER_GOT_HIGHWAYMAN))
 #define dude_has_bicycle                         (global_var(GVAR_PLAYER_GOT_BICYCLE))
 #define dude_has_vehicle                        (dude_has_motorcycle or dude_has_dune_buggy or dude_has_cop_car or dude_has_semi_truck or dude_has_train or dude_has_car or dude_has_bicycle)
+#define vehicle_blower								(get_sfall_global_int("car_blow") == 1)
+#define vehicle_nrupgrade							(get_sfall_global_int("car_nrup") == 1)	
+#define vehicle_super								(get_sfall_global_int("car_nrsu") == 1)
+// #define vehicle_cargo_one							(car_carry_amount == 300)
+// #define vehicle_cargo_two							(car_carry_amount == 350)
+// #define vehicle_cargo_three						(car_carry_amount == 400)
+// #define vehicle_cargo_super						(car_carry_amount == 475)
+// #define vehicle_cargo_one							(car_carry_amount == 300)
+// #define vehicle_cargo_two							(car_carry_amount == 420)
+// #define vehicle_cargo_three							(car_carry_amount == 672)
+// #define vehicle_cargo_super							(car_carry_amount >= 1276)
 
+#define vehicle_fuelup								(global_var(GVAR_CAR_UPGRADE_FUEL_CELL_REGULATOR) == 1)
+
+#define vehicle_cargo_initial						250
+#define vehicle_cargo_first_breakpoint				300
+#define vehicle_cargo_second_breakpoint				350
+#define vehicle_cargo_third_breakpoint				400
+#define vehicle_cargo_last_breakpoint				475
+// #define vehicle_cargo_first_breakpoint				300
+// #define vehicle_cargo_second_breakpoint				420
+// #define vehicle_cargo_third_breakpoint				672
+// #define vehicle_cargo_last_breakpoint				1276
 
 
 /* Imported variables from the Map scripts. These should only be
@@ -347,7 +369,7 @@ if ((enclave_destroyed) and (local_var(LVAR_Date) == 1)) then
 NOption(202,Node002,4);
 if (local_var(LVAR_Date) == 0) then
 	NOption(203,Node010,4);
-if ((dude_has_vehicle) and (local_var(LVAR_NR_Super_Car) < 99)) then
+if ((dude_has_vehicle) and (vehicle_super == 0)) then
 	NOption(205,Node020,4);
 NOption(204,Node999,4);
 end
@@ -479,18 +501,18 @@ end
 procedure Node021 //Mechanic Upgrades List
 begin
 	Reply(652);
-	if (local_var(LVAR_Fuel_Cell_Regulator) < 99) then
+	if (vehicle_fuelup == 0) then
 		NOption(653,Node021a,4);
-	if ((local_var(LVAR_Car_Blower) < 99) or (local_var(LVAR_NR_Car_Upgrade) < 99))  then		
+	if (vehicle_blower == 0) or (vehicle_nrupgrade == 0)  then		
 		NOption(654,Node021b,4);
-	if (local_var(LVAR_Cargo_Upgrades) < 30) then		
+	if (car_carry_amount < vehicle_cargo_third_breakpoint) then		
 		NOption(655,Node021c,4);
-	if (global_var(GVAR_QUEST_HOOVER_PEACE) == 7) and 
-	   (local_var(LVAR_Cargo_Upgrades) == 30) and 
-	   (local_var(LVAR_NR_Super_Car) < 99) and 
-	   (local_var(LVAR_Car_Blower) == 99) and 
-	   (local_var(LVAR_NR_Car_Upgrade) == 99) and 
-	   (local_var(LVAR_Fuel_Cell_Regulator) == 99)
+	if (global_var(GVAR_QUEST_HOOVER_PEACE) == 7) and
+	   (car_carry_amount == vehicle_cargo_third_breakpoint) and
+	   (vehicle_super == 0) and
+	   (vehicle_blower == 1) and
+	   (vehicle_nrupgrade == 1) and
+	   (vehicle_fuelup == 1)
 	then begin
 		NOption(656,Node021d,4);
 	end
@@ -500,7 +522,9 @@ end
 procedure Node021a //Efficiency
 begin
 	Reply(680);
-	if (local_var(LVAR_Fuel_Cell_Regulator) < 99) and (dude_caps >= 4000) then begin
+	if (vehicle_fuelup == 0)  and
+		(dude_caps >= 4000) 
+	then begin
 		NOption(681,Node021aa,4);
 	end	
 	NOption(682,Node021,4);
@@ -508,9 +532,11 @@ end
 
 procedure Node021aa //Efficiency
 begin
-	if (local_var(LVAR_Fuel_Cell_Regulator) < 99) and (dude_caps >= 4000) then begin
+	if	(vehicle_fuelup == 0)  and
+		(dude_caps >= 4000) 
+	then begin
 		item_caps_adjust(dude_obj,-4000);
-		set_local_var(LVAR_Fuel_Cell_Regulator,99);
+		//set_local_var(LVAR_Fuel_Cell_Regulator,99);
 		set_global_var(GVAR_CAR_UPGRADE_FUEL_CELL_REGULATOR,1);
 		NOption(725,Node999,4);
 	end
@@ -520,13 +546,23 @@ end
 procedure Node021b //Speed
 begin
 	Reply(720);
-	if (local_var(LVAR_Car_Blower) < 99) and (dude_caps >= 8000) and (global_var(GVAR_QUEST_UPGRADE_FILTER) == 2) then begin
+	if	(vehicle_blower == 0)  and
+		(dude_caps >= 8000) and
+		(global_var(GVAR_QUEST_UPGRADE_FILTER) == 2) 
+	then begin
 		NOption(721,Node021ba,4);
 	end
-	if (local_var(LVAR_NR_Car_Upgrade) < 99) and (local_var(LVAR_Car_Blower) == 99)  and (dude_caps >= 12000) and (global_var(GVAR_QUEST_MEET_DODGE) == 2) then begin
+	if	(vehicle_nrupgrade == 0) and
+		(vehicle_blower == 1) and
+		(dude_caps >= 12000) and
+		(global_var(GVAR_QUEST_MEET_DODGE) == 2) 
+	then begin
 		NOption(722,Node021bb,4);
 	end	
-	if ((local_var(LVAR_Car_Blower) == 99) and (global_var(GVAR_QUEST_MEET_DODGE) < 2)) or (global_var(GVAR_QUEST_UPGRADE_FILTER) < 2) then begin
+	if ((vehicle_blower == 1) and
+		(global_var(GVAR_QUEST_MEET_DODGE) < 2))
+		or (global_var(GVAR_QUEST_UPGRADE_FILTER) < 2)
+	then begin
 		NOption(724,Node021,4);
 	end
 	else begin
@@ -536,9 +572,12 @@ end
 
 procedure Node021ba //Speed 1
 begin
-	if (local_var(LVAR_Car_Blower) < 99) and (dude_caps >= 8000) and (global_var(GVAR_QUEST_UPGRADE_FILTER) == 2) then begin
+	if	(vehicle_blower == 0) and
+		(dude_caps >= 8000) and
+		(global_var(GVAR_QUEST_UPGRADE_FILTER) == 2)
+	then begin
 		item_caps_adjust(dude_obj,-8000);
-		set_local_var(LVAR_Car_Blower,99);
+		//set_local_var(LVAR_Car_Blower,99);
 		set_global_var(GVAR_CAR_BLOWER,1);
 		set_sfall_global("car_blow",1);
 		NOption(725,Node999,4);
@@ -547,9 +586,13 @@ end
 
 procedure Node021bb //Speed 2
 begin
-	if (local_var(LVAR_NR_Car_Upgrade) < 99) and (local_var(LVAR_Car_Blower) == 99)  and (dude_caps >= 12000) and (global_var(GVAR_QUEST_MEET_DODGE) == 2) then begin
+	if	(vehicle_nrupgrade == 0) and 
+		(vehicle_blower == 1)  and 
+		(dude_caps >= 12000) and 
+		(global_var(GVAR_QUEST_MEET_DODGE) == 2) 
+	then begin
 		item_caps_adjust(dude_obj,-12000);
-		set_local_var(LVAR_NR_Car_Upgrade,99);
+		//set_local_var(LVAR_NR_Car_Upgrade,99);
 		set_global_var(GVAR_NEW_RENO_CAR_UPGRADE,1);
 		set_sfall_global("car_nrup",1);
 		NOption(725,Node999,4);
@@ -559,13 +602,21 @@ end
 procedure Node021c //Cargo
 begin
 	Reply(760);
-	if ((local_var(LVAR_Cargo_Upgrades) < 10) and (dude_caps >= 6000)) then begin
+	if ((car_carry_amount == vehicle_cargo_initial) and
+		(dude_caps >= 6000)) 
+	then begin
 		NOption(761,Node021ca,4);
 	end
-	if ((local_var(LVAR_Cargo_Upgrades) == 10) and (global_var(GVAR_QUEST_UPGRADE_FILTER) == 2) and (dude_caps >= 8000)) then begin
+	if ((car_carry_amount == vehicle_cargo_first_breakpoint) and
+		(global_var(GVAR_QUEST_UPGRADE_FILTER) == 2) and
+		(dude_caps >= 8000)) 
+	then begin
 		NOption(762,Node021cb,4);
 	end	
-	if ((local_var(LVAR_Cargo_Upgrades) == 20) and (global_var(GVAR_QUEST_MEET_DODGE) == 2) and (dude_caps >= 12000)) then begin
+	if ((car_carry_amount == vehicle_cargo_second_breakpoint) and
+		(global_var(GVAR_QUEST_MEET_DODGE) == 2) and
+		(dude_caps >= 12000)) 
+	then begin
 		NOption(763,Node021cc,4);
 	end		
 	NOption(764,Node021,4);	
@@ -574,8 +625,9 @@ end
 procedure Node021ca //Cargo 1 
 begin
 	item_caps_adjust(dude_obj,-6000);
-	set_local_var(LVAR_Cargo_Upgrades,10);
-	set_car_carry_amount((120*car_carry_amount) / 100);
+	//set_local_var(LVAR_Cargo_Upgrades,10);
+	//set_car_carry_amount((120*car_carry_amount) / 100);
+	set_car_carry_amount(vehicle_cargo_first_breakpoint);
 	call update_other_trunk;
 	NOption(725,Node999,4);
 end
@@ -583,8 +635,9 @@ end
 procedure Node021cb //Cargo 2
 begin
 	item_caps_adjust(dude_obj,-8000);
-	set_local_var(LVAR_Cargo_Upgrades,20);
-	set_car_carry_amount((140*car_carry_amount) / 100);
+	//set_local_var(LVAR_Cargo_Upgrades,20);
+	//set_car_carry_amount((140*car_carry_amount) / 100);
+	set_car_carry_amount(vehicle_cargo_second_breakpoint);
 	call update_other_trunk;
 	NOption(725,Node999,4);
 end
@@ -592,8 +645,9 @@ end
 procedure Node021cc //Cargo 3
 begin
 	item_caps_adjust(dude_obj,-12000);
-	set_local_var(LVAR_Cargo_Upgrades,30);
-	set_car_carry_amount((160*car_carry_amount) / 100);
+	//set_local_var(LVAR_Cargo_Upgrades,30);
+	//set_car_carry_amount((160*car_carry_amount) / 100);
+	set_car_carry_amount(vehicle_cargo_third_breakpoint);
 	call update_other_trunk;
 	NOption(725,Node999,4);
 end
@@ -602,7 +656,9 @@ end
 procedure Node021d //Super Car
 begin
 	Reply(800);	
-	if (local_var(LVAR_NR_Super_Car) < 99) and (dude_caps >= 20000) then begin
+	if (vehicle_super == 0) and
+		(dude_caps >= 20000) 
+	then begin
 		NOption(801,Node021da,4);
 	end
 	NOption(802,Node021,4);	
@@ -611,9 +667,10 @@ end
 procedure Node021da //Super Car
 begin
 	item_caps_adjust(dude_obj,-20000);
-	set_local_var(LVAR_NR_Super_Car,99);
-	set_local_var(LVAR_Cargo_Upgrades,99);
-	set_car_carry_amount((190*car_carry_amount) / 100); //congruent with fallout 2 post oil rig mag/grav plates
+	//set_local_var(LVAR_NR_Super_Car,99);
+	//set_local_var(LVAR_Cargo_Upgrades,99);
+	//set_car_carry_amount((190*car_carry_amount) / 100); //congruent with fallout 2 post oil rig mag/grav plates
+	set_car_carry_amount(vehicle_cargo_last_breakpoint);
 	call update_other_trunk;
 	set_global_var(GVAR_NEW_RENO_SUPER_CAR,1);		
 	set_sfall_global("car_nrsu",1);

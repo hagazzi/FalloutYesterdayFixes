@@ -76,6 +76,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Fixing the issue about the radscorpion nest quest reveal another issue, changed the GVAR setting so that the quest isnt "reset" and therefore an infinite cap chain for 1000 cap, kind of fixing my fix
 * Forgot a zero when i redid dodge's council quest reward, made the success worse than the failure
 * I thought set_car_carry_amount did more, happens its only for the highwayman trunk, successfully found a way to apply it to other trunk, modified both Diane and Ed to do just that, adding on top of that a global script that might be useless but does the same on game loaded, if set_proto_data is persistent on saved data its prolly unneeded, if its not persistent then its actually worth something
+* Made a change to Diane to include the new more global car upgrade settings, changed the breakpoint to get back to original fallout 2 super car cargo settings, from 250 base storage to 475 with super car, also made car cargo upgrade use fixed number 
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
@@ -139,6 +140,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Add PCX for technical manual
 * Thinking of preventing Mark GVAR to be set prior to Act2 in Bloomfield in the offchance you got the location from Pierce
 * I've noticed that i understood set_car_carry_amount wrong, i thought it was using the baseline of 250 for each upgrades, but it appears its not the case so rather than having upgrade from 250> 300> 350> 400> 475, it instead gives me upgrade into 250> 300> 420> 672> 1276, kept it as such for now but to be congruent with fallout 2 mag plate 475 would need to be the max, might change it into a setting and fixing with flat values instead
+* Might add settings for Cargo upgrade breakpoint 
 
 ## TODO Change maybe (?)
 *  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/MVNEMONK.SSL no xp from computer quest /̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶

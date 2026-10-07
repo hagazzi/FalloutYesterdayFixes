@@ -134,12 +134,21 @@ procedure update_other_trunk;
 //#define vehicle_cargo_two							(car_carry_amount == 350)
 //#define vehicle_cargo_three						(car_carry_amount == 350)
 //#define vehicle_cargo_super						(car_carry_amount == 475)
-#define vehicle_cargo_one							(car_carry_amount == 300)
-#define vehicle_cargo_two							(car_carry_amount == 420)
-#define vehicle_cargo_three							(car_carry_amount == 672)
-#define vehicle_cargo_super							(car_carry_amount >= 1276)
+//#define vehicle_cargo_one							(car_carry_amount == 300)
+//#define vehicle_cargo_two							(car_carry_amount == 420)
+//#define vehicle_cargo_three						(car_carry_amount == 672)
+//#define vehicle_cargo_super						(car_carry_amount >= 1276)
 
 #define vehicle_fuelup								(global_var(GVAR_CAR_UPGRADE_FUEL_CELL_REGULATOR) == 1)
+#define vehicle_cargo_initial						250
+#define vehicle_cargo_first_breakpoint				300
+#define vehicle_cargo_second_breakpoint				350
+#define vehicle_cargo_third_breakpoint				400
+#define vehicle_cargo_last_breakpoint				475
+// #define vehicle_cargo_first_breakpoint				300
+// #define vehicle_cargo_second_breakpoint				420
+// #define vehicle_cargo_third_breakpoint				672
+// #define vehicle_cargo_last_breakpoint				1276
 
 /* Local Variables which are saved. All Local Variables need to be
    prepended by LVAR_ */
@@ -524,11 +533,11 @@ begin
 		NOption(853,Node021a,4);
 	if (vehicle_blower == 0) or (vehicle_nrupgrade == 0)  then		
 		NOption(854,Node021b,4);
-	if (car_carry_amount < 672) then		
+	if (car_carry_amount < vehicle_cargo_third_breakpoint) then		
 		NOption(855,Node021c,4);
 	if 
 	   (global_var(GVAR_BROTHERHOOD_SENIOR) == 1) and 
-	   (car_carry_amount == 672) and 
+	   (car_carry_amount == vehicle_cargo_third_breakpoint) and 
 	   (vehicle_super == 0) and 
 	   (vehicle_blower == 1) and 
 	   (vehicle_nrupgrade == 1) and 
@@ -619,18 +628,18 @@ end
 procedure Node021c //Cargo
 begin
 	Reply(960);
-	if (car_carry_amount == 250) 
+	if (car_carry_amount == vehicle_cargo_initial) 
 		//and (dude_caps >= 6000) 
 	then begin
 		NOption(961,Node021ca,4);
 	end
-	if (vehicle_cargo_one == 1) and 
+	if (car_carry_amount == vehicle_cargo_first_breakpoint) and 
 	   (global_var(GVAR_QUEST_CURE_COMMANDER) == 3) 
 	   //and (dude_caps >= 8000)) 
 	then begin
 		NOption(962,Node021cb,4);
 	end	
-	if (vehicle_cargo_two == 1) and 
+	if (car_carry_amount == vehicle_cargo_second_breakpoint) and 
 	   (global_var(GVAR_QUEST_FIND_POISONER) == 3) 
 	   //and (dude_caps >= 12000)) 
 	then begin
@@ -643,7 +652,8 @@ procedure Node021ca //Cargo 1
 begin
 	//item_caps_adjust(dude_obj,-6000);
 	//set_local_var(LVAR_Cargo_Upgrades,10);
-	set_car_carry_amount((120*car_carry_amount) / 100); //should have just been set_car_carry_amount(300)
+	//set_car_carry_amount((120*car_carry_amount) / 100); //should have just been set_car_carry_amount(300)
+	set_car_carry_amount(vehicle_cargo_first_breakpoint);
 	call update_other_trunk;
 	NOption(925,Node999,4);
 end
@@ -652,7 +662,8 @@ procedure Node021cb //Cargo 2
 begin
 	//item_caps_adjust(dude_obj,-8000);
 	//set_local_var(LVAR_Cargo_Upgrades,20);
-	set_car_carry_amount((140*car_carry_amount) / 100); //should have just been set_car_carry_amount(350)
+	//set_car_carry_amount((140*car_carry_amount) / 100); //should have just been set_car_carry_amount(350)
+	set_car_carry_amount(vehicle_cargo_second_breakpoint);
 	call update_other_trunk;
 	NOption(925,Node999,4);
 end
@@ -661,7 +672,8 @@ procedure Node021cc //Cargo 3
 begin
 	//item_caps_adjust(dude_obj,-12000);
 	//set_local_var(LVAR_Cargo_Upgrades,30);
-	set_car_carry_amount((160*car_carry_amount) / 100); //should have just been set_car_carry_amount(400)
+	//set_car_carry_amount((160*car_carry_amount) / 100); //should have just been set_car_carry_amount(400)
+	set_car_carry_amount(vehicle_cargo_third_breakpoint);
 	call update_other_trunk;
 	NOption(925,Node999,4);
 end
@@ -683,7 +695,8 @@ begin
 	//item_caps_adjust(dude_obj,-20000);
 	//set_local_var(LVAR_NR_Super_Car,99);
 	//set_local_var(LVAR_Cargo_Upgrades,99);
-	set_car_carry_amount((190*car_carry_amount) / 100); //congruent with fallout 2 post oil rig mag/grav plates // currently not congruent should have just been set_car_carry_amount(475)
+	//set_car_carry_amount((190*car_carry_amount) / 100); //congruent with fallout 2 post oil rig mag/grav plates // currently not congruent should have just been set_car_carry_amount(475)
+	set_car_carry_amount(vehicle_cargo_last_breakpoint);
 	call update_other_trunk;
 	set_global_var(GVAR_NEW_RENO_SUPER_CAR,1);		
 	set_sfall_global("car_nrsu",1);
