@@ -30,6 +30,9 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 
 ### made a clean install to test and it compiles and i can still load my old saves so i think it can be tested 
 
+
+# Changelog
+
 ## Fixes
 * Make both hoover dam safes from caravan merchant unlockable, error in condition prevented that to happen if LCK < 9<br/>
 * Adding Extra way to complete Miracle Wheat quest from Mesa Verde, include changes to Denom (MV) and Pierre (HD) nodes<br/> 
