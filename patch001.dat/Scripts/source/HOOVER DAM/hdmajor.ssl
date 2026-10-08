@@ -401,7 +401,7 @@ end
 procedure Node003
 begin
 Reply(mstr(290)+dude_name+mstr(291));
-if (global_var(GVAR_QUEST_MEET_DODGE) == 1) then
+if (global_var(GVAR_QUEST_MEET_DODGE) >= 1) then
    NOption(292,Node061,4);
 NOption(293,Node034,4);
 NOption(294,Node004,4);
@@ -855,14 +855,14 @@ if (
 if (global_var(GVAR_QUEST_AILIS_EVIDENCE) == CC_INFILTRATION_DONE) then
    NOption(2002,Node056,4);
 
-if (global_var(GVAR_QUEST_UPGRADE_FILTER) == FILTRATION_SCHEMATICS_FOUND) then begin
+if (global_var(GVAR_QUEST_UPGRADE_FILTER) == FILTRATION_SCHEMATICS_FOUND) and (global_var(GVAR_QUEST_MEET_DODGE) == 1) then begin
    if (global_var(GVAR_DUDE_FIXED_WATER_FILTER) == 1) then
       NOption(2003,Node057,4);
    if (global_var(GVAR_DUDE_FIXED_WATER_FILTER) == 0) then
       NOption(2004,Node059,4);
 end
 
-if ((dude_item_count(PID_WRITTEN_LEDGER) == 2) and local_var(LVAR_Ledger_Once) == 0) then
+if ((dude_item_count(PID_WRITTEN_LEDGER) == 1) and local_var(LVAR_Ledger_Once) == 0) then
 NOption(2006,Node062,4);
 
 NOption(2005,Node999,4);

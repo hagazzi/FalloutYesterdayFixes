@@ -330,7 +330,7 @@ begin
 Reply(230);
 NOption(231,Node999,4);
 NOption(232,Node003,4);
-if ((global_var(GVAR_SHOW_LEDGER_TO_DODGE) == 1) and (dude_item_count(PID_WRITTEN_LEDGER) == 2) and local_var(LVAR_Ledger_Once) == 0) then
+if ((global_var(GVAR_SHOW_LEDGER_TO_DODGE) == 1) and (dude_item_count(PID_WRITTEN_LEDGER) == 1) and local_var(LVAR_Ledger_Once) == 0) then
 NOption(233,Node065,4);
 end
 
@@ -843,7 +843,7 @@ procedure Node066
 begin
    set_local_var(LVAR_Ledger_Once, 1);
    set_global_var(GVAR_SHOW_LEDGER_TO_DODGE, 2);
-   remove_pid_qty(dude_obj, PID_WRITTEN_LEDGER, 2)
+   remove_pid_qty(dude_obj, PID_WRITTEN_LEDGER, 1)
 Reply(2150);
 NOption(2061,Node999,4);
 end
