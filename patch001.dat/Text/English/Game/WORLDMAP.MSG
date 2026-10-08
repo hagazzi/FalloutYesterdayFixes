@@ -18,7 +18,8 @@
 {201}{}{Security Hub}
 {202}{}{Service Area}
 {203}{}{Breach}
-{204}{}{Temple Interior}
+{204}{}{Medical Treatment}
+{205}{}{Asylum}
 #
 # Den
 {210}{}{West Side}

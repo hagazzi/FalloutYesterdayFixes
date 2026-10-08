@@ -69,6 +69,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Kind of a fix, i don't think you can get the Particle Matrix item currently, but if you have it from F12se or change i made to Blackfoot cave, going the repair route leave you with less than just delivering and then getting Otto, Dianne or Pierre to fix it, also wasnt removing the Particle Matrix from inventory.
 * Noticed as i was using big book of science craft gvar, that it was not used likely due to a copy pasta error, fixed that in gl_pipwake
 * Fix to Jericho CITY.TXT entries, so that they don't stack together
+* Small Fix to WORLDMAP.MSG, entries for Tibbets were missing or lacking clarity
 
 ## Fixes to my Fixes
 * DTCL was fixed a second time to make caesar legion critter actually having equipped weapons, was using the left slot also in some case weapon the sprite appear to not being able to use.
