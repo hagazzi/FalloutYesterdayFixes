@@ -76,7 +76,26 @@ procedure Node999;                                      // This Node is Always E
 									end else begin													\
 										stock_pid_qty(obj, PID_COMBAT_ARMOR_MK_II, random(1,2))		\
 									end
-
+									
+#define restock_apprenticeammo(obj)	stock_pid_qty(obj, PID_4_7MM_CASELESS, 1) \
+									stock_pid_qty(obj, PID_SMALL_ENERGY_CELL, 1) 
+									
+#define restock_journeymammo(obj)	stock_pid_qty(obj, PID_4_7MM_CASELESS, 2) \
+									stock_pid_qty(obj, PID_2MM_EC_AMMO, 1) \
+									stock_pid_qty(obj, PID_MICRO_FUSION_CELL, 1) \
+									stock_pid_qty(obj, PID_SMALL_ENERGY_CELL, 2)
+									
+#define restock_seniorammo(obj)		stock_pid_qty(obj, PID_4_7MM_CASELESS, 3) \
+									stock_pid_qty(obj, PID_2MM_EC_AMMO, 2) \
+									stock_pid_qty(obj, PID_MICRO_FUSION_CELL, 2) \
+									stock_pid_qty(obj, PID_SMALL_ENERGY_CELL, 3)
+									
+#define restock_PA(obj)				stock_pid_qty(obj, PID_POWERED_ARMOR, random(0,1))	\
+									stock_pid_qty(obj, PID_TECHNICAL_MANUAL, 1) \
+									stock_pid_qty(obj, PID_CHEMISTRY_MANUAL, 1) \
+									stock_pid_qty(obj, PID_MOTIVATOR, random(0,1)) \
+									stock_pid_qty(obj, PID_WATER_CHIP, random(1,6))
+									
 
 
 /* Imported variables from the Map scripts. These should only be
@@ -124,28 +143,42 @@ procedure restock_merchant begin
 	variable roll:= random(1,20);
 	call set_time_indays;
 	if (game_time >= local_var(LVAR_Restock)) then begin
-		//give_pid_qty(box_obj, PID_MICRO_FUSION_CELL , 4)
 		restock_armor(self_obj,roll)
+		if 
+			(global_var(GVAR_BROTHERHOOD_APPRENTICE) == 1)  or
+			(global_var(GVAR_BROTHERHOOD_JOURNEYMAN) == 1) or
+			(global_var(GVAR_BROTHERHOOD_JOURNEYWOMAN) == 1) or
+			(global_var(GVAR_BROTHERHOOD_SENIOR) == 1)
+		then begin
+			restock_apprenticeammo(self_obj)
+		end
+		if 
+			(global_var(GVAR_BROTHERHOOD_JOURNEYMAN) == 1) or
+			(global_var(GVAR_BROTHERHOOD_JOURNEYWOMAN) == 1) or
+			(global_var(GVAR_BROTHERHOOD_SENIOR) == 1)
+		then begin
+			restock_journeymammo(self_obj)
+		end		
+		if 
+			(global_var(GVAR_BROTHERHOOD_SENIOR) == 1)
+		then begin
+			restock_seniorammo(self_obj)
+			restock_PA(self_obj)
+		end		
 		//energy weapons ?
 		//gauss weapons ?
-		//restock technical manual / systolic motivator
-		//Power Armor / Adv Power Armor if peace with both NCR and BoS (after all they both salvaged the enclave between themselves)
+		//Power Armor ? (Adv Power Armor if peace with both NCR and BoS?) 
 		set_local_var(LVAR_Restock , (game_time + (ONE_GAME_DAY* timeindays)) );
 	end		
 	if local_var(LVAR_Execute_Once) < 99 then begin
-	   //item:=create_object(PID_COMBAT_ARMOR,0,0);	
-	   //add_mult_objs_to_inven(self_obj,item,10);
 	   give_pid_qty(self_obj, PID_COMBAT_ARMOR , 10)
-	   //debug("LVAR Value before set "+local_var(LVAR_Execute_Once))
 	   set_local_var(LVAR_Execute_Once,99);
-	   //debug("LVAR Value after set "+local_var(LVAR_Execute_Once))
-	   //debug("Set Once Combat Armor")
    end		
 end
 
 
 procedure look_at_p_proc begin
-   debug("You Looked")
+   //debug("You Looked")
    script_overrides;
    display_mstr(101);
 end
@@ -234,10 +267,15 @@ procedure Node001 begin
 end
 
 procedure Node002 begin
-	// if senior gdialog_barter(-20)
-	// if peace gdialog_barter(-30)
-
-	gdialog_barter;
+	if	(global_var(GVAR_BROTHERHOOD_JOURNEYMAN) == 1) or 
+		(global_var(GVAR_BROTHERHOOD_JOURNEYWOMAN) == 1) 
+	then
+		gdialog_mod_barter(-20);
+	else if (global_var(GVAR_BROTHERHOOD_SENIOR) == 1) then
+		gdialog_mod_barter(-30);
+	else
+		gdialog_barter;
+		
 	Reply(303);
 	NOption(302,Node999,1);
 end

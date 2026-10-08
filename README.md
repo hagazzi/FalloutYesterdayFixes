@@ -118,6 +118,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Added extra settings to set restock time of each merchants one by one, was thinking of changing the makeinven function to use stock_pid_qty instead of adding things continuously to their inventory, but i think its mostly harmless 
 * Added both upgrades (Dianne's upgrades and Otto's upgrades) to Ed Whatley(?), BoS mechanics, made very little change in the dialog, only toned down Otto lines since i don't want Ed to call himself Otto, made changes that should be ported later to Dianne to make car upgrades more global so that one doesnt get upgrade twice, chose to use different breakpoint for BoS, GVAR quest wise, should let one not having to worry betraying / destroying Hoover Dam, since these upgrades are now available from Ed, having access to these upgrades in the first place requires dealing with all the repair work for Ed first, i also made Ed Car upgrades free for now, im not sure whether betraying HD cut access to merchant (design document mentionned destroying the dam)<br/>
 * Gave Dianne and Ed a refuel option for 1000 caps, it uses the refuel function rather than sell you microfusion cell / small energy cell through barter, find it an acceptable trade it is much cheaper but at the same time you can't use these as ammo, and theres already enough of these through Frieda restock.
+* TMP500 can restock PA from senior rank (50%), also restock systolic motivator (50%), technical manual and chemistry manual (100%), from apprentice rank start restocking some ammo, restock qty and variety increase with journeyman and senior
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -138,8 +139,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Restock for Dr Yuri (also Jet antidote maybe(?))
 * Barter / Restock from BoS Dr ?
 * Restock TMP500
-	* PA from Senior onward
-	* Technical Manual, Caseless, 2mmEC, rank for these TBD
+	* Specialized ammo that show up nowhere for some Mesa Verde computer weapon craft ? like gauss minigun ammo ? tied in with cipher alliance with bos maybe?
 * Rethink Armor progression, from armored vault suit to leather armor mkII goes well then theres not much more reservation has some metal armor but thats about it short of stealing Mark Tesla Armor rest is Isaac PA or ranger guard armor
 	* Combat armor used as stepstool to get into adv PA is possibly working but to into combat armor itself comes a bit late (?)
 	* Metal Armor could be craftable from regular gecko hide + junk + gas tank
@@ -154,6 +154,11 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 ## TODO Change maybe (?)
 * MVNEMONK.SSL no xp from computer quest
 * I'm thinking of making bounty targets and their cohort giving good kills not just to the one that kill them, thats a vanilla fallout 2 setting but i don't like that you aren't a berserker with a certain number of bad kill but then you start only doing good kill and you still become a berserker
+
+## Unlikely
+* Restock TMP500
+	* Gauss weapons 
+	* Energy weapons (Pulse, Plasma, Laser)
 
 ## Likely Will not do on 0.65.1
 * Random loot based on container type for flavour container (most are empty right now)
@@ -172,6 +177,9 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 *  ̶I̶'̶v̶e̶ ̶n̶o̶t̶i̶c̶e̶d̶ ̶t̶h̶a̶t̶ ̶i̶ ̶u̶n̶d̶e̶r̶s̶t̶o̶o̶d̶ ̶s̶e̶t̶_̶c̶a̶r̶_̶c̶a̶r̶r̶y̶_̶a̶m̶o̶u̶n̶t̶ ̶w̶r̶o̶n̶g̶,̶ ̶i̶ ̶t̶h̶o̶u̶g̶h̶t̶ ̶i̶t̶ ̶w̶a̶s̶ ̶u̶s̶i̶n̶g̶ ̶t̶h̶e̶ ̶b̶a̶s̶e̶l̶i̶n̶e̶ ̶o̶f̶ ̶2̶5̶0̶ ̶f̶o̶r̶ ̶e̶a̶c̶h̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶,̶ ̶b̶u̶t̶ ̶i̶t̶ ̶a̶p̶p̶e̶a̶r̶s̶ ̶i̶t̶s̶ ̶n̶o̶t̶ ̶t̶h̶e̶ ̶c̶a̶s̶e̶ ̶s̶o̶ ̶r̶a̶t̶h̶e̶r̶ ̶t̶h̶a̶n̶ ̶h̶a̶v̶i̶n̶g̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶f̶r̶o̶m̶ ̶2̶5̶0̶>̶ ̶3̶0̶0̶>̶ ̶3̶5̶0̶>̶ ̶4̶0̶0̶>̶ ̶4̶7̶5̶,̶ ̶i̶t̶ ̶i̶n̶s̶t̶e̶a̶d̶ ̶g̶i̶v̶e̶s̶ ̶m̶e̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶i̶n̶t̶o̶ ̶2̶5̶0̶>̶ ̶3̶0̶0̶>̶ ̶4̶2̶0̶>̶ ̶6̶7̶2̶>̶ ̶1̶2̶7̶6̶,̶ ̶k̶e̶p̶t̶ ̶i̶t̶ ̶a̶s̶ ̶s̶u̶c̶h̶ ̶f̶o̶r̶ ̶n̶o̶w̶ ̶b̶u̶t̶ ̶t̶o̶ ̶b̶e̶ ̶c̶o̶n̶g̶r̶u̶e̶n̶t̶ ̶w̶i̶t̶h̶ ̶f̶a̶l̶l̶o̶u̶t̶ ̶2̶ ̶m̶a̶g̶ ̶p̶l̶a̶t̶e̶ ̶4̶7̶5̶ ̶w̶o̶u̶l̶d̶ ̶n̶e̶e̶d̶ ̶t̶o̶ ̶b̶e̶ ̶t̶h̶e̶ ̶m̶a̶x̶,̶ ̶m̶i̶g̶h̶t̶ ̶c̶h̶a̶n̶g̶e̶ ̶i̶t̶ ̶i̶n̶t̶o̶ ̶a̶ ̶s̶e̶t̶t̶i̶n̶g̶ ̶a̶n̶d̶ ̶f̶i̶x̶i̶n̶g̶ ̶w̶i̶t̶h̶ ̶f̶l̶a̶t̶ ̶v̶a̶l̶u̶e̶s̶ ̶i̶n̶s̶t̶e̶a̶d̶ 
 	* (the crux of it was it wasnt setting the trunk upgrade correctly for non HWM trunk so it felt like i needed that much but actually it was still initial size)
 * R̶e̶s̶t̶o̶c̶k̶ ̶F̶u̶e̶l̶ ̶f̶r̶o̶m̶ ̶D̶i̶a̶n̶n̶e̶ ̶a̶n̶d̶ ̶E̶d̶
+*  ̶R̶e̶s̶t̶o̶c̶k̶ ̶T̶M̶P̶5̶0̶0̶
+	*  ̶P̶A̶ ̶f̶r̶o̶m̶ ̶S̶e̶n̶i̶o̶r̶ ̶o̶n̶w̶a̶r̶d̶
+	*  ̶T̶e̶c̶h̶n̶i̶c̶a̶l̶ ̶M̶a̶n̶u̶a̶l̶,̶ ̶C̶a̶s̶e̶l̶e̶s̶s̶,̶ ̶2̶m̶m̶E̶C̶,̶ ̶r̶a̶n̶k̶ ̶f̶o̶r̶ ̶t̶h̶e̶s̶e̶ ̶T̶B̶D̶
 
 ## Change Maybe(?)
 *  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶
