@@ -85,6 +85,7 @@ procedure Node021cb;
 procedure Node021cc;
 procedure Node021d;
 procedure Node021da;
+procedure Node022;
 procedure node023;
 procedure node024;
 procedure node025;
@@ -118,6 +119,7 @@ procedure update_other_trunk;
 //~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
 // The Following lines are for anything that is not needed to be
 // seen by the design Tool
+
 
 #define dude_has_motorcycle                         (global_var(GVAR_PLAYER_GOT_MOTORCYCLE))
 #define dude_has_dune_buggy                         (global_var(GVAR_PLAYER_GOT_DUNE_BUGGY))
@@ -459,6 +461,12 @@ if (local_var(LVAR_Completed_Work) == 99) then begin
 	NOption(691,node023,-3); //upgrades stupid
 	if ((dude_has_vehicle) and (vehicle_super == 0)) then
 		NOption(1003,Node020,4);
+		
+	if	(dude_has_vehicle) and
+		(car_gas_amount < 80000) and
+		(dude_caps >= 1000) 
+	then
+	NOption(1030,Node022,4);
 	
 end
 // debug("car blower: "+vehicle_blower)
@@ -701,6 +709,17 @@ begin
 	set_global_var(GVAR_NEW_RENO_SUPER_CAR,1);		
 	set_sfall_global("car_nrsu",1);
 	NOption(925,Node999,4);
+end
+
+
+procedure Node022
+begin
+	variable pct_gas := ((car_gas_amount / 800));
+	Reply("Ah it looks like your vehicle only has "+pct_gas+"% left, i'm gonna assign one of our initiates to refuel your vehicle...");
+	variable refuelamount := (80000 - car_gas_amount);
+	item_caps_adjust(dude_obj,-1000);
+	car_give_gas(refuelamount);
+	NOption(1031,Node001,4);
 end
 
 //Upgrades from Otto

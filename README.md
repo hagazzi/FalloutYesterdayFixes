@@ -66,7 +66,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Pugilism Illustrated (Unarmed Skillbooks) weren't working since they share id with Nikola Tesla and You (Energy Weapon Skillbooks) fixed by shifting id by one for each skillbook after.
 * VACS guardman was giving you the password to the door but this didnt result in GVAR state change, this way you can bypass the door with luck <=5<br/>
 * Not really a fix since Vault 70 area appears non existing right now, but i wanted the xp reward for it, so i made a generic message like your learn of it and it gives the same xp discovering it would<br/>
-* Kind of a fix, i don't think you can get the Particle Matrix item currently, but if you have it from F12se or change i made to Blackfoot cave, going the repair route leave you with less than just delivering and then getting Otto, Diane or Pierre to fix it, also wasnt removing the Particle Matrix from inventory.
+* Kind of a fix, i don't think you can get the Particle Matrix item currently, but if you have it from F12se or change i made to Blackfoot cave, going the repair route leave you with less than just delivering and then getting Otto, Dianne or Pierre to fix it, also wasnt removing the Particle Matrix from inventory.
 * Noticed as i was using big book of science craft gvar, that it was not used likely due to a copy pasta error, fixed that in gl_pipwake
 * Fix to Jericho CITY.TXT entries, so that they don't stack together
 
@@ -78,15 +78,15 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * There were 2 magneto laser pistol as a result of my MrFixit changes, shifted by one recipe to fix that
 * Fixing the issue about the radscorpion nest quest reveal another issue, changed the GVAR setting so that the quest isnt "reset" and therefore an infinite cap chain for 1000 cap, kind of fixing my fix
 * Forgot a zero when i redid dodge's council quest reward, made the success worse than the failure
-* I thought set_car_carry_amount did more, happens its only for the highwayman trunk, successfully found a way to apply it to other trunk, modified both Diane and Ed to do just that, adding on top of that a global script that might be useless but does the same on game loaded, if set_proto_data is persistent on saved data its prolly unneeded, if its not persistent then its actually worth something
-* Made a change to Diane to include the new more global car upgrade settings, changed the breakpoint to get back to original fallout 2 super car cargo settings, from 250 base storage to 475 with super car, also made car cargo upgrade use fixed number 
+* I thought set_car_carry_amount did more, happens its only for the highwayman trunk, successfully found a way to apply it to other trunk, modified both Dianne and Ed to do just that, adding on top of that a global script that might be useless but does the same on game loaded, if set_proto_data is persistent on saved data its prolly unneeded, if its not persistent then its actually worth something
+* Made a change to Dianne to include the new more global car upgrade settings, changed the breakpoint to get back to original fallout 2 super car cargo settings, from 250 base storage to 475 with super car, also made car cargo upgrade use fixed number 
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
 * Frieda Restock<br/>
 * Milko Restock<br/>
 * Add Caps to Skill Book Vendor<br/>
-* Diane now can upgrade Vehicle for efficiency, speed, trunk storage and super_car once all the other are done, outside of caps cost requirement includes NCR quest advancement<br />
+* Dianne now can upgrade Vehicle for efficiency, speed, trunk storage and super_car once all the other are done, outside of caps cost requirement includes NCR quest advancement<br />
 * Kind of a big one wanted to only add a couple recipes but it was bugging on me so i ended up redoing it in google spreadsheet, so that the index might be freely moved around without having to type each index one by one
 	* from that google sheet i've created a template for mrfixit made into an ods file in a template folder
 	* as a result i've reordered category a bit, would need to be ordered a bit better but from brotherhood armor, its like newly added armor > Endgame (recipes from ciphers) > tools > survival (food) > books.
@@ -113,7 +113,8 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* i think i could consider incrementing the good kills from using that cannon too
 * Added technical manual and chemistry manual to the list of craftable book, unlike other book they require 150% in a skill, technical manual being 150% repair and chemistry 150% science, reused the big book of science pcx for chemistry, used the repair one for technical manual, will get / change technical manual FRM into a pcx later
 * Added extra settings to set restock time of each merchants one by one, was thinking of changing the makeinven function to use stock_pid_qty instead of adding things continuously to their inventory, but i think its mostly harmless 
-* Added both upgrades (Diane's upgrades and Otto's upgrades) to Ed Whatley(?), BoS mechanics, made very little change in the dialog, only toned down Otto lines since i don't want Ed to call himself Otto, made changes that should be ported later to Diane to make car upgrades more global so that one doesnt get upgrade twice, chose to use different breakpoint for BoS, GVAR quest wise, should let one not having to worry betraying / destroying Hoover Dam, since these upgrades are now available from Ed, having access to these upgrades in the first place requires dealing with all the repair work for Ed first, i also made Ed Car upgrades free for now, im not sure whether betraying HD cut access to merchant (design document mentionned destroying the dam)<br/>
+* Added both upgrades (Dianne's upgrades and Otto's upgrades) to Ed Whatley(?), BoS mechanics, made very little change in the dialog, only toned down Otto lines since i don't want Ed to call himself Otto, made changes that should be ported later to Dianne to make car upgrades more global so that one doesnt get upgrade twice, chose to use different breakpoint for BoS, GVAR quest wise, should let one not having to worry betraying / destroying Hoover Dam, since these upgrades are now available from Ed, having access to these upgrades in the first place requires dealing with all the repair work for Ed first, i also made Ed Car upgrades free for now, im not sure whether betraying HD cut access to merchant (design document mentionned destroying the dam)<br/>
+* Gave Dianne and Ed a refuel option for 1000 caps, it uses the refuel function rather than sell you microfusion cell / small energy cell through barter, find it an acceptable trade it is much cheaper but at the same time you can't use these as ammo, and theres already enough of these through Frieda restock.
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -127,7 +128,6 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 ## TODO Adds maybe (?)
 * Restock for Dr Yuri (also Jet antidote maybe(?))
 * Barter / Restock from BoS Dr ?
-* Restock Fuel from Diane and Ed
 * Restock TMP500
 	* PA from Senior onward
 	* Technical Manual, Caseless, 2mmEC, rank for these TBD
@@ -162,6 +162,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* p̶o̶s̶s̶i̶b̶l̶y̶ ̶h̶a̶v̶i̶n̶g̶ ̶c̶a̶r̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶ ̶d̶e̶p̶e̶n̶d̶e̶n̶t̶ ̶o̶f̶ ̶c̶u̶r̶r̶e̶n̶t̶ ̶B̶o̶S̶ ̶r̶a̶n̶k̶,̶ ̶c̶o̶u̶l̶d̶ ̶p̶o̶s̶s̶i̶b̶l̶y̶ ̶b̶e̶ ̶f̶r̶e̶e̶ ̶f̶r̶o̶m̶ ̶S̶e̶n̶i̶o̶r̶ ̶r̶a̶n̶k̶ ̶o̶n̶w̶a̶r̶d̶ ̶s̶i̶n̶c̶e̶ ̶l̶o̶s̶i̶n̶g̶ ̶a̶l̶l̶ ̶o̶f̶ ̶t̶h̶e̶ ̶m̶e̶r̶c̶h̶a̶n̶t̶s̶ ̶f̶r̶o̶m̶ ̶H̶D̶ ̶(̶?̶)̶
 *  ̶I̶'̶v̶e̶ ̶n̶o̶t̶i̶c̶e̶d̶ ̶t̶h̶a̶t̶ ̶i̶ ̶u̶n̶d̶e̶r̶s̶t̶o̶o̶d̶ ̶s̶e̶t̶_̶c̶a̶r̶_̶c̶a̶r̶r̶y̶_̶a̶m̶o̶u̶n̶t̶ ̶w̶r̶o̶n̶g̶,̶ ̶i̶ ̶t̶h̶o̶u̶g̶h̶t̶ ̶i̶t̶ ̶w̶a̶s̶ ̶u̶s̶i̶n̶g̶ ̶t̶h̶e̶ ̶b̶a̶s̶e̶l̶i̶n̶e̶ ̶o̶f̶ ̶2̶5̶0̶ ̶f̶o̶r̶ ̶e̶a̶c̶h̶ ̶u̶p̶g̶r̶a̶d̶e̶s̶,̶ ̶b̶u̶t̶ ̶i̶t̶ ̶a̶p̶p̶e̶a̶r̶s̶ ̶i̶t̶s̶ ̶n̶o̶t̶ ̶t̶h̶e̶ ̶c̶a̶s̶e̶ ̶s̶o̶ ̶r̶a̶t̶h̶e̶r̶ ̶t̶h̶a̶n̶ ̶h̶a̶v̶i̶n̶g̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶f̶r̶o̶m̶ ̶2̶5̶0̶>̶ ̶3̶0̶0̶>̶ ̶3̶5̶0̶>̶ ̶4̶0̶0̶>̶ ̶4̶7̶5̶,̶ ̶i̶t̶ ̶i̶n̶s̶t̶e̶a̶d̶ ̶g̶i̶v̶e̶s̶ ̶m̶e̶ ̶u̶p̶g̶r̶a̶d̶e̶ ̶i̶n̶t̶o̶ ̶2̶5̶0̶>̶ ̶3̶0̶0̶>̶ ̶4̶2̶0̶>̶ ̶6̶7̶2̶>̶ ̶1̶2̶7̶6̶,̶ ̶k̶e̶p̶t̶ ̶i̶t̶ ̶a̶s̶ ̶s̶u̶c̶h̶ ̶f̶o̶r̶ ̶n̶o̶w̶ ̶b̶u̶t̶ ̶t̶o̶ ̶b̶e̶ ̶c̶o̶n̶g̶r̶u̶e̶n̶t̶ ̶w̶i̶t̶h̶ ̶f̶a̶l̶l̶o̶u̶t̶ ̶2̶ ̶m̶a̶g̶ ̶p̶l̶a̶t̶e̶ ̶4̶7̶5̶ ̶w̶o̶u̶l̶d̶ ̶n̶e̶e̶d̶ ̶t̶o̶ ̶b̶e̶ ̶t̶h̶e̶ ̶m̶a̶x̶,̶ ̶m̶i̶g̶h̶t̶ ̶c̶h̶a̶n̶g̶e̶ ̶i̶t̶ ̶i̶n̶t̶o̶ ̶a̶ ̶s̶e̶t̶t̶i̶n̶g̶ ̶a̶n̶d̶ ̶f̶i̶x̶i̶n̶g̶ ̶w̶i̶t̶h̶ ̶f̶l̶a̶t̶ ̶v̶a̶l̶u̶e̶s̶ ̶i̶n̶s̶t̶e̶a̶d̶ 
 	* (the crux of it was it wasnt setting the trunk upgrade correctly for non HWM trunk so it felt like i needed that much but actually it was still initial size)
+* R̶e̶s̶t̶o̶c̶k̶ ̶F̶u̶e̶l̶ ̶f̶r̶o̶m̶ ̶D̶i̶a̶n̶n̶e̶ ̶a̶n̶d̶ ̶E̶d̶
 
 ## Change Maybe(?)
 *  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶

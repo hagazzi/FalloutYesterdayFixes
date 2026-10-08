@@ -245,3 +245,7 @@
 {1001}{}{That'd be great!}
 {1002}{}{Don't have quite enough just yet.}
 {1003}{}{Have you ever dealt with pre-war vehicles ?}
+
+#Node022
+{1030}{}{Can you refuel my vehicle?}
+{1031}{}{Thanks!}

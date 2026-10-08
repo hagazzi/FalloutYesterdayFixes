@@ -38,6 +38,9 @@
 {203}{}{Would you be interested in going on a date with me?}
 {204}{}{Please continue with your work. Goodbye.}
 {205}{}{Do you know of a mechanic that could work on Pre-war Vehicles ?}
+{206}{}{Can you refuel my vehicle?}
+{207}{}{Thanks!}
+
 
 # Node002
 {230}{}{Currently, I'm collaborating with Otto and Pierre on solving the water filtration problem. Our aim is to make filtered water drinkable.}
