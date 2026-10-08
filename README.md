@@ -121,6 +121,9 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Change to companion so that they get extra health depending on their Endurance and your character (dude_obj) level, using the basic hp per level formula used for your own character Floor(END / 2) + 2
 * Dune Buggy trunk, theres no art for it currently therefore it wasnt added to this version, but since it was planned to have it theres a ptr therefore an inventory, i felt like adding it for extra storage space
 * Changed JRTOWNE.map to be able to get the Highwayman from Jericho if one get there first, included a change in car battery scenery proto to be able to pick it up, using TMP_504 script to destroy that obj and pick up a car battery, the type of car battery depends on dude luck made it to be a charged one on LCK >= 6, made no change to cocar.ssl so once repaired it teleports to tile 24106
+* I don't think Marcus is intended as a companion but it makes use of its default script and by default in FO2 Marcus is, so i thought since theres to my knowledge only 4 recruitable one, might as well refurbish Marcus.
+	* it appears that Marcus is id 1 talking head in fallout 2, and this place is taken by Hangdman in Fallout Yesterday, therefore talking to Marcus was giving the Hangdman head, i "fixed" it by removing the talking head when talking to Marcus
+	* was already out of the box attacking and all, but i added a couple lines from other companion script to have him follow
 
 
 # TODO
