@@ -919,7 +919,7 @@ map_name=hdgatest
 ambient_sfx=gntlwin1:20, gntlwind:20, waves:30, waves1:30
 music=46hovdam
 saved=Yes
-can_rest_here=No,No,No  ; All 3 elevations
+can_rest_here=Yes,No,No  ; All 3 elevations
 
 [Map 094]
 lookup_name=Boulder Dome Train Station
