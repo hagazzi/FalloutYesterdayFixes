@@ -125,6 +125,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * I don't think Marcus is intended as a companion but it makes use of its default script and by default in FO2 Marcus is, so i thought since theres to my knowledge only 4 recruitable one, might as well refurbish Marcus.
 	* it appears that Marcus is id 1 talking head in fallout 2, and this place is taken by Hangdman in Fallout Yesterday, therefore talking to Marcus was giving the Hangdman head, i "fixed" it by removing the talking head when talking to Marcus
 	* was already out of the box attacking and all, but i added a couple lines from other companion script to have him follow
+	* It was working using PID_POWERFUL_MUTANT that was being used in the map, but i thought that i might as well use Marcus' sprite and therefore modified the map, also his combat control are working unlike PID_POWERFUL_MUTANT
 * Small change, made South Gate in Hoover Dam being able to rest on, bit silly having to back up move around a bit hoping to get the right time, while North Gate one can rest on
 * MrFixit can now dismantle Brotherhood Combat Armor, its still the superior combat armor but for Regular PA upgrade into Adv PA every bit helps
 
