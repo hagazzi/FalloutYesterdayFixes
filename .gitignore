@@ -5,3 +5,9 @@
 *.int
 *.php
 *.log
+!/patch001.dat/Scripts/source/MAIN/MAIN.bat
+!/patch001.dat/Scripts/source/BLACKFOOT HANGDOGS/BLACKFOOT HANGDOGS.bat
+!/patch001.dat/Scripts/source/HOOVER DAM/HOOVER DAM.bat
+!/patch001.dat/Scripts/source/MAXSON/MAXSON.bat
+!/patch001.dat/Scripts/source/GENERIC/GENERIC.bat
+!/patch001.dat/Scripts/source/MAPS/MAPS.bat

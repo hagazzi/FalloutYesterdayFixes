@@ -82,6 +82,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Forgot a zero when i redid dodge's council quest reward, made the success worse than the failure
 * I thought set_car_carry_amount did more, happens its only for the highwayman trunk, successfully found a way to apply it to other trunk, modified both Dianne and Ed to do just that, adding on top of that a global script that might be useless but does the same on game loaded, if set_proto_data is persistent on saved data its prolly unneeded, if its not persistent then its actually worth something
 * Made a change to Dianne to include the new more global car upgrade settings, changed the breakpoint to get back to original fallout 2 super car cargo settings, from 250 base storage to 475 with super car, also made car cargo upgrade use fixed number 
+* Figured i forgot to add in the new files to the bat files while this work for me since im manually building, but if one were to use build all this wouldn't include the new files, with this its now more "user friendly"
 
 ## Added
 * TMP500 (BoS Quartermaster - Stocks up Combat Armor - Might Stock Up Energy Weapons)<br/>
