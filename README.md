@@ -119,6 +119,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Added both upgrades (Dianne's upgrades and Otto's upgrades) to Ed Whatley(?), BoS mechanics, made very little change in the dialog, only toned down Otto lines since i don't want Ed to call himself Otto, made changes that should be ported later to Dianne to make car upgrades more global so that one doesnt get upgrade twice, chose to use different breakpoint for BoS, GVAR quest wise, should let one not having to worry betraying / destroying Hoover Dam, since these upgrades are now available from Ed, having access to these upgrades in the first place requires dealing with all the repair work for Ed first, i also made Ed Car upgrades free for now, im not sure whether betraying HD cut access to merchant (design document mentionned destroying the dam)<br/>
 * Gave Dianne and Ed a refuel option for 1000 caps, it uses the refuel function rather than sell you microfusion cell / small energy cell through barter, find it an acceptable trade it is much cheaper but at the same time you can't use these as ammo, and theres already enough of these through Frieda restock.
 * TMP500 can restock PA from senior rank (50%), also restock systolic motivator (50%), technical manual and chemistry manual (100%), from apprentice rank start restocking some ammo, restock qty and variety increase with journeyman and senior
+* Added an xp reward (1000xp) for fixing the computer in Mesa Verde and also the same increase in rep that bringing more food quest does, given the potential difficulty to acquire computer parts if you don't already know where to find it, i think its an adequate reward
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -152,7 +153,6 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Thinking of preventing Mark GVAR to be set prior to Act2 in Bloomfield in the offchance you got the location from Pierce
 
 ## TODO Change maybe (?)
-* MVNEMONK.SSL no xp from computer quest
 * I'm thinking of making bounty targets and their cohort giving good kills not just to the one that kill them, thats a vanilla fallout 2 setting but i don't like that you aren't a berserker with a certain number of bad kill but then you start only doing good kill and you still become a berserker
 
 ## Unlikely
@@ -182,7 +182,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	*  ̶T̶e̶c̶h̶n̶i̶c̶a̶l̶ ̶M̶a̶n̶u̶a̶l̶,̶ ̶C̶a̶s̶e̶l̶e̶s̶s̶,̶ ̶2̶m̶m̶E̶C̶,̶ ̶r̶a̶n̶k̶ ̶f̶o̶r̶ ̶t̶h̶e̶s̶e̶ ̶T̶B̶D̶
 
 ## Change Maybe(?)
-*  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶
+*  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶/ ̶M̶V̶N̶E̶M̶O̶N̶K̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶c̶o̶m̶p̶u̶t̶e̶r̶ ̶q̶u̶e̶s̶t̶
 * b̶a̶l̶a̶n̶c̶e̶ ̶x̶p̶ ̶a̶m̶o̶u̶n̶t̶ ̶d̶e̶p̶e̶n̶d̶i̶n̶g̶ ̶o̶n̶ ̶g̶a̶m̶e̶ ̶p̶r̶o̶g̶r̶e̶s̶s̶i̶o̶n̶ ̶T̶i̶b̶b̶e̶t̶s̶ ̶<̶ ̶M̶e̶s̶a̶ ̶V̶e̶r̶d̶e̶ ̶<̶ ̶H̶o̶o̶v̶e̶r̶ ̶D̶a̶m̶ ̶<̶ ̶M̶a̶x̶s̶o̶n̶ ̶B̶u̶n̶k̶e̶r̶ ̶?̶
 *  ̶s̶o̶m̶e̶ ̶a̶l̶t̶e̶r̶n̶a̶t̶e̶ ̶w̶a̶y̶ ̶t̶o̶ ̶p̶r̶o̶g̶r̶e̶s̶s̶ ̶w̶i̶t̶h̶o̶u̶t̶ ̶c̶o̶m̶b̶a̶t̶ ̶s̶h̶o̶u̶l̶d̶ ̶r̶e̶w̶a̶r̶d̶ ̶x̶p̶ ̶e̶s̶p̶e̶c̶i̶a̶l̶l̶y̶ ̶i̶f̶ ̶i̶t̶ ̶k̶i̶l̶l̶ ̶t̶h̶i̶n̶g̶s̶ ̶s̶i̶m̶i̶l̶a̶r̶ ̶t̶o̶ ̶M̶V̶C̶A̶N̶N̶O̶N̶ ̶t̶h̶e̶r̶e̶f̶o̶r̶e̶ ̶g̶r̶i̶e̶f̶i̶n̶g̶ ̶y̶o̶u̶ ̶f̶r̶o̶m̶ ̶t̶h̶e̶i̶r̶ ̶c̶o̶m̶b̶i̶n̶e̶d̶ ̶x̶p̶
 * a̶d̶d̶i̶n̶g̶ ̶L̶e̶g̶i̶o̶n̶ ̶f̶l̶a̶g̶ ̶t̶o̶ ̶s̶o̶m̶e̶ ̶l̶e̶g̶i̶o̶n̶ ̶n̶p̶c̶ ̶i̶n̶ ̶D̶o̶g̶t̶o̶w̶n̶ ̶V̶i̶l̶l̶a̶

@@ -423,6 +423,8 @@ begin
    set_global_var(GVAR_QUEST_REPAIR_CIPHERS_COMPUTER, QUEST_COMPLETED);
 
 Reply(650);
+give_xp(1000);
+inc_mesa_verde_rep(15);
 if (local_var(LVAR_Payment_Fix_Computer) == 1) then begin
    NOption(651,Node018,4);
 end
