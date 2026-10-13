@@ -71,6 +71,10 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Fix to Jericho CITY.TXT entries, so that they don't stack together
 * Small Fix to WORLDMAP.MSG, entries for Tibbets were missing or lacking clarity
 * Fix(?) why do they need two ledger ? made some change so that Dodge and Major Flemming only requires one ledger to expose Ailis, i'm thinking its possible these were supposed to be 2 different items and were merged in one, as it stands short of that explanation i didnt make sense to me to require two.
+* I think MrFixit was refacto but i can't be sure since i couldnt find an implementation where it's a Headers file, i've noticed when the last item in mrfixit should be in a new page it doesnt give me the [more] option, i initially fixed that by using a padding entry, but looking about in MrFixit.H i've quickly noticed im out of my depth but was able to find where it would use the item count and check for it to create the next page i think, i think that fix it but i could be wrong
+	* i think the intended behavior is to not show the [more] option and then for the last item to occupy that position, the occupy that position part appear to not have been done, and gl to whoever want to get on that task !
+	* i've tried a bit and managed to have the last one occupy the more slot but it doesnt open it on clicking on it and get stuck, kept the commented values
+	* compiled scripts for mrfixit headers are gl_pipwake.int and obj_dude.int
 
 ## Fixes to my Fixes
 * DTCL was fixed a second time to make caesar legion critter actually having equipped weapons, was using the left slot also in some case weapon the sprite appear to not being able to use.
@@ -114,12 +118,13 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Added an xp reward from fixing (100xp 2 times) / "scienc-ing" the cannons (50xp) / using it, 1000xp might be too much but i've counted about 1750xp from killing Drake and the hounds / lastly an xp reward from quest completion (500xp)<br/>
 	* recognized and used myself the exploit that would be killing most but not all and then using cannon, could perfect it with a global thats incremented on hounds kills that would reduce the cannon use xp
 	* i think i could consider incrementing the good kills from using that cannon too
-* Added technical manual and chemistry manual to the list of craftable book, unlike other book they require 150% in a skill, technical manual being 150% repair and chemistry 150% science, reused the big book of science pcx for chemistry, used the repair one for technical manual, will get / change technical manual FRM into a pcx later
+* Added technical manual and chemistry manual to the list of craftable book, unlike other book they require 150% in a skill, technical manual being 150% repair and chemistry 150% science, reused the big book of science pcx for chemistry, used the repair one for technical manual
 * Added extra settings to set restock time of each merchants one by one, was thinking of changing the makeinven function to use stock_pid_qty instead of adding things continuously to their inventory, but i think its mostly harmless 
 * Added both upgrades (Dianne's upgrades and Otto's upgrades) to Ed Whatley(?), BoS mechanics, made very little change in the dialog, only toned down Otto lines since i don't want Ed to call himself Otto, made changes that should be ported later to Dianne to make car upgrades more global so that one doesnt get upgrade twice, chose to use different breakpoint for BoS, GVAR quest wise, should let one not having to worry betraying / destroying Hoover Dam, since these upgrades are now available from Ed, having access to these upgrades in the first place requires dealing with all the repair work for Ed first, i also made Ed Car upgrades free for now, im not sure whether betraying HD cut access to merchant (design document mentionned destroying the dam)<br/>
 * Gave Dianne and Ed a refuel option for 1000 caps, it uses the refuel function rather than sell you microfusion cell / small energy cell through barter, find it an acceptable trade it is much cheaper but at the same time you can't use these as ammo, and theres already enough of these through Frieda restock.
 * TMP500 can restock PA from senior rank (50%), also restock systolic motivator (50%), technical manual and chemistry manual (100%), from apprentice rank start restocking some ammo, restock qty and variety increase with journeyman and senior
 * Added an xp reward (1000xp) for fixing the computer in Mesa Verde and also the same increase in rep that bringing more food quest does, given the potential difficulty to acquire computer parts if you don't already know where to find it, i think its an adequate reward
+* Technical manual pcx made from existing frm icon
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -149,7 +154,6 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* Combat Armor MkI recipe could be Leather Armor MkII + Metal Armor MkII + Combat Leather Vest, would be inefficient to build multiple but could get one before getting into HD, and Otto would be able to get it MkII after Jericho, after that getting more from MaxsonB and/or possibly adding it to Ranger Vendor
 * Since i'm thinking about adding Kyle's Head to one of the Hook and considering the number of Hook, maybe other bounty target should be accompanied by a huge number of subordinates as well
 * Might add settings for Cargo upgrade breakpoint 
-* Add PCX for technical manual
 * Thinking of preventing Mark GVAR to be set prior to Act2 in Bloomfield in the offchance you got the location from Pierce
 
 ## TODO Change maybe (?)
@@ -180,6 +184,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 *  ̶R̶e̶s̶t̶o̶c̶k̶ ̶T̶M̶P̶5̶0̶0̶
 	*  ̶P̶A̶ ̶f̶r̶o̶m̶ ̶S̶e̶n̶i̶o̶r̶ ̶o̶n̶w̶a̶r̶d̶
 	*  ̶T̶e̶c̶h̶n̶i̶c̶a̶l̶ ̶M̶a̶n̶u̶a̶l̶,̶ ̶C̶a̶s̶e̶l̶e̶s̶s̶,̶ ̶2̶m̶m̶E̶C̶,̶ ̶r̶a̶n̶k̶ ̶f̶o̶r̶ ̶t̶h̶e̶s̶e̶ ̶T̶B̶D̶
+* A̶d̶d̶ ̶P̶C̶X̶ ̶f̶o̶r̶ ̶t̶e̶c̶h̶n̶i̶c̶a̶l̶ ̶m̶a̶n̶u̶a̶l̶
 
 ## Change Maybe(?)
 *  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶/ ̶M̶V̶N̶E̶M̶O̶N̶K̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶c̶o̶m̶p̶u̶t̶e̶r̶ ̶q̶u̶e̶s̶t̶
