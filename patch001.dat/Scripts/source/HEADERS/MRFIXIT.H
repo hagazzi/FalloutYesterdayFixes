@@ -319,6 +319,7 @@ procedure item_options_3;
 procedure item_options_4;
 procedure item_options_5;
 procedure item_options_6;
+//procedure item_options_7;
 procedure display_next_option(variable i);
 
 procedure count_items_avail;
@@ -669,7 +670,18 @@ procedure display_items_avail begin
         end
         cur_section_start += SECTION_STEP;
     end
-    if (cur_pos + ITEMS_PER_SCREEN < items_avail - 1) then SayOption(bstr(105), mf_list_next);
+    if (cur_pos + ITEMS_PER_SCREEN < items_avail) then SayOption(bstr(105), mf_list_next);
+	// if (cur_pos + ITEMS_PER_SCREEN < items_avail - 1) then SayOption(bstr(105), mf_list_next);
+	// if ((not (cur_pos + ITEMS_PER_SCREEN < items_avail - 1)) and (items_avail != 0)) then begin
+        // cur_pid := atoi(field(ITEM_PID));
+        // cur_gvar := atoi(field(ITEM_GVAR));	
+		// debug("curpid: "+cur_pid)
+		// debug("cur_section_start: "+cur_section_start)
+		// debug("lines_counter: "+lines_counter)
+        // if (field(ITEM_GVAR) == "" or global_var(cur_gvar)) then begin
+			// call display_next_option(lines_counter);
+        // end		
+	// end
     if (items_avail == 0) then SayOption(bstr(107), exit_mode);
 end
 
@@ -702,6 +714,11 @@ procedure display_next_option(variable i) begin
         start6 := cur_section_start;
         SayOption(proto_data(cur_pid, it_name), item_options_6);
     end
+	
+    // else if (i == 7) then begin
+        // mf_list_next := cur_section_start;
+        // SayOption(proto_data(cur_pid, it_name), item_options_7);
+    // end	
 end
 
 procedure item_options_0 begin
@@ -738,6 +755,11 @@ procedure item_options_6 begin
     cur_section_start := start6;
     call item_options_mode;
 end
+
+// procedure item_options_7 begin
+    // cur_section_start := mf_list_next;
+    // call item_options_mode;
+// end
 
 procedure batch_item(variable num) begin
     variable begin
