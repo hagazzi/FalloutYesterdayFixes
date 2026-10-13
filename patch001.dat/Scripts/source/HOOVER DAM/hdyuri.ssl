@@ -45,6 +45,8 @@ procedure damage_p_proc;
 procedure map_enter_p_proc;
 procedure timed_event_p_proc;
 
+procedure restock_merchant;
+
 
 /* Script Specific Procedure Calls */
 procedure Node998;                                      // This Node is Always Combat
@@ -192,6 +194,19 @@ procedure RemoveCombatArmor;
 #define LVAR_Tried_Smooch               (12)
 #define LVAR_Smooch_Dealer              (13)
 #define LVAR_Free_Checkups              (14)
+#define LVAR_Restock					(15)
+
+#define restock_drug(obj)			stock_pid_qty(obj, PID_JET, random(0,5))	\
+									stock_pid_qty(obj, PID_JET_ANTIDOTE, random(0,5))	\
+									stock_pid_qty(obj, PID_SMOOCH, random(0,5)) \
+									stock_pid_qty(obj, PID_STIMPAK, random(0,10)) \
+									stock_pid_qty(obj, PID_SUPER_STIMPAK, random(0,5)) \
+									stock_pid_qty(obj, PID_ANTIDOTE, random(0,5)) \
+									stock_pid_qty(obj, PID_RAD_X, random(0,2)) \
+									stock_pid_qty(obj, PID_AFTER_BURNER_GUM, random(0,2)) \
+									stock_pid_qty(obj, PID_PSYCHO, random(0,3)) \
+									stock_pid_qty(obj, PID_BUFFOUT, random(0,3))
+									
 
 /* Imported variables from the Map scripts. These should only be
    pointers and variables that need not be saved. If a variable
@@ -200,9 +215,23 @@ procedure RemoveCombatArmor;
 
 /* Local variables which do not need to be saved between map changes. */
 variable Only_Once:=0;
+variable vendorsettings;
+variable inidays;
+variable timeindays;
 
 procedure start begin
 end
+
+procedure set_time_indays begin
+	vendorsettings := get_ini_setting("mods\\FalloutYesterday.ini|FalloutYesterday|vendor_settings"); 								
+	inidays := get_ini_setting("mods\\FalloutYesterday.ini|Vendors|restock_yuri");
+	if (inidays >= 1) and (vendorsettings == 1) then begin
+		timeindays := inidays;
+	end	else begin 
+		timeindays := 3;
+	end	
+end
+
 
 /* This procedure will get called each time that the map is first entered. It will
    set up the Team number and AI packet for this critter. This will override the
@@ -211,6 +240,19 @@ procedure map_enter_p_proc begin
    Only_Once:=0;
    critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_HOOVER_DAM);
    critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_DOCTOR);
+   
+    call restock_merchant;
+end
+
+
+procedure restock_merchant begin
+	//variable roll:= random(1,20);
+	call set_time_indays;
+	if ((game_time >= local_var(LVAR_Restock)) and (local_var(LVAR_Gave_Discount) >= 2)) then begin
+		variable obj_stuff := tile_contains_pid_obj(25065, self_elevation, PID_FOOTLOCKER_RUSTY_LEFT);
+		restock_drug(obj_stuff)
+		set_local_var(LVAR_Restock , (game_time + (ONE_GAME_DAY* timeindays)) );
+	end			
 end
 
 
@@ -260,13 +302,22 @@ procedure talk_p_proc begin
 
    variable yuri_stuff, temp_stuff, tile_yuri_stuff;
 
-   if(local_var(LVAR_Gave_Discount) == 2) then
-      tile_yuri_stuff = 25063;
-   else
-      tile_yuri_stuff = 25065;
+   // if(local_var(LVAR_Gave_Discount) == 2) then
+      // tile_yuri_stuff = 25063;
+   // else
+      // tile_yuri_stuff = 25065;
+  
 
+
+   tile_yuri_stuff = 25065;
    yuri_stuff := tile_contains_pid_obj(tile_yuri_stuff, self_elevation, PID_FOOTLOCKER_RUSTY_LEFT);
    temp_stuff := tile_contains_pid_obj(25865, self_elevation, PID_FOOTLOCKER_RUSTY_LEFT);
+   
+   if(local_var(LVAR_Gave_Discount) == 2) then begin
+	variable yuri_extrastuff := tile_contains_pid_obj(25063, self_elevation, PID_FOOTLOCKER_RUSTY_LEFT);
+	move_obj_inven_to_obj(yuri_extrastuff,yuri_stuff);
+	set_local_var(LVAR_Gave_Discount,3);
+   end   
 
 
    Evil_Critter:=1;
@@ -395,7 +446,7 @@ NOption(263,Node014,4);
 if (global_var(GVAR_DR_YURI_AUTODOC) == 1) then
 NOption(264,Node015,4);
 
-if (local_var(LVAR_Gave_Discount) == 2) then
+if (local_var(LVAR_Gave_Discount) >= 2) then
    NOption(265,Node080,4);
 else
    NOption(265,Node018,4);
@@ -1416,7 +1467,7 @@ begin
 variable str;
 str = mstr(2184);
 
-if (local_var(LVAR_Gave_Discount) == 2) then
+if (local_var(LVAR_Gave_Discount) >= 2) then
    str = mstr(2185);
 
 Reply(mstr(2180) + str + mstr(2183));
@@ -1430,7 +1481,7 @@ begin
 variable str;
 str = mstr(2214);
 
-if (local_var(LVAR_Gave_Discount) == 2) then
+if (local_var(LVAR_Gave_Discount) >= 2) then
    str = mstr(2215);
 
 Reply(mstr(2210) + str + mstr(2213));
@@ -1444,7 +1495,7 @@ begin
 variable str;
 str = mstr(2244);
 
-if (local_var(LVAR_Gave_Discount) == 2) then
+if (local_var(LVAR_Gave_Discount) >= 2) then
    str = mstr(2245);
 
 Reply(mstr(2240) + str + mstr(2243));
@@ -1459,7 +1510,7 @@ begin
    variable str;
    str = mstr(2274);
 
-   if (local_var(LVAR_Gave_Discount) == 2) then
+   if (local_var(LVAR_Gave_Discount) >= 2) then
       str = mstr(2275);
 
    Reply(mstr(2270) + str + mstr(2273));
@@ -1544,7 +1595,7 @@ procedure NodeDoDermal begin
    variable item, price;
 
    price = 5500;
-   if (local_var(LVAR_Gave_Discount) == 2) then begin
+   if (local_var(LVAR_Gave_Discount) >= 2) then begin
       price = 4950;
    end
 
@@ -1565,7 +1616,7 @@ procedure NodeDoDermalUpgrade begin
    variable item, price;
 
    price = 33000;
-   if (local_var(LVAR_Gave_Discount) == 2) then begin
+   if (local_var(LVAR_Gave_Discount) >= 2) then begin
       price = 29700;
    end
 
@@ -1587,7 +1638,7 @@ procedure NodeDoPhoenix begin
    variable item, price;
 
    price = 8500;
-   if (local_var(LVAR_Gave_Discount) == 2) then begin
+   if (local_var(LVAR_Gave_Discount) >= 2) then begin
       price = 7650;
    end
 
@@ -1608,7 +1659,7 @@ procedure NodeDoPhoenixUprade begin
    variable item, price;
 
    price = 49000;
-   if (local_var(LVAR_Gave_Discount) == 2) then begin
+   if (local_var(LVAR_Gave_Discount) >= 2) then begin
       price = 44100;
    end
 

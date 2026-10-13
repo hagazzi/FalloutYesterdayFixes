@@ -96,7 +96,8 @@ procedure Node999;                                      // This Node is Always E
 									stock_pid_qty(obj, PID_MOTIVATOR, random(0,1)) \
 									stock_pid_qty(obj, PID_WATER_CHIP, random(1,6))
 									
-
+#define restock_antirad(obj)		stock_pid_qty(obj, PID_RADAWAY, random(1,5)) \
+									stock_pid_qty(obj, PID_RAD_X, random(1,5))
 
 /* Imported variables from the Map scripts. These should only be
    pointers and variables that need not be saved. If a variable
@@ -144,6 +145,7 @@ procedure restock_merchant begin
 	call set_time_indays;
 	if (game_time >= local_var(LVAR_Restock)) then begin
 		restock_armor(self_obj,roll)
+		restock_antirad(self_obj)
 		if 
 			(global_var(GVAR_BROTHERHOOD_APPRENTICE) == 1)  or
 			(global_var(GVAR_BROTHERHOOD_JOURNEYMAN) == 1) or

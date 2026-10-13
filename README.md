@@ -125,6 +125,8 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * TMP500 can restock PA from senior rank (50%), also restock systolic motivator (50%), technical manual and chemistry manual (100%), from apprentice rank start restocking some ammo, restock qty and variety increase with journeyman and senior
 * Added an xp reward (1000xp) for fixing the computer in Mesa Verde and also the same increase in rep that bringing more food quest does, given the potential difficulty to acquire computer parts if you don't already know where to find it, i think its an adequate reward
 * Technical manual pcx made from existing frm icon
+* Restock to Dr Yuri once his resupply quest is done
+* Added some RadX and RadAway to TMP500 instead of making BoS Dr a merchant.
 
 ## Changed
 * Hangdman agression toward Slaver was seeping in toward Tribals due to how ai critter are set up, made some change so that it allow one to keep Hangdman around even in Tibbet Blackfoot or Mesa Verde
@@ -137,15 +139,12 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	* It was working using PID_POWERFUL_MUTANT that was being used in the map, but i thought that i might as well use Marcus' sprite and therefore modified the map ABYSSIN1.MAP, also his combat control are working unlike PID_POWERFUL_MUTANT
 * Small change, made South Gate in Hoover Dam being able to rest on, bit silly having to back up move around a bit hoping to get the right time, while North Gate one can rest on
 * MrFixit can now dismantle Brotherhood Combat Armor, its still the superior combat armor but for Regular PA upgrade into Adv PA every bit helps
+* Changed some Dr Yuri behavior, rather than switching from one merchant chest to the other im instead moving the content of the second merchant chest into the first, i'm also incrementing that LVAR so its only done once, and therefore changed some check to accomodate that increment
 
 
 # TODO
 
 ## TODO Adds maybe (?)
-* Restock for Dr Yuri (also Jet antidote maybe(?))
-* Barter / Restock from BoS Dr ?
-* Restock TMP500
-	* Specialized ammo that show up nowhere for some Mesa Verde computer weapon craft ? like gauss minigun ammo ? tied in with cipher alliance with bos maybe?
 * Rethink Armor progression, from armored vault suit to leather armor mkII goes well then theres not much more reservation has some metal armor but thats about it short of stealing Mark Tesla Armor rest is Isaac PA or ranger guard armor
 	* Combat armor used as stepstool to get into adv PA is possibly working but to into combat armor itself comes a bit late (?)
 	* Metal Armor could be craftable from regular gecko hide + junk + gas tank
@@ -163,6 +162,7 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Restock TMP500
 	* Gauss weapons 
 	* Energy weapons (Pulse, Plasma, Laser)
+	* Specialized ammo that show up nowhere for some Mesa Verde computer weapon craft ? like gauss minigun ammo ? tied in with cipher alliance with bos maybe?
 
 ## Likely Will not do on 0.65.1
 * Random loot based on container type for flavour container (most are empty right now)
@@ -185,6 +185,8 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 	*  ̶P̶A̶ ̶f̶r̶o̶m̶ ̶S̶e̶n̶i̶o̶r̶ ̶o̶n̶w̶a̶r̶d̶
 	*  ̶T̶e̶c̶h̶n̶i̶c̶a̶l̶ ̶M̶a̶n̶u̶a̶l̶,̶ ̶C̶a̶s̶e̶l̶e̶s̶s̶,̶ ̶2̶m̶m̶E̶C̶,̶ ̶r̶a̶n̶k̶ ̶f̶o̶r̶ ̶t̶h̶e̶s̶e̶ ̶T̶B̶D̶
 * A̶d̶d̶ ̶P̶C̶X̶ ̶f̶o̶r̶ ̶t̶e̶c̶h̶n̶i̶c̶a̶l̶ ̶m̶a̶n̶u̶a̶l̶
+* B̶a̶r̶t̶e̶r̶ ̶/̶ ̶R̶e̶s̶t̶o̶c̶k̶ ̶f̶r̶o̶m̶ ̶B̶o̶S̶ ̶D̶r̶ ̶?̶ (added some radx and radaway to tmp500 instead)
+* ̶R̶̶e̶s̶t̶o̶c̶k̶ ̶f̶o̶r̶ ̶D̶r̶ ̶Y̶u̶r̶i̶ ̶(̶a̶l̶s̶o̶ ̶J̶e̶t̶ ̶a̶n̶t̶i̶d̶o̶t̶e̶ ̶m̶a̶y̶b̶e̶(̶?̶)̶)̶
 
 ## Change Maybe(?)
 *  ̶a̶d̶d̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶t̶o̶ ̶q̶u̶e̶s̶t̶s̶ ̶t̶h̶a̶t̶ ̶d̶i̶d̶n̶t̶ ̶h̶a̶v̶e̶ ̶a̶n̶y̶ ̶(̶M̶V̶C̶A̶N̶N̶O̶N̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶k̶i̶l̶l̶ ̶/̶ ̶M̶V̶A̶K̶Z̶E̶E̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶h̶o̶u̶n̶d̶ ̶q̶u̶e̶s̶t̶ ̶/̶ ̶H̶D̶P̶A̶B̶L̶O̶.̶S̶S̶L̶ ̶s̶o̶m̶e̶ ̶x̶p̶ ̶f̶o̶r̶ ̶t̶h̶a̶t̶ ̶h̶a̶r̶d̶ ̶s̶p̶e̶e̶c̶h̶ ̶c̶h̶e̶c̶k̶ ̶i̶ ̶t̶h̶i̶n̶k̶)̶ ̶/ ̶M̶V̶N̶E̶M̶O̶N̶K̶.̶S̶S̶L̶ ̶n̶o̶ ̶x̶p̶ ̶f̶r̶o̶m̶ ̶c̶o̶m̶p̶u̶t̶e̶r̶ ̶q̶u̶e̶s̶t̶
