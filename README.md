@@ -145,6 +145,19 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 # TODO
 
 ## TODO Adds maybe (?)
+
+
+## TODO Change maybe (?)
+
+
+## Unlikely
+
+
+## Likely Will not do on 0.65.1
+* Random loot based on container type for flavour container (most are empty right now)
+	* using the same script i changed asylum container locked status, let me iterate through container and get container name so could easily use that for that purpose
+* I think it could possibly be doable to make the Sheriff Carmichael "violent" way doable using Dr Nora scripts used when you don't want to do the radscorpion nest on your own, the main issue being i don't know who are the prisoners that provoked his ire (i'm thinking either of the bar patrons + food dispenser ones, or alternatively the 2nd Bar in the vehicle bay )
+
 * Rethink Armor progression, from armored vault suit to leather armor mkII goes well then theres not much more reservation has some metal armor but thats about it short of stealing Mark Tesla Armor rest is Isaac PA or ranger guard armor
 	* Combat armor used as stepstool to get into adv PA is possibly working but to into combat armor itself comes a bit late (?)
 	* Metal Armor could be craftable from regular gecko hide + junk + gas tank
@@ -155,19 +168,12 @@ modifying ddraw.ini setting to SingleCore=1 might be advised, if one don't want 
 * Might add settings for Cargo upgrade breakpoint 
 * Thinking of preventing Mark GVAR to be set prior to Act2 in Bloomfield in the offchance you got the location from Pierce
 
-## TODO Change maybe (?)
 * I'm thinking of making bounty targets and their cohort giving good kills not just to the one that kill them, thats a vanilla fallout 2 setting but i don't like that you aren't a berserker with a certain number of bad kill but then you start only doing good kill and you still become a berserker
 
-## Unlikely
 * Restock TMP500
 	* Gauss weapons 
 	* Energy weapons (Pulse, Plasma, Laser)
 	* Specialized ammo that show up nowhere for some Mesa Verde computer weapon craft ? like gauss minigun ammo ? tied in with cipher alliance with bos maybe?
-
-## Likely Will not do on 0.65.1
-* Random loot based on container type for flavour container (most are empty right now)
-	* using the same script i changed asylum container locked status, let me iterate through container and get container name so could easily use that for that purpose
-* I think it could possibly be doable to make the Sheriff Carmichael "violent" way doable using Dr Nora scripts used when you don't want to do the radscorpion nest on your own, the main issue being i don't know who are the prisoners that provoked his ire (i'm thinking either of the bar patrons + food dispenser ones, or alternatively the 2nd Bar in the vehicle bay )
 
 # DONE
 
